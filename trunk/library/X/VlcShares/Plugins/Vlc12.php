@@ -40,7 +40,6 @@ class X_VlcShares_Plugins_Vlc12 extends X_VlcShares_Plugins_Abstract {
 			$vlc->registerArg('source', "\"$source\"");
 		}
 		
-		
 	}
 	
 }
