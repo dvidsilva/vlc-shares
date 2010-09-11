@@ -385,3 +385,10 @@ androidProfiles.profiles.milestone.stream = "rtsp://IP_ADDRESS:5554/android.sdp"
 ;integratedSubs.list = "avi|mkv"
 
 
+; -------------------------------------------------------
+; Add support for vlc 1.2 and 1.1.3+ 
+; (do nothing in linux env)
+; -------------------------------------------------------
+vlc12support.class = "X_Vlc_Shares_Plugins_Vlc12"
+vlc12support.path = APPLICATION_PATH "/../library/X/VlcShares/Plugins/Vlc12.php"
+
