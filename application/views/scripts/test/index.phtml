@@ -1,0 +1,19 @@
+<html>
+<head>
+</head>
+<body>
+<h1>VLC-Shares: system test</h1>
+<dl>
+	<?php foreach ( $this->tests as $test) : ?>
+		<dt><?php echo $test[0]; ?>:</dt>
+		<?php if ( $test[1] ) : ?>
+			<dd style="color: green;"><?php echo $test[2]; ?></dd>
+		<?php else: ?>
+			<dd style="color: red;"><?php echo $test[2]; ?></dd>
+		<?php endif; ?>
+	<?php endforeach; ?>
+	<dt>Debug log:</dt>
+	<dd><textarea rows="10" style="width: 80%"><?php echo $this->log;?></textarea></dd>
+</dl>
+</body>
+</html>
