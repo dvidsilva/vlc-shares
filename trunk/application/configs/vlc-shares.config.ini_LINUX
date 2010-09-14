@@ -1,5 +1,5 @@
 ; ====================================
-; --------- VLC SHARES v0.4.2 --------
+; --------- VLC SHARES v0.4.1 --------
 ; ====================================
 
 [general]
@@ -24,18 +24,7 @@ languageFile = APPLICATION_PATH "/../languages/en_GB.ini"
 ; Create debug log?
 
 ; Default: debug_enabled = false
-debug_enabled = true
-
-
-; -------------------------------------------------------
-; Log level
-;	-1: none (only forced)
-;	0: fatal only
-;	1: fata + error only
-;	2: fatal + error + warning only
-;	3: all
-; -------------------------------------------------------
-debug_level = 3
+debug_enabled = false
 
 
 ; -------------------------------------------------------
@@ -394,12 +383,4 @@ androidProfiles.profiles.milestone.stream = "rtsp://IP_ADDRESS:5554/android.sdp"
 ;integratedSubs.class = "X_VlcShares_Plugins_IntegratedSubs"
 ;integratedSubs.path = APPLICATION_PATH "/../library/X/VlcShares/Plugins/IntegratedSubs.php"
 ;integratedSubs.list = "avi|mkv"
-
-
-; -------------------------------------------------------
-; Add support for vlc 1.2 and 1.1.3+ 
-; (do nothing in linux env)
-; -------------------------------------------------------
-vlc12support.class = "X_Vlc_Shares_Plugins_Vlc12"
-vlc12support.path = APPLICATION_PATH "/../library/X/VlcShares/Plugins/Vlc12.php"
 
