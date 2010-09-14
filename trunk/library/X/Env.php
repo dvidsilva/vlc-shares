@@ -23,6 +23,7 @@ class X_Env {
 	
 	static public function initForcedPort($port) {
 		self::$_forcedPort = $port;
+		X_Debug::i("Apache port is: $port");
 	}
 	
 	static public function isWindows() {
@@ -72,16 +73,24 @@ class X_Env {
 		return self::$_psExec;
 	}
 	
+	/**
+	 * Init debug system
+	 * @deprecated
+	 * @see X_Debug::init()
+	 * @param string $path
+	 */
 	static public function initDebug($path) {
-		if ( is_null(self::$_debug) ) {
-			self::$_debug = fopen($path, 'ab');
-		}
+		X_Debug::init($path);
 	}
-	
+
+	/**
+	 * Add a new message in debug log
+	 * @deprecated
+	 * @see X_Debug::i()
+	 * @param string $message
+	 */
 	static public function debug($message) {
-		if ( !is_null(self::$_debug) ) {
-			fwrite(self::$_debug, date("[d/m/Y H:i:s]") . " $message\n");
-		}
+		X_Debug::i($message, 2);
 	}
 	
 
@@ -149,6 +158,7 @@ class X_Env {
 	static public function initTranslator(Zend_Translate $translator) {
 		if ( is_null(self::$_translator) ) {
 			self::$_translator = $translator;
+			X_Debug::i("Translator enabled");
 		}
 	}
 	

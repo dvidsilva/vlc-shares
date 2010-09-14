@@ -37,6 +37,9 @@ final class X_VlcShares_Plugins {
 				new $className(new Zend_Config($pValue));
 			}
 		}
+		
+		X_Debug::i("Plugin system enabled");
+		
 	}
 	
 	
