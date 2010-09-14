@@ -1,5 +1,5 @@
 ; ====================================
-; --------- VLC SHARES v0.4.1 --------
+; --------- VLC SHARES v0.4.2 --------
 ; ====================================
 
 [general]
@@ -24,7 +24,18 @@ languageFile = APPLICATION_PATH "/../languages/en_GB.ini"
 ; Create debug log?
 
 ; Default: debug_enabled = false
-debug_enabled = false
+debug_enabled = true
+
+
+; -------------------------------------------------------
+; Log level
+;	-1: none (only forced)
+;	0: fatal only
+;	1: fata + error only
+;	2: fatal + error + warning only
+;	3: all
+; -------------------------------------------------------
+debug_level = 3
 
 
 ; -------------------------------------------------------
