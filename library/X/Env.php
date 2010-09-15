@@ -21,6 +21,8 @@ class X_Env {
 	private static $_translator = null;
 	private static $_forcedPort = '80';
 	
+	private static $_serverUrlProvider = null;
+	
 	static public function initForcedPort($port) {
 		self::$_forcedPort = $port;
 		X_Debug::i("Apache port is: $port");
@@ -154,6 +156,16 @@ class X_Env {
 		return $link;
 	}
 	
+	static public function completeUrl($url) {
+		$link = 'http://';
+		$link .= $_SERVER['HTTP_HOST'];
+		if ( self::$_forcedPort != '80' || $_SERVER['SERVER_PORT'] != '80'  ) {
+			if ( strpos($_SERVER["HTTP_HOST"], ':') === false ) {
+				$link .= ':'.($_SERVER["SERVER_PORT"] == '80' ? self::$_forcedPort : $_SERVER["SERVER_PORT"]);
+			}
+		}
+		return $link.$url;
+	}
 	
 	static public function initTranslator(Zend_Translate $translator) {
 		if ( is_null(self::$_translator) ) {

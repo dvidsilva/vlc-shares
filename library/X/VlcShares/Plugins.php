@@ -3,13 +3,29 @@
 require_once 'X/VlcShares.php';
 require_once 'X/Env.php';
 require_once 'Zend/Config.php';
+require_once 'X/VlcShares/Plugins/Abstract.php';
+require_once 'X/VlcShares/Plugins/Helper/Broker.php';
 
-final class X_VlcShares_Plugins {
-	
+final class X_VlcShares_Plugins extends X_VlcShares_Plugins_Abstract {
 	
 	static private $_plugins = array();
 	
+	/**
+	 * 
+	 * @var X_VlcShares_Plugins_Helper_Broker
+	 */
+	static private $_helperBroker = null;
+	
+	/**
+	 * 
+	 * @var X_VlcShares_Plugins_Broker
+	 */
+	static private $_pluginBroker = null;
+	
 	static public function init($options) {
+		
+		// plugins are registered in plugin broker
+		self::$_pluginBroker = new X_VlcShares_Plugins_Broker();
 		
 		if ( !($options instanceof Zend_Config) ) {
 			if ( !is_array($options) ) {
@@ -34,11 +50,19 @@ final class X_VlcShares_Plugins {
 			if ( class_exists($className) && is_subclass_of($className, 'X_VlcShares_Plugins_Abstract')) {
 				$pValue['id'] = $pKey;
 				// si auto referenzia 
-				new $className(new Zend_Config($pValue));
+				//new $className(new Zend_Config($pValue));
+				// plugins system from
+				//	event-based -> function-based
+				$plugin = new $className();
+				$plugin->setConfigs(new Zend_Config($pValue));
+				self::$_pluginBroker->registerPlugin($pKey, $plugin );
 			}
 		}
 		
+		self::$_helperBroker = new X_VlcShares_Plugins_Helper_Broker();
 		X_Debug::i("Plugin system enabled");
+		
+		self::$_pluginBroker->gen_afterPluginsInitialized(self::$_pluginBroker);
 		
 	}
 	
@@ -83,8 +107,27 @@ final class X_VlcShares_Plugins {
 		return class_exists($pluginClass);
 	}
 	
+	/**
+	 * Get the helper broker or an helper
+	 * @param string $helperName
+	 * @return X_VlcShares_Plugins_Helper_Broker|X_VlcShares_Plugins_Helper_Abstract
+	 * @throws Exception if $helperName is specified and helper is not registred
+	 */
+	static public function helpers($helperName = null) {
+		if ( $helperName == null) {
+			return self::$_helperBroker;
+		} else {
+			return self::$_helperBroker->helper($helperName);
+		}
+	}
 	
-	
+	/**
+	 * Get the plugin broker 
+	 * @return X_VlcShares_Plugins_Broker
+	 */
+	static public function broker() {
+		return self::$_pluginBroker;
+	}
 }
 
 
