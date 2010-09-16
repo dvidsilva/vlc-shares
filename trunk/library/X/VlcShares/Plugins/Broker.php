@@ -1,6 +1,6 @@
 <?php
 
-require_once ('library/X/VlcShares/Plugins/Abstract.php');
+require_once ('X/VlcShares/Plugins/Abstract.php');
 
 class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 
@@ -57,7 +57,7 @@ class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 	}
 	
 	function __call($funcName, $funcParams) {
-		if ( method_exists('X_VlcShares_Plugins_Abstract', $funcName) && !in_array($funcName, $this->blacklistedFunctions) ) {
+		if ( method_exists('X_VlcShares_Plugins_Abstract', $funcName) && !in_array($funcName, $this->backlistedFunctions) ) {
 			$toBeCalled = array();
 			foreach ($this->plugins as $pluginId => $pluginObj) {
 				/* @var $pluginObj X_VlcShares_Plugins_Abstract */
@@ -67,12 +67,20 @@ class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 				}
 			}
 			$returnedVal = array();
+			ksort($toBeCalled);
 			foreach ( $toBeCalled as $priorityStack ) {
 				foreach ( $priorityStack as $pluginId => $pluginObj ) {
 					/* @var $pluginObj X_VlcShares_Plugins_Abstract */
 					$return = call_user_func_array(array($pluginObj, $funcName), $funcParams);
 					if ( $return !== null ) {
-						$returnedVal[$pluginId] = $return;
+						//$returnedVal[$pluginId] = $return;
+						if ( is_array($return) ) {
+							// TODO
+							// check for key relocation
+							$returnedVal = array_merge($returnedVal, $return);
+						} else {
+							$returnedVal[] = $return;
+						}
 					}
 				}
 			}

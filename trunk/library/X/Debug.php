@@ -32,6 +32,7 @@ class X_Debug {
 		}
 		self::$logFile = fopen($logPath, 'ab');
 		self::$logLevel = $logLevel;
+		self::forcedInfo("------------------------------------------------------");
 		self::forcedInfo("Debug log enabled, level: {$logLevel}");
 	}
 	
@@ -69,7 +70,7 @@ class X_Debug {
 		if ( @$traces['class'] ) {
 			$func = "{$traces['class']}::{$func}";
 		}
-		$line = $traces['line'];
+		$line = @$traces['line'];
 		self::_($message, self::INFO, $func, $line);
 	}
 	/**
@@ -85,7 +86,7 @@ class X_Debug {
 		if ( @$traces['class'] ) {
 			$func = "{$traces['class']}::{$func}";
 		}
-		$line = $traces['line'];
+		$line = @$traces['line'];
 		self::_($message, self::WARNING, $func, $line);
 	}
 	
@@ -102,7 +103,7 @@ class X_Debug {
 		if ( @$traces['class'] ) {
 			$func = "{$traces['class']}::{$func}";
 		}
-		$line = $traces['line'];
+		$line = @$traces['line'];
 		self::_($message, self::ERROR, $func, $line);
 	}
 	
@@ -119,7 +120,7 @@ class X_Debug {
 		if ( @$traces['class'] ) {
 			$func = "{$traces['class']}::{$func}";
 		}
-		$line = $traces['line'];
+		$line = @$traces['line'];
 		self::_($message, self::FATAL, $func, $line);
 	}
 
@@ -135,7 +136,7 @@ class X_Debug {
 		if ( @$traces['class'] ) {
 			$func = "{$traces['class']}::{$func}";
 		}
-		$line = $traces['line'];
+		$line = @$traces['line'];
 		self::_($message, self::INFO, $func, $line);
 	}
 }

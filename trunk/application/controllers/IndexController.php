@@ -66,7 +66,7 @@ class IndexController extends X_Controller_Action
 		$this->_helper->viewRenderer->setNoRender(true);
     	*/
 		
-		X_VlcShares_Plugins::broker()->gen_afterPageBuild($pageItems, $this);
+		X_VlcShares_Plugins::broker()->gen_afterPageBuild(&$pageItems, $this);
     	
     }
 	public function pcAction() {
