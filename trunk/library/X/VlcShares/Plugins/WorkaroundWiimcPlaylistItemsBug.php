@@ -24,7 +24,7 @@ class X_VlcShares_Plugins_WorkaroundWiimcPlaylistItemsBug extends X_VlcShares_Pl
 			if ( count($items) === 1 ) {
 				X_Debug::i("Plugin triggered");
 				$items[] = array(
-					'label' => 'Workaround for bug in Wiimc <= 1.0.9',
+					'label' => '-- Workaround for bug in Wiimc <= 1.0.9 --',
 					'link' => X_Env::completeUrl($controller->getHelper('url')->url())
 				);
 			}

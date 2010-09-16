@@ -40,6 +40,21 @@ abstract class X_VlcShares_Plugins_Abstract {
 				$this->setPriority($triggerName, $priority);
 			}
 		} 
+		if ( $this->configs->id ) {
+			$this->id = $this->configs->id;
+		}
+	}
+	
+	public function config($key, $default = null) {
+		$splitted = explode('.', $key);
+		$configs = $this->configs;
+		foreach ($splitted as $subkey) {
+			$configs = $configs->get($subkey, null);
+			if ( $configs === null ) {
+				return $default;
+			}
+		}
+		return $configs;
 	}
 	
 	/**
@@ -67,7 +82,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @param int $priority
 	 * @return X_VlcShares_Plugins_Abstract
 	 */
-	protected function setPriority($triggerName, $priority = 50) {
+	public function setPriority($triggerName, $priority = 50) {
 		$this->priorities[$triggerName] = $priority;
 		return $this;
 	}
@@ -124,8 +139,19 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 */
 	public function gen_afterInit(Zend_Controller_Action $controller) {}
 	
+	/**
+	 * Triggered before provider check and selection
+	 * Allow plugin to change provider and/or params
+	 * This should be usefull for blacklisting plugin
+	 * @param $controller
+	 */
+	public function gen_preProviderSelection(Zend_Controller_Action $controller) {}
+	
+	
 	//=== END OF GENERAL TRIGGER ===//
-		
+
+	//=== Triggered in Index:collections ===//
+	
 	/**
 	 * Return items that should be added at the beginning of the list
 	 * This hook can also used for redirect application flow
@@ -164,6 +190,65 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @return boolean true if item is ok, false if item should be discarded
 	 */
 	public function filterCollectionsItems($item, Zend_Controller_Action $controller) {}
+
 	
+	//=== END OF Index:collections ===//
+
+	//=== Triggered in Browse:share ===//
+	
+	/**
+	 * Return items that should be added at the beginning of the list
+	 * This hook can also used for redirect application flow
+	 * 
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to share
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array
+	 */
+	public function preGetShareItems($provider, $location, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Return items that should be added in collection list
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to share
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array 
+	 */
+	public function getShareItems($provider, $location, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Return items that should be added at the end of the list
+	 * This hook can also used for redirect application flow
+	 * 
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to share
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array
+	 */
+	public function postGetShareItems($provider, $location, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Check the item in the collection should be filtered out
+	 * If return is false, the item will be discarded at 100%
+	 * If return is true, isn't sure that the item will be added
+	 * 'cause another plugin can prevent this
+	 * 
+	 * Plugins who check per-item acl or blacklist should hook here
+	 * 
+	 * @param mixed $item
+	 * @param string $provider
+	 * @param Zend_Controller_Action $controller
+	 * @return boolean true if item is ok, false if item should be discarded
+	 */
+	public function filterShareItems($item, $provider, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Allow plugin to shuffle/order items
+	 * Plugin should use $provider to get location real location
+	 * @param array &$items list of items
+	 * @param string $provider id of the plugin the handle the request
+	 * @param Zend_Controller_Action $controller
+	 */
+	public function orderShareItems(&$items, $provider, Zend_Controller_Action $controller) {}
 	
 }

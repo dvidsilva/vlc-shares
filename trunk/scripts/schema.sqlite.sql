@@ -6,6 +6,14 @@ CREATE TABLE plg_megavideo (
     description TEXT NULL
 );
  
-CREATE INDEX "id" ON "plg_megavideo" ("id");
+CREATE INDEX "plg_megavideo_id" ON "plg_megavideo" ("id");
 
 
+CREATE TABLE plg_filesystem_shares (
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	label VARCHAR(255) NOT NULL,
+	path VARCHAR(255) NOT NULL DEFAULT '',
+	image VARCHAR(255) DEFAULT NULL
+);
+
+CREATE INDEX "plg_filesystem_shares_id" ON "plg_filesystem_shares" ("id");

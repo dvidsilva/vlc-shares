@@ -19,7 +19,7 @@ class BrowseController extends X_Controller_Action {
 	 * @var X_Vlc
 	 */
 	protected $vlc = null;
-	
+	/*
 	public function init() {
 		parent::init();
 		X_Env::debug(__METHOD__);
@@ -38,112 +38,52 @@ class BrowseController extends X_Controller_Action {
 			$this->_forward('control', 'controls');
 		}
 	}
+	*/
 	
 	/**
 	 * The default action - show the home page
 	 */
 	public function indexAction() {
-		X_Env::debug(__METHOD__);
 		$this->_forward('collections', 'index');
 	}
 	
 	public function shareAction() {
-		X_Env::debug(__METHOD__);
+
 		
 		$request = $this->getRequest();
 		
-		$shareId = $request->getParam('shareId');
-		$currentPath = base64_decode($request->getParam('url', ''));
+		X_VlcShares_Plugins::broker()->gen_preProviderSelection($this);
 		
-		$shares = $this->options->shares->toArray();
-		
-		if ( !$shares[$shareId] ) {
-			throw new Zend_Controller_Action_Exception($this->translate->_("share_id_not_valid"));
+		$provider = $request->getParam('p', false);
+		if ( $provider === false || !X_VlcShares_Plugins::broker()->isRegistered($provider) ) {
+			throw new Exception("Invalid provider");
 		}
-		
-		// info sullo share
-		$share = $shares[$shareId];
+		$location = base64_decode($request->getParam('l', ''));
 
-		$plx = new X_Plx('VLCShares - '.($currentPath != '' ? $share['name'].$currentPath : $share['name']), $this->translate->_("title_description"));
+    	$pageItems = array();
+    	// links on top
+    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->preGetShareItems($provider, $location, $this));
+    	// normal links
+    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->getShareItems($provider, $location, $this));
+    	// bottom links
+		$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->postGetShareItems($provider, $location, $this));
 		
-		//Aggiunto tramite il plugin X_VlcShares_Plugins_StaticLinks
-		//$plx->addItem(new X_Plx_Item($this->translate->_('back_to_collections'), X_Env::routeLink('index', 'collections')));
+		// filter out items (parental-control / hidden file / system dir)
+		foreach ($pageItems as $key => $item) {
+			if ( in_array(false, X_VlcShares_Plugins::broker()->filterShareItems($item, $provider, $this)) ) {
+				unset($pageItems[$key]);
+			}
+		}
+		
+		X_VlcShares_Plugins::broker()->orderShareItems(&$pageItems, $provider,  $this);
+		
+		
+		// trigger for page creation
+		X_VlcShares_Plugins::broker()->gen_afterPageBuild(&$pageItems, $this);
+		
+		// stop here execution
+		return;
 
-		// Chiamo il trigger, no input e output X_Plx_Item o array(X_Plx_Item)
-		$prePlxItems = X_Env::triggerEvent(X_VlcShares::TRG_DIR_TRAVERSAL_PRE);
-		foreach ( $prePlxItems as $plgOutput ) {
-			if ( is_array($plgOutput) ) {
-				foreach ($plgOutput as $item ) {
-					$plx->addItem($item);
-				}
-			} elseif ($plgOutput instanceof X_Plx_Item ) { 
-				$plx->addItem($plgOutput);
-			}
-		}
-		
-		
-		// devo parsare tutti i file e le directory
-		$dir = new DirectoryIterator($share['path'].$currentPath);
-		foreach ($dir as $entry) {
-			
-			// se anche solo 1 dei plugin esclude il file,
-			// il file o la dir viene ignorata
-			$results = X_Env::triggerEvent(X_VlcShares::TRG_DIR_TRAVERSAL, $entry);
-			foreach ($results as $result)
-				if ( !$result )
-					continue 2; // salto al padre foreach
-					
-			// escludiamo la navigazione all'indietro
-			if ( $entry->isDot() )
-				continue;
-				
-			if ( $entry->isDir() ) {
-				$plx->addItem(
-						new X_Plx_Item($entry->getFilename() . '/',
-						X_Env::routeLink('browse', 'share', array(
-							'url' => base64_encode($currentPath.$entry->getFilename().'/'),
-							'shareId' => $shareId
-						))
-					));
-				
-			} else if ($entry->isFile() ) {
-				$plx->addItem(
-						new X_Plx_Item($entry->getFilename(),
-						X_Env::routeLink('browse', 'file', array(
-							'url' => base64_encode($currentPath.$entry->getFilename()),
-							'shareId' => $shareId
-						))
-					));
-			} else {
-				// scarta i symlink
-				continue;
-			}
-		}
-		
-		// Chiamo il trigger, no input e output X_Plx_Item o array(X_Plx_Item)
-		$postPlxItems = X_Env::triggerEvent(X_VlcShares::TRG_DIR_TRAVERSAL_POST);
-		foreach ( $postPlxItems as $plgOutput ) {
-			if ( is_array($plgOutput) ) {
-				foreach ($plgOutput as $item ) {
-					$plx->addItem($item);
-				}
-			} elseif ($plgOutput instanceof X_Plx_Item ) { 
-				$plx->addItem($plgOutput);
-			}
-		}
-		
-		$echoArrayPlg = X_Env::triggerEvent(X_VlcShares::TRG_ENDPAGES_OUTPUT_FILTER_PLX, $plx );
-		$echo = '';
-		foreach ($echoArrayPlg as $plgOutput) {
-			$echo .= $plgOutput;
-		}
-		if ( $echo != '' ) {
-			echo $echo;
-		} else {
-    		header('Content-Type:text/plain');
-			echo $plx;
-		}
-		$this->_helper->viewRenderer->setNoRender(true);
 	}
 	
 	public function fileAction() {

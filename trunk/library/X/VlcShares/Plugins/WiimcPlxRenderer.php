@@ -16,11 +16,16 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 	}
 	
 	public function gen_afterPageBuild(&$items, Zend_Controller_Action $controller) {
-		//if ( !$this->helpers()->devices()->isWiimc() ) return;
+		if ( !((bool) $this->config('forced', false)) && !$this->helpers()->devices()->isWiimc() ) return;
 		
 		X_Debug::i("Plugin triggered");
 
-		$plx = new X_Plx('VLCShares - '.X_Env::_('Collections'), X_Env::_("title_description"));
+		$request = $controller->getRequest();
+		
+		$plx = new X_Plx(
+			X_Env::_('p_wiimcplxrenderer_plxtitle_'.$request->getControllerName().'_'.$request->getActionName()),
+			X_Env::_('p_wiimcplxrenderer_plxdescription_'.$request->getControllerName().'_'.$request->getActionName())
+		);
 		
 		foreach ( $items as $i => $item ) {
 			$plx->addItem(new X_Plx_Item($item['label'], $item['link']));

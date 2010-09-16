@@ -19,6 +19,10 @@ class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 		X_Debug::i("Plugin registered: $pluginId");
 	}
 	
+	public function isRegistered($pluginId) {
+		return array_key_exists($pluginId, $this->plugins);
+	}
+	
 	/**
 	 * Unregister all plugin of class $pluginClass
 	 * @param string $pluginClass
@@ -52,8 +56,23 @@ class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 		X_Debug::i("Unregistered all plugins");
 	}
 	
-	public function getPlugins() {
-		return $this->plugins;
+	public function getPlugins($pluginId = null) {
+		if ( $pluginId !== null ) {
+			if (!$this->isRegistered($pluginId)) {
+				throw new Exception("PluginId $pluginId isn't registered");
+			} else {
+				return $this->plugins[$pluginId];
+			}
+		} else {
+			return $this->plugins;
+		}
+	}
+	
+	public function getPluginClass($pluginId) {
+		if ( !$this->isRegistered($pluginId) ) {
+			throw new Exception("PluginId $pluginId isn't registered");
+		}
+		return get_class($this->plugins[$pluginId]);
 	}
 	
 	function __call($funcName, $funcParams) {
