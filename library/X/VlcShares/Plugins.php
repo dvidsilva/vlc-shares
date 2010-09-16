@@ -6,7 +6,7 @@ require_once 'Zend/Config.php';
 require_once 'X/VlcShares/Plugins/Abstract.php';
 require_once 'X/VlcShares/Plugins/Helper/Broker.php';
 
-final class X_VlcShares_Plugins extends X_VlcShares_Plugins_Abstract {
+final class X_VlcShares_Plugins {
 	
 	static private $_plugins = array();
 	

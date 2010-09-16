@@ -15,6 +15,14 @@ class X_Plx_Item {
 	private $player = '';
 	private $thumb = '';
 	
+	/**
+	 * Create a playlist entry
+	 * @param string $name
+	 * @param string $url
+	 * @param string $type
+	 * @param string $player
+	 * @param string $thumb
+	 */
 	public function __construct($name, 
 			$url, 
 			$type = self::TYPE_PLAYLIST, 

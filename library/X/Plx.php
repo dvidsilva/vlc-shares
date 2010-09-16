@@ -16,6 +16,14 @@ class X_Plx {
 	private $logo = '';
 	private $items = array();
 	
+	/**
+	 * Create a new playlist
+	 * @param string $title
+	 * @param string $description
+	 * @param string $version
+	 * @param string $background
+	 * @param string $logo
+	 */
 	public function __construct($title = '', $description = '',$version = 1, $background = '', $logo = '') {
 		$this->setTitle($title)
 			->setDescription($description)

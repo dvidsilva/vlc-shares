@@ -45,6 +45,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	/**
 	 * Shortcut for X_VlcShares_Plugins::helpers()
 	 * @see X_VlcShares_Plugins::helpers()
+	 * @return X_VlcShares_Plugins_Helper_Broker
 	 */
 	public function helpers($helperName = null) {
 		return X_VlcShares_Plugins::helpers($helperName);
