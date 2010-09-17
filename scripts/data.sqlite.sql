@@ -32,3 +32,18 @@ INSERT INTO plg_filesystem_shares (label, path) VALUES
 	('Root linux',
 	'/'
 	);
+	
+INSERT INTO plg_profiles (label, arg) VALUES
+	('Hq',
+	'transcode{venc=ffmpeg,vcodec=mp2v,vb=4000,scale=.5,width=640,fps=30,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}:std{access=http,mux=ts,dst=:8081}'
+	);	
+	
+INSERT INTO plg_profiles (label, arg) VALUES
+	('Mq',
+	'transcode{venc=ffmpeg,vcodec=mp2v,vb=3000,scale=.5,width=640,fps=30,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}:std{access=http,mux=ts,dst=:8081}'
+	);
+	
+INSERT INTO plg_profiles (label, arg) VALUES
+	('Lq',
+	'transcode{venc=ffmpeg,vcodec=mp2v,vb=2000,scale=.5,width=640,fps=30,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}:std{access=http,mux=ts,dst=:8081}'
+	);		
