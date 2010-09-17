@@ -28,6 +28,7 @@ class X_VlcShares_Plugins_SortItems extends X_VlcShares_Plugins_Abstract {
 				X_Debug::i('Sort filesystem');
 				usort($items, array(__CLASS__, 'sortFileSystem'));
 			} else {
+				X_Debug::i('Sort generic');
 				usort($items, array(__CLASS__, 'sortAlphabetically'));
 			}
 		} catch ( Exception $e ) {

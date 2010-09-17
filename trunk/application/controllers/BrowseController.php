@@ -61,6 +61,23 @@ class BrowseController extends X_Controller_Action {
 		$location = base64_decode($request->getParam('l', ''));
 
     	$pageItems = array();
+    	
+    	// I add a "Play" button as first, this should redirect to stream action
+    	// Plugins should add options button only 
+    	
+    	$pageItems[] = array(
+			'label'		=>	X_Env::_('start_stream'),
+			'link'		=>	X_Env::completeUrl(
+				$this->_helper->url(
+					array(
+						'action' => 'stream'
+						//'l'	=>	base64_encode("{$share->getId()}:/")
+					), 'default', false
+				)
+			),
+			//__CLASS__.':location'	=>	"{$share->getId()}:/"
+		);
+    	
     	// links on top
     	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->preGetShareItems($provider, $location, $this));
     	// normal links
@@ -75,20 +92,51 @@ class BrowseController extends X_Controller_Action {
 			}
 		}
 		
-		X_VlcShares_Plugins::broker()->orderShareItems(&$pageItems, $provider,  $this);
+		// Items shouldn't be sorted: they already have a order
+		//X_VlcShares_Plugins::broker()->orderShareItems(&$pageItems, $provider,  $this);
 		
 		
 		// trigger for page creation
 		X_VlcShares_Plugins::broker()->gen_afterPageBuild(&$pageItems, $this);
 		
-		// stop here execution
-		return;
+	}
 
+	public function modeAction() {
+
+		$request = $this->getRequest();
+		
+		X_VlcShares_Plugins::broker()->gen_preProviderSelection($this);
+		
+		$provider = $request->getParam('p', false);
+		if ( $provider === false || !X_VlcShares_Plugins::broker()->isRegistered($provider) ) {
+			throw new Exception("Invalid provider");
+		}
+		$location = base64_decode($request->getParam('l', ''));
+
+    	$pageItems = array();
+    	// links on top
+    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->preGetModeItems($provider, $location, $this));
+    	// normal links
+    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->getModeItems($provider, $location, $this));
+    	// bottom links
+		$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->postGetModeItems($provider, $location, $this));
+		
+		// filter out items (parental-control / hidden file / system dir)
+		foreach ($pageItems as $key => $item) {
+			if ( in_array(false, X_VlcShares_Plugins::broker()->filterModeItems($item, $provider, $this)) ) {
+				unset($pageItems[$key]);
+			}
+		}
+		
+		X_VlcShares_Plugins::broker()->orderModeItems(&$pageItems, $provider,  $this);
+		
+		// trigger for page creation
+		X_VlcShares_Plugins::broker()->gen_afterPageBuild(&$pageItems, $this);
+		
 	}
 	
 	public function fileAction() {
 		
-		X_Env::debug(__METHOD__);
 		
 		$request = $this->getRequest();
 
