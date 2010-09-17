@@ -94,7 +94,7 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 							'link'		=>	X_Env::completeUrl(
 								$urlHelper->url(
 									array(
-										'action' => 'file',
+										'action' => 'mode',
 										'l'	=>	base64_encode("{$share->getId()}:{$path}{$entry->getFilename()}")
 									), 'default', false
 								)

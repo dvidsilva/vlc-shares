@@ -250,5 +250,66 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @param Zend_Controller_Action $controller
 	 */
 	public function orderShareItems(&$items, $provider, Zend_Controller_Action $controller) {}
+
+	
+	//=== END OF Browse:share ===//
+
+	//=== Triggered in Browse:mode ===//
+	
+	/**
+	 * Return items that should be added at the beginning of the list
+	 * This hook can also used for redirect application flow
+	 * 
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array
+	 */
+	public function preGetModeItems($provider, $location, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Return items that should be added in collection list
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array 
+	 */
+	public function getModeItems($provider, $location, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Return items that should be added at the end of the list
+	 * This hook can also used for redirect application flow
+	 * 
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array
+	 */
+	public function postGetModeItems($provider, $location, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Check the item in the collection should be filtered out
+	 * If return is false, the item will be discarded at 100%
+	 * If return is true, isn't sure that the item will be added
+	 * 'cause another plugin can prevent this
+	 * 
+	 * Plugins who check per-item acl or blacklist should hook here
+	 * 
+	 * @param mixed $item
+	 * @param string $provider
+	 * @param Zend_Controller_Action $controller
+	 * @return boolean true if item is ok, false if item should be discarded
+	 */
+	public function filterModeItems($item, $provider, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Allow plugin to shuffle/order items
+	 * Plugin should use $provider to get location real location
+	 * @param array &$items list of items
+	 * @param string $provider id of the plugin the handle the request
+	 * @param Zend_Controller_Action $controller
+	 */
+	public function orderModeItems(&$items, $provider, Zend_Controller_Action $controller) {}
+	
 	
 }
