@@ -24,7 +24,8 @@ CREATE TABLE plg_profiles (
 	label VARCHAR(255) NOT NULL,
 	arg VARCHAR(255) DEFAULT NULL,
 	cond_providers VARCHAR(255) DEFAULT NULL,
-	cond_formats VARCHAR(255) DEFAULT NULL
+	cond_formats VARCHAR(255) DEFAULT NULL,
+	weight INT DEFAULT NULL
 );
 
 CREATE INDEX "plg_profiles_id" ON "plg_profiles" ("id");

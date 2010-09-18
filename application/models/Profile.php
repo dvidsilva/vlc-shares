@@ -7,6 +7,7 @@ class Application_Model_Profile {
 	protected $_cond_providers;
 	protected $_cond_formats;
 	protected $_id;
+	protected $_weight;
 	
 	public function __construct(array $options = null) {
 		if (is_array ( $options )) {
@@ -110,4 +111,20 @@ class Application_Model_Profile {
 	public function getId() {
 		return $this->_id;
 	}
+
+	/**
+	 * 
+	 * @param unknown_type $weight
+	 * @return Application_Model_Profile
+	 */
+	public function setWeight($weight) {
+		$this->_weight = ( int ) $weight;
+		return $this;
+	}
+	
+	public function getWeight() {
+		return $this->_weight;
+	}
+	
+	
 }

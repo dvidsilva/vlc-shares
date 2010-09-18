@@ -11,7 +11,7 @@ class Application_Model_ProfilesMapper
 	
 	/**
 	 * Return singleton
-	 * @return Application_Model_FilesystemSharesMapper
+	 * @return Application_Model_ProfilesMapper
 	 */
 	public static function i() { if ( self::$instance === null ) self::$instance = new Application_Model_ProfilesMapper(); return self::$instance; }
 	
@@ -47,6 +47,7 @@ class Application_Model_ProfilesMapper
             'cond_providers' => $model->getCondProviders(),
         	'cond_formats' => $model->getCondFormats(),
         	'label' => $model->getLabel(),
+        	'weight' => $model->getWeight()
         );
         
         if (null === ($id = $model->getId())) {
@@ -68,6 +69,25 @@ class Application_Model_ProfilesMapper
         $this->_populate($model, $row);
     }
  
+    public function findBest($format = null, $provider = null, Application_Model_Profile $model) {
+    	$select = $this->getDbTable()->select();
+    	if ( $format !== null && is_string($format) ) {
+    		$select->where("cond_formats LIKE ?", $format);
+    	}
+    	if ( $provider !== null && is_string($provider) ) {
+    		$select->where("cond_providers LIKE ?", "%|$provider|%");
+    	}
+    	$select->orWhere("cond_formats = NULL")->orWhere("cond_providers = NULL");
+    	
+        $result = $this->getDbTable()->fetchAll($select, 'cond_format DESC, cond_provider DESC, weight DESC, label ASC', 1);
+        if (0 == count($result)) {
+            return;
+        }
+        $row = $result->current();
+        $this->_populate($model, $row);
+    }
+    
+    
     /**
      * 
      * @param Application_Model_Profile $model
@@ -78,6 +98,7 @@ class Application_Model_ProfilesMapper
 			->setCondFormats($row->cond_formats)
 			->setLabel($row->label)
 			->setCondProviders($row->cond_providers)
+			->setWeight($row->weight)
 			->setArg($row->arg);
 	}
     
@@ -103,13 +124,16 @@ class Application_Model_ProfilesMapper
     public function fetchByConds($format = null, $provider = null) {
     	$select = $this->getDbTable()->select();
     	if ( $format !== null && is_string($format) ) {
-    		$select->where("cond_formats LIKE ?", "%|$format|%");
+    		$select->where("cond_formats LIKE ?", $format);
     	}
     	if ( $provider !== null && is_string($provider) ) {
     		$select->where("cond_providers LIKE ?", "%|$provider|%");
     	}
+    	$select->orWhere("cond_formats IS NULL")->orWhere("cond_providers IS NULL");
     	
-        $resultSet = $this->getDbTable()->fetchAll($select);
+    	//X_Debug::i((string) $select);
+    	
+        $resultSet = $this->getDbTable()->fetchAll($select, 'cond_format DESC, cond_provider DESC, weight DESC, label ASC');
         $entries   = array();
         foreach ($resultSet as $row) {
             $entry = new Application_Model_Profile();
