@@ -21,6 +21,12 @@ class X_VlcShares_Plugins_Helper_Broker {
 	 * @var X_VlcShares_Plugins_Helper_MPlayer
 	 */
 	private $mplayer;
+
+	/**
+	 * 
+	 * @var X_VlcShares_Plugins_Helper_Stream
+	 */
+	private $stream;
 	
 	/**
 	 * 
@@ -38,6 +44,7 @@ class X_VlcShares_Plugins_Helper_Broker {
 		$this->gspot = new X_VlcShares_Plugins_Helper_GSpot();
 		$this->mplayer = new X_VlcShares_Plugins_Helper_MPlayer();
 		$this->devices = new X_VlcShares_Plugins_Helper_Devices();
+		$this->stream = new X_VlcShares_Plugins_Helper_Stream();
 	}
 	
 	/**
@@ -55,6 +62,12 @@ class X_VlcShares_Plugins_Helper_Broker {
 	 */
 	public function mplayer() { return $this->mplayer; }
 
+	/**
+	 * @return X_VlcShares_Plugins_Helper_MPlayer
+	 */
+	public function stream() { return $this->stream; }
+	
+	
 	/**
 	 * @return X_VlcShares_Plugins_Helper_Devices
 	 */

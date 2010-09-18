@@ -16,6 +16,9 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract {
 	}
 	
 	/**
+	 * Give back the link for change modes
+	 * and the default config for this location
+	 * 
 	 * @param string $provider
 	 * @param string $location
 	 * @param Zend_Controller_Action $controller
