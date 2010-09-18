@@ -47,6 +47,7 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		$subParam = $controller->getRequest()->getParam($this->getId(), false);
 		
 		if ( $subParam !== false ) {
+			$subParam = base64_decode($subParam);
 			list($type, $source) = explode(':', $subParam, 2);
 			$subLabel = X_Env::_("p_filesubs_subtype_$type")." ($source)";
 		}
@@ -105,6 +106,7 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		// i try to mark current selected sub based on $this->getId() param
 		// in $currentSub i get the name of the current profile
 		$currentSub = $controller->getRequest()->getParam($this->getId(), false);
+		if ( $currentSub !== false ) $currentSub = base64_decode($currentSub);
 
 		$return = array(
 			array(
@@ -126,8 +128,6 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		
 		// check for infile subs
 		$infileSubs = $this->helpers()->stream()->setLocation($location)->getSubsInfo();
-		X_Debug::i(var_export($this->helpers()->stream(), true));
-		X_Debug::i(var_export($infileSubs, true));
 		foreach ($infileSubs as $streamId => $sub) {
 			X_Debug::i("Valid infile-sub: [{$streamId}] {$sub['language']} ({$sub['format']})");
 			$return[] = array(
@@ -147,22 +147,21 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		if ( is_a($provider, 'X_VlcShares_Plugins_FileSystem') ) {
 			
 			$dirname = pathinfo($location, PATHINFO_DIRNAME);
-			$filename = pathinfo($location, PATHINFO_BASENAME);
+			$filename = pathinfo($location, PATHINFO_FILENAME);
 			
-			$infileSubs = $this->getFSSubs($dirname, $filename);
-			X_Debug::i(var_export($infileSubs, true));
-			foreach ($infileSubs as $streamId => $sub) {
-				X_Debug::i("Valid extfile-sub: [{$streamId}] {$sub['language']} ({$sub['format']})");
+			$extSubs = $this->getFSSubs($dirname, $filename);
+			foreach ($extSubs as $streamId => $sub) {
+				X_Debug::i("Valid extfile-sub: {$sub['language']} ({$sub['format']})");
 				$return[] = array(
-					'label'	=>	X_Env::_("p_filesubs_subtype_".self::STREAM)." {$streamId} {$sub['language']} {$sub['format']}",
+					'label'	=>	X_Env::_("p_filesubs_subtype_".self::FILE)." {$sub['language']} ({$sub['format']})",
 					'link'	=>	X_Env::completeUrl($urlHelper->url(array(
 							'action'	=>	'mode',
 							'pid'		=>	null,
-							$this->getId() => base64_encode(self::STREAM.":{$streamId}") // set this plugin selection as stream:$streamId
+							$this->getId() => base64_encode(self::FILE.":{$streamId}") // set this plugin selection as stream:$streamId
 						), 'default', false)
 					),
-					'highlight' => ($currentSub == self::STREAM.":{$streamId}"),
-					__CLASS__.':sub' => self::STREAM.":{$streamId}"
+					'highlight' => ($currentSub == self::FILE.":{$streamId}"),
+					__CLASS__.':sub' => self::FILE.":{$streamId}"
 				);
 			}
 				
@@ -178,7 +177,7 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 	public function getFSSubs($dirPath, $filename) {
 
 		X_Debug::i("Check for subs in $dirPath for $filename");
-		$validSubs = explode('|', $this->config('file.extensions', 'sub|str|txt'));
+		$validSubs = explode('|', $this->config('file.extensions', 'sub|srt|txt'));
 		
 		$dir = new DirectoryIterator($dirPath);
 		$subsFound = array();
@@ -191,7 +190,7 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 						X_Debug::i("$entry is valid");
 						$subName = substr($entry->getFilename(), strlen($filename));
 						$subsFound[$subName] = array(
-							'language'	=> rtrim($subName, '.'),
+							'language'	=> trim(pathinfo($subName, PATHINFO_FILENAME), '.'),
 							'format'	=> pathinfo($subName, PATHINFO_EXTENSION)
 						);						
 					} else {
