@@ -144,7 +144,7 @@ class X_VlcShares_Plugins_Helper_Stream extends X_VlcShares_Plugins_Helper_Abstr
 	public function getSubsInfo() {
 		$this->fetch();
 		// @ prevent error fetched data
-		return count(@$this->_fetched['subs']);
+		return @$this->_fetched['subs'];
 	}
 
 	/**

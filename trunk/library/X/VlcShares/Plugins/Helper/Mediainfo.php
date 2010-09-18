@@ -35,7 +35,8 @@ class X_VlcShares_Plugins_Helper_Mediainfo extends X_VlcShares_Plugins_Helper_Ab
 	 * 
 	 */
 	public function getInfos() {
-		
+		$this->fetch();
+		return $this->_fetched;
 	}
 
 	/**

@@ -28,7 +28,8 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 		);
 		
 		foreach ( $items as $i => $item ) {
-			$plx->addItem(new X_Plx_Item($item['label'], $item['link']));
+			$plxItemName = (@$item['highlight'] ? '-) ' : '' ). $item['label'];
+			$plx->addItem(new X_Plx_Item($plxItemName, $item['link']));
 		}
 		
 		$this->_render($plx, $controller);
@@ -40,7 +41,7 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 	 */
 	private function _render(X_Plx $plx, Zend_Controller_Action $controller) {
 		$this->_disableRendering($controller);
-		// if isn't wiimc,
+		// if isn't wiimc, add a conversion filter
 		if ( !$this->helpers()->devices()->isWiimc() && $this->config('forced.fancy', true)) {
 			$showRaw = $this->config('forced.showRaw', false);
 			$plxItems = $plx->getItems();

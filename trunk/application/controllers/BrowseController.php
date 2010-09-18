@@ -105,7 +105,7 @@ class BrowseController extends X_Controller_Action {
     	$pageItems[] = array(
 			'label'		=>	X_Env::_('start_stream'),
 			'link'		=>	X_Env::completeUrl(
-				$this->_helper->url(
+				$this->_helper->url->url(
 					array(
 						'action' => 'stream'
 						//'l'	=>	base64_encode("{$share->getId()}:/")
@@ -114,18 +114,18 @@ class BrowseController extends X_Controller_Action {
 			),
 			//__CLASS__.':location'	=>	"{$share->getId()}:/"
 		);
+		
+    	// links on top
+    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->preGetModeItems($provider, $location, $this));
     	
     	$pageItems[] = array(
 			'label'		=>	X_Env::_('_____options_separator_____'),
 			'link'		=>	X_Env::completeUrl(
-				$this->_helper->url()
+				$this->_helper->url->url()
 			),
 			//__CLASS__.':location'	=>	"{$share->getId()}:/"
 		);
-		
-		
-    	// links on top
-    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->preGetModeItems($provider, $location, $this));
+    	
     	// normal links
     	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->getModeItems($provider, $location, $this));
     	// bottom links
@@ -147,6 +147,72 @@ class BrowseController extends X_Controller_Action {
 	}
 	
 	public function selectionAction() {
+
+		$request = $this->getRequest();
+		
+		X_VlcShares_Plugins::broker()->gen_preProviderSelection($this);
+		
+		$provider = $request->getParam('p', false);
+		if ( $provider === false || !X_VlcShares_Plugins::broker()->isRegistered($provider) ) {
+			throw new Exception("Invalid provider");
+		}
+		$pid = $request->getParam('pid', false);
+		if ( $pid === false || !X_VlcShares_Plugins::broker()->isRegistered($pid) ) {
+			throw new Exception("Invalid pluginId");
+		}
+	
+		$location = base64_decode($request->getParam('l', ''));
+
+		
+    	$pageItems = array();
+    	
+    	// I add a "Play" button as first, this should redirect to stream action
+    	// Plugins should add options button only 
+    	
+    	$pageItems[] = array(
+			'label'		=>	X_Env::_('Back'),
+			'link'		=>	X_Env::completeUrl(
+				$this->_helper->url->url(
+					array(
+						'action' => 'mode',
+						'pid'	=>	null
+					), 'default', false
+				)
+			),
+			//__CLASS__.':location'	=>	"{$share->getId()}:/"
+		);
+    	
+		
+    	// links on top
+    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->preGetSelectionItems($provider, $location, $pid, $this));
+    	
+    	$pageItems[] = array(
+			'label'		=>	X_Env::_('_____options_separator_____'),
+			'link'		=>	X_Env::completeUrl(
+				$this->_helper->url->url()
+			),
+			//__CLASS__.':location'	=>	"{$share->getId()}:/"
+		);
+    	
+    	
+    	// normal links
+    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->getSelectionItems($provider, $location, $pid, $this));
+    	// bottom links
+		$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->postGetSelectionItems($provider, $location, $pid, $this));
+		
+		// filter out items (parental-control / hidden file / system dir)
+		foreach ($pageItems as $key => $item) {
+			if ( in_array(false, X_VlcShares_Plugins::broker()->filterSelectionItems($item, $provider, $pid, $this)) ) {
+				unset($pageItems[$key]);
+			}
+		}
+		
+		// Items shouldn't be sorted: they already have a order
+		//X_VlcShares_Plugins::broker()->orderModeItems(&$pageItems, $provider,  $this);
+		
+		// trigger for page creation
+		X_VlcShares_Plugins::broker()->gen_afterPageBuild(&$pageItems, $this);
+		
 		
 	}
 	
