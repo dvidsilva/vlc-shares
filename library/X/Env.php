@@ -184,4 +184,8 @@ class X_Env {
 		return floor($seconds/3600) . ':' . str_pad((floor($seconds/60) % 60), 2, "0", STR_PAD_LEFT) . ":" . str_pad($seconds % 60, 2, "0", STR_PAD_LEFT);
 	} 
 	
+	static public function startWith($string, $substring) {
+		return (substr($string, 0, strlen($substring)) == $substring);
+	}
+	
 }
