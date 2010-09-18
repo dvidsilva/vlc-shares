@@ -16,7 +16,7 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 	}
 	
 	public function gen_afterPageBuild(&$items, Zend_Controller_Action $controller) {
-		if ( !((bool) $this->config('forced', false)) && !$this->helpers()->devices()->isWiimc() ) return;
+		if ( !((bool) $this->config('forced.enabled', false)) && !$this->helpers()->devices()->isWiimc() ) return;
 		
 		X_Debug::i("Plugin triggered");
 
@@ -40,8 +40,16 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 	 */
 	private function _render(X_Plx $plx, Zend_Controller_Action $controller) {
 		$this->_disableRendering($controller);
-		$controller->getResponse()->setHeader('Content-type', 'text/plain', true);
-		$controller->getResponse()->setBody((string) $plx);
+		// if isn't wiimc,
+		if ( !$this->helpers()->devices()->isWiimc() && $this->config('forced.fancy', true)) {
+			$showRaw = $this->config('forced.showRaw', false);
+			$plxItems = $plx->getItems();
+			$body = include(dirname(__FILE__).'/WiimcPlxRenderer.fancy.phtml');
+		} else {
+			$controller->getResponse()->setHeader('Content-type', 'text/plain', true);
+			$body = (string) $plx;
+		}
+		$controller->getResponse()->setBody($body);
 	}
 	
 	/**
