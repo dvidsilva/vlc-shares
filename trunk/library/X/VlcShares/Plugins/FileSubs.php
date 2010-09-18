@@ -172,12 +172,16 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		return $return;
 	}
 	
-	
-	// FIXME
+	/**
+	 * Search in $dirPath for sub valid for $filename
+	 * @param string $dirPath
+	 * @param string $filename
+	 */
 	public function getFSSubs($dirPath, $filename) {
 
-		X_Debug::i("Check for subs in $dirPath for $filename");
 		$validSubs = explode('|', $this->config('file.extensions', 'sub|srt|txt'));
+		X_Debug::i("Check for subs in $dirPath for $filename (valid: {$this->config('file.extensions', 'sub|srt|txt')})");
+		
 		
 		$dir = new DirectoryIterator($dirPath);
 		$subsFound = array();
@@ -186,18 +190,14 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 				// se e' un file sub valido
 				if ( array_search(pathinfo($entry->getFilename(), PATHINFO_EXTENSION), $validSubs ) !== false ) {
 					// stessa parte iniziale
-					if ( substr($entry->getFilename(),0,strlen($filename)) == $filename ) {
+					if ( X_Env::startWith($entry->getFilename(), $filename) ) {
 						X_Debug::i("$entry is valid");
 						$subName = substr($entry->getFilename(), strlen($filename));
 						$subsFound[$subName] = array(
 							'language'	=> trim(pathinfo($subName, PATHINFO_FILENAME), '.'),
 							'format'	=> pathinfo($subName, PATHINFO_EXTENSION)
 						);						
-					} else {
-						X_Debug::i("$entry is invalid (no same startwith)");
 					}
-				} else {
-					X_Debug::i("$entry is invalid (not valid format)");
 				}
 			}
 		}
