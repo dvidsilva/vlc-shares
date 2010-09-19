@@ -1,19 +1,19 @@
 <?php
 
-require_once 'Profile.php';
+require_once 'Output.php';
 require_once 'X/Env.php';
 require_once 'X/Debug.php';
 
-class Application_Model_ProfilesMapper
+class Application_Model_OutputsMapper
 {
 	
 	private static $instance = null;
 	
 	/**
 	 * Return singleton
-	 * @return Application_Model_ProfilesMapper
+	 * @return Application_Model_OutputsMapper
 	 */
-	public static function i() { if ( self::$instance === null ) self::$instance = new Application_Model_ProfilesMapper(); return self::$instance; }
+	public static function i() { if ( self::$instance === null ) self::$instance = new Application_Model_OutputsMapper(); return self::$instance; }
 	
 	private function __construct() {}
 	
@@ -34,21 +34,20 @@ class Application_Model_ProfilesMapper
     public function getDbTable()
     {
         if (null === $this->_dbTable) {
-            $this->setDbTable('Application_Model_DbTable_Profiles');
+            $this->setDbTable('Application_Model_DbTable_Outputs');
         }
         return $this->_dbTable;
     }
  
-    public function save(Application_Model_Profile $model)
+    public function save(Application_Model_Output $model)
     {
 
         $data = array(
             'arg'   => $model->getArg(),
-            'cond_providers' => $model->getCondProviders(),
-        	'cond_formats' => $model->getCondFormats(),
         	'cond_devices' => $model->getCondDevices(),
         	'label' => $model->getLabel(),
-        	'weight' => $model->getWeight()
+        	'weight' => $model->getWeight(),
+        	'link' => $model->getLink()
         );
         
         if (null === ($id = $model->getId())) {
@@ -60,7 +59,7 @@ class Application_Model_ProfilesMapper
         }
     }
  
-    public function find($id, Application_Model_Profile $model)
+    public function find($id, Application_Model_Output $model)
     {
         $result = $this->getDbTable()->find($id);
         if (0 == count($result)) {
@@ -70,23 +69,14 @@ class Application_Model_ProfilesMapper
         $this->_populate($model, $row);
     }
  
-    public function findBest($format = null, $device = null, $provider = null, Application_Model_Profile $model) {
+    public function findBest($device = null, Application_Model_Output $model) {
     	$select = $this->getDbTable()->select();
-    	if ( $format !== null && is_string($format) ) {
-    		$select->where("cond_formats LIKE ?", $format);
-    	}
-    	if ( $provider !== null && is_string($provider) ) {
-    		$select->where("cond_providers LIKE ?", "%|$provider|%");
-    	}
     	if ( $device !== null && is_integer($device) ) {
     		$select->where("cond_devices = ?", $device);
     	}
-    	$select->orWhere("cond_formats IS NULL")
-    		->orWhere("cond_devices IS NULL")
-    		->orWhere("cond_providers IS NULL");
+    	$select->orWhere("cond_devices IS NULL");
     	
-    	
-        $result = $this->getDbTable()->fetchAll($select, 'cond_devices DESC, cond_format DESC, cond_provider DESC, weight DESC, label ASC', 1);
+        $result = $this->getDbTable()->fetchAll($select, 'cond_devices DESC, weight DESC, label ASC', 1);
         if (0 == count($result)) {
             return;
         }
@@ -100,13 +90,12 @@ class Application_Model_ProfilesMapper
      * @param Application_Model_Profile $model
      * @param unknown_type $row
      */
-    private function _populate(Application_Model_Profile $model, $row) {
+    private function _populate(Application_Model_Output $model, $row) {
         $model->setId($row->id)
-			->setCondFormats($row->cond_formats)
 			->setLabel($row->label)
-			->setCondProviders($row->cond_providers)
 			->setCondDevices($row->cond_devices)
 			->setWeight($row->weight)
+			->setLink($row->link)
 			->setArg($row->arg);
 	}
     
@@ -115,41 +104,31 @@ class Application_Model_ProfilesMapper
         $resultSet = $this->getDbTable()->fetchAll();
         $entries   = array();
         foreach ($resultSet as $row) {
-            $entry = new Application_Model_Profile();
+            $entry = new Application_Model_Output();
 			$this->_populate($entry, $row);
             $entries[] = $entry;
         }
         return $entries;
     }
     
-    public function delete(Application_Model_Profile  $model) {
+    public function delete(Application_Model_Output  $model) {
     	if ( $model->getId() !== null ) {
 	    	$where = $this->getDbTable()->getAdapter()->quoteInto("id = ?", $model->getId());
 	    	$this->getDbTable()->delete($where);
     	}
     }
     
-    public function fetchByConds($format = null, $device = null, $provider = null) {
+    public function fetchByConds($device = null) {
     	$select = $this->getDbTable()->select();
-    	if ( $format !== null && is_string($format) ) {
-    		$select->where("cond_formats LIKE ?", $format);
-    	}
-    	if ( $provider !== null && is_string($provider) ) {
-    		$select->where("cond_providers LIKE ?", "%|$provider|%");
-    	}
     	if ( $device !== null && is_integer($device) ) {
     		$select->where("cond_devices = ?", $device);
     	}
-    	$select->orWhere("cond_formats IS NULL")
-    		->orWhere("cond_devices IS NULL")
-    		->orWhere("cond_providers IS NULL");
+    	$select->orWhere("cond_devices IS NULL");
     	
-    	//X_Debug::i((string) $select);
-    	
-        $resultSet = $this->getDbTable()->fetchAll($select, 'cond_devices DESC, cond_format DESC, cond_provider DESC, weight DESC, label ASC');
-        $entries   = array();
+        $resultSet = $this->getDbTable()->fetchAll($select, 'cond_devices DESC, weight DESC, label ASC');
+    	$entries   = array();
         foreach ($resultSet as $row) {
-            $entry = new Application_Model_Profile();
+            $entry = new Application_Model_Output();
 			$this->_populate($entry, $row);
             $entries[] = $entry;
         }

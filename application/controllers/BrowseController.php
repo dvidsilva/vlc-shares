@@ -230,115 +230,38 @@ class BrowseController extends X_Controller_Action {
 		}
 		$location = base64_decode($request->getParam('l', ''));
 
-    	$pageItems = array();
-
+		
+    	// each arg is stored as in a LIFO stack. If i put top priority as first,
+    	// low priority args could override it. So i use an inverse priority insertion  
+    	// register low priority args
+    	X_VlcShares_Plugins::broker()->preRegisterVlcArgs($this->vlc, $provider, $location, $this);
+    	// register normal priority args
+    	X_VlcShares_Plugins::broker()->registerVlcArgs($this->vlc, $provider, $location, $this);
+    	// register top priority args
+    	X_VlcShares_Plugins::broker()->postRegisterVlcArgs($this->vlc, $provider, $location, $this);
     	
+    	X_VlcShares_Plugins::broker()->preSpawnVlc($this->vlc, $provider, $location, $this);
+    	//$this->vlc->spawn(); // in test leave this commented out
+    	X_VlcShares_Plugins::broker()->postSpawnVlc($this->vlc, $provider, $location, $this);
     	
+		$pageItems = array();
+		
+		// i can't add here the go to play button
+		// because i don't know the output type
+		// i need to leave this to the plugins, too
+		// i hope that an output manager plugin
+		// will be always enabled
+    	
+    	// top links
+		$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->preGetStreamItems($provider, $location, $this));
+    	// normal links
+    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->getStreamItems($provider, $location, $this));
+    	// bottom links
+		$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->postGetStreamItems($provider, $location, $this));    	
     	
     	
 		// trigger for page creation
 		X_VlcShares_Plugins::broker()->gen_afterPageBuild(&$pageItems, $this);
-		
-		
-		return;
-		
-		X_Env::debug(__METHOD__);
-		$request = $this->getRequest();
-
-		$shareId = $request->getParam('shareId');
-		$currentPath = base64_decode($request->getParam('url', ''));
-
-		$qId = $request->getParam('qId');
-		//$subId = $request->getParam('subId');
-		
-		$shares = $this->options->shares->toArray();
-		$profiles = $this->options->profiles->toArray();
-
-		
-		if ( !$shares[$shareId] ) {
-			throw new Zend_Controller_Action_Exception($this->translate->_("share_id_not_valid"));
-		}
-		
-		// info sullo share
-		$share = $shares[$shareId];
-		
-		$completePath = $share['path'].$currentPath;
-		$filename = pathinfo($completePath, PATHINFO_FILENAME);
-		$dirpath = pathinfo($completePath, PATHINFO_DIRNAME);
-		
-		$this->vlc->registerArg('source',"\"$completePath\"");
-
-		$plgParams = array($completePath, $dirpath, $filename);
-		$additionalProfiles = X_Env::triggerEvent(X_VlcShares::TRG_PROFILES_ADDITIONALS, $plgParams);
-		
-		foreach ($additionalProfiles as $plgAddProfiles) {
-			$profiles = array_merge($profiles, $plgAddProfiles);
-		}
-		
-		// la sostituzione avviene solo se il valore non e'
-		// per un plugin
-		$this->vlc->registerArg('profile', $profiles[$qId]['args']);
-		
-		$plgArgs = array($request, $completePath, $dirpath, $filename);
-		
-		$plgArgs = X_Env::triggerEvent(X_VlcShares::TRG_VLC_ARGS_SUBTITUTE, $plgArgs);
-		foreach ($plgArgs as $plgRet) {
-			foreach (@$plgRet as $sKey => $sValue) {
-				$this->vlc->registerArg($sKey, $sValue);
-			}
-		}
-		
-		X_Env::triggerEvent(X_VlcShares::TRG_VLC_SPAWN_PRE, $this->vlc);
-		$this->vlc->spawn();
-		X_Env::triggerEvent(X_VlcShares::TRG_VLC_SPAWN_POST, $this->vlc);
-		
-		$plx = new X_Plx("VLCShares - $completePath", $this->translate->_("title_description"));
-		
-		$plgArgs[] = $this->vlc;
-		
-		$prePlxItems = X_Env::triggerEvent(X_VlcShares::TRG_STREAM_MENU_PRE, $plgArgs);
-		foreach ( $prePlxItems as $plgOutput ) {
-			if ( is_array($plgOutput) ) {
-				foreach ($plgOutput as $item ) {
-					$plx->addItem($item);
-				}
-			} elseif ($plgOutput instanceof X_Plx_Item ) { 
-				$plx->addItem($plgOutput);
-			}
-		}
-		
-		$stream = null;
-		$stream = @$profiles[$qId]['stream'];
-		if ( is_null($stream) ) {
-			$stream = $this->options->vlc->get('stream', "http://{$_SERVER['SERVER_ADDR']}:8081" );
-		}
-		
-		$plx->addItem(new X_Plx_Item(X_Env::_('start_play'),$stream,X_Plx_Item::TYPE_VIDEO));
-		
-		$postPlxItems = X_Env::triggerEvent(X_VlcShares::TRG_STREAM_MENU_POST, $plgArgs);
-		foreach ( $postPlxItems as $plgOutput ) {
-			if ( is_array($plgOutput) ) {
-				foreach ($plgOutput as $item ) {
-					$plx->addItem($item);
-				}
-			} elseif ($plgOutput instanceof X_Plx_Item ) { 
-				$plx->addItem($plgOutput);
-			}
-		}
-		
-		$echoArrayPlg = X_Env::triggerEvent(X_VlcShares::TRG_ENDPAGES_OUTPUT_FILTER_PLX, $plx );
-		$echo = '';
-		foreach ($echoArrayPlg as $plgOutput) {
-			$echo .= $plgOutput;
-		}
-		if ( $echo != '' ) {
-			echo $echo;
-		} else {
-    		header('Content-Type:text/plain');
-			echo $plx;
-		}
-		$this->_helper->viewRenderer->setNoRender(true);
-		
 		
 	}
 }

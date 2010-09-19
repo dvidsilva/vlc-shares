@@ -30,3 +30,16 @@ CREATE TABLE plg_profiles (
 );
 
 CREATE INDEX "plg_profiles_id" ON "plg_profiles" ("id");
+
+CREATE TABLE plg_outputs (
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	label VARCHAR(255) NOT NULL,
+	arg VARCHAR(255) DEFAULT NULL,
+	link VARCHAR(255) DEFAULT NULL,
+	cond_devices INT DEFAULT NULL,
+	weight INT DEFAULT NULL
+);
+
+CREATE INDEX "plg_outputs_id" ON "plg_outputs" ("id");
+
+
