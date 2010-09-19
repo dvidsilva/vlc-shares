@@ -3,8 +3,8 @@
 /**
  * BrowseController
  * 
- * @author Francesco Capozzo
- * @version 0.3.2
+ * @author ximarx
+ * @version 0.4.2
  */
 
 require_once 'X/Controller/Action.php';
@@ -19,15 +19,17 @@ class BrowseController extends X_Controller_Action {
 	 * @var X_Vlc
 	 */
 	protected $vlc = null;
-	/*
+
 	public function init() {
-		parent::init();
-		X_Env::debug(__METHOD__);
 		
+		parent::init();
 		$this->vlc = new X_Vlc($this->options->vlc);
 		
 	}
 	
+	/*
+	// vlc check if running is done at plugin level
+	// with a predispatch trigger
 	public function preDispatch() {
 		
 		X_Env::debug(__METHOD__);
@@ -216,123 +218,29 @@ class BrowseController extends X_Controller_Action {
 		
 	}
 	
-	public function fileAction() {
-		
-		
-		$request = $this->getRequest();
-
-		$shareId = $request->getParam('shareId');
-		$currentPath = base64_decode($request->getParam('url', ''));
-
-		$shares = $this->options->shares->toArray();
-		
-		
-		if ( !$shares[$shareId] ) {
-			throw new Zend_Controller_Action_Exception($this->translate->_("share_id_not_valid"));
-		}
-		
-		// info sullo share
-		$share = $shares[$shareId];
-		
-		// escludo il nome del file
-		$completePath = $share['path'].$currentPath;
-		$completeDir = $share['path'].dirname($currentPath);
-		$filename = pathinfo($completePath, PATHINFO_FILENAME);
-
-
-		$plx = new X_Plx("VLCShares - $completePath", X_Env::_("title_description") );
-		
-		$plgParams = array($completePath, $completeDir, $filename);
-		$prePlxItems = X_Env::triggerEvent(X_VlcShares::TRG_PROFILES_TRAVERSAL_PRE, $plgParams);
-		foreach ( $prePlxItems as $plgOutput ) {
-			if ( is_array($plgOutput) ) {
-				foreach ($plgOutput as $item ) {
-					$plx->addItem($item);
-				}
-			} elseif ($plgOutput instanceof X_Plx_Item ) { 
-				$plx->addItem($plgOutput);
-			}
-		}
-
-		$additionalMode = X_Env::triggerEvent(X_VlcShares::TRG_MODE_ADDITIONALS, $plgParams);
-		$additionalProfiles = X_Env::triggerEvent(X_VlcShares::TRG_PROFILES_ADDITIONALS, $plgParams);
-
-		try {
-			$vlcProfiles = $this->options->profiles->toArray();
-		} catch (Exception $e ) { $vlcProfiles = array(); }
-		
-		// array(array(array(ProfileKey => ProfileValue)))
-		// L'ultimo array ha lo stesso formato dei profiles nel file config
-		foreach ($additionalProfiles as $plgAddProfiles) {
-			$vlcProfiles = array_merge($vlcProfiles, $plgAddProfiles);
-		}
-		
-		foreach ($vlcProfiles as $pKey => $pValue) {
-			$plgParams2 = $plgParams;
-			$plgParams2[] = $pKey;
-			
-			// se anche solo 1 dei plugin esclude il profilo,
-			// viene ignorato
-			$results = X_Env::triggerEvent(X_VlcShares::TRG_PROFILES_TRAVERSAL, $plgParams2);
-			foreach ($results as $result)
-				if ( !$result )
-					continue 2; // salto al padre foreach
-
-			$baseArgv = array(
-				'qId' => $pKey,
-				'shareId' => $shareId,
-				'url' => base64_encode($currentPath)
-			);
-					
-			$plx->addItem(new X_Plx_Item(
-				X_Env::_($pValue['name']),
-				X_Env::routeLink('browse', 'stream', $baseArgv)
-			));
-			
-			
-			foreach ($additionalMode as $plgMode) {
-				foreach ($plgMode as $modeName => $modeArgv) {
-					
-					$completeArgv = array_merge($baseArgv, $modeArgv);
-					
-					$plx->addItem(new X_Plx_Item(
-						"  '--- $modeName",
-						X_Env::routeLink('browse', 'stream', $completeArgv)
-					));
-				}
-			}
-		}
-		
-		// Chiamo il trigger, no input e output X_Plx_Item o array(X_Plx_Item)
-		$postPlxItems = X_Env::triggerEvent(X_VlcShares::TRG_PROFILES_TRAVERSAL_POST, $plgParams);
-		foreach ( $postPlxItems as $plgOutput ) {
-			if ( is_array($plgOutput) ) {
-				foreach ($plgOutput as $item ) {
-					$plx->addItem($item);
-				}
-			} elseif ($plgOutput instanceof X_Plx_Item ) { 
-				$plx->addItem($plgOutput);
-			}
-		}
-		
-		$echoArrayPlg = X_Env::triggerEvent(X_VlcShares::TRG_ENDPAGES_OUTPUT_FILTER_PLX, $plx );
-		$echo = '';
-		foreach ($echoArrayPlg as $plgOutput) {
-			$echo .= $plgOutput;
-		}
-		if ( $echo != '' ) {
-			echo $echo;
-		} else {
-			header('Content-Type:text/plain');
-			echo $plx;
-		}
-		$this->_helper->viewRenderer->setNoRender(true);
-		
-		
-		
-	}
-
 	public function streamAction() {
+
+		$request = $this->getRequest();
+		
+		X_VlcShares_Plugins::broker()->gen_preProviderSelection($this);
+		
+		$provider = $request->getParam('p', false);
+		if ( $provider === false || !X_VlcShares_Plugins::broker()->isRegistered($provider) ) {
+			throw new Exception("Invalid provider");
+		}
+		$location = base64_decode($request->getParam('l', ''));
+
+    	$pageItems = array();
+
+    	
+    	
+    	
+    	
+		// trigger for page creation
+		X_VlcShares_Plugins::broker()->gen_afterPageBuild(&$pageItems, $this);
+		
+		
+		return;
 		
 		X_Env::debug(__METHOD__);
 		$request = $this->getRequest();

@@ -27,6 +27,8 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract {
 	 */
 	public function getModeItems($provider, $location, Zend_Controller_Action $controller) {
 		
+		X_Debug::i('Plugin triggered');
+		
 		$urlHelper = $controller->getHelper('url');
 
 		$profileLabel = X_Env::_('p_profiles_selection_auto');
@@ -58,6 +60,8 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract {
 		// we want to expose items only if pid is this plugin
 		if ( $this->getId() != $pid) return;
 		
+		X_Debug::i('Plugin triggered');
+		
 		$urlHelper = $controller->getHelper('url');
 		
 		return array(
@@ -78,6 +82,7 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract {
 		// we want to expose items only if pid is this plugin
 		if ( $this->getId() != $pid) return;
 		
+		X_Debug::i('Plugin triggered');
 		
 		$urlHelper = $controller->getHelper('url');
 		
@@ -126,7 +131,7 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract {
 				
 			}
 
-			$profiles = Application_Model_ProfilesMapper::i()->fetchByConds($codecCond, $providerClass);
+			$profiles = Application_Model_ProfilesMapper::i()->fetchByConds($codecCond, $this->helpers()->devices()->getDeviceType(), $providerClass);
 
 			
 			$return = array(
@@ -174,7 +179,7 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract {
 		
 	}
 	
-	private function getBest($location, $provider) {
+	private function getBest($location, $device, $provider) {
 		
 		$provider = X_VlcShares_Plugins::broker()->getPlugins($provider);
 		$providerClass = get_class($provider);
@@ -195,7 +200,7 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract {
 		
 		$profile = new Application_Model_Profile();
 		
-		Application_Model_ProfilesMapper::i()->findBest($codecCond, $providerClass, $profile);
+		Application_Model_ProfilesMapper::i()->findBest($codecCond, $device, $providerClass, $profile);
 		
 		return $profile;
 		

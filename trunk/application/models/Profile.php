@@ -6,6 +6,7 @@ class Application_Model_Profile {
 	protected $_arg;
 	protected $_cond_providers;
 	protected $_cond_formats;
+	protected $_cond_devices;
 	protected $_id;
 	protected $_weight;
 	
@@ -96,6 +97,20 @@ class Application_Model_Profile {
 	
 	public function getCondFormats() {
 		return $this->_cond_formats;
+	}
+
+	/**
+	 * 
+	 * @param unknown_type $cond
+	 * @return Application_Model_Profile
+	 */
+	public function setCondDevices($cond) {
+		$this->_cond_devices = $cond;
+		return $this;
+	}
+	
+	public function getCondDevices() {
+		return $this->_cond_devices;
 	}
 	
 	/**
