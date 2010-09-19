@@ -241,7 +241,7 @@ class BrowseController extends X_Controller_Action {
     	X_VlcShares_Plugins::broker()->postRegisterVlcArgs($this->vlc, $provider, $location, $this);
     	
     	X_VlcShares_Plugins::broker()->preSpawnVlc($this->vlc, $provider, $location, $this);
-    	//$this->vlc->spawn(); // in test leave this commented out
+    	$this->vlc->spawn(); // in test leave this commented out
     	X_VlcShares_Plugins::broker()->postSpawnVlc($this->vlc, $provider, $location, $this);
     	
 		$pageItems = array();

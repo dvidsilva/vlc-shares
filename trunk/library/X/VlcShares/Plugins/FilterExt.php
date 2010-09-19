@@ -57,7 +57,7 @@ class X_VlcShares_Plugins_FilterExt extends X_VlcShares_Plugins_Abstract {
 	private function _checkEntry($entry) {
 		
 		if ( $this->validExtensions === null ) {
-			$this->validExtensions = explode('|', $this->config('valid', 'avi|mkv|mpg|mpeg|mov|3gp|mp4|mp3|mp2|ts|mpv|mpa|mpgv|mpga|divx|dvx'));
+			$this->validExtensions = explode('|', $this->config('valid', 'avi|mkv|mpg|mpeg|mov|3gp|mp4|mp3|mp2|ts|mpv|mpa|mpgv|mpga|divx|dvx|flv'));
 		}
 		
 		if ( is_file($entry) ) {

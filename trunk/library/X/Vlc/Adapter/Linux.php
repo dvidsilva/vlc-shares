@@ -1,7 +1,7 @@
 <?php
 
 require_once 'X/Vlc/Adapter.php';
-require_once 'X/Vlc/Commander/Rc.php';
+require_once 'X/Vlc/Commander/Http.php';
 
 class X_Vlc_Adapter_Linux extends X_Vlc_Adapter {
 
@@ -77,6 +77,6 @@ class X_Vlc_Adapter_Linux extends X_Vlc_Adapter {
 	 * 
 	 */
 	protected function _initDefaultCommander() {
-		$this->setCommander(new X_Vlc_Commander_Rc($this->_options));
+		$this->setCommander(new X_Vlc_Commander_Http($this->_options));
 	}
 }

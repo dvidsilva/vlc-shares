@@ -194,30 +194,39 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 
 		X_Debug::i('Plugin triggered');
 		
-		$profileId = $controller->getRequest()->getParam($this->getId(), false);
+		$subParam = $controller->getRequest()->getParam($this->getId(), false);
 		
-		if ( $profileId !== false ) {
-			$profile = new Application_Model_Output();
-			Application_Model_OutputsMapper::i()->find($profileId, $profile);
-		} else {
-			// if no params is provided, i will try to
-			// get the best profile for this condition
+		if ( $subParam !== false ) {
 			
-			$profile = $this->getBest($location, $this->helpers()->devices()->getDeviceType(), $provider);
-		}
-		
-		if ( $profile->getArg() !== null ) {
+			$subParam = base64_decode($subParam);
+			list ($type, $sub) = explode(':', $subParam, 2);
 
-			$vlc->registerArg('profile', $profile->getArg());			
+			 if ( $type == self::FILE ) {
+			 	
+			 	$source = trim($vlc->getArg('source'), '"');
+			 	
+			 	$filename = pathinfo($source, PATHINFO_FILENAME); // only the name of file, without ext
+			 	$dirname = pathinfo($source, PATHINFO_DIRNAME);
+			 	
+			 	$subFile = $dirname.'/'.$filename.'.'.ltrim($sub,'.');
+
+			 	$subFile = realpath($subFile);
+			 	
+			 	X_Debug::i("Sub file selected: $subFile");
+			 	
+			 	$vlc->registerArg('subtitles', "--sub-file=\"{$subFile}\"");
+			 	
+			 } elseif ( $type == self::STREAM ) {
+			 	
+			 	$sub = (int) $sub;
+			 	
+			 	X_Debug::i("Sub track selected: $sub");
+			 	
+			 	$vlc->registerArg('subtitles', "--sub-track-id=\"$sub\"");
+			 	
+			 }
 			
-			if ( $this->config('store.session', false) ) {
-				// store the link in session for future use
-			}
-			
-		} else {
-			X_Debug::e("No profile arg for vlc");
-		}
-	
+		}	
 	}
 	
 	

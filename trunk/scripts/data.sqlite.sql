@@ -47,6 +47,11 @@ INSERT INTO plg_profiles (label, arg) VALUES
 	('Lq',
 	'transcode{venc=ffmpeg,vcodec=mp2v,vb=2000,scale=.5,width=640,fps=30,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}'
 	);
+	
+INSERT INTO plg_profiles (label, arg) VALUES
+	('AVC(H264)/ACC safe profile',
+	'transcode{venc=ffmpeg,vcodec=mp2v,vb=4000,scale=.5,width=640,fps=30,soverlay}'
+	);
 
 INSERT INTO plg_profiles (label, arg, cond_devices) VALUES
 	('Android Phone',
