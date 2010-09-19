@@ -14,6 +14,7 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		
 		$this->setPriority('getModeItems')
 			->setPriority('preGetSelectionItems')
+			->setPriority('registerVlcArgs')
 			->setPriority('getSelectionItems');
 		
 		
@@ -179,6 +180,48 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		// general profiles are in the bottom of array
 		return $return;
 	}
+	
+
+	/**
+	 * This hook can be used to add normal priority args in vlc stack
+	 * 
+	 * @param X_Vlc $vlc vlc wrapper object
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function registerVlcArgs(X_Vlc $vlc, $provider, $location, Zend_Controller_Action $controller) {
+
+		X_Debug::i('Plugin triggered');
+		
+		$profileId = $controller->getRequest()->getParam($this->getId(), false);
+		
+		if ( $profileId !== false ) {
+			$profile = new Application_Model_Output();
+			Application_Model_OutputsMapper::i()->find($profileId, $profile);
+		} else {
+			// if no params is provided, i will try to
+			// get the best profile for this condition
+			
+			$profile = $this->getBest($location, $this->helpers()->devices()->getDeviceType(), $provider);
+		}
+		
+		if ( $profile->getArg() !== null ) {
+
+			$vlc->registerArg('profile', $profile->getArg());			
+			
+			if ( $this->config('store.session', false) ) {
+				// store the link in session for future use
+			}
+			
+		} else {
+			X_Debug::e("No profile arg for vlc");
+		}
+	
+	}
+	
+	
+	
 	
 	/**
 	 * Search in $dirPath for sub valid for $filename
