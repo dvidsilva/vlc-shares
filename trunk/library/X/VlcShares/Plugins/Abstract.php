@@ -377,5 +377,92 @@ abstract class X_VlcShares_Plugins_Abstract {
 	public function orderSelectionItems(&$items, $provider, $pid, Zend_Controller_Action $controller) {}
 	
 	
+	//=== END OF Browse:selection ===//
+
+	//=== Triggered in Browse:stream ===//
+	
+	/**
+	 * Return items that should be added at the beginning of the list
+	 * This hook can also used for redirect application flow
+	 * 
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array
+	 */
+	public function preGetStreamItems($provider, $location, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Return items that should be added in collection list
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array 
+	 */
+	public function getStreamItems($provider, $location, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Return items that should be added at the end of the list
+	 * This hook can also used for redirect application flow
+	 * 
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array
+	 */
+	public function postGetStreamItems($provider, $location, Zend_Controller_Action $controller) {}
+
+	/**
+	 * This hook can be used to add low priority args in vlc stack
+	 * 
+	 * @param X_Vlc $vlc vlc wrapper object
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function preRegisterVlcArgs(X_Vlc $vlc, $provider, $location, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * This hook can be used to add normal priority args in vlc stack
+	 * 
+	 * @param X_Vlc $vlc vlc wrapper object
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function registerVlcArgs(X_Vlc $vlc, $provider, $location, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * This hook can be used to add top priority args in vlc stack
+	 * 
+	 * @param X_Vlc $vlc vlc wrapper object
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function postRegisterVlcArgs(X_Vlc $vlc, $provider, $location, Zend_Controller_Action $controller) {}
+
+	/**
+	 * This hook can be used check vlc status just before
+	 * spawn is called
+	 * 
+	 * @param X_Vlc $vlc vlc wrapper object
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function preSpawnVlc(X_Vlc $vlc, $provider, $location, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * This hook can be used to check vlc status just after
+	 * spawn has been called
+	 * 
+	 * @param X_Vlc $vlc vlc wrapper object
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function postSpawnVlc(X_Vlc $vlc, $provider, $location, Zend_Controller_Action $controller) {}
+	
 	
 }

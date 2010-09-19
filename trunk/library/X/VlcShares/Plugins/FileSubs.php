@@ -2,8 +2,6 @@
 
 require_once 'X/VlcShares.php';
 require_once 'X/VlcShares/Plugins/Abstract.php';
-require_once 'X/Plx.php';
-require_once 'X/Plx/Item.php';
 require_once 'Zend/Config.php';
 require_once 'Zend/Controller/Request/Abstract.php';
 
