@@ -54,12 +54,14 @@ $dbAdapter = $bootstrap->getResource('db');
  
 // let the user know whats going on (we are actually creating a
 // database here)
+/*
 if ('testing' != APPLICATION_ENV) {
     echo 'Writing Database Guestbook in (control-c to cancel): ' . PHP_EOL;
     for ($x = 5; $x > 0; $x--) {
         echo $x . "\r"; sleep(1);
     }
 }
+*/
  
 // Check to see if we have a database file already
 $options = $bootstrap->getOption('resources');

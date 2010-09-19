@@ -21,7 +21,7 @@ class X_VlcShares_Plugins_SortItems extends X_VlcShares_Plugins_Abstract {
 	 * @param Zend_Controller_Action $controller
 	 */
 	public function orderShareItems(&$items, $provider, Zend_Controller_Action $controller) {
-		
+		X_Debug::i('Plugin triggered');
 		try {
 			$plugin = X_VlcShares_Plugins::broker()->getPlugins($provider);
 			if ( is_a($plugin, 'X_VlcShares_Plugins_FileSystem' ) ) {
