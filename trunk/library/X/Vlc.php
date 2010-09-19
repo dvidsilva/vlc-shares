@@ -78,6 +78,7 @@ class X_Vlc {
 			$this->_conf_vlcArgs = $options->get('args', "{%source%}");
 			$this->_conf_vlcPath = $options->get('path', "vlc");
 		
+			$this->_initialized = true;
 		}
 	}
 	
@@ -136,6 +137,11 @@ class X_Vlc {
 	public function getArg($argName) {
 		$this->lazyInit();
 		return @$this->_registredArgs[$argName];
+	}
+
+	public function getArgs() {
+		$this->lazyInit();
+		return $this->_registredArgs;
 	}
 	
 }

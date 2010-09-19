@@ -15,6 +15,7 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 	
 	public function __construct() {
 		$this->setPriority('getCollectionsItems')
+			->setPriority('registerVlcArgs')
 			->setPriority('getShareItems');
 	}
 	
@@ -132,6 +133,32 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 		}
 		
 		return $items;
+	}
+	
+	/**
+	 * This hook can be used to add normal priority args in vlc stack
+	 * 
+	 * @param X_Vlc $vlc vlc wrapper object
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function registerVlcArgs(X_Vlc $vlc, $provider, $location, Zend_Controller_Action $controller) {
+	
+		// this plugin inject params only if this is the provider
+		if ( $provider != $this->getId() ) return;
+		
+		X_Debug::i('Plugin triggered');
+		
+		$location = $this->resolveLocation($location);
+		
+		if ( $location !== null && file_exists($location) ) {
+			// TODO adapt to newer api when ready
+			$vlc->registerArg('source', "\"$location\"");			
+		} else {
+			X_Debug::e("No source o_O");
+		}
+	
 	}
 	
 	/**

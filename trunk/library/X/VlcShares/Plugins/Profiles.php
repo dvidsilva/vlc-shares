@@ -14,7 +14,8 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract {
 	public function __construct() {
 		$this->setPriority('getModeItems')
 			->setPriority('preGetSelectionItems')
-			->setPriority('getSelectionItems');
+			->setPriority('getSelectionItems')
+			->setPriority('registerVlcArgs');
 	}
 	
 	/**
@@ -179,6 +180,47 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract {
 		
 	}
 	
+
+	/**
+	 * This hook can be used to add normal priority args in vlc stack
+	 * 
+	 * @param X_Vlc $vlc vlc wrapper object
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function registerVlcArgs(X_Vlc $vlc, $provider, $location, Zend_Controller_Action $controller) {
+
+		X_Debug::i('Plugin triggered');
+		
+		$profileId = $controller->getRequest()->getParam($this->getId(), false);
+		
+		if ( $profileId !== false ) {
+			$profile = new Application_Model_Output();
+			Application_Model_OutputsMapper::i()->find($profileId, $profile);
+		} else {
+			// if no params is provided, i will try to
+			// get the best profile for this condition
+			
+			$profile = $this->getBest($location, $this->helpers()->devices()->getDeviceType(), $provider);
+		}
+		
+		if ( $profile->getArg() !== null ) {
+
+			$vlc->registerArg('profile', $profile->getArg());			
+			
+			if ( $this->config('store.session', false) ) {
+				// store the link in session for future use
+			}
+			
+		} else {
+			X_Debug::e("No profile arg for vlc");
+		}
+	
+	}
+	
+	
+	
 	private function getBest($location, $device, $provider) {
 		
 		$provider = X_VlcShares_Plugins::broker()->getPlugins($provider);
@@ -186,17 +228,23 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract {
 		
 		$codecCond = array();
 		
-		$this->helpers()->stream()->setLocation($location);
+		if ( $provider instanceof X_VlcShares_Plugins_ResolverInterface ) {
+			
+			// location param come in a plugin encoded way
+			$location = $provider->resolveLocation($location);
 		
-		if ( $this->helpers()->stream()->getVideoStreamsNumber() ) {
-			$codecCond[] = $this->helpers()->stream()->getVideoCodecName();
+			$this->helpers()->stream()->setLocation($location);
+			
+			if ( $this->helpers()->stream()->getVideoStreamsNumber() ) {
+				$codecCond[] = $this->helpers()->stream()->getVideoCodecName();
+			}
+			
+			if ( $this->helpers()->stream()->getVideoStreamsNumber() ) {
+				$codecCond[] = $this->helpers()->stream()->getAudioCodecName();
+			}
+	
+			$codecCond = implode('+', $codecCond);
 		}
-		
-		if ( $this->helpers()->stream()->getVideoStreamsNumber() ) {
-			$codecCond[] = $this->helpers()->stream()->getAudioCodecName();
-		}
-
-		$codecCond = implode('+', $codecCond);
 		
 		$profile = new Application_Model_Profile();
 		

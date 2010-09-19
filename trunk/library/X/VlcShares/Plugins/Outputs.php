@@ -12,7 +12,9 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract {
 			->setPriority('getStreamItems')
 			->setPriority('getModeItems')
 			->setPriority('preGetSelectionItems')
-			->setPriority('getSelectionItems');		
+			->setPriority('getSelectionItems')
+			->setPriority('preSpawnVlc', 100) // TODO remove this. Only in dev env
+			;
 		
 	}	
 
@@ -133,7 +135,7 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract {
 						$this->getId() => $output->getId() // set this plugin selection as profileId
 					), 'default', false)
 				),
-				'highlight' => ($currentOutput == $output->getLabel()),
+				'highlight' => ($currentOutput == $output->getId()),
 				__CLASS__.':output' => $output->getId()
 			);
 		}
@@ -142,6 +144,107 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract {
 		
 		// general profiles are in the bottom of array
 		return $return;
-	}	
+	}
+	
+	/**
+	 * Return the link -go-to-stream-
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array 
+	 */
+	public function getStreamItems($provider, $location, Zend_Controller_Action $controller) {
+		
+		X_Debug::i('Plugin triggered');
+		
+		$outputId = $controller->getRequest()->getParam($this->getId(), false);
+		$urlHelper = $controller->getHelper('url');
+		
+		$output = new Application_Model_Output();
+		// i store the default link, so if i don't find the proper output
+		// i will have a valid link for -go-to-stream- button
+		//$output->setLink($this->config('default.link', "http://{$_SERVER['SERVER_ADDR']}:8081"));
+		
+		if ( $outputId !== false ) {
+			Application_Model_OutputsMapper::i()->find($outputId, $output);
+		} else {
+			// if no params is provided, i will try to
+			// get the best output for this condition
+			$output = $this->getBest($this->helpers()->devices()->getDeviceType());
+		}
+		
+		
+		$outputLink = $output->getLink();
+		$outputLink = str_replace(
+			array(
+				'{%SERVER_IP%}',
+				'{%SERVER_NAME%}'
+			),array(
+				$_SERVER['SERVER_ADDR'],
+				$_SERVER['HTTP_HOST']
+			), $outputLink
+		);
+		
+		return array(
+			array(
+				'label'	=>	X_Env::_('p_outputs_gotostream'),
+				'link'	=>	$outputLink,
+				'type'	=>	X_Plx_Item::TYPE_VIDEO
+			)
+		);
+		
+	}
+	
+	/**
+	 * Add output arg in vlc args
+	 * 
+	 * @param X_Vlc $vlc vlc wrapper object
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function postRegisterVlcArgs(X_Vlc $vlc, $provider, $location, Zend_Controller_Action $controller) {
+		
+		X_Debug::i('Plugin triggered');
+		
+		$outputId = $controller->getRequest()->getParam($this->getId(), false);
+		
+		if ( $outputId !== false ) {
+			$output = new Application_Model_Output();
+			Application_Model_OutputsMapper::i()->find($outputId, $output);
+		} else {
+			// if no params is provided, i will try to
+			// get the best output for this condition
+			$output = $this->getBest($this->helpers()->devices()->getDeviceType());
+		}
+		
+		if ( $output->getArg() !== null ) {
+
+			$vlc->registerArg('output', $output->getArg());			
+			
+			if ( $this->config('store.session', false) ) {
+				// store the link in session for future use
+			}
+			
+		} else {
+			X_Debug::e("No output arg for vlc");
+		}
+	}
+	
+	public function preSpawnVlc(X_Vlc $vlc, $provider, $location, Zend_Controller_Action $controller) {
+		X_Debug::i(var_export($vlc->getArgs(), true));
+	}
+	
+	/**
+	 * Find the best output type for the current device
+	 * @param int $device
+	 */
+	private function getBest($device) {
+		
+		$output = new Application_Model_Output();
+		Application_Model_OutputsMapper::i()->findBest($device, $output);
+		return $output;
+		
+	}
 	
 }
