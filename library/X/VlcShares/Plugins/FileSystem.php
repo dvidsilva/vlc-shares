@@ -15,7 +15,7 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 	
 	public function __construct() {
 		$this->setPriority('getCollectionsItems')
-			->setPriority('registerVlcArgs')
+			->setPriority('preRegisterVlcArgs')
 			->setPriority('getShareItems');
 	}
 	
@@ -136,17 +136,20 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 	}
 	
 	/**
-	 * This hook can be used to add normal priority args in vlc stack
+	 * This hook can be used to add low priority args in vlc stack
 	 * 
 	 * @param X_Vlc $vlc vlc wrapper object
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to stream
 	 * @param Zend_Controller_Action $controller the controller who handle the request
 	 */
-	public function registerVlcArgs(X_Vlc $vlc, $provider, $location, Zend_Controller_Action $controller) {
+	public function preRegisterVlcArgs(X_Vlc $vlc, $provider, $location, Zend_Controller_Action $controller) {
 	
 		// this plugin inject params only if this is the provider
 		if ( $provider != $this->getId() ) return;
+
+		// i need to register source as first, because subtitles plugin use source
+		// for create subfile
 		
 		X_Debug::i('Plugin triggered');
 		

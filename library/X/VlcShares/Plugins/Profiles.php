@@ -196,8 +196,8 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract {
 		$profileId = $controller->getRequest()->getParam($this->getId(), false);
 		
 		if ( $profileId !== false ) {
-			$profile = new Application_Model_Output();
-			Application_Model_OutputsMapper::i()->find($profileId, $profile);
+			$profile = new Application_Model_Profile();
+			Application_Model_ProfilesMapper::i()->find($profileId, $profile);
 		} else {
 			// if no params is provided, i will try to
 			// get the best profile for this condition

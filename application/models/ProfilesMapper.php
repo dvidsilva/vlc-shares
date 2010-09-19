@@ -81,10 +81,7 @@ class Application_Model_ProfilesMapper
     	if ( $device !== null && is_integer($device) ) {
     		$select->where("cond_devices = ?", $device);
     	}
-    	$select->orWhere("cond_formats IS NULL")
-    		->orWhere("cond_devices IS NULL")
-    		->orWhere("cond_providers IS NULL");
-    	
+		$select->orWhere("cond_formats IS NULL AND cond_devices IS NULL AND cond_providers IS NULL");    	
     	
         $result = $this->getDbTable()->fetchAll($select, 'cond_devices DESC, cond_format DESC, cond_provider DESC, weight DESC, label ASC', 1);
         if (0 == count($result)) {
@@ -140,9 +137,8 @@ class Application_Model_ProfilesMapper
     	if ( $device !== null && is_integer($device) ) {
     		$select->where("cond_devices = ?", $device);
     	}
-    	$select->orWhere("cond_formats IS NULL")
-    		->orWhere("cond_devices IS NULL")
-    		->orWhere("cond_providers IS NULL");
+    	
+    	$select->orWhere("cond_formats IS NULL AND cond_devices IS NULL AND cond_providers IS NULL");
     	
     	//X_Debug::i((string) $select);
     	

@@ -136,9 +136,9 @@ class X_VlcShares_Plugins_Helper_Mediainfo extends X_VlcShares_Plugins_Helper_Ab
 			// fetch and decode mediainfo data here
 			$fetched = array(
 				'source'	=> $this->_location,
-				'videos'	=> array(),
-				'audios'	=> array(),
-				'subs'		=> array()
+				'videos'	=> array(array('codecName' => 'h264', 'codecType' => X_VlcShares_Plugins_Helper_StreaminfoInterface::VCODEC_H264)),
+				'audios'	=> array(array('codecName' => 'aac', 'codecType' => X_VlcShares_Plugins_Helper_StreaminfoInterface::ACODEC_AAC)),
+				'subs'		=> array(5 => array('format' => 'srt', 'language' => 'ita'))
 			);
 			
 			// I use lazy init for info
