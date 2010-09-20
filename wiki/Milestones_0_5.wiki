@@ -11,8 +11,8 @@ Alpha 1:
   * ~~Stabilize level 1 of api for plugins (level 1 api are all the api for browse through items and for control of streams)~~
   * ~~Rewrite FileSystem's functionality as a plugin for the newer plugin system~~
   * ~~Move plugins preferences in the database, where applicable~~
-  * Rewrite the control's page and browse flow
-  * controls on vlc should not have regressions for versions 1.0.6_Linux, 1.1.0+_Linux, 1.1.0+_Windows, 1.2dev_Windows (maybe)
+  * ~~Rewrite the control's page and browse flow~~
+  * ~~Controls on vlc should not have regressions for versions 1.0.6_Linux, 1.1.0+_Linux, 1.1.0+_Windows, 1.2dev_Windows (maybe)~~
 
 Alpha 2:
   * Rewrite the core of megavideo plugin as a data provider plugin
