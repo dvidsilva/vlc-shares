@@ -5,6 +5,18 @@ require_once 'X/Env.php';
 
 class Application_Model_MegavideoMapper
 {
+	
+	private static $instance = null;
+	
+	/**
+	 * Return singleton
+	 * @return Application_Model_MegavideoMapper
+	 */
+	public static function i() { if ( self::$instance === null ) self::$instance = new Application_Model_MegavideoMapper(); return self::$instance; }
+	
+	private function __construct() {}
+	
+	
     protected $_dbTable;
  
     public function setDbTable($dbTable)
