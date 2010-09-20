@@ -7,7 +7,7 @@ Those are milestones for version release 0.5
 
 = Details =
 
-Alpha 1 (Released: download and try it http://code.google.com/p/vlc-shares/downloads/detail?name=vlc-shares_0.5-alpha1.7z):
+Alpha 1 (Released: download and try it http://code.google.com/p/vlc-shares/downloads/detail?name=vlc-shares_0.5-alpha1.7z ):
   * ~~Stabilize level 1 of api for plugins (level 1 api are all the api for browse through items and for control of streams)~~
   * ~~Rewrite FileSystem's functionality as a plugin for the newer plugin system~~
   * ~~Move plugins preferences in the database, where applicable~~
