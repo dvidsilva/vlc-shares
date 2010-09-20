@@ -8,11 +8,9 @@
 #     															#
 #################################################################
 
-VLC-SHARES v0.4.1 - 20/07/2010
+VLC-SHARES v0.5 alpha 1 - 20/09/2010
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
-
-Translation by jhb50 (http://www.wiimc.org/forum/memberlist.php?mode=viewprofile&u=401)
 
 All content of this file is released using
 GPL v3 (http://www.gnu.org/licenses/gpl.html)
@@ -63,6 +61,8 @@ Windows XP Pro SP3 requirementes:
 | 1: Install & Configure
 \==========---
 
+###!!! THOSE INSTRUCTIONS ARE OLD
+
 Installation & configuration tutorial:
 http://ximarx.netsons.org/blog/vlc-share/installation-and-configuration-guide/
 
@@ -84,6 +84,19 @@ IP_ADDRESS = ip address of vlc-shares server
 /==========---
 | 3: Changelog
 \==========---
+
+*** 0.5 alpha 1 (20/09/2010) ***
+ - plugin system has been rewritten
+ - new stream option selection mode
+ - new seek controls (you can input position or shift time)
+ - megavideo plugin management has been improved (the plugin core is missing)
+ - new bookmarklets features for megavideo plugin (the plugin core is missing)
+ - configuration moved to db (located in /data/db/vlc-shares.db)
+ - All work out of box. Only vlc path must be selected
+ - Shares, Profiles and Output type has been moved in the db. An interface will be available in alpha 3
+ - Vlc_Commander_Rc has been flagged as deprecated
+ - Only in alpha release until 0.5 default config file is placed in application/configs/vlc-shares.newconfig.ini
+ 
 
 *** 0.4.1 (20/7/2010) ***
  - plugin for Megavideo Library has been added

@@ -4,6 +4,11 @@ require_once 'X/Vlc/Commander.php';
 require_once 'Zend/Config.php';
 require_once 'X/Env.php';
 
+/**
+ * @deprecated
+ * @author ximarx
+ *
+ */
 class X_Vlc_Commander_Rc extends X_Vlc_Commander {
 	
 	// ho bisogno di nc
