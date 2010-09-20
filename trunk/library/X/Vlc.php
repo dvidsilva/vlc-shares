@@ -75,7 +75,7 @@ class X_Vlc {
 				X_Debug::w("Commander: no selection");
 			}
 			
-			$this->_conf_vlcArgs = $options->get('args', "{%source%}");
+			$this->_conf_vlcArgs = $options->get('args', "--play-and-exit {%source%} --sout=\"#{%profile%}:{%output%}\" --sout-keep {%subtitles%} {%audio%} {%filters%}");
 			$this->_conf_vlcPath = $options->get('path', "vlc");
 		
 			$this->_initialized = true;

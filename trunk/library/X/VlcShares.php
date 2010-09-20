@@ -1,7 +1,7 @@
 <?php
 
 class X_VlcShares {
-	const VERSION = '0.4.2';
+	const VERSION = '0.5_alpha1';
 	private $CONFIG_PATH;
 	
 	// durante la creazione della playlist delle collection:
@@ -70,7 +70,7 @@ class X_VlcShares {
 	
 	static private $instance = null; 
 	private function __construct() {
-		$this->CONFIG_PATH = APPLICATION_PATH . '/configs/vlc-shares.config.ini';
+		$this->CONFIG_PATH = APPLICATION_PATH . '/configs/vlc-shares.newconfig.ini';
 	}
 	
 	static private function i() {

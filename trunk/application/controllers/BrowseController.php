@@ -4,7 +4,6 @@
  * BrowseController
  * 
  * @author ximarx
- * @version 0.4.2
  */
 
 require_once 'X/Controller/Action.php';
