@@ -164,37 +164,40 @@ class X_Vlc_Commander_Http extends X_Vlc_Commander {
 		</root> 
 		*/
 		$rInfos = array();
-		
-		$dom = new Zend_Dom_Query($infos);
-		// lunghezza
-		$results = $dom->queryXpath('/root/length');
-		if ( count($results) > 0 ) {
-			$rInfos['length'] = $results->current()->nodeValue;
-		}
-		// posizione ora
-		$results = $dom->queryXpath('/root/time');
-		if ( count($results) > 0 ) {
-			$rInfos['time'] = $results->current()->nodeValue;
-		}
-		// posizione name
-		$results = $dom->queryXpath('/root/information/meta-information/title');
-		if ( count($results) > 0 ) {
-			$rInfos['name'] = $results->current()->nodeValue;
-		}
-		
-		/* l'aggiungo in 0.5 forse
-		// posizione ora
-		$results = $dom->queryXpath('/root/information/category');
-		if ( count($results) > 0 ) {
-			$rInfos['streams'] = array();
-			//$rInfos['length'] = $results[0]->nodeValue;
-			foreach ( $results as $category ) {
-				$stream = array();
-				//$stream
-				$rInfos['streams'][] = $stream;
+		try {
+			$dom = new Zend_Dom_Query($infos);
+			// lunghezza
+			$results = $dom->queryXpath('/root/length');
+			if ( count($results) > 0 ) {
+				$rInfos['length'] = $results->current()->nodeValue;
 			}
+			// posizione ora
+			$results = $dom->queryXpath('/root/time');
+			if ( count($results) > 0 ) {
+				$rInfos['time'] = $results->current()->nodeValue;
+			}
+			// posizione name
+			$results = $dom->queryXpath('/root/information/meta-information/title');
+			if ( count($results) > 0 ) {
+				$rInfos['name'] = $results->current()->nodeValue;
+			}
+			
+			/* l'aggiungo in 0.5 forse
+			// posizione ora
+			$results = $dom->queryXpath('/root/information/category');
+			if ( count($results) > 0 ) {
+				$rInfos['streams'] = array();
+				//$rInfos['length'] = $results[0]->nodeValue;
+				foreach ( $results as $category ) {
+					$stream = array();
+					//$stream
+					$rInfos['streams'][] = $stream;
+				}
+			}
+			*/
+		} catch (Exception $e) {
+			X_Debug::w("Catch exception: {$e->getMessage()}");
 		}
-		*/
 		
 		
 		return $rInfos;

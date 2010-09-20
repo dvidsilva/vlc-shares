@@ -32,7 +32,6 @@ class X_VlcShares_Plugins_FilterExt extends X_VlcShares_Plugins_Abstract {
 				$plugin instanceof X_VlcShares_Plugins_ResolverInterface ) {
 				// i use instanceof ResolverInterface
 				// so i have code suggestions
-				X_Debug::i('Plugin triggered');
 				// X_VlcShares_Plugins_FileSystem register a custom param in item
 				// for location lookup
 				$location = $plugin->resolveLocation(@$item['X_VlcShares_Plugins_FileSystem:location']);
@@ -44,6 +43,7 @@ class X_VlcShares_Plugins_FilterExt extends X_VlcShares_Plugins_Abstract {
 						return false;
 					}
 				}
+				//X_Debug::i('Plugin triggered');
 			}
 		} catch (Exception $e) {
 			X_Debug::w("Problem while filtering: {$e->getMessage()}");

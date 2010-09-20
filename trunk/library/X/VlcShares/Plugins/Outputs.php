@@ -14,6 +14,7 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract {
 			->setPriority('preGetSelectionItems')
 			->setPriority('getSelectionItems')
 			->setPriority('preSpawnVlc', 100) // TODO remove this. Only in dev env
+			->setPriority('preGetControlItems', 1);
 			;
 		
 	}	
@@ -231,9 +232,73 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract {
 		}
 	}
 	
+	/**
+	 * Print in debug all the parameter of vlc
+	 * This will be moved to advaced debug plugin
+	 * @param X_Vlc $vlc
+	 * @param unknown_type $provider
+	 * @param unknown_type $location
+	 * @param Zend_Controller_Action $controller
+	 */
 	public function preSpawnVlc(X_Vlc $vlc, $provider, $location, Zend_Controller_Action $controller) {
 		X_Debug::i(var_export($vlc->getArgs(), true));
 	}
+	
+	/**
+	 * Add the button BackToStream in controls page
+	 * 
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array
+	 */
+	public function preGetControlItems(Zend_Controller_Action $controller) {
+		
+		X_Debug::i('Plugin triggered');
+		
+		$outputId = $controller->getRequest()->getParam($this->getId(), false);
+		$urlHelper = $controller->getHelper('url');
+		
+		$output = new Application_Model_Output();
+		// i store the default link, so if i don't find the proper output
+		// i will have a valid link for -go-to-stream- button
+		//$output->setLink($this->config('default.link', "http://{$_SERVER['SERVER_ADDR']}:8081"));
+		
+		if ( $outputId !== false ) {
+			Application_Model_OutputsMapper::i()->find($outputId, $output);
+		} else {
+			// if store session is enabled, i try to get last output
+			// method from store
+			// else i fallback to best selection
+			if ( $this->config('store.session', false) ) {
+				// TODO handle store.session = true params
+				$output = $this->getBest($this->helpers()->devices()->getDeviceType()); // FIXME remove this
+			} else {
+				$output = $this->getBest($this->helpers()->devices()->getDeviceType());
+			}
+		}
+		
+		
+		$outputLink = $output->getLink();
+		$outputLink = str_replace(
+			array(
+				'{%SERVER_IP%}',
+				'{%SERVER_NAME%}'
+			),array(
+				$_SERVER['SERVER_ADDR'],
+				$_SERVER['HTTP_HOST']
+			), $outputLink
+		);
+		
+		return array(
+			array(
+				'label'	=>	X_Env::_('p_outputs_backstream'),
+				'link'	=>	$outputLink,
+				'type'	=>	X_Plx_Item::TYPE_VIDEO
+			)
+		);
+		
+		
+	}
+	
 	
 	/**
 	 * Find the best output type for the current device
