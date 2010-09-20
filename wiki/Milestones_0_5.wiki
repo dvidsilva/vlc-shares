@@ -15,13 +15,13 @@ Alpha 1 (Released: download and try it http://code.google.com/p/vlc-shares/downl
   * ~~Controls on vlc should not have regressions for versions 1.0.6_Linux, 1.1.0+_Linux, 1.1.0+_Windows, 1.2dev_Windows (maybe)~~
 
 Alpha 2:
-  * Rewrite the core of megavideo plugin as a data provider plugin
-  * Write a youtube plugin
+  * ~~Rewrite the core of megavideo plugin as a data provider plugin~~
+  * ~~Write a youtube plugin~~ (moved to alpha 6)
+  * Stabilize level 2 of the api for plugin (level 2 api are all the api for plugins configurations management)
 
 Alpha 3:
-  * Stabilize level 2 of the api for plugin (level 2 api are all the api for plugins configurations management)
+  * ~~Stabilize level 2 of the api for plugin (level 2 api are all the api for plugins configurations management)~~ (moved to alpha 2)
   * Create a plugins manager interface for the browser
-  * Create 
 
 Alpha 4:
   * Implement stream analisys through mediainfo for file-based streams and through mplayer for remote streams (megavideo)
@@ -31,6 +31,7 @@ Alpha 5:
 
 Alpha 6:
   * Try to distribute vlc-shares as a module for easyphp (this one can be moved to 0.6)
+  * Write a youtube plugin (this one can be moved to 0.6)
 
 Beta 1:
   * Release a beta version
