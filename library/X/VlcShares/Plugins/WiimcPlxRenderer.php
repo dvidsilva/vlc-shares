@@ -29,7 +29,8 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 		
 		foreach ( $items as $i => $item ) {
 			$plxItemName = (@$item['highlight'] ? '-) ' : '' ). $item['label'];
-			$plx->addItem(new X_Plx_Item($plxItemName, $item['link']));
+			$plxItemType = (array_key_exists('type', $item) ? $item['type'] : X_Plx_Item::TYPE_PLAYLIST );
+			$plx->addItem(new X_Plx_Item($plxItemName, $item['link'], $plxItemType));
 		}
 		
 		$this->_render($plx, $controller);

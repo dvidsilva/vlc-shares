@@ -465,4 +465,97 @@ abstract class X_VlcShares_Plugins_Abstract {
 	public function postSpawnVlc(X_Vlc $vlc, $provider, $location, Zend_Controller_Action $controller) {}
 	
 	
+	//=== END OF Browse:stream ===//
+
+	//=== Triggered in Controls:control ===//
+	
+	/**
+	 * Return items that should be added at the beginning of the list
+	 * 
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array
+	 */
+	public function preGetControlItems(Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Return items that should be added in collection list
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array 
+	 */
+	public function getControlItems(Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Return items that should be added at the end of the list
+	 * This hook can also used for redirect application flow
+	 * 
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array
+	 */
+	public function postGetControlItems(Zend_Controller_Action $controller) {}	
+
+	//=== END OF Controls:control ===//
+	
+	//=== Triggered in Controls:execute ===//
+	
+	/**
+	 * Return items that should be added at the beginning of the list
+	 * 
+	 * @param string $pid
+	 * @param string $action
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array
+	 */
+	public function preGetExecuteItems($pid, $action, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Return items that should be added in collection list
+	 * @param string $pid
+	 * @param string $action
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array 
+	 */
+	public function getExecuteItems($pid, $action, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Return items that should be added at the end of the list
+	 * This hook can also used for redirect application flow
+	 * 
+	 * @param string $pid
+	 * @param string $action
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array
+	 */
+	public function postGetExecuteItems($pid, $action, Zend_Controller_Action $controller) {}	
+	
+	/**
+	 * This hook is triggered before the command is execute in control action
+	 * 
+	 * @param X_Vlc $vlc
+	 * @param string $pid
+	 * @param string $action
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function preExecute(X_Vlc $vlc, $pid, $action, Zend_Controller_Action $controller) {}
+
+	/**
+	 * Use this hook to execute action on controls controller
+	 * 
+	 * @param X_Vlc $vlc
+	 * @param string $pid
+	 * @param string $action
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function execute(X_Vlc $vlc, $pid, $action, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * This hook is triggered after the command is execute in control action
+	 *  
+	 * @param X_Vlc $vlc
+	 * @param string $pid
+	 * @param string $action
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function postExecute(X_Vlc $vlc, $pid, $action, Zend_Controller_Action $controller) {}
+	
+	
 }

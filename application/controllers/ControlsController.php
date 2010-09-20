@@ -11,8 +11,6 @@ require_once 'X/Controller/Action.php';
 require_once 'X/Vlc.php';
 require_once 'X/Env.php';
 require_once 'X/VlcShares.php';
-require_once 'X/Plx.php';
-require_once 'X/Plx/Item.php';
 
 class ControlsController extends X_Controller_Action {
 	
@@ -24,28 +22,16 @@ class ControlsController extends X_Controller_Action {
 	
 	public function init() {
 		parent::init();
-		X_Env::debug(__METHOD__);
 		
 		$this->vlc = new X_Vlc($this->options->vlc);
 		
 	}
 	
-	public function preDispatch() {
-		
-		X_Env::debug(__METHOD__);
-		
-		// devo controllare se vlc e' attivo, ma non posso farlo 
-		// tramite pid su windows
-		if ( !$this->vlc->isRunning() ) {
-			$this->_forward('index', 'browse');
-		}
-	}
-	
 	
 	public function indexAction() {
-		X_Env::debug(__METHOD__);
-		if ( strpos($_SERVER['HTTP_USER_AGENT'], 'WiiMC') !== false ) {
-			// wiimc 1.0.5 e inferiori nn accetta redirect
+		
+		if ( X_VlcShares_Plugins::helpers()->devices()->isWiimc() ) {
+			// wiimc 1.0.9 e inferiori nn accetta redirect
 			$this->_forward('control');
 		} else {
 	    	/**
@@ -76,62 +62,100 @@ class ControlsController extends X_Controller_Action {
 
 	public function controlAction() {
 		
-		X_Env::debug(__METHOD__);
 		
-		$plx = new X_Plx("VLCShares - ".X_Env::_('playback_controls'), X_Env::_("title_description"));
+		$request = $this->getRequest();
 		
-		$thisPage = X_Env::routeLink('controls', 'control');
+		//X_VlcShares_Plugins::broker()->gen_preProviderSelection($this);
 		
 		/*
-		$title = $this->vlc->getCurrentName();
-		$now = X_Env::formatTime($this->vlc->getCurrentTime());
-		$total = X_Env::formatTime($this->vlc->getTotalTime());
+		$provider = $request->getParam('p', false);
+		if ( $provider === false || !X_VlcShares_Plugins::broker()->isRegistered($provider) ) {
+			throw new Exception("Invalid provider");
+		}
+		$location = base64_decode($request->getParam('l', ''));
+		*/
+
+    	$pageItems = array();
+    	
+    	// links on top
+    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->preGetControlItems($this));
+    	
+    	// add a separator
+    	$pageItems[] = array(
+			'label'		=>	X_Env::_('_____options_separator_____'),
+			'link'		=>	X_Env::completeUrl(
+				$this->_helper->url->url(array(
+					'controller'	=> 'controls',
+					'action'		=>	'control', // i want to be sure that fake buttons forward to main action to avoid multiple seek in time
+					'pid'			=>	null, // no pid auto url
+					'a'				=>	null, // no a for auto url
+					'param'			=>	null,
+				), 'default', false)
+			)
+		);
+    	
+    	// normal links
+    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->getControlItems($this));
+    	// bottom links
+		$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->postGetControlItems($this));
+		
+		
+		// trigger for page creation
+		X_VlcShares_Plugins::broker()->gen_afterPageBuild(&$pageItems, $this);
+		
+
+	}
+	
+	public function executeAction() {
+		
+		
+		$request = $this->getRequest();
+		
+		//X_VlcShares_Plugins::broker()->gen_preProviderSelection($this);
+		
+		/*
+		$provider = $request->getParam('p', false);
+		if ( $provider === false || !X_VlcShares_Plugins::broker()->isRegistered($provider) ) {
+			throw new Exception("Invalid provider");
+		}
+		$location = base64_decode($request->getParam('l', ''));
 		*/
 		
-		$prePlxItems = X_Env::triggerEvent(X_VlcShares::TRG_CONTROLS_MENU_PRE, $this->vlc);
-		foreach ( $prePlxItems as $plgOutput ) {
-			if ( is_array($plgOutput) ) {
-				foreach ($plgOutput as $item ) {
-					$plx->addItem($item);
-				}
-			} elseif ($plgOutput instanceof X_Plx_Item ) { 
-				$plx->addItem($plgOutput);
-			}
-		}
-
-		// back to stream workaround
-		$stream = $this->options->vlc->get('stream', "http://{$_SERVER['SERVER_ADDR']}:8081" );
-		$plx->addItem(new X_Plx_Item(X_Env::_('resume'),$stream,X_Plx_Item::TYPE_VIDEO));
+		$pid = $request->getParam('pid', false);
+		$a = $request->getParam('a', false);
 		
-		// item standard
-		$plx->addItem(new X_Plx_Item(X_Env::_("pause"),X_Env::routeLink('controls', 'pause')));
-		$plx->addItem(new X_Plx_Item(X_Env::_("stop"),X_Env::routeLink('controls', 'shutdown')));
+		X_VlcShares_Plugins::broker()->preExecute($this->vlc, $pid, $a, $this);
+		X_VlcShares_Plugins::broker()->execute($this->vlc, $pid, $a, $this);
+		X_VlcShares_Plugins::broker()->postExecute($this->vlc, $pid, $a, $this);
 		
 		
-		$postPlxItems = X_Env::triggerEvent(X_VlcShares::TRG_CONTROLS_MENU_POST, $this->vlc);
-		foreach ( $postPlxItems as $plgOutput ) {
-			if ( is_array($plgOutput) ) {
-				foreach ($plgOutput as $item ) {
-					$plx->addItem($item);
-				}
-			} elseif ($plgOutput instanceof X_Plx_Item ) { 
-				$plx->addItem($plgOutput);
-			}
-		}
+    	$pageItems = array();
+    	
+    	// links on top
+    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->preGetExecuteItems($pid, $a, $this));
+    	
+    	// add a separator
+    	$pageItems[] = array(
+			'label'		=>	X_Env::_('_____options_separator_____'),
+			'link'		=>	X_Env::completeUrl(
+				$this->_helper->url->url(array(
+					'controller'	=> 'controls',
+					'action'		=>	'control', // i want to be sure that fake buttons forward to main action to avoid multiple seek in time
+					'pid'			=>	null, // no pid auto url
+					'a'				=>	null, // no a for auto url
+					'param'			=>	null,
+				), 'default', false)
+			)
+		);
+    	
+    	// normal links
+    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->getExecuteItems($pid, $a, $this));
+    	// bottom links
+		$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->postGetExecuteItems($pid, $a, $this));
 		
-		$echoArrayPlg = X_Env::triggerEvent(X_VlcShares::TRG_ENDPAGES_OUTPUT_FILTER_PLX, $plx );
-		$echo = '';
-		foreach ($echoArrayPlg as $plgOutput) {
-			$echo .= $plgOutput;
-		}
-		if ( $echo != '' ) {
-			echo $echo;
-		} else {
-    		header('Content-Type:text/plain');
-			echo $plx;
-		}
-		$this->_helper->viewRenderer->setNoRender(true);
 		
+		// trigger for page creation
+		X_VlcShares_Plugins::broker()->gen_afterPageBuild(&$pageItems, $this);
 		
 	}
 	

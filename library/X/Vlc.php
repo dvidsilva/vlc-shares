@@ -130,6 +130,9 @@ class X_Vlc {
 		return call_user_func_array(array($this->adapter, $name), $argv);
 	}
 	
+	/**
+	 * @return X_Vlc
+	 */
 	public static function getLastInstance() {
 		return self::$instance;
 	}
