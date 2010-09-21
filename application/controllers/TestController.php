@@ -21,9 +21,20 @@ class TestController extends Zend_Controller_Action
     {
     	
     	$tests = $this->doTests();
+    	
 
-    	if ( $this->options )
+    	if ( $this->options ) {
+    		
+	    	//$tests = array();
+	    	$tests = array_merge($tests, X_VlcShares_Plugins::broker()->preGetTestItems($this->options, $this));
+	    	// normal links
+	    	$tests = array_merge($tests, X_VlcShares_Plugins::broker()->getTestItems($this->options, $this));
+	    	// bottom links
+			$tests = array_merge($tests, X_VlcShares_Plugins::broker()->postGetTestItems($this->options, $this));
+    		
+    		
     		$this->view->log = @file_get_contents($this->options->general->get('debug_path', sys_get_temp_dir() . '/vlcShares.debug.log'));
+    	}
     	$this->view->tests = $tests;
     	
     }
@@ -47,16 +58,16 @@ class TestController extends Zend_Controller_Action
     	$this->options = new Zend_Config_Ini(X_VlcShares::config());
     	
     	//controlliamo che il file di configurazione sia valido
-    	$tests[] = $this->_check('Shared collection are >= 2 (workaround)', $this->options->shares->count() >= 2, 'Success', 'Failed');
+    	//$tests[] = $this->_check('Shared collection are >= 2 (workaround)', $this->options->shares->count() >= 2, 'Success', 'Failed');
 
     	//controlliamo che le collezioni siano ben formate
-    	$tests[] = $this->_check('Shared collection format is valid', $this->_shareCheck($this->options->shares->toArray()), 'Success', 'Shared collection format is not valid (or path misses last /)');
+    	//$tests[] = $this->_check('Shared collection format is valid', $this->_shareCheck($this->options->shares->toArray()), 'Success', 'Shared collection format is not valid (or path misses last /)');
     	
     	// controlliamo la path di vlc
     	$tests[] = $this->_check('Vlc path is valid', $this->_vlcPathCheck($this->options->vlc->path), 'Success', 'Path is not valid (or check is failed)');
     	
     	//controlliamo che i profili siano ben formati
-    	$tests[] = $this->_check('profiles format is valid', $this->_vlcProfileCheck($this->options->profiles->toArray()), 'Success', 'profiles format is not valid');
+    	//$tests[] = $this->_check('profiles format is valid', $this->_vlcProfileCheck($this->options->profiles->toArray()), 'Success', 'profiles format is not valid');
     	
     	//controlliamo che nc sia presente
     	$tests[] = $this->_check('Language file is valid', file_exists($this->options->general->languageFile), 'Success', 'Failed');

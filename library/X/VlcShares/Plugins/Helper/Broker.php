@@ -45,6 +45,12 @@ class X_VlcShares_Plugins_Helper_Broker {
 		$this->mplayer = new X_VlcShares_Plugins_Helper_MPlayer();
 		$this->devices = new X_VlcShares_Plugins_Helper_Devices();
 		$this->stream = new X_VlcShares_Plugins_Helper_Stream();
+		
+		$this->registerHelper('mediainfo', $this->mediainfo)
+			->registerHelper('gspot', $this->gspot)
+			->registerHelper('mplayer', $this->mplayer)
+			->registerHelper('devices', $this->devices)
+			->registerHelper('stream', $this->stream);
 	}
 	
 	/**
@@ -73,10 +79,25 @@ class X_VlcShares_Plugins_Helper_Broker {
 	 */
 	public function devices() { return $this->devices; }
 	
-	
+	/**
+	 * Register a new helper in the list
+	 * Uses fluent interface
+	 * @param string $helperName
+	 * @param X_VlcShares_Plugins_Helper_Interface $helperObj
+	 * @return X_VlcShares_Plugins_Helper_Broker
+	 */
 	public function registerHelper($helperName, X_VlcShares_Plugins_Helper_Interface  $helperObj) {
 		$this->_helpers[$helperName] = $helperObj;
 		X_Debug::i("Plugin helper $helperName registered");
+		return $this;
+	}
+	
+	/**
+	 * Return the list of registered helpers
+	 * @return array of helperName => helperObj
+	 */
+	public function getHelpers() {
+		return $this->_helpers;
 	}
 	
 	/**
