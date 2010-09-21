@@ -557,5 +557,116 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 */
 	public function postExecute(X_Vlc $vlc, $pid, $action, Zend_Controller_Action $controller) {}
 	
+	//=== END OF Controls:control ===//
+	
+	/** ------------------------------------------------------
+	 * LEVEL 2 API
+	 --------------------------------------------------------*/
+	
+	//=== Triggered in Manage:index ===//
+	
+	/**
+	 * Retrieve first class action links
+	 * This link will be inserted in a box and shown as a list
+	 * for shortcuts
+	 * @param Zend_Controller_Action $this
+	 * @return array The format of the array should be:
+	 * 		array(
+	 * 			array(
+	 * 				'label' => ITEM LABEL,
+	 * 				'link'	=> HREF,
+	 * 				'highlight'	=> true|false,
+	 * 				'icon'	=> ICON_HREF
+	 * 			), ...
+	 * 		)
+	 */
+	public function getIndexActionLinks(Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Retrieve second class action links
+	 * This link will be inserted in a box and shown as a list
+	 * for shortcuts. First link will be used for box, other links
+	 * will be added in a list below
+	 * @param Zend_Controller_Action $this
+	 * @return array The format of the array should be:
+	 * 		array(
+	 * 			array(
+	 * 				'title' => ITEM TITLE,
+	 * 				'label' => ITEM LABEL,
+	 * 				'link'	=> HREF,
+	 * 				'highlight'	=> true|false,
+	 * 				'icon'	=> ICON_HREF,
+	 * 				'subinfos' => array(INFO, INFO, INFO)
+	 * 			), ...
+	 * 		)
+	 */
+	public function getIndexManageLinks(Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Retrieve statistic from plugins
+	 * @param Zend_Controller_Action $this
+	 * @return array The format of the array should be:
+	 * 		array(
+	 * 			array(
+	 * 				'title' => ITEM TITLE,
+	 * 				'label' => ITEM LABEL,
+	 * 				'stats' => array(INFO, INFO, INFO),
+	 * 				'provider' => array('controller', 'index', array()) // if provider is setted, stats key is ignored 
+	 * 			), ...
+	 * 		)
+	 */
+	public function getIndexStatistics(Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Retrieve messages queue from plugins
+	 * @param Zend_Controller_Action $this
+	 * @return array The format of the array should be:
+	 * 		array(
+	 * 			array(
+	 * 				'type' => info|warning|alert|fatal,
+	 * 				'text' => ITEM TEXT,
+	 * 			), ...
+	 * 		)
+	 */
+	public function getIndexMessages(Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Retrieve news from plugins
+	 * @param Zend_Controller_Action $this
+	 * @return array The format of the array should be:
+	 * 		array(
+	 * 			array(
+	 * 				'title' => ITEM TITLE,
+	 * 				'text' => HTML STYLIZED TEXT 
+	 * 			), ...
+	 * 		)
+	 */
+	public function getIndexNews(Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Allow plugins to insert new tests
+	 * @param Zend_Config $options
+	 * @param Zend_Controller_Action $controller
+	 * @return array format: array(array('testname', 'teststatus', 'testmessage'), array...)
+	 */
+	public function preGetTestItems(Zend_Config $options,Zend_Controller_Action $controller) {}
+
+	/**
+	 * Allow plugins to insert new tests
+	 * @param Zend_Config $options
+	 * @param Zend_Controller_Action $controller
+	 * @return array format: array(array('testname', 'teststatus', 'testmessage'), array...)
+	 */
+	public function getTestItems(Zend_Config $options,Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Allow plugins to insert new tests
+	 * @param Zend_Config $options
+	 * @param Zend_Controller_Action $controller
+	 * @return array format: array(array('testname', 'teststatus', 'testmessage'), array...)
+	 */
+	public function postGetTestItems(Zend_Config $options,Zend_Controller_Action $controller) {}
+	
+	
 	
 }

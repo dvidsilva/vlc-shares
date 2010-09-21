@@ -15,7 +15,7 @@ class MegavideoController extends X_Controller_Action
     public function indexAction()
     {
         // action bodys
-        $mapper  = new Application_Model_MegavideoMapper();
+        $mapper  = Application_Model_MegavideoMapper::i();
         $categories = $mapper->fetchCategories();
         
         foreach ($categories as &$category) {
@@ -241,11 +241,14 @@ INLINE;
 			header('Content-Type:application/json');
 			echo Zend_Json::encode(array('id' => $id, 'title' => X_Env::_('megavideo_manage_title_error'), 'description' => X_Env::_('megavideo_manager_bookmarklets_error_novalidvideo'), 'isError' => true));
 		}
+		$this->_helper->layout->disableLayout();
 		$this->_helper->viewRenderer->setNoRender(true);
 	}
 	
 	// solo per caricare la pagina di stato
-	public function statusAction() {}
+	public function statusAction() {
+		$this->_helper->layout->disableLayout();
+	}
 
 }
 
