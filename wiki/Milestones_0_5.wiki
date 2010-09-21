@@ -14,10 +14,10 @@ Alpha 1 (Released: download and try it http://code.google.com/p/vlc-shares/downl
   * ~~Rewrite the control's page and browse flow~~
   * ~~Controls on vlc should not have regressions for versions 1.0.6_Linux, 1.1.0+_Linux, 1.1.0+_Windows, 1.2dev_Windows (maybe)~~
 
-Alpha 2:
+Alpha 2 (In tag: checkout and try it http://vlc-shares.googlecode.com/svn/tags/0.5_alpha2/ ):
   * ~~Rewrite the core of megavideo plugin as a data provider plugin~~ ( http://code.google.com/p/vlc-shares/source/detail?r=28 )
   * ~~Write a youtube plugin~~ (moved to alpha 6)
-  * Stabilize level 2 of the api for plugin (level 2 api are all the api for plugins configurations management)
+  * ~~Stabilize level 2 of the api for plugin (level 2 api are all the api for plugins configurations management)~~
 
 Alpha 3:
   * ~~Stabilize level 2 of the api for plugin (level 2 api are all the api for plugins configurations management)~~ (moved to alpha 2)
