@@ -1,0 +1,46 @@
+<!-- application/layouts/scripts/layout.phtml -->
+<?php echo $this->doctype(); ?> 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<?php $this->headScript()->prependFile($this->baseUrl("/js/jquery-ui-1.8.4.custom.min.js")); ?>
+	<?php $this->headScript()->prependFile($this->baseUrl("/js/jquery-1.4.2.min.js")); ?>
+	<?php $this->headScript()->prependFile($this->baseUrl('/js/console.js')); ?>
+	<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
+		var baseUrl = "<?php echo $this->baseUrl(); ?>";
+	<?php $this->headScript()->captureEnd(); ?>
+	<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/blueprint/screen.css'), 'screen, projection'); ?>
+	<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/blueprint/ie.css'), 'screen, projection', 'IE'); ?>
+	<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/blueprint/print.css'), 'print'); ?>
+	<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/smoothness/jquery-ui-1.8.4.custom.css')); ?>
+	<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/style.css')); ?>
+	<?php echo $this->headTitle(); ?> 
+	<?php echo $this->headScript(); ?> 
+	<?php echo $this->headLink(); ?>	
+	<?php echo $this->headStyle(); ?>
+</head>
+<body>
+
+<div class="container">
+
+	<div class="span-24 last">
+		<!-- Header: -->
+		<?php echo $this->partial('_header.phtml'); ?>
+		<!-- :Header -->
+	</div>
+	
+	<!-- Content: -->
+	<?php echo $this->layout()->content; ?>
+
+	<!-- :Content -->
+	
+	<div class="span-24 last">
+		<!-- Footer: -->
+		<?php echo $this->partial('_footer.phtml'); ?>
+		<!-- :Footer -->
+	</div>
+	
+</div>
+
+</body>
+</html>

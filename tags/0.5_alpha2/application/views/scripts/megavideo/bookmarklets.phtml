@@ -1,0 +1,191 @@
+<script type="text/javascript">
+
+	var moreClicks = 0;
+	function registerCloseWindow(click) {
+		click = click || -1;
+		if ( click == -1 ) {
+			moreClicks--;
+			if ( moreClicks <= 0 ) {
+				window.close();
+			}
+		} else {
+			moreClicks += click;
+		}
+	}
+
+	$(document).ready(function(){
+		$('.add').click(function(event) {
+			// se e' il pulsante, l'id e' nel value
+			idVideo = $(this).attr('title') || $(this).attr('value');
+			if ( showCategoryPrompt ) {
+				defaultCategory = prompt("<?php echo X_Env::_('megavideo_bookmarklets_category_selection');?>", defaultCategory);
+				if ( defaultCategory.trim() == "" ) {
+					return;
+				} else {
+					defaultCategory = 'Default';
+				} 
+			}
+			$.ajax({
+				type: 'POST',
+				url: '<?php echo X_Env::routeLink('megavideo', 'add', array('isAjax' => true)); ?>',
+				data: {
+					idVideo : idVideo,
+					category: defaultCategory
+				},
+				success: function(data) {
+					var idVideo; 
+					var splitted = this.data.split('&');
+					for ( i = 0; i < splitted.length; i++) {
+						var subSplit = splitted[i].split('=');
+						if ( subSplit[0] == 'idVideo' ) {
+							idVideo = subSplit[1];
+							break;
+						}
+					}
+					if (data.trim() == "1" ) {
+						if ( !showCategoryPrompt ) {
+							// siamo in modalita' bottone
+							registerCloseWindow();
+						}
+						// devo nascondere
+						$('#a-'+idVideo).replaceWith('<b><?php echo X_Env::_('megavideo_bookmarklets_video_added'); ?></b>');
+					} else {
+						alert("<?php echo X_Env::_('megavideo_bookmarklets_error_adding'); ?>: "+idVideo);
+					}
+				},
+				error: function(data) {
+					var idVideo; 
+					var splitted = this.data.split('&');
+					for ( i = 0; i < splitted.length; i++) {
+						var subSplit = splitted[i].split('=');
+						if ( subSplit[0] == 'idVideo' ) {
+							idVideo = subSplit[1];
+							break;
+						}
+					}
+					alert("<?php echo X_Env::_('megavideo_bookmarklets_error_adding'); ?>: "+idVideo);
+				}
+			});
+		});
+		$('.moreinfo').click(function(event){
+			$.getJSON('<?php echo X_Env::routeLink('megavideo', 'info', array('idVideo' => '')); ?>'+$(this).attr('title'), function(data) {
+				$('#dd-'+data.id).html('<p><b>'+data.title+'</b><br/>'+data.description+'</p>');
+				$('#i-'+data.id).replaceWith("<?php echo X_Env::_('megavideo_manage_bookmarklets_moreinfo'); ?>");
+				if ( data.isError == true ) {
+					$('#a-'+data.id).replaceWith('<b><?php echo X_Env::_('megavideo_bookmarklets_video_unaddable'); ?></b>');
+				}
+			});			
+		});
+
+		$('.moreinfoAll').click(function(event){
+			$('.moreinfo').each(function(){$(this).click()});
+		});
+
+		$('.addAll').click(function(event){
+			registerCloseWindow($('.add').size());
+			defaultCategory = prompt("<?php echo X_Env::_('megavideo_bookmarklets_category_selection');?>", defaultCategory);
+			defaultCategory = defaultCategory.trim();
+			if ( defaultCategory != "" ) { 
+				showCategoryPrompt = false;
+				$('.add').each(function(){$(this).click();});
+			} else {
+				defaultCategory = "Default";
+			}
+		});
+		
+	});
+
+	var showCategoryPrompt = <?php echo @$this->showCategoryPrompt ? 'true' : 'false'; ?>;
+	var defaultCategory = "<?php echo @$this->category ? $this->category : 'Default'; ?>";
+	
+	
+</script>
+<style type="text/css">
+#confirm {
+	border: 1px solid black;
+	padding: 20px;
+	width: 500;
+	height: 280;
+	position: absolute;
+	margin: 50px;
+}
+#confirm p {
+	font:  bold 120% Georgia, serif;	
+}
+#confirm dt {
+	font-weight: bold;
+}
+#c-button {
+	position: absolute;
+	bottom: 10px;
+	align: right;
+	right: 10px;
+	left: 10px;
+}
+#c-description {
+	height: 90px;
+	width: auto;
+	overflow: auto;
+}
+</style>
+<h1><?php echo X_Env::_('megavideo_manage_title_bookmarklets');?></h1>
+<?php if ( $this->confirm ) : ?>
+	<div id="confirm">
+		<p><?php echo X_Env::_('megavideo_manage_bookmarklets_title_confirm'); ?></p>
+		<dl>
+			<dt><?php echo X_Env::_('megavideo_manage_bookmarklets_video_title'); ?></dt>
+			<dd><?php echo $this->videoTitle; ?></dd>
+			<dt><?php echo X_Env::_('megavideo_manage_bookmarklets_video_category'); ?></dt>
+			<dd><?php echo $this->category; ?></dd>
+			<dt><?php echo X_Env::_('megavideo_manage_bookmarklets_video_description'); ?></dt>
+			<dd id="c-description"><?php echo $this->videoDescription; ?></dd>
+		</dl>
+		<div id="c-button" align="center">
+			<button class="abort" onClick="javascript:window.close()">
+				<?php echo X_Env::_('megavideo_manage_bookmarklets_abort'); ?>
+			</button>
+			<button class="add" value="<?php echo $this->link; ?>">
+				<?php echo X_Env::_('megavideo_manage_bookmarklets_confirm'); ?>
+			</button>
+		</div>
+	</div>
+<?php elseif ($this->showList): ?>
+	<div>
+		<button class="abort" onClick="javascript:window.close()">
+			<?php echo X_Env::_('megavideo_manage_bookmarklets_abort'); ?>
+		</button>
+		<button class="addAll">
+			<?php echo X_Env::_('megavideo_manage_bookmarklets_addAll'); ?>
+		</button>
+		<button class="moreinfoAll">
+			<?php echo X_Env::_('megavideo_manage_bookmarklets_moreinfoAll'); ?>
+		</button>
+	</div>
+	<dl>
+		<?php $i = 0; foreach( $this->links as $link ): $i++; ?>
+			<dt id="dt-<?php echo $link; ?>" class="dt"><?php echo $i;?>) Video id: <?php echo $link;?> 
+				(
+				<a id="a-<?php echo $link; ?>" href="#add-<?php echo $link; ?>" class="add" title="<?php echo $link; ?>">
+					<?php echo X_Env::_('megavideo_manage_bookmarklets_add'); ?>
+				</a>
+				 | 
+				<a id="i-<?php echo $link; ?>" href="#info-<?php echo $link; ?>" class="moreinfo" title="<?php echo $link; ?>">
+					<?php echo X_Env::_('megavideo_manage_bookmarklets_moreinfo'); ?>
+				</a>
+				)
+			</dt>
+			<dd id="dd-<?php echo $link; ?>" class="dd"></dd>
+		<?php endforeach; ?>
+	</dl>
+	<div>
+		<button class="abort" onClick="javascript:window.close()">
+			<?php echo X_Env::_('megavideo_manage_bookmarklets_abort'); ?>
+		</button>
+		<button class="addAll">
+			<?php echo X_Env::_('megavideo_manage_bookmarklets_addAll'); ?>
+		</button>
+		<button class="moreinfoAll">
+			<?php echo X_Env::_('megavideo_manage_bookmarklets_moreinfoAll'); ?>
+		</button>
+	</div>
+<?php endif; ?>
