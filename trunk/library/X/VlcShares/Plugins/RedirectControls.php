@@ -58,7 +58,7 @@ class X_VlcShares_Plugins_RedirectControls extends X_VlcShares_Plugins_Abstract 
 			X_Debug::i("Redirect to index/collections");
 			$controller->getRequest()->setControllerName('index')->setActionName('collections')->setDispatched(false);
 		} else {
-			X_Debug::i("No redirection: vlc is running? " . ($vlc->isRunning() ? 'Yes' : 'No'));
+			//X_Debug::i("No redirection: vlc is running? " . ($vlc->isRunning() ? 'Yes' : 'No'));
 		}
 		
 	}
