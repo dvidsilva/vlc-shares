@@ -1,0 +1,28 @@
+<!-- application/views/scripts/manage/configs.phtml -->
+<?php
+// prepare decoration
+$dg = $this->form->getDisplayGroups ();
+foreach ( $dg as $g ) {
+	/* @var $g Zend_Form_DisplayGroup */
+	if ( $g->getName() == 'buttons' ) {
+		$g->setDecorators ( array (
+			'FormElements', 
+			array ('HtmlTag', array ('tag' => 'div', 'class' => 'span-12 box last', 'align' => 'center')
+		)));
+	} else {
+		$g->setDecorators ( array (
+			'FormElements', 
+			'Fieldset', 
+			array ('HtmlTag', array ('tag' => 'div', 'class' => 'span-12 box last')
+		)));
+	}
+}
+?>
+
+<div class="span-24 last">
+	<div class="span-12" id="configs-container">
+		<?php echo $this->form; ?>
+	</div>
+</div>
+
+

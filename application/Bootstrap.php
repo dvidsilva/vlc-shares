@@ -25,7 +25,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$translation = null;
 		if ( $configs instanceof Zend_Config ) {
 			try {
-				$translation = new Zend_Translate('ini', $configs->general->get('languageFile', APPLICATION_PATH ."/../languages/en_GB.ini" ));
+				$translation = new Zend_Translate('ini', APPLICATION_PATH ."/../languages/". $configs->general->get('languageFile', "en_GB.ini" ));
 				X_Env::initTranslator($translation);
 			} catch (Exception $e) {
 				// no translation available
@@ -36,6 +36,30 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	}
 	
 	protected function _initConfigs() {
+		$this->bootstrap('db');
+
+		// TODO cache
+		
+		// read configuration from the db as an array
+		$configA = array();
+		$configs = Application_Model_ConfigsMapper::i()->fetchAll();
+		foreach ($configs as $config) {
+			/* @var $config Application_Model_Config */
+			$key = $config->getKey();
+			$_array = $config->getValue();
+			$exploded = explode('.', $key);
+			$_first = true;
+			for ( $i = count($exploded) - 1; $i >= 0; $i--) {
+				$_array = array($exploded[$i] => $_array);
+			}
+			$_array = array($config->getSection() => $_array);
+			$configA = array_merge_recursive($configA, $_array);
+		}
+		
+		//echo '<pre>'.print_r($configA, true).'</pre>';
+		
+		// TODO insert configs in db and then
+		// return new Zend_Config($configA); 
 		return new Zend_Config_Ini(X_VlcShares::config());
 	}
 	

@@ -31,6 +31,7 @@ CREATE TABLE plg_profiles (
 
 CREATE INDEX "plg_profiles_id" ON "plg_profiles" ("id");
 
+
 CREATE TABLE plg_outputs (
 	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	label VARCHAR(255) NOT NULL,
@@ -42,4 +43,30 @@ CREATE TABLE plg_outputs (
 
 CREATE INDEX "plg_outputs_id" ON "plg_outputs" ("id");
 
+
+CREATE TABLE configs (
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`key` VARCHAR(255) NOT NULL UNIQUE,
+	`value` TEXT DEFAULT NULL,
+	`default` TEXT DEFAULT NULL,
+	section VARCHAR(255) NOT NULL DEFAULT "general",
+	label VARCHAR(255) DEFAULT NULL,
+	description VARCHAR(255) DEFAULT NULL,
+	`type` INTEGER DEFAULT 0
+);
+
+CREATE INDEX "configs_id" ON "configs" ("id");
+
+
+CREATE TABLE plugins (
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`key` VARCHAR(255) NOT NULL UNIQUE,
+	class VARCHAR(255) NOT NULL,
+	file VARCHAR(255) DEFAULT NULL,
+	label VARCHAR(255) DEFAULT NULL,
+	description VARCHAR(255) DEFAULT NULL,
+	`type` INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE INDEX "plugins_id" ON "plugins" ("id");
 
