@@ -27,6 +27,7 @@ class Application_Model_Config extends Application_Model_Abstract {
 	private $label;
 	private $description;
 	private $type;
+	private $class;
 	
 	/**
 	 * @return the $id
@@ -156,10 +157,22 @@ class Application_Model_Config extends Application_Model_Abstract {
 		return $this;
 	}
 
+	/**
+	 * Return class of config
+	 * @return string
+	 */
+	public function getClass() {
+		return $this->class;
+	}
 	
-	
-	
-	
+	/**
+	 * @param $class the $class to set
+	 * @return Application_Model_Config
+	 */
+	public function setClass($class) {
+		$this->class = $class;
+		return $this;
+	}
 	
 }
 

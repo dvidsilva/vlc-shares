@@ -15,6 +15,7 @@ class Application_Form_Configs extends Zend_Form
     {
         // Set the method for the display form to POST
         $this->setMethod('post');
+        $this->setName('configs');
  
         $sections = Application_Model_ConfigsMapper::i()->fetchSections();
         
@@ -50,9 +51,16 @@ class Application_Form_Configs extends Zend_Form
         	$element = $this->createElement($elementType, $elementName, array(
         		'label'			=> $elementLabel,
         		'description'	=> $elementDescription,
+        		/*
+        		'options'		=> array(
+        			'class'			=> $config->getClass()
+        		)
+        		*/
         	));
         	
         	$element->getDecorator('description')->setEscape(false);
+        	$element->getDecorator('htmlTag')->setOption('class', $config->getClass());
+        	$element->getDecorator('label')->setOption('class', $element->getDecorator('label')->getOption('class') . ' ' . $config->getClass());
         	
         	if ( $config->getType() == Application_Model_Config::TYPE_BOOLEAN) {
         		$element->setMultiOptions(array(1 => X_Env::_('yes'), 0 => X_Env::_('no') ));

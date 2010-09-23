@@ -52,7 +52,8 @@ CREATE TABLE configs (
 	section VARCHAR(255) NOT NULL DEFAULT "general",
 	label VARCHAR(255) DEFAULT NULL,
 	description VARCHAR(255) DEFAULT NULL,
-	`type` INTEGER DEFAULT 0
+	`type` INTEGER DEFAULT 0,
+	class VARCHAR(255) DEFAULT NULL
 );
 
 CREATE INDEX "configs_id" ON "configs" ("id");
@@ -65,7 +66,8 @@ CREATE TABLE plugins (
 	file VARCHAR(255) DEFAULT NULL,
 	label VARCHAR(255) DEFAULT NULL,
 	description VARCHAR(255) DEFAULT NULL,
-	`type` INTEGER NOT NULL DEFAULT 0
+	`type` INTEGER NOT NULL DEFAULT 0,
+	enabled INTEGER NOT NULL DEFAULT 0
 );
 
 CREATE INDEX "plugins_id" ON "plugins" ("id");

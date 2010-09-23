@@ -13,6 +13,10 @@ class Application_Model_Plugin extends Application_Model_Abstract {
 	);
 	*/
 	
+	const SYSTEM = 0;
+	const DISTRIBUTION = 1;
+	const USER = 2;
+	
 	private $id;
 	private $key;
 	private $class;
@@ -20,6 +24,7 @@ class Application_Model_Plugin extends Application_Model_Abstract {
 	private $label;
 	private $description;
 	private $type;
+	private $enabled;
 	
 	/**
 	 * @return the $id
@@ -70,6 +75,13 @@ class Application_Model_Plugin extends Application_Model_Abstract {
 		return $this->type;
 	}
 
+	/**
+	 * @return the $enabled
+	 */
+	public function isEnabled() {
+		return $this->enabled;
+	}
+	
 	/**
 	 * @param $id the $id to set
 	 * @return class
@@ -133,7 +145,14 @@ class Application_Model_Plugin extends Application_Model_Abstract {
 		return $this;
 	}
 
-	
+	/**
+	 * @param $enabled the $enabled to set
+	 * @return Application_Model_Plugin
+	 */
+	public function setEnabled($enabled) {
+		$this->enabled = (bool) $enabled;
+		return $this;
+	}
 	
 	
 }

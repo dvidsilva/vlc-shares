@@ -43,7 +43,8 @@ class Application_Model_ConfigsMapper extends Application_Model_AbstractMapper {
 			'section'		=> $model->getSection(),
 			'label'			=> $model->getLabel(),
 			'description'	=> $model->getDescription(),
-			'type'			=> $model->getType()
+			'type'			=> $model->getType(),
+			'class'			=> $model->getClass()
 		);
 		
 		if (null === ($id = $model->getId ())) {
@@ -68,7 +69,8 @@ class Application_Model_ConfigsMapper extends Application_Model_AbstractMapper {
 			->setSection($row->section)
 			->setLabel($row->label)
 			->setDescription($row->description)
-			->setType($row->type);
+			->setType($row->type)
+			->setClass($row->class);
 	}
 	
 	public function delete(Application_Model_Config $model) {

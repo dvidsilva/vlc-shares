@@ -86,9 +86,14 @@ class ManageController extends X_Controller_Action
     	
     	$form->setDefaults($defaultValues);
     	
+    	$plugins = Application_Model_PluginsMapper::i()->fetchAll();
+    	
+    	$this->view->plugins = $plugins;
     	$this->view->form = $form;
     	
     }
+    
+    
     
     private function _initConfigsForm($configs) {
     	
