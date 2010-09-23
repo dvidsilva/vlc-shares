@@ -19,9 +19,10 @@ Alpha 2 (In tag: checkout and try it http://vlc-shares.googlecode.com/svn/tags/0
   * ~~Write a youtube plugin~~ (moved to alpha 6)
   * ~~Stabilize level 2 of the api for plugin (level 2 api are all the api for plugins configurations management)~~
 
-Alpha 3:
+Alpha 3 (In tag: checkout and try it http://vlc-shares.googlecode.com/svn/tags/0.5_alpha3/ ):
   * ~~Stabilize level 2 of the api for plugin (level 2 api are all the api for plugins configurations management)~~ (moved to alpha 2)
-  * Create a plugins manager interface for the browser
+  * ~~Create a plugins manager interface for the browser~~
+  * ~~Configurations moved to db and editable through interface~~
 
 Alpha 4:
   * Implement stream analisys through mediainfo for file-based streams and through mplayer for remote streams (megavideo)
