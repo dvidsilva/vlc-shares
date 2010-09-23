@@ -137,7 +137,7 @@ class X_Env {
 	 * @param unknown_type $args
 	 */
 	static public function triggerEvent($eventName, &$args = array()) {
-		return X_VlcShares_Plugins::trigger($eventName, &$args);
+		return X_VlcShares_Plugins::trigger($eventName, $args);
 	}
 	
 	static public function routeLink($controller = 'index', $action = 'index', $params = array()) {

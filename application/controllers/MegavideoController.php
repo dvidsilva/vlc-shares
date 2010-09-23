@@ -113,7 +113,7 @@ INLINE;
                 if ( !is_null($request->getParam('id', null)) ) {
                 	$video->setId($request->getParam('id', null));
                 }
-                $mapper  = new Application_Model_MegavideoMapper();
+                $mapper  = Application_Model_MegavideoMapper::i();
                 $mapper->save($video);
                 if ( $isAjax) {
                 	header('Content-Type:text/plain');
@@ -143,7 +143,7 @@ INLINE;
         	$this->_helper->redirector('index','megavideo');
         } else {
         	
-        	$mapper  = new Application_Model_MegavideoMapper();
+        	$mapper  = Application_Model_MegavideoMapper::i();
         	$megavideo = new Application_Model_Megavideo();
         	$mapper->find($id, $megavideo);
         	if ( $megavideo->getId() == $id ) {
@@ -170,7 +170,7 @@ INLINE;
     	$categoryName = $request->getParam('id', '');
     	$newName = $request->getParam('name', 'Default');
     	if ( $categoryName != '') {
-    		$mapper  = new Application_Model_MegavideoMapper();
+    		$mapper  = Application_Model_MegavideoMapper::i();
     		$mapper->renameCategory($categoryName, $newName);
     	}
     	$this->_helper->redirector('index','megavideo');
@@ -181,7 +181,7 @@ INLINE;
         $id = $request->getParam('id', null);
         $type = $request->getParam('type', 'video');
 		if ( !is_null($id) ) {
-			$mapper  = new Application_Model_MegavideoMapper();
+			$mapper  = Application_Model_MegavideoMapper::i();
 			if ( $type == 'video' ) {
 				$mapper->delete($id);
 			} elseif ($type == 'category' ) {
