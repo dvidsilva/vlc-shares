@@ -10,11 +10,19 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$configs = $this->getResource('configs');
 		if ( $configs instanceof Zend_Config ) {
 			try {
-				if ( $configs->general->apache_altPort ) {
-					X_Env::initForcedPort($configs->general->apache_altPort);
+				if ( $configs->general->apache->port ) {
+					X_Env::initForcedPort($configs->general->apache->port);
 				}
 			} catch (Exception $e) {}
 		}
+	}
+	
+	protected function _initTitle() {
+		$this->bootstrap('view');
+		/* @var $view Zend_View */
+		$view = $this->getResource('view');
+		$view->headTitle('VLCShares')
+             ->setSeparator(' :: ');
 	}
 	
 	protected function _initTranslation() {
@@ -84,14 +92,20 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		
 		if ( $configs instanceof Zend_Config ) {
 			try {
-				if ( $configs->general->debug_enabled ) {
+				if ( $configs->general->debug->enabled ) {
 					// init debug system:
 					// config default:
 					//		/tmp/vlcShares.debug.log
 					//		log none
+					
+					$debugPath = sys_get_temp_dir().'/vlcShares.debug.log';
+					if ( $configs->general->debug->path != null && trim($configs->general->debug->path) != '' ) {
+						$configs->general->debug->get('path', sys_get_temp_dir().'/vlcShares.debug.log' );
+					}
+					
 					X_Debug::init(
-						$configs->general->get('debug_path', sys_get_temp_dir().'/vlcShares.debug.log' ),
-						(int) $configs->general->get('debug_level', X_Debug::LVL_NONE)
+						$debugPath,						
+						(int) $configs->general->debug->level
 					);
 				}
 			} catch (Exception $e) {

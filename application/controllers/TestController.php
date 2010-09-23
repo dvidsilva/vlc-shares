@@ -44,7 +44,7 @@ class TestController extends Zend_Controller_Action
     	$tests = array();
     	
     	// versione
-    	$tests[] = $this->_check('VLC-Share version', true, X_VlcShares::VERSION);
+    	$tests[] = $this->_check('VLC-Share version', null, X_VlcShares::VERSION);
 
     	// mostra il percorso del file di configurazione
     	$tests[] = $this->_check('Config file is', true, X_VlcShares::config() , '');
@@ -53,15 +53,6 @@ class TestController extends Zend_Controller_Action
     	$tests[] = $this->_check('Config file is available', file_exists(X_VlcShares::config()), 'Success', 'File not found or not readable. Following tests are skipped');
     	// skippa i test successivi
     	if ( !file_exists(X_VlcShares::config()) ) return $tests;
-
-    	// carichiamo le configurazioni
-    	$this->options = new Zend_Config_Ini(X_VlcShares::config());
-    	
-    	//controlliamo che il file di configurazione sia valido
-    	//$tests[] = $this->_check('Shared collection are >= 2 (workaround)', $this->options->shares->count() >= 2, 'Success', 'Failed');
-
-    	//controlliamo che le collezioni siano ben formate
-    	//$tests[] = $this->_check('Shared collection format is valid', $this->_shareCheck($this->options->shares->toArray()), 'Success', 'Shared collection format is not valid (or path misses last /)');
     	
     	// controlliamo la path di vlc
     	$tests[] = $this->_check('Vlc path is valid', $this->_vlcPathCheck($this->options->vlc->path), 'Success', 'Path is not valid (or check is failed)');
@@ -76,10 +67,10 @@ class TestController extends Zend_Controller_Action
     	$tests[] = $this->_check('Check Apache altPort', $_SERVER['SERVER_PORT'] == $this->options->general->get('apache_altPort', '80'), 'Success', 'apache_altPort should be '.$_SERVER['SERVER_PORT']);
     	
     	//controlliamo che nc sia presente
-    	$tests[] = $this->_check('Debug log', !$this->options->general->debug_enabled, 'Disable', 'Enable (should be enabled for debug only)');
+    	$tests[] = $this->_check('Debug log', !$this->options->general->debug->enabled, 'Disable', 'Enable (should be enabled for debug only)');
     	
     	//controlliamo la path del file di debug
-    	$tests[] = $this->_check('Debug log path', is_writable(dirname($this->options->general->get('debug_path', sys_get_temp_dir() . '/vlcShares.debug.log'))), 'Success', 'Failed');
+    	$tests[] = $this->_check('Debug log path', is_writable(dirname($this->options->general->debug->get('path', sys_get_temp_dir() . '/vlcShares.debug.log'))), 'Success', 'Failed');
 
     	//controlliamo pcstream
     	$tests[] = $this->_check('PCStream is enabled', !$this->options->pcstream->get('commanderEnabled', false), 'False', 'True (should be enabled for tests only)');
@@ -156,7 +147,7 @@ class TestController extends Zend_Controller_Action
     
     
     private function _check($name, $test, $success = 'Success', $failure = 'Failure') {
-    	return array($name, $test, $test ? $success : $failure);
+    	return array($name, $test, ($test || $test == null ? $success : $failure));
     }
 
     private function _shareCheck($sharesArray) {
