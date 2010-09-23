@@ -58,9 +58,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		
 		//echo '<pre>'.print_r($configA, true).'</pre>';
 		
-		// TODO insert configs in db and then
-		// return new Zend_Config($configA); 
-		return new Zend_Config_Ini(X_VlcShares::config());
+		return new Zend_Config($configA); 
+		//return new Zend_Config_Ini(X_VlcShares::config()); // old way
 	}
 	
 	protected function _initPlugins() {

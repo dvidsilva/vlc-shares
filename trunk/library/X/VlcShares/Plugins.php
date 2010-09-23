@@ -34,9 +34,31 @@ final class X_VlcShares_Plugins {
 			$options = new Zend_Config($options);
 		}
 
-		foreach ($options as $o_k => $o_v ) {
-			$pValue = $o_v->toArray();
-			$pKey = $o_k;
+		$plugins = Application_Model_PluginsMapper::i()->fetchAll();
+		
+		//foreach ($options as $o_k => $o_v ) {
+		// 	$pValue = $o_v->toArray();
+		//	$pKey = $o_k;
+				
+		foreach ($plugins as $plugin ) {
+			/* @var $plugin Application_Model_Plugin */
+			
+			if ( !$plugin->isEnabled() && $plugin->getType() != Application_Model_Plugin::SYSTEM) continue;
+			
+			$pKey = $plugin->getKey(); 
+			
+			try {
+				if ( $options->$pKey ) {
+					$pValue = $options->$pKey->toArray();
+				}
+			} catch (Exception $e ) { 
+				// no configs
+				$pValue = array();
+			}
+			$pValue['class'] = $plugin->getClass();
+			if ( $plugin->getFile() != null ) {
+				$pValue['path'] = APPLICATION_PATH . "/../library/".$plugin->getFile();
+			}
 			
 			$className = $pValue['class'];
 			$path = @$pValue['path'];

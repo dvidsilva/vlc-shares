@@ -55,6 +55,15 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 
 -- filesubs need extra lines in configs
 
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'fileSubs.file.enabled','1','1','plugins',2,'p_filesubs_conf_fileenabled_label','p_filesubs_conf_fileenabled_desc','');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'fileSubs.file.extensions','srt|sub|txt|idx','srt|sub|txt|idx','plugins',0,'p_filesubs_conf_fileextensions_label','p_filesubs_conf_fileextensions_desc','');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'fileSubs.infile.enabled','1','1','plugins',2,'p_filesubs_conf_infileenabled_label','p_filesubs_conf_infileenabled_desc','');
+
+
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
 	'hideHidden',
 	'X_VlcShares_Plugins_HideHidden', 
@@ -64,6 +73,11 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	1,
 	1
 );
+
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'hideHidden.hideSystem', '1', '1', 'plugins', 2, 'p_hidehidden_conf_hidesystem_label', 'p_hidehidden_conf_hidesystem_desc',	'');
+
 
 -- hidehidden need extra line in configs
 
@@ -76,6 +90,11 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	1,
 	1
 );
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'filterExt.valid', 'avi|mkv|mpg|mpeg|mov|3gp|mp4|mp3|mp2|ts|mpv|mpa|mpgv|mpga|divx|dvx|flv', 'avi|mkv|mpg|mpeg|mov|3gp|mp4|mp3|mp2|ts|mpv|mpa|mpgv|mpga|divx|dvx|flv', 'plugins', 0, 'p_filterext_conf_valid_label', 'p_filterext_conf_valid_desc',	'');
+
+
 
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
 	'sortItems',
@@ -97,6 +116,15 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	1
 );
 
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'wiimc.forced.enabled', '1', '0', 'plugins', 2, 'p_wiimcplxrenderer_conf_forcedenabled_label', 'p_wiimcplxrenderer_conf_forcedenabled_desc',	'');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'wiimc.forced.fancy', '1', '0', 'plugins', 2, 'p_wiimcplxrenderer_conf_forcedfancy_label', 'p_wiimcplxrenderer_conf_forcedfancy_desc',	'');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'wiimc.forced.showRaw', '1', '0', 'plugins', 2, 'p_wiimcplxrenderer_conf_forcedshowraw_label', 'p_wiimcplxrenderer_conf_forcedshowraw_desc',	'');
+
+
+
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
 	'redirectControls',
 	'X_VlcShares_Plugins_RedirectControls', 
@@ -117,6 +145,20 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	1,
 	1
 );
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'controls.pauseresume.enabled', '0', '0', 'plugins', 2, 'p_controls_conf_pauseresumeenabled_label', 'p_controls_conf_pauseresumeenabled_desc', '');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'controls.stop.enabled', '1', '1', 'plugins', 2, 'p_controls_conf_stopenabled_label', 'p_controls_conf_stopenabled_desc', '');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'controls.forwardrelative.enabled', '0', '0', 'plugins', 2, 'p_controls_conf_forwardrelativeenabled_label', 'p_controls_conf_forwardrelativeenabled_desc', '');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'controls.backrelative.enabled', '0', '0', 'plugins', 2, 'p_controls_conf_backrelativeenabled_label', 'p_controls_conf_backrelativeenabled_desc', '');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'controls.seek.enabled', '1', '1', 'plugins', 2, 'p_controls_conf_seekenabled_label', 'p_controls_conf_seekenabled_desc', '');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'controls.oldstylecontrols.enabled', '0', '0', 'plugins', 2, 'p_controls_conf_oldstylecontrolsenabled_label', 'p_controls_conf_oldstylecontrolsenabled_desc', '');
+
 
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
 	'workaround_wiimc1',
