@@ -24,6 +24,15 @@ foreach ( $dg as $g ) {
 	<?php $this->headScript()->captureEnd(); ?>
 <?php $this->headTitle()->prepend(X_Env::_('configs_title')); ?>
 
+<div class="span-24 last" id="back-to-home">
+	<div class="span-4 box back">
+		<a href="<?php echo $this->url(array('controller' => 'manage', 'action' => 'index'), 'default', true); ?>"><?php echo X_Env::_('back_to_home'); ?></a>
+	</div>
+	<div class="span-18 box title last">
+		<h4><?php echo X_Env::_('configs_title'); ?></h4>
+	</div>
+</div>
+
 <?php if ( count($this->messages) ) :?>
 <div class="span-24 last" id="manage-messages">
 	<ul>

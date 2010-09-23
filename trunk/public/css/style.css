@@ -253,3 +253,100 @@ div.scrollable {
 .rollout h4 {
 	margin-bottom: 0em;
 }
+
+#back-to-home {
+	margin-bottom: 1em;
+}
+
+#back-to-home .back, #back-to-home a, #back-to-home .title, #back-to-home .title h4 {
+	line-height: 30px;
+	height: 30px;
+	display: block;
+	font-weight: bold;
+	vertical-align: middle;
+}
+
+#back-to-home a {
+	text-shadow: 0 2px 2px rgba(0,0,0, .6);
+	text-decoration: undeline;
+	color: #e7e5e5;
+}
+
+#back-to-home h4 {
+	text-shadow: 0 2px 2px rgba(255,255,255, .6);
+}
+
+
+#back-to-home .back, #back-to-home .title{
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	padding-top: 0em;
+	padding-bottom: 0em;
+	background: #7d7d7d url(../images/gradient.png) repeat-x 0 -110px;
+
+	/*margin-top: 0.3em;*/
+	/*margin-bottom: 0.1em;*/
+
+	/*padding: 1em;*/
+	
+	border-radius: 2em 0.5em 0.5em 2em;
+	-webkit-border-radius: 2em 0.5em 0.5em 2em;
+	-moz-border-radius: 2em 0.5em 0.5em 2em;
+
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0, .4);
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0, .4);
+
+	font-weight: bold;
+}
+
+#back-to-home .title {
+	border-radius: 0.5em 2em 2em 0.5em;
+	-webkit-border-radius: 0.5em 2em 2em 0.5em;
+	-moz-border-radius: 0.5em 2em 2em 0.5em;
+}
+
+.quickactionbox {
+	
+	position: relative;
+	/* va inserito sempre come primo in un box */
+	/*top: -10px;*/
+
+	z-index: 0;
+
+	margin-right: 2em;
+	
+	float: right;
+	
+	background-color: #7d7d7d;
+	background: #7d7d7d url(../../images/gradient.png) repeat-x 0 -110px;
+
+	padding: 0.2em;
+
+	text-align: center;
+
+	cursor: pointer;
+	cursor: hand;
+
+	font-weight: bold;
+	text-shadow: 0 1px 1px rgba(0,0,0, .3);
+	color: #e7e5e5;
+	/*text-decoration: underline;*/
+	
+	
+	border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+	-moz-border-radius: 0.5em;
+
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0, .4);
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0, .4);
+
+	font-weight: bold;
+	
+	
+}
+
+
+
+#back-to-home .back:hover {
+	background-color: #565656;
+}
