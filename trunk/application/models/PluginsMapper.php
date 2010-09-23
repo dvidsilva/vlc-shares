@@ -43,7 +43,8 @@ class Application_Model_PluginsMapper extends Application_Model_AbstractMapper {
 			'file'			=> $model->getFile(),
 			'label'			=> $model->getLabel(),
 			'description'	=> $model->getDescription(),
-			'type'			=> $model->getType()
+			'type'			=> $model->getType(),
+			'enabled'		=> ($model->isEnabled() ? 1 : 0)
 		);
 		
 		if (null === ($id = $model->getId ())) {
@@ -67,7 +68,8 @@ class Application_Model_PluginsMapper extends Application_Model_AbstractMapper {
 			->setFile($row->file)
 			->setLabel($row->label)
 			->setDescription($row->description)
-			->setType($row->type);
+			->setType($row->type)
+			->setEnabled($row->enabled);
 	}
 	
 	public function delete(Application_Model_Plugin $model) {

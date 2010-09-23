@@ -85,6 +85,24 @@ try {
     }
  
     if ($withData) {
+    	
+        $dataSql = file_get_contents(dirname(__FILE__) . '/configs.sqlite.sql');
+        // use the connection directly to load sql in batches
+        $dbAdapter->getConnection()->exec($dataSql);
+        if ('testing' != APPLICATION_ENV) {
+            echo 'Configs Loaded.';
+            echo PHP_EOL;
+        }
+
+        $dataSql = file_get_contents(dirname(__FILE__) . '/plugins.sqlite.sql');
+        // use the connection directly to load sql in batches
+        $dbAdapter->getConnection()->exec($dataSql);
+        if ('testing' != APPLICATION_ENV) {
+            echo 'Plugins Loaded.';
+            echo PHP_EOL;
+        }
+        
+    	
         $dataSql = file_get_contents(dirname(__FILE__) . '/data.sqlite.sql');
         // use the connection directly to load sql in batches
         $dbAdapter->getConnection()->exec($dataSql);

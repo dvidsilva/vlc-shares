@@ -64,6 +64,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	}
 	
 	protected function _initPlugins() {
+		$this->bootstrap('db');
 		$this->bootstrap('configs');
 		$this->bootstrap('debug');
 		

@@ -139,11 +139,11 @@ div.scrollable {
 	font-weight: bold;
 }
 
-#manage-statistics .statistic {
+#manage-statistics .statistic, .rollout-container {
 	margin-bottom: 1em;
 }
 
-#manage-statistics .statistic .box {
+#manage-statistics .statistic .box, .rollout {
 	margin-bottom: 0em; 
 }
 
@@ -154,7 +154,7 @@ div.scrollable {
 	color: #e7e5e5;
 }
 
-#manage-statistics .statistic .folded {
+#manage-statistics .statistic .folded, .folded {
 	
 	background-color: #333;
 	background: #333 url(../images/grid.png);
@@ -195,6 +195,61 @@ div.scrollable {
 	cursor: hand;
 }
 
+.boxitem-rowicon {
+	float: right;
+	margin-right: 0.5em;
+	cursor: pointer;
+	cursor: hand;
+}
 
 
+.onoff {
+	position: relative;
+	background: url(../images/on_off_bg.png) -6px -3px;
+	border-radius: 1.5em;
+	-webkit-border-radius: 1.5em;
+	-moz-border-radius: 1.5em;
+}
 
+.onoff .slider {
+	background: #333 url(../images/grid.png);
+	margin: 1px;
+	border-radius: 1.5em;
+	-webkit-border-radius: 1.5em;
+	-moz-border-radius: 1.5em;
+}
+
+.onoff .slider_on {
+	position: relative;
+	margin-left: 39px;
+}
+
+.onoff .slider_off {
+	position: relative;
+	left: 0px;
+}
+
+.folded .label {
+	font-weight: bold;
+	text-shadow: 0 2px 2px rgba(0,0,0, .6);
+	color: #e7e5e5;
+	text-align: right;	
+}
+
+.folded .value {
+	color: #e7e5e5;
+}
+
+.folded pre {
+	margin: 0em;
+	padding: 0.5em;
+}
+
+.rollout {
+	padding-top: 0.8em;
+	padding-bottom: 0.5em;
+}
+
+.rollout h4 {
+	margin-bottom: 0em;
+}
