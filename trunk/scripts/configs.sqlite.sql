@@ -73,7 +73,7 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	'vlc',
 	0,
 	'config_vlc_commander_http_command_label',
-	'config_vlc_commander_http_command__desc',
+	'config_vlc_commander_http_command_desc',
 	'advanced'
 );
 
@@ -84,7 +84,7 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	'vlc',
 	0,
 	'config_vlc_commander_http_host_label',
-	'config_vlc_commander_http_host__desc',
+	'config_vlc_commander_http_host_desc',
 	'advanced'
 );
 
@@ -95,7 +95,7 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	'vlc',
 	0,
 	'config_vlc_commander_http_port_label',
-	'config_vlc_commander_http_port__desc',
+	'config_vlc_commander_http_port_desc',
 	'advanced'
 );
 
@@ -106,7 +106,51 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	'vlc',
 	0,
 	'config_vlc_commander_http_timeout_label',
-	'config_vlc_commander_http_timeout__desc',
+	'config_vlc_commander_http_timeout_desc',
 	'advanced'
+);
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'mediainfo.enabled', 
+	'1',
+	'1',
+	'helpers',
+	3,
+	'config_helpers_mediainfo_enabled_label',
+	'config_helpers_mediainfo_enabled_desc',
+	NULL
+);
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'mediainfo.path', 
+	'/usr/bin/mediainfo',
+	'/usr/bin/mediainfo',
+	'helpers',
+	0,
+	'config_helpers_mediainfo_path_label',
+	'config_helpers_mediainfo_path_desc',
+	NULL
+);
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'ffmpeg.enabled', 
+	'1',
+	'1',
+	'helpers',
+	3,
+	'config_helpers_ffmpeg_enabled_label',
+	'config_helpers_ffmpeg_enabled_desc',
+	NULL
+);
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'ffmpeg.path', 
+	'/usr/bin/ffmpeg',
+	'/usr/bin/ffmpeg',
+	'helpers',
+	0,
+	'config_helpers_ffmpeg_path_label',
+	'config_helpers_ffmpeg_path_desc',
+	NULL
 );
 

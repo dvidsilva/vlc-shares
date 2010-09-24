@@ -35,7 +35,12 @@ class X_Env {
 		return self::$_isWindows;
 	}
 	
-	
+	/**
+	 * Execute a call in system env
+	 * @param string $command command to be executed
+	 * @param int $outputType type of output
+	 * @param int $spawnType type of execution (synch or asynch)
+	 */
 	static public function execute($command, $outputType = self::EXECUTE_OUT_LASTLINE, $spawnType = self::EXECUTE_PS_WAIT) {
 		
 		$output = array();
@@ -167,14 +172,18 @@ class X_Env {
 		return $link.$url;
 	}
 	
+	static private $_stringsWriter;
 	static public function initTranslator(Zend_Translate $translator) {
+		if ( true ) self::$_stringsWriter = new StringsWriter();
 		if ( is_null(self::$_translator) ) {
 			self::$_translator = $translator;
 			X_Debug::i("Translator enabled");
 		}
 	}
 	
+	
 	static public function _($message) {
+		if ( !is_null(self::$_stringsWriter)) self::$_stringsWriter->_($message);
 		if ( !is_null(self::$_translator) ) {
 			return self::$_translator->_($message);
 		}
@@ -188,4 +197,29 @@ class X_Env {
 		return (substr($string, 0, strlen($substring)) == $substring);
 	}
 	
+}
+
+class StringsWriter {
+	private $_stringsQueue = array();
+	function __construct() {
+		if ( file_exists(dirname(__FILE__).'/strings.inc')) {
+			$this->_stringsQueue = unserialize(file_get_contents(dirname(__FILE__).'/strings.inc'));
+		}		
+	}
+	function _($string) {
+		$this->_stringsQueue[$string] = true;
+	}
+	function __destruct() {
+		
+		ksort($this->_stringsQueue);
+		
+		X_Debug::i(file_put_contents(dirname(__FILE__).'/strings.inc', serialize($this->_stringsQueue)));
+		
+		file_put_contents(dirname(__FILE__).'/strings.ini', ";File writer output\n\n\n");
+		foreach ($this->_stringsQueue as $key => $value) {
+			file_put_contents(dirname(__FILE__).'/strings.ini', "$key=\"\"\n", FILE_APPEND );
+		}
+		
+		X_Debug::i('Destructor called');	
+	}
 }

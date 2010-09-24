@@ -8,6 +8,7 @@ interface X_VlcShares_Plugins_Helper_StreaminfoInterface {
 	// === audio codecs
 	const ACODEC_AAC = 'aac';
 	const ACODEC_MP3 = 'mp3';
+	const ACODEC_AC3 = 'ac3';
 	 
 	// === video codecs
 	const VCODEC_H264 = 'h264';
