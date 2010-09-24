@@ -74,9 +74,11 @@ class Application_Model_OutputsMapper
     	if ( $device !== null && is_integer($device) ) {
     		$select->where("cond_devices = ?", $device);
     	}
-    	$select->orWhere("cond_devices IS NULL");
+    	$select->orWhere("cond_devices IS NULL")
+    		->order(array('cond_devices ASC', 'weight DESC', 'label ASC'))
+    		->limit(1);
     	
-        $result = $this->getDbTable()->fetchAll($select, 'cond_devices DESC, weight DESC, label ASC', 1);
+        $result = $this->getDbTable()->fetchAll($select);
         if (0 == count($result)) {
             return;
         }
@@ -123,9 +125,10 @@ class Application_Model_OutputsMapper
     	if ( $device !== null && is_integer($device) ) {
     		$select->where("cond_devices = ?", $device);
     	}
-    	$select->orWhere("cond_devices IS NULL");
+    	$select->orWhere("cond_devices IS NULL")
+    		->order(array('cond_devices DESC', 'weight DESC', 'label ASC'));
     	
-        $resultSet = $this->getDbTable()->fetchAll($select, 'cond_devices DESC, weight DESC, label ASC');
+        $resultSet = $this->getDbTable()->fetchAll($select);
     	$entries   = array();
         foreach ($resultSet as $row) {
             $entry = new Application_Model_Output();

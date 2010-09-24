@@ -73,17 +73,26 @@ class Application_Model_ProfilesMapper
     public function findBest($format = null, $device = null, $provider = null, Application_Model_Profile $model) {
     	$select = $this->getDbTable()->select();
     	if ( $format !== null && is_string($format) ) {
-    		$select->where("cond_formats LIKE ?", $format);
+    		$select->orWhere("cond_formats LIKE ? AND cond_devices IS NULL", $format);
     	}
+    	/*
     	if ( $provider !== null && is_string($provider) ) {
     		$select->where("cond_providers LIKE ?", "%|$provider|%");
     	}
+    	*/
     	if ( $device !== null && is_integer($device) ) {
-    		$select->where("cond_devices = ?", $device);
+    		$select->orWhere("cond_devices = ? AND cond_formats IS NULL", $device);
     	}
-		$select->orWhere("cond_formats IS NULL AND cond_devices IS NULL AND cond_providers IS NULL");    	
     	
-        $result = $this->getDbTable()->fetchAll($select, 'cond_devices DESC, cond_format DESC, cond_provider DESC, weight DESC, label ASC', 1);
+    	if ( $format !== null && is_string($format) && $device !== null && is_integer($device) ) {
+    		$select->orWhere("cond_formats LIKE :format AND cond_devices = :device", array('format' => $format, 'device' => $device));
+    	}
+    	
+    	$select->orWhere("cond_formats IS NULL AND cond_devices IS NULL")
+    		->order(array('cond_format ASC', 'cond_devices ASC', 'weight DESC', 'label ASC'))
+    		->limit(1);
+    	    	
+        $result = $this->getDbTable()->fetchAll($select);
         if (0 == count($result)) {
             return;
         }
@@ -126,23 +135,39 @@ class Application_Model_ProfilesMapper
     	}
     }
     
+    /**
+     * Fetch profiles using conditions. Provider is ignored!
+     * Will be removed in future version
+     * 
+     * @param string $format
+     * @param int $device
+     * @param string $provider IS IGNORED!!!!
+     */
     public function fetchByConds($format = null, $device = null, $provider = null) {
     	$select = $this->getDbTable()->select();
     	if ( $format !== null && is_string($format) ) {
-    		$select->where("cond_formats LIKE ?", $format);
+    		$select->orWhere("cond_formats LIKE ? AND cond_devices IS NULL", $format);
     	}
+    	/*
     	if ( $provider !== null && is_string($provider) ) {
     		$select->where("cond_providers LIKE ?", "%|$provider|%");
     	}
+    	*/
     	if ( $device !== null && is_integer($device) ) {
-    		$select->where("cond_devices = ?", $device);
+    		$select->orWhere("cond_devices = ? AND cond_formats IS NULL", $device);
     	}
     	
-    	$select->orWhere("cond_formats IS NULL AND cond_devices IS NULL AND cond_providers IS NULL");
+    	if ( $format !== null && is_string($format) && $device !== null && is_integer($device) ) {
+    		$select->orWhere("cond_formats LIKE :format AND cond_devices = :device", array('format' => $format, 'device' => $device));
+    	}
+    	
+    	$select->orWhere("cond_formats IS NULL AND cond_devices IS NULL")
+    		->order(array('cond_format ASC', 'cond_devices ASC', 'weight DESC', 'label ASC'));
+    	
     	
     	//X_Debug::i((string) $select);
     	
-        $resultSet = $this->getDbTable()->fetchAll($select, 'cond_devices DESC, cond_format DESC, cond_provider DESC, weight DESC, label ASC');
+        $resultSet = $this->getDbTable()->fetchAll($select);
         $entries   = array();
         foreach ($resultSet as $row) {
             $entry = new Application_Model_Profile();

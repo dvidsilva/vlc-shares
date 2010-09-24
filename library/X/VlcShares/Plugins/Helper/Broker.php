@@ -2,6 +2,7 @@
 
 require_once 'X/VlcShares/Plugins/Helper/Interface.php';
 require_once 'X/VlcShares/Plugins/Helper/Abstract.php';
+require_once 'Zend/Config.php';
 
 class X_VlcShares_Plugins_Helper_Broker {
 	
@@ -18,9 +19,9 @@ class X_VlcShares_Plugins_Helper_Broker {
 
 	/**
 	 * 
-	 * @var X_VlcShares_Plugins_Helper_MPlayer
+	 * @var X_VlcShares_Plugins_Helper_FFMpeg
 	 */
-	private $mplayer;
+	private $ffmpeg;
 
 	/**
 	 * 
@@ -36,19 +37,20 @@ class X_VlcShares_Plugins_Helper_Broker {
 	
 	private $_helpers = array();
 	
-	public function __construct() {
-		$this->init();
+	public function __construct(Zend_Config $options) {
+		$this->init($options);
 	}
-	public function init() {
-		$this->mediainfo = new X_VlcShares_Plugins_Helper_Mediainfo();
-		$this->gspot = new X_VlcShares_Plugins_Helper_GSpot();
-		$this->mplayer = new X_VlcShares_Plugins_Helper_MPlayer();
-		$this->devices = new X_VlcShares_Plugins_Helper_Devices();
-		$this->stream = new X_VlcShares_Plugins_Helper_Stream();
+	public function init(Zend_Config $options) {
+		
+		$this->mediainfo = new X_VlcShares_Plugins_Helper_Mediainfo($options->get('mediainfo', new Zend_Config(array())));
+		$this->gspot = new X_VlcShares_Plugins_Helper_GSpot($options->get('gspot', new Zend_Config(array())));
+		$this->ffmpeg = new X_VlcShares_Plugins_Helper_FFMpeg($options->get('ffmpeg', new Zend_Config(array())));
+		$this->devices = new X_VlcShares_Plugins_Helper_Devices($options->get('devices', new Zend_Config(array())));
+		$this->stream = new X_VlcShares_Plugins_Helper_Stream($options->get('stream', new Zend_Config(array())));
 		
 		$this->registerHelper('mediainfo', $this->mediainfo)
 			->registerHelper('gspot', $this->gspot)
-			->registerHelper('mplayer', $this->mplayer)
+			->registerHelper('ffmpeg', $this->ffmpeg)
 			->registerHelper('devices', $this->devices)
 			->registerHelper('stream', $this->stream);
 	}
@@ -64,9 +66,9 @@ class X_VlcShares_Plugins_Helper_Broker {
 	public function gspot() { return $this->gspot; }
 	
 	/**
-	 * @return X_VlcShares_Plugins_Helper_MPlayer
+	 * @return X_VlcShares_Plugins_Helper_FFMpeg
 	 */
-	public function mplayer() { return $this->mplayer; }
+	public function ffmpeg() { return $this->ffmpeg; }
 
 	/**
 	 * @return X_VlcShares_Plugins_Helper_Stream

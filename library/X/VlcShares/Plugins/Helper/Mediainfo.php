@@ -19,11 +19,19 @@ class X_VlcShares_Plugins_Helper_Mediainfo extends X_VlcShares_Plugins_Helper_Ab
 	
 	private $formatTests = array();
 
+	/**
+	 * 
+	 * @var Zend_Config
+	 */
+	private $options = null;
 	
-	function __construct() {
+	function __construct(Zend_Config $options) {
+		
+		$this->options = $options;
 		$this->formatTests = array(
 			// audio
 			X_VlcShares_Plugins_Helper_StreaminfoInterface::ACODEC_AAC => array(array('/Format', 'AAC')),
+			X_VlcShares_Plugins_Helper_StreaminfoInterface::ACODEC_AC3 => array(array('/Format', 'AC-3')),
 			X_VlcShares_Plugins_Helper_StreaminfoInterface::ACODEC_MP3 => array(
 				array('/Format', 'MPEG Audio'),
 				array('/Codec_ID_Hint', 'MP3'),
@@ -43,6 +51,14 @@ class X_VlcShares_Plugins_Helper_Mediainfo extends X_VlcShares_Plugins_Helper_Ab
 	}
 	
 	/**
+	 * Show if helper is enabled and ready to get infos
+	 * @return boolean
+	 */
+	function isEnabled() {
+		return ($this->options->get('enabled', false) && file_exists($this->options->get('path', false))); 
+	}
+	
+	/**
 	 * Set location source
 	 * 
 	 * @param $location the source
@@ -57,98 +73,194 @@ class X_VlcShares_Plugins_Helper_Mediainfo extends X_VlcShares_Plugins_Helper_Ab
 	}
 	
 	/**
+	 * Return all infos about the source setted 
+	 * with setLocation() in an associative array
+	 * The array has this format:
+	 * array(
+	 * 	'source'	=> $source
+	 * 	'videos'	=> array from getVideosInfo()
+	 * 	'audios'	=> array from getAudiosInfo()
+	 * 	'subs'		=> array from getSubsInfo()
+	 * )
 	 * 
+	 * @return array
 	 */
-	public function getInfos() {
+	function getInfos() {
 		$this->fetch();
 		return $this->_fetched;
 	}
 
+	
+	
 	/**
-	 * 
+	 * @see X_VlcShares_Plugins_Helper_StreaminfoInterface::getAudioCodecName()
+	 * @param int $index
+	 * @return string
 	 */
-	public function getVideosInfo() {
-		
+	public function getAudioCodecName($index = -1) {
+		$this->fetch();
+		if ( $index == -1 ) {
+			reset($this->_fetched['audios']);
+			$index = key($this->_fetched['audios']);
+		}
+		if ( array_key_exists($index, $this->_fetched['audios']) ) {
+			return $this->_fetched['audios'][$index]['codecName'];
+		} else {
+			throw new Exception("There is no stream $index in source {$this->_location}");
+		}
 	}
 
 	/**
-	 * @param unknown_type $index
+	 * @see X_VlcShares_Plugins_Helper_StreaminfoInterface::getAudioCodecType()
+	 * @param int $index
 	 */
-	public function getVideoCodecName($index = 0) {
-		
+	public function getAudioCodecType($index = -1) {
+		$this->fetch();
+		if ( $index == -1 ) {
+			reset($this->_fetched['audios']);
+			$index = key($this->_fetched['audios']);
+		}
+		if ( array_key_exists($index, $this->_fetched['audios']) ) {
+			return $this->_fetched['audios'][$index]['codecType'];
+		} else {
+			throw new Exception("There is no stream $index in source {$this->_location}");
+		}
 	}
 
 	/**
-	 * @param unknown_type $index
-	 */
-	public function getVideoCodecType($index = 0) {
-		
-	}
-
-	/**
-	 * 
-	 */
-	public function getVideoStreamsNumber() {
-		
-	}
-
-	/**
-	 * 
+	 * @see X_VlcShares_Plugins_Helper_StreaminfoInterface::getAudioInfo()
+	 * @return array
 	 */
 	public function getAudiosInfo() {
-		
+		$this->fetch();
+		// @ prevent error fetched data
+		return @$this->_fetched['audios'];
 	}
 
 	/**
-	 * @param unknown_type $index
-	 */
-	public function getAudioCodecName($index = 0) {
-		
-	}
-
-	/**
-	 * @param unknown_type $index
-	 */
-	public function getAudioCodecType($index = 0) {
-		
-	}
-
-	/**
-	 * 
+	 * @see X_VlcShares_Plugins_Helper_StreaminfoInterface::getAudioStreamsNumber()
+	 * @return int
 	 */
 	public function getAudioStreamsNumber() {
-		
+		$this->fetch();
+		// @ prevent error fetched data
+		return count(@$this->_fetched['audios']);
 	}
 
 	/**
-	 * 
+	 * @see X_VlcShares_Plugins_Helper_StreaminfoInterface::getSubFormat()
+	 * @param int $index
+	 * @return string
+	 */
+	public function getSubFormat($index = -1) {
+		$this->fetch();
+		if ( $index == -1 ) {
+			reset($this->_fetched['subs']);
+			$index = key($this->_fetched['subs']);
+		}
+		if ( array_key_exists($index, $this->_fetched['subs']) ) {
+			return $this->_fetched['subs'][$index]['format'];
+		} else {
+			throw new Exception("There is no sub $index in source {$this->_location}");
+		}
+	}
+
+	/**
+	 * @see X_VlcShares_Plugins_Helper_StreaminfoInterface::getSubLanguage()
+	 * @param index $index
+	 * @return string
+	 */
+	public function getSubLanguage($index = -1) {
+		$this->fetch();
+		if ( $index == -1 ) {
+			reset($this->_fetched['subs']);
+			$index = key($this->_fetched['subs']);
+		}
+		if ( array_key_exists($index, $this->_fetched['subs']) ) {
+			return $this->_fetched['subs'][$index]['language'];
+		} else {
+			throw new Exception("There is no sub $index in source {$this->_location}");
+		}
+	}
+
+	/**
+	 * @see X_VlcShares_Plugins_Helper_StreaminfoInterface::getSubsInfo()
+	 * @return array
 	 */
 	public function getSubsInfo() {
-		
+		$this->fetch();
+		// @ prevent error fetched data
+		return @$this->_fetched['subs'];
 	}
 
 	/**
-	 * 
+	 * @see X_VlcShares_Plugins_Helper_StreaminfoInterface::getSubsNumber()
+	 * @return int
 	 */
 	public function getSubsNumber() {
-		
+		$this->fetch();
+		// @ prevent error fetched data
+		return count(@$this->_fetched['subs']);
 	}
 
 	/**
-	 * @param unknown_type $index
+	 * @see X_VlcShares_Plugins_Helper_StreaminfoInterface::getVideoCodecName()
+	 * @param int $index
+	 * @return string
 	 */
-	public function getSubFormat($index = 0) {
-		
+	public function getVideoCodecName($index = -1) {
+		$this->fetch();
+		if ( $index == -1 ) {
+			reset($this->_fetched['videos']);
+			$index = key($this->_fetched['videos']);
+		}
+		if ( array_key_exists($index, $this->_fetched['videos']) ) {
+			return $this->_fetched['videos'][$index]['codecName'];
+		} else {
+			throw new Exception("There is no stream $index in source {$this->_location}");
+		}
 	}
 
 	/**
-	 * @param unknown_type $index
+	 * @see X_VlcShares_Plugins_Helper_StreaminfoInterface::getAudioCodecType()
+	 * @param int $index
+	 * @return int
 	 */
-	public function getSubLanguage($index = 0) {
-		
+	public function getVideoCodecType($index = -1) {
+		$this->fetch();
+		if ( $index == -1 ) {
+			reset($this->_fetched['videos']);
+			$index = key($this->_fetched['videos']);
+		}
+		if ( array_key_exists($index, $this->_fetched['videos']) ) {
+			return $this->_fetched['videos'][$index]['codecType'];
+		} else {
+			throw new Exception("There is no stream $index in source {$this->_location}");
+		}
 	}
 
+	/**
+	 * @see X_VlcShares_Plugins_Helper_StreaminfoInterface::getVideosInfo()
+	 * @return array
+	 */
+	public function getVideosInfo() {
+		$this->fetch();
+		// @ prevent error fetched data
+		return @$this->_fetched['videos'];
+	}
 
+	/**
+	 * @see X_VlcShares_Plugins_Helper_StreaminfoInterface::getVideoStreamsNumber()
+	 * @return int
+	 */
+	public function getVideoStreamsNumber() {
+		$this->fetch();
+		// @ prevent error fetched data
+		return count(@$this->_fetched['videos']);
+	}
+
+	
+	
 	/**
 	 * Fetch info about location
 	 */
@@ -158,8 +270,18 @@ class X_VlcShares_Plugins_Helper_Mediainfo extends X_VlcShares_Plugins_Helper_Ab
 		// else all datas are in $this->_fetched (array)
 		if ( $this->_fetched === false ) {
 			
-			
-			$xmlString = $this->_invoke();
+			if ( !$this->options->enabled || !file_exists($this->options->path) ) {
+				X_Debug::e('Helper disabled or wrong path');
+				$this->_fetched = array(
+					'source'	=> $this->_location,
+					'videos'	=> array(),
+					'audios'	=> array(),
+					'subs'		=> array()
+				);
+				return;
+			} else {		
+				$xmlString = $this->_invoke();
+			}
 			
 			$dom = new Zend_Dom_Query($xmlString);
 			
@@ -188,8 +310,13 @@ class X_VlcShares_Plugins_Helper_Mediainfo extends X_VlcShares_Plugins_Helper_Ab
 						break;
 					}
 				}
-				$id = $dom->queryXpath("//track[@type='Video'][$i]/ID")->current()->nodeValue;
-				$videos[$id] = array('codecName' => $format, 'codecType' => $format);
+				$id = $dom->queryXpath("//track[@type='Video'][$i]/ID");
+				if ( $id->valid() ) {
+					$id = $id->current()->nodeValue;
+					$videos[$id] = array('codecName' => $format, 'codecType' => $format);
+				} else {
+					$videos[] = array('codecName' => $format, 'codecType' => $format);
+				}
 			}
 
 			// search for audios
@@ -212,9 +339,32 @@ class X_VlcShares_Plugins_Helper_Mediainfo extends X_VlcShares_Plugins_Helper_Ab
 						break;
 					}
 				}
-				$id = $dom->queryXpath("//track[@type='Audio'][$i]/ID")->current()->nodeValue;
-				$audios[$id] = array('codecName' => $format, 'codecType' => $format);
+				$id = $dom->queryXpath("//track[@type='Audio'][$i]/ID");
+				if ( $id->valid() ) {
+					$id = $id->current()->nodeValue;
+					$audios[$id] = array('codecName' => $format, 'codecType' => $format);
+				} else {
+					$audios[] = array('codecName' => $format, 'codecType' => $format);
+				}
+				
 			}
+			
+
+			// search for audios
+			$result = $dom->queryXpath('//track[@type="Text"]');
+			$found = $result->count();
+			for ( $i = 1; $i <= $found; $i++) {
+				$language = $dom->queryXpath("//track[@type='Text'][$i]/Language")->current()->nodeValue;
+				$format = $dom->queryXpath("//track[@type='Text'][$i]/Format")->current()->nodeValue;
+				$id = $dom->queryXpath("//track[@type='Text'][$i]/ID");
+				if ( $id->valid() ) {
+					$id = $id->current()->nodeValue;
+					$subs[$id] = array('format' => $format, 'language' => $language);
+				} else {
+					$subs[] = array('format' => $format, 'language' => $language);
+				}
+			}
+			
 			
 			
 			//X_Debug::i(var_export($videos, true));
@@ -227,7 +377,7 @@ class X_VlcShares_Plugins_Helper_Mediainfo extends X_VlcShares_Plugins_Helper_Ab
 				//'audios'	=> array(array('codecName' => 'aac', 'codecType' => X_VlcShares_Plugins_Helper_StreaminfoInterface::ACODEC_AAC)),
 				'videos'	=> $videos, // should indentify correctly
 				'audios'	=> $audios, // should identify correctly
-				'subs'		=> array(5 => array('format' => 'srt', 'language' => 'ita'))
+				'subs'		=> $subs
 			);
 			
 			// I use lazy init for info
@@ -238,7 +388,10 @@ class X_VlcShares_Plugins_Helper_Mediainfo extends X_VlcShares_Plugins_Helper_Ab
 	
 	private function _invoke() {
 		$source = $this->_location;
-		$str = X_Env::execute("mediainfo --Output=XML \"$source\"", X_Env::EXECUTE_OUT_IMPLODED, X_Env::EXECUTE_PS_WAIT );
+		
+		$mediainfo = "\"{$this->options->path}\"";
+		
+		$str = X_Env::execute("$mediainfo --Output=XML \"$source\"", X_Env::EXECUTE_OUT_IMPLODED, X_Env::EXECUTE_PS_WAIT );
 		return trim($str);
 	}
 	

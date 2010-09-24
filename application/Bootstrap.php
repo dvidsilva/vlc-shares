@@ -78,7 +78,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$configs = $this->getResource('configs');
 		if ( $configs instanceof Zend_Config ) {
 			try {
-				X_Env::initPlugins($configs->plugins);
+				//X_Debug::i('Options: '.var_export($configs->helpers, true));
+				X_VlcShares_Plugins::init($configs->plugins, $configs->helpers);
 			} catch (Exception $e) {
 				X_Debug::e("Plugins disabled: {$e->getMessage()}");
 			}

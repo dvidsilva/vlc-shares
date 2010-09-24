@@ -22,7 +22,7 @@ final class X_VlcShares_Plugins {
 	 */
 	static private $_pluginBroker = null;
 	
-	static public function init($options) {
+	static public function init($options, $helpersOptions = array()) {
 		
 		// plugins are registered in plugin broker
 		self::$_pluginBroker = new X_VlcShares_Plugins_Broker();
@@ -34,6 +34,14 @@ final class X_VlcShares_Plugins {
 			$options = new Zend_Config($options);
 		}
 
+		if ( !($helpersOptions instanceof Zend_Config) ) {
+			if ( !is_array($helpersOptions) ) {
+				$helpersOptions = array();
+			}
+			$helpersOptions = new Zend_Config($helpersOptions);
+		}
+		
+		
 		$plugins = Application_Model_PluginsMapper::i()->fetchAll();
 		
 		//foreach ($options as $o_k => $o_v ) {
@@ -81,7 +89,7 @@ final class X_VlcShares_Plugins {
 			}
 		}
 		
-		self::$_helperBroker = new X_VlcShares_Plugins_Helper_Broker();
+		self::$_helperBroker = new X_VlcShares_Plugins_Helper_Broker($helpersOptions);
 		X_Debug::i("Plugin system enabled");
 		
 		self::$_pluginBroker->gen_afterPluginsInitialized(self::$_pluginBroker);

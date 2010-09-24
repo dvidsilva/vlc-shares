@@ -37,23 +37,23 @@ INSERT INTO plg_filesystem_shares (label, path) VALUES
 	
 INSERT INTO plg_profiles (label, arg) VALUES
 	('Hq',
-	'transcode{venc=ffmpeg,vcodec=mp2v,vb=4000,scale=.5,width=640,fps=30,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}'
+	'transcode{venc=ffmpeg,vcodec=mp2v,vb=4000,scale=.5,width=640,fps=25,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}'
 	);	
 	
 INSERT INTO plg_profiles (label, arg) VALUES
 	('Mq',
-	'transcode{venc=ffmpeg,vcodec=mp2v,vb=3000,scale=.5,width=640,fps=30,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}'
+	'transcode{venc=ffmpeg,vcodec=mp2v,vb=3000,scale=.5,width=640,fps=25,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}'
 	);
 	
 INSERT INTO plg_profiles (label, arg) VALUES
 	('Lq',
-	'transcode{venc=ffmpeg,vcodec=mp2v,vb=2000,scale=.5,width=640,fps=30,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}'
+	'transcode{venc=ffmpeg,vcodec=mp2v,vb=2000,scale=.5,width=640,fps=25,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}'
 	);
 	
-INSERT INTO plg_profiles (label, arg) VALUES
+INSERT INTO plg_profiles (label, arg, cond_formats) VALUES
 	('AVC(H264)/ACC safe profile',
-	'transcode{venc=ffmpeg,vcodec=mp2v,vb=4000,scale=.5,width=640,fps=30,soverlay}'
-	);
+	'transcode{venc=ffmpeg,vcodec=mp2v,vb=1000,scale=.5,width=640,fps=25,soverlay}',
+	'h264+aac');
 
 INSERT INTO plg_profiles (label, arg, cond_devices) VALUES
 	('Android Phone',
