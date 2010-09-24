@@ -17,6 +17,31 @@ class X_VlcShares_Plugins_Helper_Mediainfo extends X_VlcShares_Plugins_Helper_Ab
 	private $_location = null;
 	private $_fetched = false;
 	
+	private $formatTests = array();
+
+	
+	function __construct() {
+		$this->formatTests = array(
+			// audio
+			X_VlcShares_Plugins_Helper_StreaminfoInterface::ACODEC_AAC => array(array('/Format', 'AAC')),
+			X_VlcShares_Plugins_Helper_StreaminfoInterface::ACODEC_MP3 => array(
+				array('/Format', 'MPEG Audio'),
+				array('/Codec_ID_Hint', 'MP3'),
+			),
+			
+			
+			// video
+			X_VlcShares_Plugins_Helper_StreaminfoInterface::VCODEC_H264 => array(array('/Format', 'AVC')),
+			X_VlcShares_Plugins_Helper_StreaminfoInterface::VCODEC_XVID => array(
+				array('/Format', 'MPEG-4 Visual'),
+				array('/Codec_ID', 'XVID'),
+			),
+			
+			// unknown
+			X_VlcShares_Plugins_Helper_StreaminfoInterface::AVCODEC_UNKNOWN => array()
+		);
+	}
+	
 	/**
 	 * Set location source
 	 * 
@@ -133,11 +158,75 @@ class X_VlcShares_Plugins_Helper_Mediainfo extends X_VlcShares_Plugins_Helper_Ab
 		// else all datas are in $this->_fetched (array)
 		if ( $this->_fetched === false ) {
 			
+			
+			$xmlString = $this->_invoke();
+			
+			$dom = new Zend_Dom_Query($xmlString);
+			
+			$videos = array();
+			$audios = array();
+			$subs = array();
+			
+			// search for videos
+			$result = $dom->queryXpath('//track[@type="Video"]');
+			$found = $result->count();
+			for ( $i = 1; $i <= $found; $i++) {
+				$format = X_VlcShares_Plugins_Helper_StreaminfoInterface::AVCODEC_UNKNOWN;
+				foreach ($this->formatTests as $key => $test) {
+					$valid = true;
+					foreach ($test as $subtest) {
+						list($query, $value) = $subtest;
+						//X_Debug::i("Query: $query / Value: $value");
+						$nodeTest = $dom->queryXpath("//track[@type='Video'][$i]$query");
+						if ( !$nodeTest->valid() || $nodeTest->current()->nodeValue != $value ) {
+							$valid = false;
+							break;
+						}
+					}
+					if ( $valid ) {
+						$format = $key;
+						break;
+					}
+				}
+				$id = $dom->queryXpath("//track[@type='Video'][$i]/ID")->current()->nodeValue;
+				$videos[$id] = array('codecName' => $format, 'codecType' => $format);
+			}
+
+			// search for audios
+			$result = $dom->queryXpath('//track[@type="Audio"]');
+			$found = $result->count();
+			for ( $i = 1; $i <= $found; $i++) {
+				$format = X_VlcShares_Plugins_Helper_StreaminfoInterface::AVCODEC_UNKNOWN;
+				foreach ($this->formatTests as $key => $test) {
+					$valid = true;
+					foreach ($test as $subtest) {
+						list($query, $value) = $subtest;
+						$nodeTest = $dom->queryXpath("//track[@type='Audio'][$i]$query");
+						if ( !$nodeTest->valid() || $nodeTest->current()->nodeValue != $value ) {
+							$valid = false;
+							break;
+						}
+					}
+					if ( $valid ) {
+						$format = $key;
+						break;
+					}
+				}
+				$id = $dom->queryXpath("//track[@type='Audio'][$i]/ID")->current()->nodeValue;
+				$audios[$id] = array('codecName' => $format, 'codecType' => $format);
+			}
+			
+			
+			//X_Debug::i(var_export($videos, true));
+			//X_Debug::i(var_export($audios, true));
+			
 			// fetch and decode mediainfo data here
 			$fetched = array(
 				'source'	=> $this->_location,
-				'videos'	=> array(array('codecName' => 'h264', 'codecType' => X_VlcShares_Plugins_Helper_StreaminfoInterface::VCODEC_H264)),
-				'audios'	=> array(array('codecName' => 'aac', 'codecType' => X_VlcShares_Plugins_Helper_StreaminfoInterface::ACODEC_AAC)),
+				//'videos'	=> array(array('codecName' => 'h264', 'codecType' => X_VlcShares_Plugins_Helper_StreaminfoInterface::VCODEC_H264)),
+				//'audios'	=> array(array('codecName' => 'aac', 'codecType' => X_VlcShares_Plugins_Helper_StreaminfoInterface::ACODEC_AAC)),
+				'videos'	=> $videos, // should indentify correctly
+				'audios'	=> $audios, // should identify correctly
 				'subs'		=> array(5 => array('format' => 'srt', 'language' => 'ita'))
 			);
 			
@@ -147,6 +236,11 @@ class X_VlcShares_Plugins_Helper_Mediainfo extends X_VlcShares_Plugins_Helper_Ab
 		}
 	}
 	
+	private function _invoke() {
+		$source = $this->_location;
+		$str = X_Env::execute("mediainfo --Output=XML \"$source\"", X_Env::EXECUTE_OUT_IMPLODED, X_Env::EXECUTE_PS_WAIT );
+		return trim($str);
+	}
 	
 }
 

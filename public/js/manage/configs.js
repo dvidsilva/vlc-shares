@@ -66,7 +66,7 @@ $(document).ready(function() {
 	});
 	
 	
-	$('form#configs #vlc_path').parent().append('<input id="autosearch_frm-vlc-path" type="button" class="ui-corner-all ui-state-default" value="Auto-search" />');
+	$('form#configs #vlc_path').parent().append('<input id="autosearch_frm-vlc-path" type="button" value="Auto-search" />');
 	$('#autosearch_frm-vlc-path').click(function (event){
 		$.getJSON(baseUrl + '/manage/autosearch', function(data){
 			if ( !data.error ) {

@@ -64,13 +64,13 @@ class X_Debug {
 	 */
 	static public function i($message, $traceBack = 1) {
 		if ( self::$logLevel < self::LVL_INFO ) return;
-		$traces = debug_backtrace();
-		$traces = $traces[$traceBack];
+		$btraces = debug_backtrace();
+		$traces = $btraces[$traceBack];
 		$func = $traces['function'];
 		if ( @$traces['class'] ) {
 			$func = "{$traces['class']}::{$func}";
 		}
-		$line = @$traces['line'];
+		$line = @$btraces[$traceBack-1]['line'];
 		self::_($message, self::INFO, $func, $line);
 	}
 	/**
@@ -80,13 +80,13 @@ class X_Debug {
 	 */
 	static public function w($message, $traceBack = 1) {
 		if ( self::$logLevel < self::LVL_WARNING ) return;
-		$traces = debug_backtrace();
-		$traces = $traces[$traceBack];
+		$btraces = debug_backtrace();
+		$traces = $btraces[$traceBack];
 		$func = $traces['function'];
 		if ( @$traces['class'] ) {
 			$func = "{$traces['class']}::{$func}";
 		}
-		$line = @$traces['line'];
+		$line = @$btraces[$traceBack-1]['line'];
 		self::_($message, self::WARNING, $func, $line);
 	}
 	
@@ -97,13 +97,13 @@ class X_Debug {
 	 */
 	static public function e($message, $traceBack = 1) {
 		if ( self::$logLevel < self::LVL_ERROR ) return;
-		$traces = debug_backtrace();
-		$traces = $traces[$traceBack];
+		$btraces = debug_backtrace();
+		$traces = $btraces[$traceBack];
 		$func = $traces['function'];
 		if ( @$traces['class'] ) {
 			$func = "{$traces['class']}::{$func}";
 		}
-		$line = @$traces['line'];
+		$line = @$btraces[$traceBack-1]['line'];
 		self::_($message, self::ERROR, $func, $line);
 	}
 	
@@ -114,13 +114,13 @@ class X_Debug {
 	 */
 	static public function f($message, $traceBack = 1) {
 		if ( self::$logLevel < self::LVL_FATAL ) return;
-		$traces = debug_backtrace();
-		$traces = $traces[$traceBack];
+		$btraces = debug_backtrace();
+		$traces = $btraces[$traceBack];
 		$func = $traces['function'];
 		if ( @$traces['class'] ) {
 			$func = "{$traces['class']}::{$func}";
 		}
-		$line = @$traces['line'];
+		$line = @$btraces[$traceBack-1]['line'];
 		self::_($message, self::FATAL, $func, $line);
 	}
 
@@ -130,13 +130,13 @@ class X_Debug {
 	 * @param int $traceBack n of steps for debug traces
 	 */
 	static public function forcedInfo($message, $traceBack = 1) {
-		$traces = debug_backtrace();
-		$traces = $traces[$traceBack];
+		$btraces = debug_backtrace();
+		$traces = $btraces[$traceBack];
 		$func = $traces['function'];
 		if ( @$traces['class'] ) {
 			$func = "{$traces['class']}::{$func}";
 		}
-		$line = @$traces['line'];
+		$line = @$btraces[$traceBack-1]['line'];
 		self::_($message, self::INFO, $func, $line);
 	}
 }

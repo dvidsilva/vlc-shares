@@ -3,13 +3,15 @@
 interface X_VlcShares_Plugins_Helper_StreaminfoInterface {
 	
 	// type unknown
-	const AVCODEC_UNKNOWN = 0;
+	const AVCODEC_UNKNOWN = '';
 	
 	// === audio codecs
-	const ACODEC_AAC = 1;
+	const ACODEC_AAC = 'aac';
+	const ACODEC_MP3 = 'mp3';
 	 
 	// === video codecs
-	const VCODEC_H264 = 1;
+	const VCODEC_H264 = 'h264';
+	const VCODEC_XVID = 'xvid';
 	
 	
 	/**
