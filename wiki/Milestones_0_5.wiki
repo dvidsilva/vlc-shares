@@ -24,8 +24,8 @@ Alpha 3 (In tag: checkout and try it http://vlc-shares.googlecode.com/svn/tags/0
   * ~~Create a plugins manager interface for the browser~~
   * ~~Configurations moved to db and editable through interface~~
 
-Alpha 4:
-  * Implement stream analisys through mediainfo for file-based streams and through mplayer for remote streams (megavideo)
+Alpha 4 (In tag: checkout and try it http://vlc-shares.googlecode.com/svn/tags/0.5_alpha4/ ):
+  * ~~Implement stream analisys through mediainfo for file-based streams and through mplayer for remote streams (megavideo)~~
 
 Alpha 5:
   * Complete the works for the installer script (this one can be moved to 0.6)
