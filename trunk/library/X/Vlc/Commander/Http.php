@@ -14,11 +14,11 @@ class X_Vlc_Commander_Http extends X_Vlc_Commander {
 	public function __construct($options = array()) {
 		parent::__construct($options);
 		
-		$this->http_command = $this->options->get('commander.http_command', 'http://{%host%}:{%port%}/requests/status.xml{%command%}');
+		$this->http_command = $this->options->commander->http->get('command', 'http://{%host%}:{%port%}/requests/status.xml{%command%}');
 		
-		$host = $this->options->get('commander', new Zend_Config(array()))->get('http_host', '127.0.0.1');
-		$port = $this->options->get('commander', new Zend_Config(array()))->get('http_port', '8080');
-		$this->http_timeout = (int) $this->options->get('commander', new Zend_Config(array()))->get('http_timeout', 1);
+		$host = $this->options->commander->http->get('host', '127.0.0.1');
+		$port = $this->options->commander->http->get('port', '8080');
+		$this->http_timeout = (int) $this->options->commander->http->get('timeout', 1);
 		$this->http_command = str_replace(array('{%host%}', '{%port%}'), array($host, $port), $this->http_command);
 		
 	}

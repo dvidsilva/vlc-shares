@@ -35,7 +35,7 @@ class FilesystemController extends X_Controller_Action {
 				Application_Model_FilesystemSharesMapper::i()->find($form->getValue('id'), $share);
 			}
 			$share->setLabel($form->getValue('label'));
-			$share->setPath($form->getValue('path'));
+			$share->setPath(rtrim($form->getValue('path'),'\\/').'/');
 			try {
 				Application_Model_FilesystemSharesMapper::i()->save($share);
 				$this->_helper->flashMessenger(X_Env::_('p_filesystem_store_done'));

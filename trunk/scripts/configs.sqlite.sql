@@ -57,8 +57,8 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'args', 
-	'--play-and-exit {%source%} --sout=\"#{%profile%}:{%output%}\" --sout-keep {%subtitles%} {%audio%} {%filters%}',
-	'--play-and-exit {%source%} --sout=\"#{%profile%}:{%output%}\" --sout-keep {%subtitles%} {%audio%} {%filters%}',
+	'--play-and-exit {%source%} --sout="#{%profile%}:{%output%}" --sout-keep {%subtitles%} {%audio%} {%filters%}',
+	'--play-and-exit {%source%} --sout="#{%profile%}:{%output%}" --sout-keep {%subtitles%} {%audio%} {%filters%}',
 	'vlc',
 	0,
 	'config_vlc_args_label',
