@@ -1,0 +1,392 @@
+; ====================================
+; --------- VLC SHARES v0.4.1 --------
+; ====================================
+
+[general]
+
+
+; -------------------------------------------------------
+; Percorso al file del linguaggio
+; I linguaggi disponibili sono tutti quelli presenti
+; in /vlc-shares/languages/
+; -------------------------------------------------------
+; Linguage file path
+; Available languages are those present in
+; /vlc-shares/languages/
+
+; Default: languageFile = APPLICATION_PATH "/../languages/en_GB.ini"
+languageFile = APPLICATION_PATH "/../languages/en_GB.ini"
+
+
+; -------------------------------------------------------
+; Attivare il log di debug?
+; -------------------------------------------------------
+; Create debug log?
+
+; Default: debug_enabled = false
+debug_enabled = false
+
+
+; -------------------------------------------------------
+; Percorso al file di debug
+; -------------------------------------------------------
+; Path to debug file
+
+; Default: ;debug_path = ""
+;debug_path = ""
+
+
+; -------------------------------------------------------
+; SE APACHE UTILIZZA UNA PORTA DIVERSA DA 80
+; SPECIFICARE QUI LA PORTA UTILIZZATA
+; -------------------------------------------------------
+; IF APACHE USES PORT OTHER THAT 80,
+; SET IT HERE 
+
+; Default: ;apache_altPort = "80"
+;apache_altPort = "80"
+
+
+[vlc]
+
+; -------------------------------------------------------
+; Path per l'eseguibile del vlc
+; -------------------------------------------------------
+; Path to vlc Executable
+
+; Linux default: path = "/usr/bin/vlc" 
+; Windows default: path = "\"C:/Program files/VideoLAN/VLC/vlc.exe\""
+path = "\"C:/Program files/VideoLAN/VLC/vlc.exe\""
+
+
+; -------------------------------------------------------
+; Parametri utilizzati durante l'avvio di vlc
+; -------------------------------------------------------
+; Params for vlc startup
+
+;Default: args = "--play-and-exit {%source%} --sout=\"#{%profile%}:std{access=http,mux=ts,dst=:8081}\" --sout-keep {%subtitles%} {%audio%} {%filters%}"
+args = "--play-and-exit {%source%} --sout=\"#{%profile%}\" --sout-keep {%subtitles%} {%audio%} {%filters%}"
+
+
+; -------------------------------------------------------
+; Indirizzo e porta in cui sara' disponibile lo streaming una volta avviato
+; Se lasciato vuoto o commentato (;): vlc_stream = "http://$_SERVER['SERVER_ADDR']:8081"
+; -------------------------------------------------------
+; Address and port where stream will be available once started
+; If value left black or line commented out, vlc_stream = "http://$_SERVER['SERVER_ADDR']:8081"
+
+; Default: ;stream="" 
+;stream = "http://IP_ADDRESS:8081"
+
+
+
+; -------------------------------------------------------
+; Sistema operativo in uso
+; Valori validi: "Linux" o "Windows"
+; Lasciare commentato per rilevamento automatico
+; -------------------------------------------------------
+; OS used
+; Valid values are: "Linux" or "Windows"
+; Leave commented for automatic choose
+
+; Default: ;adapter.name = "Windows" 
+;adapter.name = "Windows"
+
+
+; -------------------------------------------------------
+; Percorso e nome del file di pid utilizzato da vlc
+; Se questo valore sara' lasciato vuoto, il file utilizzato sara:
+; %PHP_TMP_DIR%/vlcLock.pid
+; -------------------------------------------------------
+; Path to pid file
+; If value left black or line commented out, vlc_lock will be %PHP_TMP_DIR%/vlcLock.pid
+
+; Default: ;adapter.pidFile = ""  
+;adapter.pidFile = "/tmp/vlcLock.pid"
+
+
+; -------------------------------------------------------
+; Interfaccia da vlc per ricevere i comandi
+; -------------------------------------------------------
+; Interface used by vlc for wait commands
+; Valid values are: "X_Vlc_Commander_Rc" or "X_Vlc_Commander_Http"
+; Don't use X_Vlc_Commander_Rc on Windows!!! (it's really slow)
+; Leave commented for automatic choose
+
+; Default: ;adapter.name = "X_Vlc_Commander_Http" 
+commander.name = "X_Vlc_Commander_Http"
+
+
+; -------------------------------------------------------
+; Percorso al file del commander
+; -------------------------------------------------------
+; Interface used by vlc for wait commands
+; Valid values are:
+;  -- IF YOU USE X_Vlc_Commander_Http: commander.path = APPLICATION_PATH "/../library/X/Vlc/Commander/Http.php"
+;  -- IF YOU USE X_Vlc_Commander_Rc: commander.path = APPLICATION_PATH "/../library/X/Vlc/Commander/Rc.php"
+; Leave commented for automatic choose
+
+; Default: ;adapter.path = APPLICATION_PATH "/../library/X/Vlc/Commander/Http.php" 
+commander.path =  APPLICATION_PATH "/../library/X/Vlc/Commander/Http.php"
+
+
+; -------------------------------------------------------
+; Configurazioni commander RC
+; -------------------------------------------------------
+; Commander rc configs
+; Leave commented for automatic choose
+;commander.nc_command = "echo {%command%} | nc {%host%} {%port%}"
+;commander.nc_host = "127.0.0.1"
+;commander.nc_port = "4212"
+
+; -------------------------------------------------------
+; Configurazioni commander HTTP
+; -------------------------------------------------------
+; Commander http configs
+; Leave commented for automatic choose
+;commander.http_command = "http://{%host%}:{%port%}/requests/status.xml{%command%}"
+;commander.http_host = "127.0.0.1"
+;commander.http_port = "4212"
+;commander.http_timeout = 1
+
+
+
+[shares]
+
+; -------------------------------------------------------
+; Contiene la lista di collezioni da condivide
+; -------------------------------------------------------
+; Contains the list of collections to be shared
+; -------------------------------------------------------
+; Una condivisione e' composta nel seguente modo:
+; idShare.name = "NOME_VISUALIZZATO"
+; idShare.path = "/percorso/alla/directory/della/collezione/"
+; Esempio Linux:
+; torrent.name = "Cartella download Torrent"
+; torrent.path = "/home/myuser/Downloads/Torrent/"
+; Esempio Windows:
+; telecamera.name = "Riprese con telecamera"
+; telecamera.path = "C:/Documenti/Video/Telecamera/"
+; -------------------------------------------------------
+; A collection can be shared as:
+; idShare.name = "LABEL"
+; idShare.path = "/path/to/collection/"
+; Linux example:
+; torrent.name = "BitTorrent Downloads"
+; torrent.path = "/home/myuser/Downloads/Torrent/"
+; Windows example:
+; camera.name = "HD Camera records"
+; camera.path = "C:/Videos/Camera/"
+
+
+rootLinux.name = "Root (Linux System)"
+rootLinux.path = "/"
+
+rootWindows.name = "Root (Windows System)"
+rootWindows.path = "C:/"
+
+
+[profiles]
+
+; -------------------------------------------------------
+; Profili di transcodifica
+; -------------------------------------------------------
+; vlc transcode profiles
+; -------------------------------------------------------
+; Un profilo e' composto in questo modo:
+; idProfilo.name = "NOME VISUALIZZATO"
+; idProfilo.args = "ELENCO PARAMETRI"
+; idProfilo.stream = "INDIRIZZO DOVE SARA' ACCESSIBILE LO STREAM"
+; -------------------------------------------------------
+; A profile can be set as:
+; idProfilo.name = "PROFILE LABEL"
+; idProfilo.args = "TRANSCODE_VLC_ARGS"
+; idProfilo.stream = "ADDRESS WHERE STREAM WILL BE CREATED"
+
+0.name = "hq"
+0.args = "transcode{venc=ffmpeg,vcodec=mp2v,vb=4000,scale=.5,width=640,fps=30,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}:std{access=http,mux=ts,dst=:8081}"
+1.name = "mq"
+1.args = "transcode{venc=ffmpeg,vcodec=mp2v,vb=3000,scale=.5,width=640,fps=30,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}:std{access=http,mux=ts,dst=:8081}"
+2.name = "lq"
+2.args = "transcode{venc=ffmpeg,vcodec=mp2v,vb=2000,scale=.5,width=640,fps=30,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}:std{access=http,mux=ts,dst=:8081}"
+
+
+[pcstream]
+
+; -------------------------------------------------------
+; Telecomando remoto tramite pagina web
+; accessibile all'indirizzo:
+; http://YOUR_IP_ADDRESS/vlc-shares/public/controls/pcstream
+; mentre vlc e' attivo
+; -------------------------------------------------------
+; Remote controller through web pages
+; web page can be found at:
+; http://YOUR_IP_ADDRESS/vlc-shares/public/controls/pcstream
+; while vlc is running
+
+commanderEnabled = false
+
+; -------------------------------------------------------
+; Visualizza anteprima video in streaming nella pagina
+; -------------------------------------------------------
+; Show video in web page
+showVideo = false
+
+
+[plugins]
+
+; -------------------------------------------------------
+; VLCShares 0.4 plugin system
+; Puoi gestire gran parte delle funzionalita' di VLCShares
+; tramite i plugin
+; -------------------------------------------------------
+; VLCShares 0.4 plugin system
+; You can manage VLCShares functionality through
+; plugins.
+; -------------------------------------------------------
+
+
+; -------------------------------------------------------
+; Aggiunge Megavideo alla lista di collezioni
+; -------------------------------------------------------
+; Add Megavideo library in Collections Index
+megavideo.class = "X_VlcShares_Plugins_Megavideo"
+megavideo.path = APPLICATION_PATH "/../library/X/VlcShares/Plugins/Megavideo.php"
+megavideo.transcode.args = "transcode{venc=ffmpeg,vcodec=mp2v,vb=1000,scale=.5,width=640,fps=25,acodec=a52,ab=384,channels=2,samplerate=48000}:std{access=http,mux=ts,dst=:8081}"
+;megavideo.transcode.stream = "http://IP_ADDRESS:8081"
+
+
+; -------------------------------------------------------
+; Aggiunge i link back_to_collections come primo elemento
+; durante la navigazione nella collezione
+; e la selezione delle modalita di streaming
+; -------------------------------------------------------
+; Adds back_to_collections link in dir browser
+; and transcode mode selection
+backToCollections.class = "X_VlcShares_Plugins_StaticLinks"
+backToCollections.path = APPLICATION_PATH "/../library/X/VlcShares/Plugins/StaticLinks.php"
+backToCollections.pre.back.label = "back_to_collections"
+backToCollections.pre.back.route.controller = "index"
+backToCollections.pre.back.route.action = "collections"
+backToCollections.preProfiles.back.label = "back_to_collections"
+backToCollections.preProfiles.back.route.controller = "index"
+backToCollections.preProfiles.back.route.action = "collections"
+
+
+; -------------------------------------------------------
+; Non visualizza i file nascosti durante la navigazione
+; -------------------------------------------------------
+; Hides hidden files while browsing directories
+hideHidden.class = "X_VlcShares_Plugins_HideHidden"
+hideHidden.path = APPLICATION_PATH "/../library/X/VlcShares/Plugins/HideHidden.php"
+
+; -------------------------------------------------------
+; Filtra i file con estensione non valida
+; -------------------------------------------------------
+; Filters out invalid file formats
+validExtension.class = "X_VlcShares_Plugins_FilterExt"
+validExtension.path = APPLICATION_PATH "/../library/X/VlcShares/Plugins/FilterExt.php"
+validExtension.list = "avi|mkv|mp4|ts|mp2|dvx|divx"
+
+; -------------------------------------------------------
+; Aggiunge la selezione dei sottotitoli
+; -------------------------------------------------------
+; Adds subs selections
+validSubs.class = "X_VlcShares_Plugins_Subs"
+validSubs.path = APPLICATION_PATH "/../library/X/VlcShares/Plugins/Subs.php"
+validSubs.list = "sub|srt|idx|txt"
+
+
+; -------------------------------------------------------
+; Aggiunge il link "ai controlli" nella pagina "Vai allo stream"
+; -------------------------------------------------------
+; Show "go to controls" link in "go to stream" page
+goToControls.class = "X_VlcShares_Plugins_Controls"
+goToControls.path = APPLICATION_PATH "/../library/X/VlcShares/Plugins/Controls.php"
+
+; -------------------------------------------------------
+; Aggiunge i pulsanti di seek nel menu dei controlli
+; -------------------------------------------------------
+; Adds seek controls in controls menu
+seek.class = "X_VlcShares_Plugins_CustomCommand"
+seek.path = APPLICATION_PATH "/../library/X/VlcShares/Plugins/CustomCommand.php"
+; 5 min forward link
+seek.post.frwd5min.label = "forward_5_minutes"
+seek.post.frwd5min.route.controller = "controls"
+seek.post.frwd5min.route.action = "seek"
+seek.post.frwd5min.route.args.time = "300"
+seek.post.frwd5min.route.args.relative = "true"
+; 5 min back link
+seek.post.rwnd5min.label = "rewind_5_minutes"
+seek.post.rwnd5min.route.controller = "controls"
+seek.post.rwnd5min.route.action = "seek"
+seek.post.rwnd5min.route.args.time = "-300"
+seek.post.rwnd5min.route.args.relative = "true"
+; 30 min forward link
+seek.post.frwd30min.label = "forward_30_minutes"
+seek.post.frwd30min.route.controller = "controls"
+seek.post.frwd30min.route.action = "seek"
+seek.post.frwd30min.route.args.time = "1800"
+seek.post.frwd30min.route.args.relative = "true"
+; 30 min back link
+seek.post.rwnd30min.label = "rewind_30_minutes"
+seek.post.rwnd30min.route.controller = "controls"
+seek.post.rwnd30min.route.action = "seek"
+seek.post.rwnd30min.route.args.time = "-1800"
+seek.post.rwnd30min.route.args.relative = "true"
+
+
+; -------------------------------------------------------
+; Aggiunge informazioni sulla stream nella pagina
+; dei controlli.
+; (Dovrebbe essere disabilitato se si sta usando
+; l'interfaccia RC su Windows)
+; -------------------------------------------------------
+; Adds stream info in controls menu
+; Should be disabled if you use RC interface in Windows
+; (each request to RC needs 1 sec on Win)
+streamInfo.class = "X_VlcShares_Plugins_StreamInfo"
+streamInfo.path = APPLICATION_PATH "/../library/X/VlcShares/Plugins/StreamInfo.php"
+streamInfo.showTitle = true
+streamInfo.showCurrentTime = true
+streamInfo.showTotalTime = true
+; in 0.4.2 or 0.5
+;streamInfo.showSubtitle = true
+;streamInfo.showAudio = true
+
+; -------------------------------------------------------
+; Converte le playlist PLX in html se non e' wiimc
+; -------------------------------------------------------
+; Convert PLX -> HTML if not wiimc
+plx2Html.class = "X_VlcShares_Plugins_PlxToHtml"
+plx2Html.path = APPLICATION_PATH "/../library/X/VlcShares/Plugins/PlxToHtml.php"
+plx2Html.notWiimcOnly = true
+plx2Html.showRaw = false
+
+; -------------------------------------------------------
+; Aggiunge profili validi per cellulari android
+; -------------------------------------------------------
+; Adds profiles for android phones
+androidProfiles.class = "X_VlcShares_Plugins_AndroidProfile"
+androidProfiles.path = APPLICATION_PATH "/../library/X/VlcShares/Plugins/AndroidProfile.php"
+androidProfiles.profiles.milestone.name = "Motorola Milestone (Android)"
+androidProfiles.profiles.milestone.args = "transcode{vcodec=mp4v,vb=400,fps=25,scale=0.5,acodec=mp4a,ab=20,channels=2}:rtp{mp4a-latm,sdp=rtsp://0.0.0.0:5554/android.sdp}"
+androidProfiles.profiles.milestone.stream = "rtsp://IP_ADDRESS:5554/android.sdp"
+
+
+; -------------------------------------------------------
+; Aggiunge la possibila' di seleziona sottotitoli integrati
+; WORK IN PROGRESS. Verra' aggiunto in 0.4.2 o 0.5
+; -------------------------------------------------------
+; Adds ability to select integrated subs
+; WORK IN PROGRESS. Will be added in 0.4.1 or 0.5
+;integratedSubs.class = "X_VlcShares_Plugins_IntegratedSubs"
+;integratedSubs.path = APPLICATION_PATH "/../library/X/VlcShares/Plugins/IntegratedSubs.php"
+;integratedSubs.list = "avi|mkv"
+
+; -------------------------------------------------------
+; Add support for vlc 1.2 and 1.1.3+
+; -------------------------------------------------------
+vlc12support.class = "X_Vlc_Shares_Plugins_Vlc12"
+vlc12support.path = APPLICATION_PATH "/../library/X/VlcShares/Plugins/Vlc12.php"
+

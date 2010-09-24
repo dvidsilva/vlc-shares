@@ -1,0 +1,65 @@
+<!-- application/views/scripts/filesystem/index.phtml -->
+
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/filesystem/style.css')); ?>
+<?php $this->headScript()->appendFile($this->baseUrl("/js/filesystem/index.js")); ?>
+<?php $this->headTitle()->prepend(X_Env::_('p_filesystem_title')); ?>
+
+
+<div class="span-24 last" id="back-to-home">
+	<div class="span-4 box back">
+		<a href="<?php echo $this->url(array('controller' => 'manage', 'action' => 'index'), 'default', true); ?>"><?php echo X_Env::_('back_to_home'); ?></a>
+	</div>
+	<div class="span-18 box title last">
+		<h4><?php echo X_Env::_('p_filesystem_title'); ?></h4>
+	</div>
+</div>
+
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<div class="quickactionbox">
+	<button class="quickbox-add"><?php echo X_Env::_('p_filesystem_shares_new'); ?></button>
+</div>
+
+<h2><?php echo X_Env::_('p_filesystem_shares_title'); ?></h2>
+<div class="span-24 last boxes" id="p_filesystem_shares">
+	<?php foreach ( $this->shares as $i => $share): ?>
+		<?php /* @var $share Application_Model_FileSystemShare */?>
+		<div class="span-24 last sharebox" id="shareId-<?php echo $share->getId();?>">
+			<div class="span-6 share">
+				<span class="label">
+					<?php echo $share->getLabel(); ?>
+				</span>
+			</div>
+			<div class="span-17 subboxright">
+				<div class="boxitem-rowicon ui-state-default" title="<?php echo X_Env::_('remove'); ?>">
+					<span class="ui-icon ui-icon-trash"><?php echo X_Env::_('remove'); ?></span>
+				</div>
+				<div class="boxitem-rowicon ui-state-default" title="<?php echo X_Env::_('edit'); ?>">
+					<span class="ui-icon ui-icon-pencil"><?php echo X_Env::_('edit'); ?></span>
+				</div>
+				<span class="path">
+					<?php echo $share->getPath(); ?>
+				</span>
+			</div>
+		</div>
+	<?php endforeach; ?>
+</div>
+
+
+<div id="formbox" class="span-6 last hidden box" style="display: none; position: absolute; z-index: 100;">
+	<h3><?php echo X_Env::_('p_filesystem_shares_newshare_title'); ?></h3>
+	<?php echo $this->form; ?>
+</div>

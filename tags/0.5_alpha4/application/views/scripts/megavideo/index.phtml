@@ -1,0 +1,180 @@
+<style>
+.field {
+ margin: 15px;
+ padding: 0.5em;
+ border: 1px solid #666;
+// width: 500px;
+ position: relative;
+}
+.h2 {
+	font:  bold 110% Georgia, serif;	
+}
+.field h2 {
+ display: inline;
+ position: absolute;
+ top: -15px;
+ background: white;
+ color: #008;
+ margin: 0 3px;
+ padding:2px;
+ font:  bold 100% Georgia, serif;
+}
+.field p {
+	margin: 0px;
+}
+.field .controls {
+ position: absolute;
+ right: 20px;
+ top: -13px;
+ float: right;
+ background: white;
+ padding: 2px;
+}
+.category-manage {
+	/*
+ position: absolute;
+ right: 20px;
+ top: -13px;
+*/
+ /*float: right;*/
+}
+.separator {
+	margin-right: 5px;
+	margin-left: 5px;
+}
+#bookmarklets {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	z-index: 100;
+	width: 250px;
+	padding: 5px;
+	border: 1px solid black;
+	background-color: gray;
+	color: white;
+}
+
+#bookmarklets-description {
+	display: none;
+	background-color: white;
+	color: black;
+	margin: 1px;
+	padding: 3px;
+}
+
+
+</style>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('div.field').hide();
+	$('.category').css('text-decoration','underline');
+	$('.category').hover(function(event){
+		$(this).css('cursor','pointer');
+	}, function(event){
+		$(this).css('cursor','auto');
+	});
+	$('.category').click(function (event) {
+		$(this).parent().siblings('div.field').toggle();
+	});
+	$('#bookmarklets').hover(function(){
+		$('#bookmarklets-description').toggle();
+	});
+	$('.rename').click(function (event){
+		event.preventDefault();
+		var categoryName = prompt('<?php echo X_Env::_("megavideo_manage_newcategoryname")?>', 'Default');
+		if ( categoryName.trim() != "")
+			window.location = $(this).attr('href') + escape(categoryName.trim());
+	});
+});
+</script>
+
+
+
+<h1><?php echo X_Env::_('megavideo_manage_title');?></h1>
+<p>
+	<a href="<?php echo $this->url(
+    array(
+        'controller' => 'index',
+        'action'     => 'index'
+    ),
+    'default',
+    true) ?>"><?php echo X_Env::_('megavideo_manage_back_to_index');?></a>
+	<span class="separator">|</span>
+	<a href="<?php echo $this->url(
+	    array(
+	        'controller' => 'megavideo',
+	        'action'     => 'add'
+	    ),
+	    'default',
+	    true) ?>"><?php echo X_Env::_('megavideo_manage_add_new_entry');?></a>
+</p>
+<?php if ($this->bookmarkletsEnabled) : ?>
+	<div id="bookmarklets">
+		<b><?php echo X_Env::_('megavideo_bookmarklets_title')?></b>
+		<div>
+			<a href="<?php echo $this->inlineJs; ?>" title="<?php echo X_Env::_('megavideo_bookmarklets_link_title'); ?>">
+				 <?php echo X_Env::_('megavideo_bookmarklets_link_title'); ?>
+			</a>
+		</div>
+		<div id="bookmarklets-description">
+			<?php echo X_Env::_('megavideo_bookmarklets_description')?>
+		</div>
+	</div>
+<?php endif; ?>
+<ul>
+	<?php foreach ($this->categories as $category): ?>
+	<li>
+		<div>
+			<span class="category h2"><?php echo $category['category']; ?></span>
+			<span class="category-manage">
+				(
+				<a class="rename" href="<?php echo X_Env::routeLink('megavideo', 'rename',
+				    array(
+				    	'id'			=> urlencode($category['category']),
+				    	'name'		=> ''
+				    )); ?>				
+					"><?php echo X_Env::_('megavideo_manage_category_rename');?></a>
+				<span class="separator">|</span>
+			    <a href="<?php echo $this->url(
+				    array(
+				        'controller' => 'megavideo',
+				        'action'     => 'delete',
+				    	'type'		 => 'category',
+				    	'id'			=> urlencode($category['category'])
+				    ),
+				    'default',
+				    true); ?>"><?php echo X_Env::_('megavideo_manage_category_delete');?></a>
+				)
+			</span>
+		</div>
+		<?php foreach ($category['entries'] as $entry ) :?>
+			<div class="field">
+				<h2><?php echo $entry->getLabel(); ?> - (<?php echo $entry->getIdVideo(); ?>)</h2>
+				<div class="controls">
+					(
+					<a href="<?php echo $this->url(
+				    array(
+				        'controller'	=> 'megavideo',
+				        'action'    	=> 'modify',
+				        'id'			=> $entry->getId()
+				    ),
+				    'default',
+				    true) ?>"><?php echo X_Env::_('megavideo_manage_modify');?></a>
+				    <span class="separator">|</span>
+				    <a href="<?php echo $this->url(
+				    array(
+				        'controller' => 'megavideo',
+				        'action'     => 'delete',
+				    	'type'		=>	'video',
+				    	'id'			=> $entry->getId()
+				    ),
+				    'default',
+				    true) ?>"><?php echo X_Env::_('megavideo_manage_delete');?></a>
+				    )
+				</div>
+				<p><?php echo $entry->getDescription(); ?></p>
+			</div>
+		<?php endforeach; ?>
+	</li>
+	<?php endforeach;?>
+</ul>

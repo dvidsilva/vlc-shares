@@ -1,0 +1,102 @@
+<!-- application/views/scripts/manage/configs.phtml -->
+<?php
+// prepare decoration
+$dg = $this->form->getDisplayGroups ();
+foreach ( $dg as $g ) {
+	/* @var $g Zend_Form_DisplayGroup */
+	if ( $g->getName() == 'buttons' ) {
+		$g->setDecorators ( array (
+			'FormElements', 
+			array ('HtmlTag', array ('tag' => 'div', 'class' => 'span-11 box last', 'align' => 'center')
+		)));
+	} else {
+		$g->setDecorators ( array (
+			'FormElements', 
+			'Fieldset', 
+			array ('HtmlTag', array ('tag' => 'div', 'class' => 'span-11 box last')
+		)));
+	}
+}
+?>
+<?php $this->headScript()->appendFile($this->baseUrl("/js/manage/configs.js")); ?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
+		var showAdvLabel = "<?php echo X_Env::_('configs_showadvaced'); ?>";
+	<?php $this->headScript()->captureEnd(); ?>
+<?php $this->headTitle()->prepend(X_Env::_('configs_title')); ?>
+
+<div class="span-24 last" id="back-to-home">
+	<div class="span-4 box back">
+		<a href="<?php echo $this->url(array('controller' => 'manage', 'action' => 'index'), 'default', true); ?>"><?php echo X_Env::_('back_to_home'); ?></a>
+	</div>
+	<div class="span-18 box title last">
+		<h4><?php echo X_Env::_('configs_title'); ?></h4>
+	</div>
+</div>
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<div class="span-24 last manage-container">
+	<div class="span-12" id="configs-container">
+		<h2><?php echo X_Env::_('configs_general_title'); ?></h2>
+		<?php echo $this->form; ?>
+	</div>
+	<div class="span-12 last boxes">
+		<h2><?php echo X_Env::_('configs_plugins_title'); ?></h2>
+		<?php foreach ($this->plugins as $i => $plugin ):?>
+			<?php /* @var $plugin Application_Model_Plugin */ ?>
+			<div class="plugin span-12 last rollout-container" id="pluginId-<?php echo $plugin->getId(); ?>">
+				<div class="span-11 box last clickable rollout">
+					<div class="span-11 last">
+						<div class="boxitem-rowicon ui-state-default" title="<?php echo X_Env::_('unfold'); ?>">
+							<span class="ui-icon ui-icon-triangle-1-s"><?php echo X_Env::_('unfold'); ?></span>
+						</div>
+						<?php if ($plugin->getType() == Application_Model_Plugin::USER ) :?>
+							<div class="boxitem-rowicon ui-state-default" title="<?php echo X_Env::_('uninstall'); ?>">
+								<span class="ui-icon ui-icon-trash"><?php echo X_Env::_('uninstall'); ?></span>
+							</div>
+						<?php endif; ?>
+						<?php if ( $plugin->getType() == Application_Model_Plugin::USER || $plugin->getType() == Application_Model_Plugin::DISTRIBUTION ) :?>
+							<?php if ($plugin->isEnabled()) : ?>
+								<div class="boxitem-rowicon ui-state-default" title="<?php echo X_Env::_('disable'); ?>">
+									<span class="ui-icon ui-icon-cancel"><?php echo X_Env::_('disable'); ?></span>
+								</div>
+							<?php else: ?>
+								<div class="boxitem-rowicon ui-state-default" title="<?php echo X_Env::_('enable'); ?>">
+									<span class="ui-icon ui-icon-check"><?php echo X_Env::_('enable'); ?></span>
+								</div>
+							<?php endif; ?>
+						<?php endif; ?>
+						<h4><?php echo $plugin->getLabel() ?>: <?php echo X_Env::_('config_plugins_status_'.(((int)$plugin->isEnabled()) * 1)); ?></h4>
+					</div>
+				</div>
+				<div class="span-11 folded last">
+					<div class="span-2 label"><?php echo X_Env::_('config_plugins_key')?>:</div>
+					<div class="span-9 last value"><?php echo $plugin->getKey(); ?></div>
+					<div class="span-2 label"><?php echo X_Env::_('config_plugins_class')?>:</div>
+					<div class="span-9 last value"><?php echo $plugin->getClass(); ?></div>
+					<div class="span-2 label"><?php echo X_Env::_('config_plugins_file')?>:</div>
+					<div class="span-9 last value"><?php echo $plugin->getFile(); ?></div>
+					<div class="span-2 label"><?php echo X_Env::_('config_plugins_type')?>:</div>
+					<div class="span-9 last value"><?php echo X_Env::_('config_plugins_type_'.$plugin->getType()); ?></div>
+					<div class="span-10 last">
+						<pre><?php echo $plugin->getDescription()?></pre>
+					</div>
+				</div>
+			</div>
+		<?php endforeach; ?>
+	</div>
+</div>
+
+
