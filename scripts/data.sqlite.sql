@@ -60,6 +60,7 @@ INSERT INTO plg_profiles (label, arg, cond_devices) VALUES
 	'transcode{vcodec=mp4v,vb=400,fps=25,scale=0.5,acodec=mp4a,ab=20,channels=2}',
 	1);
 	
+	
 INSERT INTO plg_outputs (label, arg, link, cond_devices) VALUES
 	('Http stream on 8081',
 	'std{access=http,mux=ts,dst=:8081}',
@@ -83,5 +84,4 @@ INSERT INTO plg_outputs (label, arg, link, cond_devices) VALUES
 	'rtp{mp4a-latm,sdp=rtsp://0.0.0.0:5554/android.sdp}',
 	'rtsp://{%SERVER_IP%}:5554/android.sdp',
 	1);
-	
 	

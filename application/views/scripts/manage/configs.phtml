@@ -78,7 +78,7 @@ foreach ( $dg as $g ) {
 								</div>
 							<?php endif; ?>
 						<?php endif; ?>
-						<h4><?php echo $plugin->getLabel() ?>: <?php echo X_Env::_('config_plugins_status_'.(((int)$plugin->isEnabled()) * 1)); ?></h4>
+						<h4><?php echo X_Env::_($plugin->getLabel()) ?>: <?php echo X_Env::_('config_plugins_status_'.(((int)$plugin->isEnabled()) * 1)); ?></h4>
 					</div>
 				</div>
 				<div class="span-11 folded last">
@@ -91,7 +91,7 @@ foreach ( $dg as $g ) {
 					<div class="span-2 label"><?php echo X_Env::_('config_plugins_type')?>:</div>
 					<div class="span-9 last value"><?php echo X_Env::_('config_plugins_type_'.$plugin->getType()); ?></div>
 					<div class="span-10 last">
-						<pre><?php echo $plugin->getDescription()?></pre>
+						<pre><?php echo X_Env::_($plugin->getDescription()); ?></pre>
 					</div>
 				</div>
 			</div>

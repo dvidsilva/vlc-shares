@@ -30,11 +30,12 @@ class X_VlcShares_Plugins_Helper_FFMpeg extends X_VlcShares_Plugins_Helper_Abstr
 			
 			
 			// video
+			X_VlcShares_Plugins_Helper_StreaminfoInterface::VCODEC_FLV => array('flv'),
 			X_VlcShares_Plugins_Helper_StreaminfoInterface::VCODEC_H264 => array('h264'),
 			X_VlcShares_Plugins_Helper_StreaminfoInterface::VCODEC_XVID => array('mpeg4'),
 			
 			// unknown
-			X_VlcShares_Plugins_Helper_StreaminfoInterface::AVCODEC_UNKNOWN => array()
+			X_VlcShares_Plugins_Helper_StreaminfoInterface::AVCODEC_UNKNOWN => array('')
 		);
 	}
 

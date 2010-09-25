@@ -1,36 +1,44 @@
 
 
-INSERT INTO configs ( `key`, `value`, `default`, `section`, `type` ) VALUES (
+INSERT INTO configs ( `key`, `value`, `default`, `section`, `type`, label, description ) VALUES (
 	'languageFile', 
 	'it_IT.ini',
 	'en_GB.ini',
 	'general',
-	1
+	1,
+	'config_general_languageFile_label',
+	'config_general_languageFile_desc'
 );
 
-INSERT INTO configs ( `key`, `value`, `default`, `section`, type ) VALUES (
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description ) VALUES (
 	'debug.enabled', 
 	'1',
 	'0',
 	'general',
-	3
+	3,
+	'config_general_debug_enabled_label',
+	'config_general_debug_enabled_desc'
 );
 
-INSERT INTO configs ( `key`, `value`, `default`, `section`, type, class ) VALUES (
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'debug.level', 
 	'3',
 	'1',
 	'general',
 	3,
+	'config_general_debug_enabled_label',
+	'config_general_debug_enabled_desc',
 	'advanced'
 );
 
-INSERT INTO configs ( `key`, `value`, `default`, `section`, type, class ) VALUES (
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'debug.path', 
 	'',
 	'',
 	'general',
 	0,
+	'config_general_debug_enabled_label',
+	'config_general_debug_enabled_desc',
 	'advanced'
 );
 

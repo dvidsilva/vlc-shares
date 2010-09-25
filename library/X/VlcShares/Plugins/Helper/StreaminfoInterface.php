@@ -13,6 +13,7 @@ interface X_VlcShares_Plugins_Helper_StreaminfoInterface {
 	// === video codecs
 	const VCODEC_H264 = 'h264';
 	const VCODEC_XVID = 'xvid';
+	const VCODEC_FLV = 'flv';
 	
 	
 	/**
