@@ -119,6 +119,7 @@ INLINE;
                 	header('Content-Type:text/plain');
                 	echo '1';
                 	$this->_helper->viewRenderer->setNoRender(true);
+                	$this->_helper->layout->disableLayout();
                 	return;
                 } else {
                 	return $this->_helper->redirector('index');
@@ -130,6 +131,7 @@ INLINE;
         	header('Content-Type:text/plain');
         	echo '0';
         	$this->_helper->viewRenderer->setNoRender(true);
+        	$this->_helper->layout->disableLayout();
         } else {
         	$this->view->form = $form;
         }
