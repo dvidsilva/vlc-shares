@@ -46,7 +46,7 @@ class Application_Form_Configs extends Zend_Form
         	$elementName = $config->getSection().'_'.str_replace('.', '_', $config->getKey());
         	
         	$elementLabel = ($config->getLabel() != null && $config->getLabel() != '' ? X_Env::_($config->getLabel()) : $config->getKey() );
-        	$elementDescription = X_Env::_($config->getDescription()) . ($config->getDefault() != null ?  "<br/><i>Default:</i> ".$config->getDefault() : ''); 
+        	$elementDescription = ($config->getDescription() ? X_Env::_($config->getDescription()) . '<br/>' : '' ) . ($config->getDefault() != null ?  "<br/><i>Default:</i> ".$config->getDefault() : ''); 
         	
         	$element = $this->createElement($elementType, $elementName, array(
         		'label'			=> $elementLabel,
@@ -63,7 +63,7 @@ class Application_Form_Configs extends Zend_Form
         	$element->getDecorator('label')->setOption('class', $element->getDecorator('label')->getOption('class') . ' ' . $config->getClass());
         	
         	if ( $config->getType() == Application_Model_Config::TYPE_BOOLEAN) {
-        		$element->setMultiOptions(array(1 => X_Env::_('yes'), 0 => X_Env::_('no') ));
+        		$element->setMultiOptions(array(1 => X_Env::_('configs_options_yes'), 0 => X_Env::_('configs_options_no') ));
         	}
         	
         	$this->addElement($element);

@@ -7,17 +7,22 @@ require_once 'X/Env.php';
 
 class X_Vlc_Commander_Http extends X_Vlc_Commander {
 	
-	// ho bisogno di nc
 	private $http_command = '';
 	private $http_timeout = 1;
+	private $http_host = '';
+	private $http_port = '';
 	
 	public function __construct($options = array()) {
 		parent::__construct($options);
+
+		//X_Debug::i(var_export($options->toArray(), true));
 		
 		$this->http_command = $this->options->commander->http->get('command', 'http://{%host%}:{%port%}/requests/status.xml{%command%}');
 		
 		$host = $this->options->commander->http->get('host', '127.0.0.1');
 		$port = $this->options->commander->http->get('port', '8080');
+		$this->http_host = $host;
+		$this->http_port = $port;
 		$this->http_timeout = (int) $this->options->commander->http->get('timeout', 1);
 		$this->http_command = str_replace(array('{%host%}', '{%port%}'), array($host, $port), $this->http_command);
 		
@@ -237,8 +242,8 @@ class X_Vlc_Commander_Http extends X_Vlc_Commander {
 
 
 	public function getDefaultVlcArg() {
-		$host = $this->options->get('commander', new Zend_Config(array()))->get('http_host', '127.0.0.1');
-		$port = $this->options->get('commander', new Zend_Config(array()))->get('http_port', '8080');
+		$host = $this->http_host;
+		$port = $this->http_port;
 		
 		return '-I http --http-host="'.$host.':'.$port.'"';
 	}
@@ -253,7 +258,7 @@ class X_Vlc_Commander_Http extends X_Vlc_Commander {
 		    ) 
 		); 		
 		//$return = X_Env::execute($command, $outtype, X_Env::EXECUTE_PS_WAIT);
-		$return = file_get_contents($command, false, $ctx);
+		$return = @file_get_contents($command, false, $ctx);
 		return $return;
 	}
 	

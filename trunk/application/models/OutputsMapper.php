@@ -75,7 +75,7 @@ class Application_Model_OutputsMapper
     		$select->where("cond_devices = ?", $device);
     	}
     	$select->orWhere("cond_devices IS NULL")
-    		->order(array('cond_devices ASC', 'weight DESC', 'label ASC'))
+    		->order(array('cond_devices DESC', 'weight DESC', 'label ASC'))
     		->limit(1);
     	
         $result = $this->getDbTable()->fetchAll($select);

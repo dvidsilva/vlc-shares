@@ -207,7 +207,16 @@ class StringsWriter {
 		}		
 	}
 	function _($string) {
-		$this->_stringsQueue[$string] = true;
+		$traceBack = 2;
+		$btraces = debug_backtrace();
+		$traces = $btraces[$traceBack];
+		$func = $traces['function'];
+		if ( @$traces['class'] ) {
+			$func = "{$traces['class']}::{$func}";
+		}
+		$line = @$btraces[$traceBack-1]['line'];
+		
+		$this->_stringsQueue[$string] = "$func:$line";
 	}
 	function __destruct() {
 		
@@ -217,7 +226,7 @@ class StringsWriter {
 		
 		file_put_contents(dirname(__FILE__).'/strings.ini', ";File writer output\n\n\n");
 		foreach ($this->_stringsQueue as $key => $value) {
-			file_put_contents(dirname(__FILE__).'/strings.ini', "$key=\"\"\n", FILE_APPEND );
+			file_put_contents(dirname(__FILE__).'/strings.ini', "$key=\"$value\"\n", FILE_APPEND );
 		}
 		
 		X_Debug::i('Destructor called');	

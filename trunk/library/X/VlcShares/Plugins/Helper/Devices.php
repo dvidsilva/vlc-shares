@@ -10,6 +10,10 @@ class X_VlcShares_Plugins_Helper_Devices extends X_VlcShares_Plugins_Helper_Abst
 	const DEVICE_IPAD = 3;
 	const DEVICE_PC = 100;
 	
+	function __construct() {
+		X_Debug::i("User agent: {$_SERVER['HTTP_USER_AGENT']}");
+	}
+	
 	/**
 	 * Check if page request is made with wiimc.
 	 * If $version is provided, check if this is
@@ -50,10 +54,12 @@ class X_VlcShares_Plugins_Helper_Devices extends X_VlcShares_Plugins_Helper_Abst
 	}
 	
 	public function isAndroid($deviceClass = false) {
-		// TODO
-		// check if android....
-		// i have to check milestone user-agent
-		return false;
+		$userAgent = $_SERVER['HTTP_USER_AGENT'];
+		// HTC Desire 2.2 has user agent = Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_7; en-us) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Safari/530.17
+		return (
+			strpos($userAgent, 'Android') !== false 
+			/* || $userAgent == 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_7; en-us) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Safari/530.17' */ 
+		);
 	}
 	
 	public function getAndroidClass() {

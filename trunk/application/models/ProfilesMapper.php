@@ -85,12 +85,14 @@ class Application_Model_ProfilesMapper
     	}
     	
     	if ( $format !== null && is_string($format) && $device !== null && is_integer($device) ) {
-    		$select->orWhere("cond_formats LIKE :format AND cond_devices = :device", array('format' => $format, 'device' => $device));
+    		$select->orWhere("cond_formats LIKE ? AND cond_devices = $device", $format);
     	}
     	
     	$select->orWhere("cond_formats IS NULL AND cond_devices IS NULL")
-    		->order(array('cond_format ASC', 'cond_devices ASC', 'weight DESC', 'label ASC'))
+    		->order(array('cond_format ASC', 'cond_devices DESC', 'weight DESC', 'label ASC'))
     		->limit(1);
+    		
+    	X_Debug::i((string) $select);
     	    	
         $result = $this->getDbTable()->fetchAll($select);
         if (0 == count($result)) {
@@ -158,14 +160,14 @@ class Application_Model_ProfilesMapper
     	}
     	
     	if ( $format !== null && is_string($format) && $device !== null && is_integer($device) ) {
-    		$select->orWhere("cond_formats LIKE :format AND cond_devices = :device", array('format' => $format, 'device' => $device));
+    		$select->orWhere("cond_formats LIKE ? AND cond_devices = $device", $format);
     	}
     	
     	$select->orWhere("cond_formats IS NULL AND cond_devices IS NULL")
-    		->order(array('cond_format ASC', 'cond_devices ASC', 'weight DESC', 'label ASC'));
+    		->order(array('cond_format ASC', 'cond_devices DESC', 'weight DESC', 'label ASC'));
     	
     	
-    	//X_Debug::i((string) $select);
+    	X_Debug::i((string) $select);
     	
         $resultSet = $this->getDbTable()->fetchAll($select);
         $entries   = array();

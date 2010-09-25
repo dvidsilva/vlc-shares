@@ -132,7 +132,9 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract {
 				
 			}
 
-			$profiles = Application_Model_ProfilesMapper::i()->fetchByConds($codecCond, $this->helpers()->devices()->getDeviceType(), $providerClass);
+			$deviceCond = $this->helpers()->devices()->getDeviceType();
+			
+			$profiles = Application_Model_ProfilesMapper::i()->fetchByConds($codecCond, $deviceCond, $providerClass);
 
 			
 			$return = array(
@@ -149,15 +151,15 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract {
 			);
 			
 			if ( count($profiles) ) {
-				X_Debug::i("Valid profiles for $location ($codecCond / $providerClass): ".count($profiles));
+				X_Debug::i("Valid profiles for $location ($codecCond / $deviceCond): ".count($profiles));
 			} else {
-				X_Debug::e("No valid profiles for $location ($codecCond / $providerClass): i need at least a profile");
+				X_Debug::e("No valid profiles for $location ($codecCond / $deviceCond): i need at least a profile");
 			}
 			
 			// the best is the first
 			foreach ($profiles as $profile) {
 				/* @var $profile Application_Model_Profile */
-				X_Debug::i("Valid profile: [{$profile->getId()}] {$profile->getLabel()} ({$profile->getCondFormats()} / {$profile->getCondProviders()})");
+				X_Debug::i("Valid profile: [{$profile->getId()}] {$profile->getLabel()} ({$profile->getCondFormats()} / {$profile->getCondDevices()})");
 				$return[] = array(
 					'label'	=>	$profile->getLabel(),
 					'link'	=>	X_Env::completeUrl($urlHelper->url(array(

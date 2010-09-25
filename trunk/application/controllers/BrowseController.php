@@ -171,7 +171,7 @@ class BrowseController extends X_Controller_Action {
     	// Plugins should add options button only 
     	
     	$pageItems[] = array(
-			'label'		=>	X_Env::_('Back'),
+			'label'		=>	X_Env::_('back'),
 			'link'		=>	X_Env::completeUrl(
 				$this->_helper->url->url(
 					array(

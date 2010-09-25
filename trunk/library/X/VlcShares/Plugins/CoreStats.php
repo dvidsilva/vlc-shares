@@ -48,7 +48,7 @@ class X_VlcShares_Plugins_CoreStats extends X_VlcShares_Plugins_Abstract {
 		}
 		$helpersList .= "</ol></div>";
 		
-		$vlc = (X_Vlc::getLastInstance()->isRunning() ? X_Env::_('on') : X_Env::_('off'));
+		$vlc = (X_Vlc::getLastInstance()->isRunning() ? X_Env::_('p_corestats_vlcrunning_yes') : X_Env::_('p_corestats_vlcrunning_no'));
 		
 		return array(
 			array(
