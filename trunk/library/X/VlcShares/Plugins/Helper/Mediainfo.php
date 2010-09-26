@@ -359,7 +359,7 @@ class X_VlcShares_Plugins_Helper_Mediainfo extends X_VlcShares_Plugins_Helper_Ab
 				$id = $dom->queryXpath("//track[@type='Text'][$i]/ID");
 				if ( $id->valid() ) {
 					$id = $id->current()->nodeValue;
-					$subs[$id] = array('format' => $format, 'language' => $language);
+					$subs[] = array('format' => $format, 'language' => $language, 'id' => $id);
 				} else {
 					$subs[] = array('format' => $format, 'language' => $language);
 				}

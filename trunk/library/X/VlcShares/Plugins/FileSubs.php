@@ -135,7 +135,7 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		if ( $this->config('infile.enabled', true) ) {
 			// check for infile subs
 			$infileSubs = $this->helpers()->stream()->setLocation($location)->getSubsInfo();
-			X_Debug::i(var_export($infileSubs, true));
+			//X_Debug::i(var_export($infileSubs, true));
 			foreach ($infileSubs as $streamId => $sub) {
 				X_Debug::i("Valid infile-sub: [{$streamId}] {$sub['language']} ({$sub['format']})");
 				$return[] = array(
@@ -223,7 +223,7 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 			 	
 			 	X_Debug::i("Sub track selected: $sub");
 			 	
-			 	$vlc->registerArg('subtitles', "--sub-track-id=\"$sub\"");
+			 	$vlc->registerArg('subtitles', "--sub-track=\"$sub\"");
 			 	
 			 }
 			
