@@ -354,9 +354,10 @@ class X_VlcShares_Plugins_Helper_FFMpeg extends X_VlcShares_Plugins_Helper_Abstr
 						}
 					}
 				}
-				
-				$fetched[$streamType][$streamID] = $infoStream;
-				
+				$infoStream['ID'] = $streamID;
+				//$fetched[$streamType][$streamID] = $infoStream;
+				// no index as key for use with vlc --sub-track 
+				$fetched[$streamType][] = $infoStream;
 			}
 			
 			//X_Debug::i(var_export($fetched, true));
