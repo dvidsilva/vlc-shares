@@ -1,19 +1,34 @@
-<html>
-<head>
-</head>
-<body>
-<h1>VLC-Shares: system test</h1>
-<dl>
-	<?php foreach ( $this->tests as $test) : ?>
-		<dt><?php echo $test[0]; ?>:</dt>
-		<?php if ( $test[1] ) : ?>
-			<dd style="color: green;"><?php echo $test[2]; ?></dd>
-		<?php else: ?>
-			<dd style="color: red;"><?php echo $test[2]; ?></dd>
-		<?php endif; ?>
-	<?php endforeach; ?>
-	<dt>Debug log:</dt>
-	<dd><textarea rows="10" style="width: 80%"><?php echo $this->log;?></textarea></dd>
-</dl>
-</body>
-</html>
+<!-- application/views/scripts/test/index.phtml -->
+<?php $this->headTitle()->prepend('System tests'); ?>
+
+<div class="span-24 last" id="back-to-home">
+	<div class="span-4 box back">
+		<a href="<?php echo $this->url(array('controller' => 'manage', 'action' => 'index'), 'default', true); ?>">Back to Home</a>
+	</div>
+	<div class="span-18 box title last">
+		<h4>System tests</h4>
+	</div>
+</div>
+
+<h2>Results:</h2>
+<div class="span-24 last" id="manage-messages" style="margin-bottom: 2em;">
+	<ul>
+		<?php foreach ($this->tests as $i => $test ): ?>
+			<?php
+				$message = array('text' => $test[0].': '.$test[2]);
+				if ( $test[1] === false ) $message['type'] = 'error';
+				else $message['type'] = 'info';
+			?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+
+<h2>Debug log:</h2>
+<div class="span-24 last">
+	<textarea rows="10" style="width: 100%;"><?php echo $this->log;?></textarea>
+</div>
+

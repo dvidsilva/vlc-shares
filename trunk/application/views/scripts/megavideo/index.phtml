@@ -140,7 +140,7 @@ $(document).ready(function(){
 				        'controller' => 'megavideo',
 				        'action'     => 'delete',
 				    	'type'		 => 'category',
-				    	'id'			=> urlencode($category['category'])
+				    	'id'			=> $category['category']
 				    ),
 				    'default',
 				    true); ?>"><?php echo X_Env::_('megavideo_manage_category_delete');?></a>

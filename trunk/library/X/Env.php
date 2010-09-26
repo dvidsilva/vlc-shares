@@ -172,9 +172,9 @@ class X_Env {
 		return $link.$url;
 	}
 	
-	static private $_stringsWriter;
+	static private $_stringsWriter = null;
 	static public function initTranslator(Zend_Translate $translator) {
-		if ( true ) self::$_stringsWriter = new StringsWriter();
+		//if ( true ) self::$_stringsWriter = new StringsWriter();
 		if ( is_null(self::$_translator) ) {
 			self::$_translator = $translator;
 			X_Debug::i("Translator enabled");

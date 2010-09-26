@@ -48,7 +48,7 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	'X_VlcShares_Plugins_FileSubs', 
 	'X/VlcShares/Plugins/FileSubs.php',
 	'p_filesubs_plglabel',
-	'p_silesubs_plgdesc',
+	'p_filesubs_plgdesc',
 	1,
 	1
 );
