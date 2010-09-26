@@ -2,7 +2,7 @@
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, `type`, label, description ) VALUES (
 	'languageFile', 
-	'it_IT.ini',
+	'en_GB.ini',
 	'en_GB.ini',
 	'general',
 	1,
@@ -12,7 +12,7 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, `type`, label, descr
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description ) VALUES (
 	'debug.enabled', 
-	'1',
+	'0',
 	'0',
 	'general',
 	3,
@@ -22,7 +22,7 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'debug.level', 
-	'3',
+	'1',
 	'1',
 	'general',
 	3,
