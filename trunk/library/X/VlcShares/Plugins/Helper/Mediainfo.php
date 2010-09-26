@@ -313,7 +313,7 @@ class X_VlcShares_Plugins_Helper_Mediainfo extends X_VlcShares_Plugins_Helper_Ab
 				$id = $dom->queryXpath("//track[@type='Video'][$i]/ID");
 				if ( $id->valid() ) {
 					$id = $id->current()->nodeValue;
-					$videos[$id] = array('codecName' => $format, 'codecType' => $format);
+					$videos[] = array('codecName' => $format, 'codecType' => $format, 'id' => $id);
 				} else {
 					$videos[] = array('codecName' => $format, 'codecType' => $format);
 				}
@@ -342,7 +342,7 @@ class X_VlcShares_Plugins_Helper_Mediainfo extends X_VlcShares_Plugins_Helper_Ab
 				$id = $dom->queryXpath("//track[@type='Audio'][$i]/ID");
 				if ( $id->valid() ) {
 					$id = $id->current()->nodeValue;
-					$audios[$id] = array('codecName' => $format, 'codecType' => $format);
+					$audios[] = array('codecName' => $format, 'codecType' => $format, 'id' => $id);
 				} else {
 					$audios[] = array('codecName' => $format, 'codecType' => $format);
 				}
