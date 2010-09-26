@@ -90,9 +90,7 @@ foreach ( $dg as $g ) {
 					<div class="span-9 last value"><?php echo $plugin->getFile(); ?></div>
 					<div class="span-2 label"><?php echo X_Env::_('config_plugins_type')?>:</div>
 					<div class="span-9 last value"><?php echo X_Env::_('config_plugins_type_'.$plugin->getType()); ?></div>
-					<div class="span-10 last">
-						<pre><?php echo X_Env::_($plugin->getDescription()); ?></pre>
-					</div>
+					<div class="span-11 last pre"><?php echo X_Env::_($plugin->getDescription()); ?></div>
 				</div>
 			</div>
 		<?php endforeach; ?>

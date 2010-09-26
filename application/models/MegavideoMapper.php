@@ -132,6 +132,7 @@ class Application_Model_MegavideoMapper
 
     public function deleteCategory($categoryName) {
     	$where = $this->getDbTable()->getAdapter()->quoteInto("category LIKE ?", $categoryName);
+    	X_Debug::i($where);
     	$this->getDbTable()->delete($where);
     }
     

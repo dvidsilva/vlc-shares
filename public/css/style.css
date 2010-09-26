@@ -139,6 +139,20 @@ div.scrollable {
 	font-weight: bold;
 }
 
+#manage-altcontainer .boxes .box a {
+	display: block;
+}
+
+#manage-altcontainer .boxes .box .mainlink {
+	line-height: 32px;
+	height: 32px;
+	vertical-align: middle;
+}
+
+#manage-altcontainer .boxes .box .mainlink img {
+	margin-top: 8px;
+}
+
 #manage-statistics .statistic, .rollout-container {
 	margin-bottom: 1em;
 }
@@ -345,8 +359,13 @@ div.scrollable {
 	
 }
 
-
-
 #back-to-home .back:hover {
 	background-color: #565656;
 }
+
+.plugin .folded .pre {
+	font: 1em 'andale mono', 'lucida console', monospace; line-height: 1.5;
+	/*margin: 1.5em 0;*/
+	padding: 0.5em;
+}
+

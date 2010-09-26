@@ -34,14 +34,14 @@ class X_VlcShares_Plugins_CoreStats extends X_VlcShares_Plugins_Abstract {
 		$plugins = count(X_VlcShares_Plugins::broker()->getPlugins());
 		$helpers = count(X_VlcShares_Plugins::helpers()->getHelpers());
 		
-		$pluginsList = '<div class="scrollable" style="max-height: 150px;"><ol>';
+		$pluginsList = '<div class="scrollable" style="max-height: 75px;"><ol>';
 		foreach (X_VlcShares_Plugins::broker()->getPlugins() as $pluginName => $pluginObj) {
 			$formattedPluginClass = array_pop(explode('_',get_class($pluginObj)));
 			$pluginsList .= "<li style=\"font-weight: normal;\">$formattedPluginClass</li>\n";
 		}
 		$pluginsList .= "</ol></div>";
 
-		$helpersList = '<div class="scrollable" style="max-height: 150px;"><ol>';
+		$helpersList = '<div class="scrollable" style="max-height: 75px;"><ol>';
 		foreach (X_VlcShares_Plugins::helpers()->getHelpers() as $pluginName => $pluginObj) {
 			$formattedPluginClass = array_pop(explode('_',get_class($pluginObj)));
 			$helpersList .= "<li style=\"font-weight: normal;\">$formattedPluginClass</li>\n";
