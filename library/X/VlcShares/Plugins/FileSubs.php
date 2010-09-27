@@ -15,7 +15,8 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		$this->setPriority('getModeItems')
 			->setPriority('preGetSelectionItems')
 			->setPriority('registerVlcArgs')
-			->setPriority('getSelectionItems');
+			->setPriority('getSelectionItems')
+			->setPriority('getIndexManageLinks');
 		
 		
 	}	
@@ -265,5 +266,41 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		return $subsFound;
 		
 	}
+	
+	/**
+	 * Add the link for -manage-output-
+	 * @param Zend_Controller_Action $this
+	 * @return array The format of the array should be:
+	 * 		array(
+	 * 			array(
+	 * 				'title' => ITEM TITLE,
+	 * 				'label' => ITEM LABEL,
+	 * 				'link'	=> HREF,
+	 * 				'highlight'	=> true|false,
+	 * 				'icon'	=> ICON_HREF,
+	 * 				'subinfos' => array(INFO, INFO, INFO)
+	 * 			), ...
+	 * 		)
+	 */
+	public function getIndexManageLinks(Zend_Controller_Action $controller) {
+
+		$urlHelper = $controller->getHelper('url');
+		
+		return array(
+			array(
+				'title'		=>	X_Env::_('p_filesubs_managetitle'),
+				'label'		=>	X_Env::_('p_filesubs_mlink'),
+				'link'		=>	$urlHelper->url(array(
+					'controller'	=>	'config',
+					'action'		=>	'index',
+					'key'			=>	'fileSubs'
+				)),
+				'icon'		=>	'/images/manage/configs.png',
+				'subinfos'	=> array()
+			),
+		);
+	
+	}
+	
 	
 }

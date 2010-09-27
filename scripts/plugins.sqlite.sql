@@ -57,11 +57,11 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'fileSubs.file.enabled','1','1','plugins',2,'p_filesubs_conf_fileenabled_label','p_filesubs_conf_fileenabled_desc','');
+	'fileSubs.file.enabled','1','1','plugins',3,'p_filesubs_conf_fileenabled_label','p_filesubs_conf_fileenabled_desc','');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'fileSubs.file.extensions','srt|sub|txt|idx','srt|sub|txt|idx','plugins',0,'p_filesubs_conf_fileextensions_label','p_filesubs_conf_fileextensions_desc','');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'fileSubs.infile.enabled','1','1','plugins',2,'p_filesubs_conf_infileenabled_label','p_filesubs_conf_infileenabled_desc','');
+	'fileSubs.infile.enabled','1','1','plugins',3,'p_filesubs_conf_infileenabled_label','p_filesubs_conf_infileenabled_desc','');
 
 
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
@@ -76,7 +76,7 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'hideHidden.hideSystem', '1', '1', 'plugins', 2, 'p_hidehidden_conf_hidesystem_label', 'p_hidehidden_conf_hidesystem_desc',	'');
+	'hideHidden.hideSystem', '1', '1', 'plugins', 3, 'p_hidehidden_conf_hidesystem_label', 'p_hidehidden_conf_hidesystem_desc',	'');
 
 
 -- hidehidden need extra line in configs
@@ -117,11 +117,11 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 );
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'wiimc.forced.enabled', '1', '0', 'plugins', 2, 'p_wiimcplxrenderer_conf_forcedenabled_label', 'p_wiimcplxrenderer_conf_forcedenabled_desc',	'');
+	'wiimc.forced.enabled', '1', '0', 'plugins', 3, 'p_wiimcplxrenderer_conf_forcedenabled_label', 'p_wiimcplxrenderer_conf_forcedenabled_desc',	'');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'wiimc.forced.fancy', '1', '0', 'plugins', 2, 'p_wiimcplxrenderer_conf_forcedfancy_label', 'p_wiimcplxrenderer_conf_forcedfancy_desc',	'');
+	'wiimc.forced.fancy', '1', '0', 'plugins', 3, 'p_wiimcplxrenderer_conf_forcedfancy_label', 'p_wiimcplxrenderer_conf_forcedfancy_desc',	'');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'wiimc.forced.showRaw', '1', '0', 'plugins', 2, 'p_wiimcplxrenderer_conf_forcedshowraw_label', 'p_wiimcplxrenderer_conf_forcedshowraw_desc',	'');
+	'wiimc.forced.showRaw', '1', '0', 'plugins', 3, 'p_wiimcplxrenderer_conf_forcedshowraw_label', 'p_wiimcplxrenderer_conf_forcedshowraw_desc',	'');
 
 
 
@@ -147,17 +147,17 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 );
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'controls.pauseresume.enabled', '0', '0', 'plugins', 2, 'p_controls_conf_pauseresumeenabled_label', 'p_controls_conf_pauseresumeenabled_desc', '');
+	'controls.pauseresume.enabled', '0', '0', 'plugins', 3, 'p_controls_conf_pauseresumeenabled_label', 'p_controls_conf_pauseresumeenabled_desc', '');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'controls.stop.enabled', '1', '1', 'plugins', 2, 'p_controls_conf_stopenabled_label', 'p_controls_conf_stopenabled_desc', '');
+	'controls.stop.enabled', '1', '1', 'plugins', 3, 'p_controls_conf_stopenabled_label', 'p_controls_conf_stopenabled_desc', '');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'controls.forwardrelative.enabled', '0', '0', 'plugins', 2, 'p_controls_conf_forwardrelativeenabled_label', 'p_controls_conf_forwardrelativeenabled_desc', '');
+	'controls.forwardrelative.enabled', '0', '0', 'plugins', 3, 'p_controls_conf_forwardrelativeenabled_label', 'p_controls_conf_forwardrelativeenabled_desc', '');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'controls.backrelative.enabled', '0', '0', 'plugins', 2, 'p_controls_conf_backrelativeenabled_label', 'p_controls_conf_backrelativeenabled_desc', '');
+	'controls.backrelative.enabled', '0', '0', 'plugins', 3, 'p_controls_conf_backrelativeenabled_label', 'p_controls_conf_backrelativeenabled_desc', '');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'controls.seek.enabled', '1', '1', 'plugins', 2, 'p_controls_conf_seekenabled_label', 'p_controls_conf_seekenabled_desc', '');
+	'controls.seek.enabled', '1', '1', 'plugins', 3, 'p_controls_conf_seekenabled_label', 'p_controls_conf_seekenabled_desc', '');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'controls.oldstylecontrols.enabled', '0', '0', 'plugins', 2, 'p_controls_conf_oldstylecontrolsenabled_label', 'p_controls_conf_oldstylecontrolsenabled_desc', '');
+	'controls.oldstylecontrols.enabled', '0', '0', 'plugins', 3, 'p_controls_conf_oldstylecontrolsenabled_label', 'p_controls_conf_oldstylecontrolsenabled_desc', '');
 
 
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
@@ -202,4 +202,20 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	1,
 	1
 );
+
+
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'streaminfo',
+	'X_VlcShares_Plugins_StreamInfo', 
+	'X/VlcShares/Plugins/StreamInfo.php',
+	'p_streaminfo_plglabel',
+	'p_streaminfo_plgdesc',
+	1,
+	1
+);
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'streaminfo.show.title', '1', '1', 'plugins', 3, 'p_streaminfo_conf_showtitle_label', 'p_streaminfo_conf_showtitle_desc', '');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'streaminfo.show.time', '0', '0', 'plugins', 3, 'p_streaminfo_conf_showtime_label', 'p_streaminfo_conf_showtime_desc', '');
 

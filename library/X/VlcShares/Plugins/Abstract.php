@@ -667,6 +667,18 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 */
 	public function postGetTestItems(Zend_Config $options,Zend_Controller_Action $controller) {}
 	
+	//=== Triggered in Config:index ===//
 	
+	
+	/**
+	 * Allow plugins to prepare own configs (set multioptions, validator, filters...)
+	 * @param string $section
+	 * @param string $namespace
+	 * @param unknown_type $key
+	 * @param Zend_Form_Element $element
+	 * @param Zend_Form $form
+	 * @param Zend_Controller_Action $controller
+	 */
+	public function prepareConfigElement($section, $namespace, $key, Zend_Form_Element $element, Zend_Form  $form, Zend_Controller_Action $controller) {}
 	
 }
