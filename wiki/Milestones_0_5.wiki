@@ -27,7 +27,7 @@ Alpha 3 (In tag: checkout and try it http://vlc-shares.googlecode.com/svn/tags/0
 Alpha 4 (In tag: checkout and try it http://vlc-shares.googlecode.com/svn/tags/0.5_alpha4/ ):
   * ~~Implement stream analisys through mediainfo for file-based streams and through mplayer for remote streams (megavideo)~~
 
-Alpha 5:
+Alpha 5 (Released: download and try it http://code.google.com/p/vlc-shares/downloads/detail?name=vlc-shares_0.5-alpha5.7z ):
   * ~~Add support for Android phones profiles auto-selection~~
   * ~~Complete the works for the installer script~~ (Moved to alpha 7)
   * ~~Add configs managment for lazy plugins~~
