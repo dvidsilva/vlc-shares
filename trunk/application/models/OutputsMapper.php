@@ -112,6 +112,27 @@ class Application_Model_OutputsMapper
         }
         return $entries;
     }
+
+    /**
+     * 
+     * @param $device device type
+     */
+    public function fetchAllForDevice($device = null)
+    {
+    	if ( is_null($device) ) {
+    		$select = $this->getDbTable()->select()->where('cond_devices IS NULL')->order(array('weight DESC'));
+    	} else {
+    		$select = $this->getDbTable()->select()->where('cond_devices = ?', $device)->order(array('weight DESC'));
+    	}
+        $resultSet = $this->getDbTable()->fetchAll($select);
+        $entries   = array();
+        foreach ($resultSet as $row) {
+            $entry = new Application_Model_Output();
+			$this->_populate($entry, $row);
+            $entries[] = $entry;
+        }
+        return $entries;
+    }
     
     public function delete(Application_Model_Output  $model) {
     	if ( $model->getId() !== null ) {

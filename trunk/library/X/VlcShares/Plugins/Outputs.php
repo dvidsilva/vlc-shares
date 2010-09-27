@@ -14,7 +14,8 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract {
 			->setPriority('preGetSelectionItems')
 			->setPriority('getSelectionItems')
 			->setPriority('preSpawnVlc', 100) // TODO remove this. Only in dev env
-			->setPriority('preGetControlItems', 1);
+			->setPriority('preGetControlItems', 1)
+			->setPriority('getIndexManageLinks')
 			;
 		
 	}	
@@ -299,6 +300,39 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract {
 		
 	}
 	
+	/**
+	 * Add the link for -manage-output-
+	 * @param Zend_Controller_Action $this
+	 * @return array The format of the array should be:
+	 * 		array(
+	 * 			array(
+	 * 				'title' => ITEM TITLE,
+	 * 				'label' => ITEM LABEL,
+	 * 				'link'	=> HREF,
+	 * 				'highlight'	=> true|false,
+	 * 				'icon'	=> ICON_HREF,
+	 * 				'subinfos' => array(INFO, INFO, INFO)
+	 * 			), ...
+	 * 		)
+	 */
+	public function getIndexManageLinks(Zend_Controller_Action $controller) {
+
+		$urlHelper = $controller->getHelper('url');
+		
+		return array(
+			array(
+				'title'		=>	X_Env::_('p_outputs_managetitle'),
+				'label'		=>	X_Env::_('p_outputs_mlink'),
+				'link'		=>	$urlHelper->url(array(
+					'controller'	=>	'outputs',
+					'action'		=>	'index'
+				)),
+				'icon'		=>	'/images/outputs/logo.png',
+				'subinfos'	=> array()
+			),
+		);
+	
+	}
 	
 	/**
 	 * Find the best output type for the current device
