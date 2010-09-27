@@ -14,7 +14,8 @@ require_once 'Zend/Config.php';
 class X_VlcShares_Plugins_HideHidden extends X_VlcShares_Plugins_Abstract {
 
 	function __construct() {
-		$this->setPriority('filterShareItems');
+		$this->setPriority('filterShareItems')
+		->setPriority('getIndexManageLinks');
 	}
 	
 	/**
@@ -47,6 +48,42 @@ class X_VlcShares_Plugins_HideHidden extends X_VlcShares_Plugins_Abstract {
 			X_Debug::w("Problem while filtering: {$e->getMessage()}");
 		}
 	}
+	
+	/**
+	 * Add the link for -manage-output-
+	 * @param Zend_Controller_Action $this
+	 * @return array The format of the array should be:
+	 * 		array(
+	 * 			array(
+	 * 				'title' => ITEM TITLE,
+	 * 				'label' => ITEM LABEL,
+	 * 				'link'	=> HREF,
+	 * 				'highlight'	=> true|false,
+	 * 				'icon'	=> ICON_HREF,
+	 * 				'subinfos' => array(INFO, INFO, INFO)
+	 * 			), ...
+	 * 		)
+	 */
+	public function getIndexManageLinks(Zend_Controller_Action $controller) {
+
+		$urlHelper = $controller->getHelper('url');
+		
+		return array(
+			array(
+				'title'		=>	X_Env::_('p_hidehidden_managetitle'),
+				'label'		=>	X_Env::_('p_hidehidden_mlink'),
+				'link'		=>	$urlHelper->url(array(
+					'controller'	=>	'config',
+					'action'		=>	'index',
+					'key'			=>	'hideHidden'
+				)),
+				'icon'		=>	'/images/manage/configs.png',
+				'subinfos'	=> array()
+			),
+		);
+	
+	}
+	
 
 	/**
 	 * 

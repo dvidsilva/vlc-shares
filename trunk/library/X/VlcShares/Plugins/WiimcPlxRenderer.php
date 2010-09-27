@@ -12,7 +12,8 @@ require_once ('X/Plx/Item.php');
 class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract {
 
 	function __construct() {
-		$this->setPriority('gen_afterPageBuild');
+		$this->setPriority('gen_afterPageBuild')
+		->setPriority('getIndexManageLinks');
 	}
 	
 	public function gen_afterPageBuild(&$items, Zend_Controller_Action $controller) {
@@ -35,6 +36,41 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 		
 		$this->_render($plx, $controller);
 	}
+	
+	/**
+	 * Add the link for -manage-output-
+	 * @param Zend_Controller_Action $this
+	 * @return array The format of the array should be:
+	 * 		array(
+	 * 			array(
+	 * 				'title' => ITEM TITLE,
+	 * 				'label' => ITEM LABEL,
+	 * 				'link'	=> HREF,
+	 * 				'highlight'	=> true|false,
+	 * 				'icon'	=> ICON_HREF,
+	 * 				'subinfos' => array(INFO, INFO, INFO)
+	 * 			), ...
+	 * 		)
+	 */
+	public function getIndexManageLinks(Zend_Controller_Action $controller) {
+
+		$urlHelper = $controller->getHelper('url');
+		
+		return array(
+			array(
+				'title'		=>	X_Env::_('p_wiimcplxrenderer_managetitle'),
+				'label'		=>	X_Env::_('p_wiimcplxrenderer_mlink'),
+				'link'		=>	$urlHelper->url(array(
+					'controller'	=>	'config',
+					'action'		=>	'index',
+					'key'			=>	'wiimc'
+				)),
+				'icon'		=>	'/images/wiimcplxrenderer/logo.png',
+				'subinfos'	=> array()
+			),
+		);
+	}
+	
 	
 	/**
 	 * Send to output plx playlist

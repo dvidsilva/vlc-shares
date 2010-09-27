@@ -94,5 +94,22 @@ class Application_Model_ConfigsMapper extends Application_Model_AbstractMapper {
 		return $entries;
     }
 	
+    public function fetchBySectionNamespace($section, $namespace = null) {
+    	if ( $namespace == null ) {
+    		return $this->fetchBySection($section);
+    	} else {
+    		$select = $this->getDbTable()->select()->where('section LIKE ?', $section)->where('key LIKE ?', "$namespace.%");
+			$resultSet = $this->getDbTable ()->fetchAll ($select);
+			$entries = array ();
+			foreach ( $resultSet as $row ) {
+				$mappedClass = $this->getMappedClass();
+				$entry = new $mappedClass();
+				$this->_populate($row, $entry);
+				$entries [] = $entry;
+			}
+			return $entries;
+    	}
+    }
+    
 }
 

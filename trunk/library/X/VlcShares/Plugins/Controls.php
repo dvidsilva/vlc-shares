@@ -35,7 +35,8 @@ class X_VlcShares_Plugins_Controls extends X_VlcShares_Plugins_Abstract {
 
 	public function __construct() {
 		$this->setPriority('getControlItems')
-			->setPriority('execute');
+			->setPriority('execute')
+			->setPriority('getIndexManageLinks');
 	}
 	
 	/**
@@ -210,6 +211,41 @@ class X_VlcShares_Plugins_Controls extends X_VlcShares_Plugins_Abstract {
 		
 		$controller->getRequest()->setControllerName('controls')->setActionName('control')->setDispatched(false);
 		
+	}
+	
+	/**
+	 * Add the link for -manage-output-
+	 * @param Zend_Controller_Action $this
+	 * @return array The format of the array should be:
+	 * 		array(
+	 * 			array(
+	 * 				'title' => ITEM TITLE,
+	 * 				'label' => ITEM LABEL,
+	 * 				'link'	=> HREF,
+	 * 				'highlight'	=> true|false,
+	 * 				'icon'	=> ICON_HREF,
+	 * 				'subinfos' => array(INFO, INFO, INFO)
+	 * 			), ...
+	 * 		)
+	 */
+	public function getIndexManageLinks(Zend_Controller_Action $controller) {
+
+		$urlHelper = $controller->getHelper('url');
+		
+		return array(
+			array(
+				'title'		=>	X_Env::_('p_controls_managetitle'),
+				'label'		=>	X_Env::_('p_controls_mlink'),
+				'link'		=>	$urlHelper->url(array(
+					'controller'	=>	'config',
+					'action'		=>	'index',
+					'key'			=>	'controls'
+				)),
+				'icon'		=>	'/images/manage/configs.png',
+				'subinfos'	=> array()
+			),
+		);
+	
 	}
 	
 	

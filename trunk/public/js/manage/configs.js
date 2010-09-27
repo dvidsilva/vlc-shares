@@ -1,7 +1,7 @@
 
 $(document).ready(function() {
 	
-	debug.log('document.ready: /public/js/manage/index.js');
+	debug.log('document.ready: /public/js/manage/configs.js');
 	
 	$('.clickable').click(function (event){
 		var $this = $(this);

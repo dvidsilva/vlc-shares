@@ -3,54 +3,94 @@
 require_once 'X/VlcShares.php';
 require_once 'X/VlcShares/Plugins/Abstract.php';
 require_once 'X/Vlc.php';
-require_once 'X/Plx.php';
-require_once 'X/Plx/Item.php';
-require_once 'Zend/Config.php';
 
+/**
+ * Add infos to controls page
+ * 
+ * Configs:
+ * 
+ * - show Title label
+ * 		show.title = true
+ * 
+ * - show Current position
+ * 		show.time = false
+ * 
+ * @author ximarx
+ *
+ */
 class X_VlcShares_Plugins_StreamInfo extends X_VlcShares_Plugins_Abstract {
 
-	/**
-	 * 
-	 * @var Zend_Config
-	 */
-	private $options;
-	
-	private $_registeredEvents = array(
-		X_VlcShares::TRG_CONTROLS_MENU_PRE => 'getPreInfo',
-	);
-	
-	public function __construct(Zend_Config $options) {
-		$this->options = $options;
-		$this->id = $this->options->id;
-		$this->registerEvents($this->_registeredEvents);
+	public function __construct() {
+		$this->setPriority('preGetControlItems', 99)
+		->setPriority('getIndexManageLinks');
 	}	
 	
-	public function getPreInfo(X_Vlc $vlc ) {
-		$showTitle = $this->options->get('showTitle', false);
-		$showCurrentTime = $this->options->get('showCurrentTime', false);
-		$showTotalTime = $this->options->get('showTotalTime', false);
+	/**
+	 * Display current title and/or current position
+	 * @param Zend_Controller_Action $controller
+	 */
+	public function preGetControlItems(Zend_Controller_Action $controller) {
+		$urlHelper = $controller->getHelper('url');
 		
-		$items = array();
+		$vlc = X_Vlc::getLastInstance();
 		
-		if ( $showTitle ) {
-			$name = $vlc->getCurrentName();
-			$items[] = new X_Plx_Item(X_Env::_('on_air').": $name", X_Env::routeLink('controls', 'control'));
+		$return = array();
+		
+		if ( $this->config('show.title', true)) {
+			// show the title of the file
+			$return[] =	array(
+				'label'	=>	X_Env::_('p_streaminfo_onair'). ": {$vlc->getCurrentName()}",
+				'link'	=>	X_Env::completeUrl($urlHelper->url()),
+			);
 		}
-		if ( $showCurrentTime && $showTotalTime ) {
+		
+		if ( $this->config('show.time', false)) {
 			$currentTime = X_Env::formatTime($vlc->getCurrentTime());
 			$totalTime = X_Env::formatTime($vlc->getTotalTime());
-			$items[] = new X_Plx_Item("$currentTime/$totalTime", X_Env::routeLink('controls', 'control'));
-		} else {
-			if ( $showCurrentTime ) {
-				$currentTime = X_Env::formatTime($vlc->getCurrentTime());
-				$items[] = new X_Plx_Item(X_Env::_('current_time').": $currentTime", X_Env::routeLink('controls', 'control'));
-			}
-			if ( $showTotalTime ) {
-				$totalTime = X_Env::formatTime($vlc->getTotalTime());
-				$items[] = new X_Plx_Item(X_Env::_('total_length').": $totalTime", X_Env::routeLink('controls', 'control'));
-			}
+			
+			// show current position
+			$return[] =	array(
+				'label'	=>	"{$currentTime}/{$totalTime}",
+				'link'	=>	X_Env::completeUrl($urlHelper->url()),
+			);
 		}
-		return $items;
+		
+		return $return;
 	}
-	 
+	
+	/**
+	 * Add the link for -manage-output-
+	 * @param Zend_Controller_Action $this
+	 * @return array The format of the array should be:
+	 * 		array(
+	 * 			array(
+	 * 				'title' => ITEM TITLE,
+	 * 				'label' => ITEM LABEL,
+	 * 				'link'	=> HREF,
+	 * 				'highlight'	=> true|false,
+	 * 				'icon'	=> ICON_HREF,
+	 * 				'subinfos' => array(INFO, INFO, INFO)
+	 * 			), ...
+	 * 		)
+	 */
+	public function getIndexManageLinks(Zend_Controller_Action $controller) {
+
+		$urlHelper = $controller->getHelper('url');
+		
+		return array(
+			array(
+				'title'		=>	X_Env::_('p_streaminfo_managetitle'),
+				'label'		=>	X_Env::_('p_streaminfo_mlink'),
+				'link'		=>	$urlHelper->url(array(
+					'controller'	=>	'config',
+					'action'		=>	'index',
+					'key'			=>	'streaminfo'
+				)),
+				'icon'		=>	'/images/manage/configs.png',
+				'subinfos'	=> array()
+			),
+		);
+	
+	}
+	
 }
