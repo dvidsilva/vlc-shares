@@ -1,0 +1,20 @@
+version=1
+background=http://navix.turner3d.net/images/backgrounds/bkg_navix_bh_plain.jpg
+logo=http://navix.turner3d.net/images/logos/logo.png
+title=Vlc-shares
+description=<?php echo $this->translate->_("title_description"); ?>  
+
+<?php foreach ($this->entries as $entry) :?>
+type=playlist
+name=<?php echo $entry->name; ?> 
+thumb=<?php echo $entry->thumbnail ? $entry->thumbnail : 'http://navix.turner3d.net/images/logos/viewed.png'; ?> 
+URL=http://<?php echo $_SERVER["HTTP_HOST"] . $this->url(
+    array(
+        'controller'	=> 'browse',
+        'action'		=> 'share',
+        'shareId'			=> $entry->shareId
+    ),
+    'default',
+    true) ?> 
+    
+<?php endforeach; ?>
