@@ -1,0 +1,28 @@
+#summary Configure Android Phones for the connection with VLCShares
+#labels Phase-Deploy,Featured
+
+= Introduction =
+
+This tutorial show how to configure VLCShares and the Android Phone for the use of VLCShares
+
+= Notes =
+
+In this tutorial will be used as placeholder the following strings:
+  # IP_ADDRESS: is the lan ip address of the server where you installed vlc-shares
+
+Android browse interface is provided _temporarily_ by the WiimcPlxRenderer. In next versions this features will be provided by a dedicated plugin with a optimized interface. So, until next version will be ready the plugin WiimcPlxRenderer is required for Android support
+
+= Details =
+
+  # Open you browser at vlc-shares dashboard (http://localhost/vlc-shares/public/)
+  # Check in the plugin management section if the plugin _WiiMC Support_ is enabled
+    # If the plugin isn't enabled click on *VLCShares - configure*
+    # Search in the right column the plugin _WiimcPlxRenderer_ and enabled it
+  # Click on *WiiMC support*
+  # Set:
+    * Force rendering = Yes
+    * Fancy template = Yes
+    * Show raw = No
+  # Save changes
+  # Open the Android Phone's browser to http:://IP_ADDRESS/vlc-shares/public
+  # Click on Browse button
