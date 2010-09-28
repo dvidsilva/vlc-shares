@@ -102,6 +102,7 @@ class X_VlcShares_Plugins_HideHidden extends X_VlcShares_Plugins_Abstract {
 	}
 	
 	private function _isHiddenOnWindows($fileName) {
+		$fileName = trim($fileName, '\\/');
 	    $attr = trim(exec('FOR %A IN ("'.$fileName.'") DO @ECHO %~aA'));
 	
 	    if($attr[3] === 'h' /* || $attr[4] === 's' */ ) return true;
