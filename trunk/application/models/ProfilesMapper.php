@@ -92,7 +92,7 @@ class Application_Model_ProfilesMapper
     		->order(array('cond_format ASC', 'cond_devices DESC', 'weight DESC', 'label ASC'))
     		->limit(1);
     		
-    	X_Debug::i((string) $select);
+    	//X_Debug::i((string) $select);
     	    	
         $result = $this->getDbTable()->fetchAll($select);
         if (0 == count($result)) {
@@ -167,7 +167,7 @@ class Application_Model_ProfilesMapper
     		->order(array('cond_format ASC', 'cond_devices DESC', 'weight DESC', 'label ASC'));
     	
     	
-    	X_Debug::i((string) $select);
+    	//X_Debug::i((string) $select);
     	
         $resultSet = $this->getDbTable()->fetchAll($select);
         $entries   = array();

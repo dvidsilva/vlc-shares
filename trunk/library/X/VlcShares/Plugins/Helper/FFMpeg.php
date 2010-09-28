@@ -371,7 +371,7 @@ class X_VlcShares_Plugins_Helper_FFMpeg extends X_VlcShares_Plugins_Helper_Abstr
 	private function _invoke() {
 		$source = $this->_location;
 		
-		$osTweak = X_Env::isWindows() ? '' : '2>&1';
+		$osTweak = X_Env::isWindows() ? '2>&1' : '2>&1';
 		
 		$ffmpeg = "\"{$this->options->path}\"";
 		
