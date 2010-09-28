@@ -1,4 +1,5 @@
 #summary Installation tutorial for vlc-shares 0.5 for Windows
+#labels Featured,Phase-Deploy
 
 = Introduction =
 
@@ -37,9 +38,13 @@ In this tutorial will be used as placeholder the following strings:
   # Check on _php_pdo_sqlite_, then click on Apply and restart Apache server again
   # *`[`optional`]`* Install/Unpack MediaInfo package
   # *`[`optional`]`* Install/Unpack FFMpeg package
-  # Open your browser (Google Chrome or Firefox is better :P) at [http://localhost/vlc-shares/public]. You should be redirected to new vlc-shares dashboard http://img827.imageshack.us/img827/4993/alpha5.png
+  # Open your browser (Google Chrome or Firefox is better :P) at [http://localhost/vlc-shares/public]. You should be redirected to the new vlc-shares dashboard 
+
+http://img827.imageshack.us/img827/4993/alpha5.png
   # Click on *VLCShares - configure*
   # Select your language, insert the VLC_PATH, MEDIAINFO_PATH (optional) and FFMPEG_PATH (optional)
   # Save changes
 
+= You may find interesting... =
 
+  * WiiMcConfiguration: configure you WiiMC online media tag for VLCShares 
