@@ -1,0 +1,61 @@
+#summary Configure WiiMC for the connection with VLCShares
+#labels Phase-Deploy,Featured
+
+= Introduction =
+
+This tutorial show how to configure WiiMC
+
+= Notes =
+
+In this tutorial will be used as placeholder the following strings:
+  # IP_ADDRESS: is the lan ip address of the server where you installed vlc-shares
+
+
+= Details =
+
+  # Open you browser at vlc-shares dashboard (http://localhost/vlc-shares/public/)
+  # Check in the plugin management section if the plugin _WiiMC Support_ is enabled
+    # If the plugin isn't enabled click on VLCShares - configure
+    # Search in the right column the plugin _WiimcPlxRenderer_ and enabled it
+  # Open the file *onlinemedia.xml* in Wiimc application folder. Il should look like this:
+{{{
+<?xml version="1.0" encoding="utf-8"?>
+<file app="WiiMC" version="1.0.7">
+<link name="Navi-Xtreme Media Portal" addr="http://navix.turner3d.net/wiilist/" />
+<link name="SHOUTcast Radio" addr="http://www.wiimc.org/media/shoutcast_radio.php" />
+<link name="SHOUTcast TV" addr="http://www.wiimc.org/media/shoutcast_tv.php" />
+<link name="YouTube" addr="http://www.wiimc.org/media/youtube.php" />
+<link name="YouTube - Search" type="search" addr="http://www.wiimc.org/media/youtube.php?q=" />
+
+<folder name="Radio">
+<link name="Radio Plus" addr="http://radioplus.dnsalias.org:8000/listen.pls" />
+<link name="Otvoreni radio" addr="http://82.193.201.234:8001/listen.pls" />
+<link name="Woxy radio" addr="http://woxy.lala.com/stream/aac32.pls" />
+</folder>
+
+</file>
+}}}
+  # Add a new line before the {{{</file>}}} like this:
+{{{
+<link name="VLC-Shares Collections" addr="http://IP_ADDRESS/vlc-shares/public/" />
+}}}
+
+The complete file after the change should look like this one:
+{{{
+<?xml version="1.0" encoding="utf-8"?>
+<file app="WiiMC" version="1.0.7">
+<link name="Navi-Xtreme Media Portal" addr="http://navix.turner3d.net/wiilist/" />
+<link name="SHOUTcast Radio" addr="http://www.wiimc.org/media/shoutcast_radio.php" />
+<link name="SHOUTcast TV" addr="http://www.wiimc.org/media/shoutcast_tv.php" />
+<link name="YouTube" addr="http://www.wiimc.org/media/youtube.php" />
+<link name="YouTube - Search" type="search" addr="http://www.wiimc.org/media/youtube.php?q=" />
+
+<folder name="Radio">
+<link name="Radio Plus" addr="http://radioplus.dnsalias.org:8000/listen.pls" />
+<link name="Otvoreni radio" addr="http://82.193.201.234:8001/listen.pls" />
+<link name="Woxy radio" addr="http://woxy.lala.com/stream/aac32.pls" />
+</folder>
+
+<link name="VLC-Shares Collections" addr="http://IP_ADDRESS/vlc-shares/public/" />
+</file>
+}}}
