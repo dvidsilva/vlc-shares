@@ -47,4 +47,4 @@ http://img827.imageshack.us/img827/4993/alpha5.png
 
 = You may find interesting... =
 
-  * WiiMcConfiguration: configure you WiiMC online media tag for VLCShares 
+  * WiiMcConfiguration: configure you WiiMC online media tab for VLCShares 
