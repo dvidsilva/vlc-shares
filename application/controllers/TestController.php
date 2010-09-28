@@ -44,12 +44,12 @@ class TestController extends X_Controller_Action
     	
     	$tests[] = $this->_check('Mediainfo helper enabled', (boolean) $this->options->helpers->mediainfo->enabled);
     	if ( $this->options->helpers->mediainfo->enabled ) {
-    		$tests[] = $this->_check('Mediainfo path is valid ('.$this->options->helpers->mediainfo->path.')', file_exists($this->options->helpers->mediainfo->path));
+    		$tests[] = $this->_check('Mediainfo path is valid ('.$this->options->helpers->mediainfo->path.')', $this->_mediainfoCheck($this->options->helpers->mediainfo->path));
     	}
 
     	$tests[] = $this->_check('FFMpeg helper enabled', (boolean) $this->options->helpers->ffmpeg->enabled);
     	if ( $this->options->helpers->ffmpeg->enabled ) {
-    		$tests[] = $this->_check('FFMpeg path is valid ('.$this->options->helpers->ffmpeg->path.')', file_exists($this->options->helpers->ffmpeg->path));
+    		$tests[] = $this->_check('FFMpeg path is valid ('.$this->options->helpers->ffmpeg->path.')', $this->_ffmpegCheck($this->options->helpers->ffmpeg->path));
     	}
     	
     	return $tests;
@@ -72,5 +72,49 @@ class TestController extends X_Controller_Action
         return ( $exists == null ? false : $exists); 
 	}
     
+	private function _mediainfoCheck($path) {
+		if ( file_exists($path) ) {
+			if ( X_Env::isWindows() ) {
+				// windows check
+				if ( is_file($path) ) {
+					$filename = pathinfo($path, PATHINFO_BASENAME);
+					if ( strtolower($filename) == 'mediainfo.exe') {
+						return true;
+					}
+				}
+			} else {
+				if ( is_file($path) ) {
+					$filename = pathinfo($path, PATHINFO_BASENAME);
+					if ( strtolower($filename) == 'mediainfo') {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	private function _ffmpegCheck($path) {
+		if ( file_exists($path) ) {
+			if ( X_Env::isWindows() ) {
+				// windows check
+				if ( is_file($path) ) {
+					$filename = pathinfo($path, PATHINFO_BASENAME);
+					if ( strtolower($filename) == 'ffmpeg.exe') {
+						return true;
+					}
+				}
+			} else {
+				if ( is_file($path) ) {
+					$filename = pathinfo($path, PATHINFO_BASENAME);
+					if ( strtolower($filename) == 'ffmpeg') {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
 }
 
