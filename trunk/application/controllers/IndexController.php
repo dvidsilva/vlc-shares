@@ -6,8 +6,10 @@ class IndexController extends X_Controller_Action
 
     public function indexAction()
     {
-		if ( strpos($_SERVER['HTTP_USER_AGENT'], 'WiiMC') !== false ) {
-			// wiimc 1.0.5 e inferiori nn accetta redirect
+    	// uses the device helper for wiimc recognition
+    	// maybe i will add a trigger here 
+		if ( X_VlcShares_Plugins::helpers()->devices()->isWiimc() ) {
+			// wiimc 1.0.9 e inferiori nn accetta redirect
 			$this->_forward('collections');
 		} else {
 			$this->_helper->redirector('index','manage');
