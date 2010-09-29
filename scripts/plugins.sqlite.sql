@@ -219,3 +219,21 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'streaminfo.show.time', '0', '0', 'plugins', 3, 'p_streaminfo_conf_showtime_label', 'p_streaminfo_conf_showtime_desc', '');
 
+	
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'dbforever',
+	'X_VlcShares_Plugins_DBForever', 
+	'X/VlcShares/Plugins/DBForever.php',
+	'p_dbforever_plglabel',
+	'p_dbforever_plgdesc',
+	1,
+	1
+);
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'dbforever.index.url', 'http://www.dbforever.net/home.php', 'http://www.dbforever.net/home.php', 'plugins', 0, 'p_dbforever_conf_indexurl_label', 'p_dbforever_conf_indexurl_desc', '');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'dbforever.request.timeout', '10', '10', 'plugins', 0, 'p_dbforever_conf_requesttimeout_label', 'p_dbforever_conf_requesttimeout_desc', '');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'dbforever.request.maxredirects', '0', '0', 'plugins', 0, 'p_dbforever_conf_requestredirects_label', 'p_dbforever_conf_requestredirects_desc', '');
+
