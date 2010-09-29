@@ -237,3 +237,22 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'dbforever.request.maxredirects', '0', '0', 'plugins', 0, 'p_dbforever_conf_requestredirects_label', 'p_dbforever_conf_requestredirects_desc', '');
 
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'animeland',
+	'X_VlcShares_Plugins_AnimeLand', 
+	'X/VlcShares/Plugins/AnimeLand.php',
+	'p_animeland_plglabel',
+	'p_animeland_plgdesc',
+	1,
+	1
+);
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'animeland.base.url', 'http://www.animeland.it/', 'http://www.animeland.it/', 'plugins', 0, 'p_animeland_conf_baseurl_label', 'p_animeland_conf_baseurl_desc', '');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'animeland.index.page', 'menu_streaming.html', 'menu_streaming.html', 'plugins', 0, 'p_animeland_conf_indexpage_label', 'p_animeland_conf_indexpage_desc', '');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'animeland.request.timeout', '10', '10', 'plugins', 0, 'p_animeland_conf_requesttimeout_label', 'p_animeland_conf_requesttimeout_desc', '');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'animeland.request.maxredirects', '0', '0', 'plugins', 0, 'p_animeland_conf_requestredirects_label', 'p_animeland_conf_requestredirects_desc', '');
+
