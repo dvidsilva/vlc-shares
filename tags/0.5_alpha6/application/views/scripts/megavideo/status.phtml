@@ -1,0 +1,27 @@
+<html>
+<head>
+<script type="text/javascript">
+var test = 0;
+var inter;
+function updateBar() {
+	try {
+		value = self.opener.i;
+		total = self.opener.z.length;
+		self.bar.style.width = value/total * 100+"%";
+	} catch(e) {
+		if (test >= 100) {
+			clearInterval(inter);
+			self.close();
+		}
+		self.bar.style.width = test+"%";
+		test++;
+	}
+}
+</script>
+</head>
+<body style="margin: 4px;" onLoad="javascript:inter = setInterval('updateBar()', 250);">
+	<div style="position: absolute; top: 4px; bottom: 4px; left: 4px; right: 4px; border: 1px solid blue;">
+		<div id="bar" style="background-color: blue; position: absolute; top: 0px; left: 0px; bottom: 0px;">&nbsp;</div>
+	</div>
+</body>
+</html>
