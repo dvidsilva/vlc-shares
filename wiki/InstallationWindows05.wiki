@@ -28,7 +28,7 @@ In this tutorial will be used as placeholder the following strings:
   # Install _EasyPhp_
   # Open the directory *EASYPHP_DIR\www\*
   # Unpack here the _vlc-shares 0.5_ package
-  # Unpack ONLY "Zend/" dir (and sub dirs) inside Zend Framework 1.10.6 minimal package in *EASYPHP_DIR\www\vlc-shares\library\*. (At least there will be EASYPHP_DIR\www\vlc-shares\library\Zend\.......)
+  # Unpack ONLY "Zend/" dir (and sub dirs) inside Zend Framework 1.10.6 minimal package in *EASYPHP_DIR\www\vlc-shares\library\*. (At least there will be EASYPHP_DIR\www\vlc-shares\library\Zend\.......). [http://code.google.com/p/vlc-shares/issues/detail?id=1 More info about how to unpack ZendFramework]
   # Install VLC
   # Open the file *EASYPHP_DIR\conf_files\httpd.conf* with a text editor (Notepad or Wordpress should be fine, but Notepad++ is better)
   # Change line 58 from {{{Listen 127.0.0.1:80}}} to {{{Listen 0.0.0.0:80}}}. (An alternative should be to use *IP_ADDRESS* instead of 0.0.0.0)
