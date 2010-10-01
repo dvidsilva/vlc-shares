@@ -93,7 +93,19 @@ class Application_Model_ConfigsMapper extends Application_Model_AbstractMapper {
 		}
 		return $entries;
     }
+    
+    public function fetchByKey($key, Application_Model_Config $model) {
+		$result = $this->getDbTable ()->fetchAll (array('key LIKE ?' => $key));
+		
+		if (0 == count ( $result )) {
+			return;
+		}
+		$row = $result->current ();
+		$this->_populate($row, $model);
+		
+    }
 	
+    
     public function fetchBySectionNamespace($section, $namespace = null) {
     	if ( $namespace == null ) {
     		return $this->fetchBySection($section);

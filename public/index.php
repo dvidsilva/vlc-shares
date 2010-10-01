@@ -15,7 +15,7 @@ set_include_path(implode(PATH_SEPARATOR, array(
 )));
 
 /** Zend_Application */
-require_once 'Zend/Application.php';
+((bool) @include_once('Zend/Application.php')) or die('VLCShares needs Zend Framework 1.10.6+. Please, install it in library/ folder');
 
 // Create application, bootstrap, and run
 $application = new Zend_Application(

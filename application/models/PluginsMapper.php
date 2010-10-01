@@ -56,6 +56,15 @@ class Application_Model_PluginsMapper extends Application_Model_AbstractMapper {
 		}
 	}
 
+	public function fetchByClass($class, Application_Model_Plugin $model) {
+		$result = $this->getDbTable ()->fetchAll ( array('class = ?' => $class));
+		if (0 == count ( $result )) {
+			return;
+		}
+		$row = $result->current ();
+		$this->_populate($row, $model);
+	}
+	
 	/**
 	 * 
 	 * @param unknown_type $row
