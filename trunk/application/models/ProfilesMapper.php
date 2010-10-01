@@ -89,10 +89,10 @@ class Application_Model_ProfilesMapper
     	}
     	
     	$select->orWhere("cond_formats IS NULL AND cond_devices IS NULL")
-    		->order(array('cond_format ASC', 'cond_devices DESC', 'weight DESC', 'label ASC'))
+    		->order(array('cond_formats DESC', 'cond_devices DESC', 'weight DESC', 'label ASC'))
     		->limit(1);
     		
-    	//X_Debug::i((string) $select);
+    	X_Debug::i((string) $select);
     	    	
         $result = $this->getDbTable()->fetchAll($select);
         if (0 == count($result)) {
@@ -164,7 +164,7 @@ class Application_Model_ProfilesMapper
     	}
     	
     	$select->orWhere("cond_formats IS NULL AND cond_devices IS NULL")
-    		->order(array('cond_format ASC', 'cond_devices DESC', 'weight DESC', 'label ASC'));
+    		->order(array('cond_formats DESC', 'cond_devices DESC', 'weight DESC', 'label ASC'));
     	
     	
     	//X_Debug::i((string) $select);

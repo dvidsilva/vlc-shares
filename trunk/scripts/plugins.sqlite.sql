@@ -256,3 +256,17 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'animeland.request.maxredirects', '0', '0', 'plugins', 0, 'p_animeland_conf_requestredirects_label', 'p_animeland_conf_requestredirects_desc', '');
 
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'southpark',
+	'X_VlcShares_Plugins_SouthPark', 
+	'X/VlcShares/Plugins/SouthPark.php',
+	'p_southpark_plglabel',
+	'p_southpark_plgdesc',
+	1,
+	1
+);
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'southpark.request.timeout', '10', '10', 'plugins', 0, 'p_southpark_conf_requesttimeout_label', 'p_southpark_conf_requesttimeout_desc', '');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'southpark.request.maxredirects', '0', '0', 'plugins', 0, 'p_southpark_conf_requestredirects_label', 'p_southpark_conf_requestredirects_desc', '');

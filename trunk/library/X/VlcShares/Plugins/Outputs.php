@@ -13,7 +13,7 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract {
 			->setPriority('getModeItems')
 			->setPriority('preGetSelectionItems')
 			->setPriority('getSelectionItems')
-			->setPriority('preSpawnVlc', 100) // TODO remove this. Only in dev env
+			//->setPriority('preSpawnVlc', 100) // TODO remove this. Only in dev env
 			->setPriority('preGetControlItems', 1)
 			->setPriority('getIndexManageLinks')
 			;

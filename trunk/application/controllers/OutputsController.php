@@ -56,7 +56,7 @@ class OutputsController extends X_Controller_Action {
 				$this->_helper->flashMessenger(X_Env::_('p_outputs_err_db'));
 			}
 		} else {
-			$this->_helper->flashMessenger(X_Env::_('p_outputs_err_invaliddata').": ".var_export($form->getErrors(), true));
+			$this->_helper->flashMessenger(X_Env::_('p_outputs_err_invaliddata')/*.": ".var_export($form->getErrors(), true)*/);
 		}
 		$this->_helper->redirector('index', 'outputs');
 	}
