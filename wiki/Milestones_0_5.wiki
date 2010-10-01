@@ -32,11 +32,11 @@ Alpha 5 (Released: download and try it http://code.google.com/p/vlc-shares/downl
   * ~~Complete the works for the installer script~~ (Moved to alpha 7)
   * ~~Add configs managment for lazy plugins~~
 
-Alpha 6:
-  * Write a management interface for Profiles plugin
+Alpha 6 (Released: download and try it http://code.google.com/p/vlc-shares/downloads/detail?name=vlc-shares_0.5-alpha5.7z ):
+  * ~~Write a management interface for Profiles plugin~~
 
 Alpha 7:
-  * Create and Installer controller
+  * Create an Installer controller
   * Try to distribute vlc-shares as a module for easyphp (this one can be moved to 0.6)
   * Write a youtube plugin (this one can be moved to 0.5.1)
 
