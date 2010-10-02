@@ -36,9 +36,9 @@ Alpha 6 (Released: download and try it http://code.google.com/p/vlc-shares/downl
   * ~~Write a management interface for Profiles plugin~~
 
 Alpha 7:
-  * Create an Installer controller
-  * Try to distribute vlc-shares as a module for easyphp (this one can be moved to 0.6)
-  * Write a youtube plugin (this one can be moved to 0.5.1)
+  * ~~Create an Installer controller~~
+  * Try to distribute vlc-shares as a module for easyphp
+  * ~~Write a youtube plugin~~ (Moved to 0.5.1)
 
 Beta 1:
   * Release a beta version
