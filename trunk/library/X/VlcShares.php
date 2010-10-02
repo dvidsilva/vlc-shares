@@ -1,7 +1,7 @@
 <?php
 
 class X_VlcShares {
-	const VERSION = '0.5_alpha6';
+	const VERSION = '0.5_beta1';
 	private $CONFIG_PATH;
 	
 	// durante la creazione della playlist delle collection:
