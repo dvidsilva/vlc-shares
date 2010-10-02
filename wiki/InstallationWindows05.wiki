@@ -5,7 +5,18 @@
 
 This short tutorial give an example on how to install and do basic configuration for vlc-shares 0.5
 
-= Requirement =
+= Automatic installation =
+
+The version 0.5 comes with a EasyPHP 5.3.3 + VLCShares 0.5 installer. You can download it from the downloads section
+
+After you completed the installation procedure, open your browser (chrome or firefox) to http://localhost/vlc-shares/public and complete the configuration
+
+== Notes ==
+If you use the installer, every time you will start easyphp you will get an error about "Mysql start problem". Ignore this error (i removed mysql from the package to reduce file dimension).
+
+= Manual Installation =
+
+== Requirement ==
 
   * _vlc-shares 0.5_ package: 
   * _Windows XP Pro_, _Windows Vista_ (all versions) o _Windows 7_ (all versions)
@@ -15,7 +26,7 @@ This short tutorial give an example on how to install and do basic configuration
   * *`[`optional`]`* _Mediainfo for Windows_ (Cli version): [http://sourceforge.net/projects/mediainfo/files/binary/mediainfo/0.7.35/MediaInfo_CLI_0.7.35_Windows_i386.zip/download] for x86 or [http://sourceforge.net/projects/mediainfo/files/binary/mediainfo/0.7.35/MediaInfo_CLI_0.7.35_Windows_x64.zip/download] for x64
   * *`[`optional`]`* _FFMpeg for Windows_ (x32 static build version): [http://ffmpeg.arrozcru.org/autobuilds/ffmpeg-latest-mingw32-static.7z]
 
-= Notes =
+== Notes ==
 In this tutorial will be used as placeholder the following strings:
   # EASYPHP_DIR: is the path to the EasyPhp install directory
   # IP_ADDRESS: is the lan ip address of the server where you are installing vlc-shares
@@ -23,7 +34,7 @@ In this tutorial will be used as placeholder the following strings:
   # FFMPEG_PATH: is the path to ffmpeg.exe (filename included). Ex: c:\ffmpeg\bin\ffmpeg.exe
   # VLC_PATH: is the path to vlc.exe (filename included). Ex: C:\vlc\vlc.exe
 
-= Details =
+== Details ==
 
   # Install _EasyPhp_
   # Open the directory *EASYPHP_DIR\www\*
