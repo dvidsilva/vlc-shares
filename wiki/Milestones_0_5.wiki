@@ -35,12 +35,13 @@ Alpha 5 (Released: download and try it http://code.google.com/p/vlc-shares/downl
 Alpha 6 (Released: download and try it http://code.google.com/p/vlc-shares/downloads/detail?name=vlc-shares_0.5-alpha5.7z ):
   * ~~Write a management interface for Profiles plugin~~
 
-Alpha 7:
+~~Alpha 7:~~
   * ~~Create an Installer controller~~
-  * Try to distribute vlc-shares as a module for easyphp
+  * ~~Try to distribute vlc-shares as a module for easyphp~~ (Moved to Beta1)
   * ~~Write a youtube plugin~~ (Moved to 0.5.1)
 
 Beta 1:
+  * Try to distribute vlc-shares as a module for easyphp
   * Release a beta version
   * Fix critical bugs
 
