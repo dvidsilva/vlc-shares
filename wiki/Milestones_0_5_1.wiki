@@ -1,0 +1,26 @@
+#summary Milestones for version 0.5.1
+#labels Phase-Requirements
+
+= Introduction =
+
+Those are milestones for version release 0.5.1
+
+= Details =
+
+=== Alpha 1 ===
+  * UI for android devices
+  * Thumbnails plugin
+  * Youtube plugin
+  * Hulu plugin
+
+=== Alpha 2 ===
+  * Updater controller
+  * Plugin installer/uninstaller
+  * Sopcast intergration
+  * Move vlc wrapper to helper/plugin
+
+=== Beta 1 ===
+  * Create update script
+
+=== Stable (3-6 days after beta 1) ===
+  * Fix critical bugs
