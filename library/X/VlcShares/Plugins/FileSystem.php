@@ -11,7 +11,7 @@ require_once 'X/VlcShares/Plugins/Abstract.php';
  * @author ximarx
  *
  */
-class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
+class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverDisplayableInterface, X_VlcShares_Plugins_ResolverParentInterface {
 	
 	public function __construct() {
 		$this->setPriority('getCollectionsItems')
@@ -48,7 +48,9 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 							'p' => $this->getId(),
 						), 'default', true
 					)
-				)
+				),
+				'icon'	=> '/images/filesystem/logo.png',
+				'desc'	=> X_Env::_('p_filesystem_collectionindex_desc')
 			)
 		);
 	}
@@ -175,9 +177,9 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 	function resolveLocation($location = null) {
 
 		// prevent no-location-given error
-		if ( $location === null ) return false;
+		if ( $location === null || $location === '') return false;
 		
-		list($shareId, $path) = explode(':', $location, 2);
+		@list($shareId, $path) = explode(':', $location, 2);
 		
 		$share = new Application_Model_FilesystemShare();
 		Application_Model_FilesystemSharesMapper::i()->find($shareId, $share);
@@ -185,6 +187,16 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 		// TODO prevent ../
 		
 		return realpath($share->getPath().$path);
+	}
+	
+	function getParentLocation($location = null) {
+		if ($location == null || $location == '') return false;
+		
+		@list($shareId, $path) = explode(':', $location, 2);
+		if (rtrim($path,'\\/') == '' ) return '';
+		
+		return $shareId.':'.rtrim(dirname($path),'\\/').'/';
+		
 	}
 	
 	/**

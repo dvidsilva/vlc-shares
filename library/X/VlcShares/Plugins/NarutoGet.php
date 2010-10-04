@@ -52,7 +52,9 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 							'l' => base64_encode(self::INDEX_SHIPPUDEN)
 						), 'default', true
 					)
-				)
+				),
+				'icon'	=> '/images/narutoget/logo.png',
+				'desc'	=> X_Env::_('p_narutoget_collectionindex_desc')
 			)
 		);
 	}

@@ -51,7 +51,9 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 							'p' => $this->getId(),
 						), 'default', true
 					)
-				)
+				),
+				'icon'	=> '/images/megavideo/logo.png',
+				'desc'	=> X_Env::_('p_megavideo_collectionindex_desc')
 			)
 		);
 	}

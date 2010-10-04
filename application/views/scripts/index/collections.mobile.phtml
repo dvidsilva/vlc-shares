@@ -1,0 +1,31 @@
+<!-- application/views/scripts/index/collections.mobile.phtml -->
+<?php $this->headScript()->appendFile($this->baseUrl("/js/mobile/collections.js")); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/mobile/collections.css'), 'screen'); ?> 
+<?php $this->headTitle()->prepend('Home'); ?>
+
+<div id="wrapper"> 
+	<div id="header"> 
+		<h1 id="siteTitle"><img src="<?php echo $this->baseUrl('/images/mobile/logomobile.png'); ?>" width="172" height="56" alt="Welcome to USCmobile" /></h1> 
+	</div>
+	<div class="items"> 
+			<?php foreach ($this->items as $i => $item): ?> 
+				<div class="item">
+					<?php if ( array_key_exists('icon', $item) ) :?>  
+						<img src="<?php echo $this->baseUrl($item['icon']); ?>" width="48" height="48" alt="" />
+					<?php else: ?> 
+						<img src="<?php echo $this->baseUrl('/images/mobile/collections_item.png'); ?>" width="48" height="48" alt="" />
+					<?php endif; ?> 
+					<h3><a href="<?php echo $item['link']; ?>"><?php echo $item['label']; ?></a></h3> 
+					<p><?php echo @$item['desc']; ?></p> 
+					<a class="button" href="<?php echo $item['link']; ?>"></a> 
+				</div> 	
+			<?php endforeach; ?> 
+	</div>
+	<div id="footer"> 
+		<ul> 
+			<li><a id="feedback" href="http://code.google.com/p/vlc-shares/"><?php echo X_Env::_('p_mobilerenderer_footerproject')?></a></li> 
+			<li><a id="uscHome" href="<?php echo $this->url(array('controller' => 'manage', 'action' => 'index' ), 'default', true);?>"><?php echo X_Env::_('p_mobilerenderer_footermanage'); ?></a></li> 
+			<li><a href="<?php echo $this->url(array('controller' => 'index', 'action' => 'collections' ), 'default', true);?>"><?php echo X_Env::_('p_mobilerenderer_footerindex')?></a></li> 
+		</ul> 
+	</div>
+</div>
