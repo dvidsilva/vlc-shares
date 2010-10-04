@@ -1,0 +1,78 @@
+@CHARSET "UTF-8";
+
+.boxes .sharebox {
+	margin-bottom: 0.5em;
+}
+
+.boxes .share {
+
+	background: #7d7d7d url(../../images/gradient.png) repeat-x 0 -110px;
+
+	/*margin-top: 0.3em;*/
+	/*margin-bottom: 0.1em;*/
+
+	margin-right: 0em;
+	padding: 1em;
+	
+	border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+	-moz-border-radius: 0.5em;
+
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0, .4);
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0, .4);
+
+	font-weight: bold;
+	text-decoration: none;
+	text-shadow: 0 1px 1px rgba(0,0,0, .6);
+	color: #e7e5e5;
+	
+}
+
+.boxes .subboxright {
+	
+	background-color: #333;
+	background: #333 url(../../images/grid.png);
+
+	margin-left: 0em;
+	margin-right: 1em;
+	margin-top: 0.6em;
+
+	padding: 0.5em 0.5em;
+	
+	font-weight: bold;
+	color: #ccc;
+	
+	border-radius: 0em 0.5em 0.5em 0.0em;
+	-webkit-border-radius: 0em 0.5em 0.5em 0.0em;
+	-moz-border-radius: 0em 0.5em 0.5em 0.0em;
+
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0, .4);
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0, .4);
+		
+}
+
+#formbox {
+	border: 2px solid #333;
+}
+
+#formbox form {
+	margin: 0.5 em;
+}
+
+#formbox form input[type="text"] {
+	width: 100%;
+}
+
+#formbox form dd, #formbox form dt, #formbox form input[type="submit"] {
+	margin: 1em;
+}
+
+.boxes h4 {
+	margin-left: 1em;
+}
+
+.boxes .subboxright .cell > div {
+	background: #444 url(../../images/grid.png);
+}
+
+
