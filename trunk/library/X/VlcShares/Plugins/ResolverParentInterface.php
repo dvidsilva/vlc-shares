@@ -8,15 +8,15 @@
  * @author ximarx
  *
  */
-interface X_VlcShares_Plugins_ResolverInterface {
+interface X_VlcShares_Plugins_ResolverParentInterface {
 	
 	/**
-	 * Get the real location of a resource from
+	 * Get the parent location of a current
 	 * $location param
 	 * @param string $location
-	 * @return string resource real location
+	 * @return string parent location string
 	 */
-	function resolveLocation($location);
+	function getParentLocation($location);
 	
 }
 

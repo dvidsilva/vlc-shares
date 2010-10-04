@@ -1,7 +1,7 @@
 
 
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
-	'fileSystemBrowser',
+	'fileSystem',
 	'X_VlcShares_Plugins_FileSystem', 
 	'X/VlcShares/Plugins/FileSystem.php',
 	'p_filesystem_plglabel',
@@ -117,13 +117,26 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 );
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'wiimc.forced.enabled', '1', '0', 'plugins', 3, 'p_wiimcplxrenderer_conf_forcedenabled_label', 'p_wiimcplxrenderer_conf_forcedenabled_desc',	'');
+	'wiimc.forced.enabled', '0', '0', 'plugins', 3, 'p_wiimcplxrenderer_conf_forcedenabled_label', 'p_wiimcplxrenderer_conf_forcedenabled_desc',	'');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'wiimc.forced.fancy', '1', '0', 'plugins', 3, 'p_wiimcplxrenderer_conf_forcedfancy_label', 'p_wiimcplxrenderer_conf_forcedfancy_desc',	'');
+	'wiimc.forced.fancy', '1', '1', 'plugins', 3, 'p_wiimcplxrenderer_conf_forcedfancy_label', 'p_wiimcplxrenderer_conf_forcedfancy_desc',	'');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'wiimc.forced.showRaw', '1', '0', 'plugins', 3, 'p_wiimcplxrenderer_conf_forcedshowraw_label', 'p_wiimcplxrenderer_conf_forcedshowraw_desc',	'');
+	'wiimc.forced.showRaw', '0', '0', 'plugins', 3, 'p_wiimcplxrenderer_conf_forcedshowraw_label', 'p_wiimcplxrenderer_conf_forcedshowraw_desc',	'');
 
 
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'mobilerenderer',
+	'X_VlcShares_Plugins_MobileRenderer', 
+	'X/VlcShares/Plugins/MobileRenderer.php',
+	'p_mobilerenderer_plglabel',
+	'p_mobilerenderer_plgdesc',
+	1,
+	1
+);
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'mobilerenderer.forced.enabled', '1', '0', 'plugins', 3, 'p_mobilerenderer_conf_forcedenabled_label', 'p_mobilerenderer_conf_forcedenabled_desc',	'');
+
+	
 
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
 	'redirectControls',

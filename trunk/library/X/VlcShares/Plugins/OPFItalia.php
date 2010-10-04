@@ -48,7 +48,9 @@ class X_VlcShares_Plugins_OPFItalia extends X_VlcShares_Plugins_Abstract impleme
 							'p' => $this->getId(),
 						), 'default', true
 					)
-				)
+				),
+				'icon'	=> '/images/opfitalia/logo.png',
+				'desc'	=> X_Env::_('p_opfitalia_collectionindex_desc')
 			)
 		);
 	}
