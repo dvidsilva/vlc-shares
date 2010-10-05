@@ -122,7 +122,8 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 							), 'default', false
 						)
 					),
-					__CLASS__.':location'	=>	$id
+					__CLASS__.':location'	=>	$id,
+					'icon'	=>	'/images/icons/file_32.png'
 				);
 				
 			}
@@ -140,7 +141,8 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 							), 'default', false
 						)
 					),
-					__CLASS__.':location'	=>	$key
+					__CLASS__.':location'	=>	$key,
+					'icon'	=>	'/images/icons/folder_32.png'
 				);
 			}
 		}
@@ -239,6 +241,15 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 		$this->cachedLocation[$location] = false;
 		return false;
 		
+	}
+	
+	/**
+	 * No support for parent location
+	 * @see X_VlcShares_Plugins_ResolverInterface::getParentLocation
+	 * @param $location
+	 */
+	function getParentLocation($location = null) {
+		if ( $location == null || $location == '') return false;
 	}
 	
 	

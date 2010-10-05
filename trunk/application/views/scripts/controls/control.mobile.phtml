@@ -1,0 +1,45 @@
+<!-- application/views/scripts/browse/stream.mobile.phtml -->
+<?php $this->headScript()->appendFile($this->baseUrl("/js/mobile/control.js")); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/mobile/control.css'), 'screen'); ?> 
+<?php $this->headTitle()->prepend(X_Env::_('p_mobilerenderer_controls_control')); ?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
+	var defaultDesc = "<?php echo X_Env::_('p_mobilerenderer_searchdefaultdesc') ?>";
+<?php $this->headScript()->captureEnd(); ?>
+
+
+<div id="site_header">
+	<a href="<?php echo $this->url(array('controller' => 'index', 'action' => 'collections'), 'default', true); ?>" id="usc_mobile">VLC Shares</a>
+	<?php if ( $this->providerName != '' ) :?>
+		<h1 class="site_title"><?php echo X_Env::_("p_{$this->providerName}_collectionindex"); ?></h1>
+	<?php else: ?>
+		<h1 class="site_title"><?php echo X_Env::_('p_mobilerenderer_noprovider_control'); ?></h1>
+	<?php endif; ?>
+</div>
+<div id="wrapper">
+	<h2><?php echo $this->locationRaw; ?></h2>
+	<ul class="items">
+		<?php $preOption = true; ?>
+		<?php foreach ($this->items as $i => $item):?>
+			<?php if ( $item['label'] == X_Env::_('_____options_separator_____')) { $preOption = false; continue; }?>
+			<li class="item <?php echo @$item['type']; ?>">
+				<?php if ( array_key_exists('icon', $item) ): ?>
+					<img src="<?php echo $this->baseUrl($item['icon']); ?>"	alt="" width="32px" height="32px" />
+				<?php endif; ?>
+				<p class="title"><a href="<?php echo $item['link']; ?>"><?php echo $item['label']; ?></a></p>
+				<?php if ( array_key_exists('desc', $item) ): ?>
+					<p class="desc"><?php echo $item['desc']; ?></p>
+				<?php endif; ?>
+				<a href="<?php echo $item['link']; ?>" class="button"></a>
+				<div class="clear"></div>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<div id="footer"> 
+	<ul> 
+		<li><a id="feedback" href="http://code.google.com/p/vlc-shares/"><?php echo X_Env::_('p_mobilerenderer_footerproject')?></a></li> 
+		<li><a id="uscHome" href="<?php echo $this->url(array('controller' => 'manage', 'action' => 'index' ), 'default', true);?>"><?php echo X_Env::_('p_mobilerenderer_footermanage'); ?></a></li> 
+		<li><a href="<?php echo $this->url(array('controller' => 'index', 'action' => 'collections' ), 'default', true);?>"><?php echo X_Env::_('p_mobilerenderer_footerindex')?></a></li> 
+	</ul> 
+</div>
+
