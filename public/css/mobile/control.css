@@ -76,22 +76,3 @@ a.button {display: block; position: absolute; top: 0; left: 0; width: 100%; heig
 .mapLink {padding-left: 18px; background-image: url(../../images/mobile/icon-map-pin.gif); background-position: center left; background-repeat: no-repeat;}
 
 #footer a {color: #000;}
-
-.item.option ul.items {
-	margin-top: 20px;
-	margin-left: 50px; 
-	padding: 0;
-	background: #333 url(../../images/grid.png);
-	-webkit-border-radius:10px; border: 1px solid #ccc; list-style-type: none;
-}
-.item.option ul.items .item a {
-	font-size: 14px; font-weight: bold; color: #e7e5e5; text-decoration: none;
-}
-
-.item.option ul.items .item:first-child {
-	-webkit-border-radius:10px 10px 0px 0px;
-}
- 
-.item.option ul.items .item.selected {
-	background: #900  url(../../images/grid.png);
-}

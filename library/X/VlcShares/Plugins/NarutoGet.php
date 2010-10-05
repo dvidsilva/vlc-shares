@@ -49,7 +49,7 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 							'controller' => 'browse',
 							'action' => 'share',
 							'p' => $this->getId(),
-							'l' => base64_encode(self::INDEX_SHIPPUDEN)
+							//'l' => base64_encode(self::INDEX_SHIPPUDEN)
 						), 'default', true
 					)
 				),
@@ -74,15 +74,17 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 		$urlHelper = $controller->getHelper('url');
 		
 		$items = array();
-		
+		/*
 		if ( $location != '' ) {
 
-			//try to disable SortItems plugin, so link are listed as in html page
-			X_VlcShares_Plugins::broker()->unregisterPluginClass('X_VlcShares_Plugins_SortItems');
 			
 			/*
 			if ( $location == self::INDEX_SHIPPUDEN ) {
 				*/
+		
+				//try to disable SortItems plugin, so link are listed as in html page
+				X_VlcShares_Plugins::broker()->unregisterPluginClass('X_VlcShares_Plugins_SortItems');
+		
 				$pageIndex = $this->config('index.shippuden.url', 'http://www.narutoget.com/naruto-shippuden-episodes/');
 				
 				$htmlString = $this->_loadPage($pageIndex);
@@ -107,7 +109,8 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 								), 'default', false
 							)
 						),
-						__CLASS__.':location'	=>	$href
+						__CLASS__.':location'	=>	$href,
+						'icon'	=>	'/images/icons/file_32.png'
 					);
 					
 				}
@@ -178,9 +181,7 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 					}
 				}
 			}
-			*/
 		} else {
-			/*
 			$items[] = array(
 				'label'		=>	X_Env::_('p_narutoget_index_naruto'),
 				'link'		=>	X_Env::completeUrl(
@@ -193,7 +194,6 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 				),
 				__CLASS__.':location'	=>	self::INDEX_NARUTO
 			);
-			*/		
 			$items[] = array(
 				'label'		=>	X_Env::_('p_narutoget_index_shippuden'),
 				'link'		=>	X_Env::completeUrl(
@@ -207,7 +207,7 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 				__CLASS__.':location'	=>	self::INDEX_SHIPPUDEN
 			);
 		}
-		
+		*/
 		return $items;
 	}
 	
@@ -281,7 +281,7 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 		}
 		
 		// prevent no-location-given error
-		if ( $location === null ) return false;
+		if ( $location == null ) return false;
 		
 		$htmlString = $this->_loadPage($location);
 		
@@ -294,7 +294,7 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 			$attr = $results->current()->nodeValue;
 			$attrs = explode("&", $attr);
 			foreach ($attrs as $attr) {
-				list($type, $value) = explode('=', $attr);
+				@list($type, $value) = explode('=', $attr);
 				if ( $type == 'video_src' ) {
 					$this->cachedLocation[$location] = $value;
 					return $value;
@@ -310,7 +310,7 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 			$attr = $results->current()->nodeValue;
 			$attrs = explode("&", $attr);
 			foreach ($attrs as $attr) {
-				list($type, $value) = explode('=', $attr);
+				@list($type, $value) = explode('=', $attr);
 				if ( $type == 'file' ) {
 					$this->cachedLocation[$location] = $value;
 					return $value;
@@ -322,6 +322,18 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 		$this->cachedLocation[$location] = false;
 		return false;
 		
+	}
+	
+	/**
+	 * @see X_VlcShares_Plugins_ResolverInterface::getParentLocation
+	 * @param $location
+	 */
+	function getParentLocation($location = null) {
+		if ($location == null || $location == '') {
+			return false;
+		} else {
+			return null;
+		}
 	}
 	
 	

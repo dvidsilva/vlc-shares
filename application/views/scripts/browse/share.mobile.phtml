@@ -5,12 +5,12 @@
 
 <div id="site_header">
 	<a href="<?php echo $this->url(array('controller' => 'index', 'action' => 'collections'), 'default', true); ?>" id="usc_mobile">VLC Shares</a>
-	<?php if ( $this->parentLocation || $this->parentLocation == '' ) :?>
+	<?php if ( $this->parentLocation !== false ) :?>
 		<a href="<?php echo $this->url(array('l' => ($this->parentLocation == '' ? null : base64_encode($this->parentLocation))), 'default', false); ?>" id="app_icon">
 			<img src="<?php echo $this->baseUrl('/images/mobile/back.png'); ?>" />
 		</a>
 	<?php else: ?>
-		<a href="javascript:history.back();" id="app_icon">
+		<a href="<?php echo $this->url(array('controller' => 'index', 'action' => 'collections'), 'default', true); ?>" id="app_icon">
 			<img src="<?php echo $this->baseUrl('/images/mobile/back.png'); ?>" />
 		</a>
 	<?php endif; ?>
@@ -35,7 +35,7 @@
 		<?php foreach ($this->items as $i => $item):?>
 			<li class="item">
 				<?php if ( array_key_exists('icon', $item) ): ?>
-					<img src="<?php echo $this->baseUrl($item['icon']); ?>"	alt="" />
+					<img src="<?php echo $this->baseUrl($item['icon']); ?>" height="32px" width="32px" alt="" />
 				<?php endif; ?>
 				<p class="title"><a href="/news/story.php?id=42666"><?php echo $item['label']; ?></a></p>
 				<?php if ( array_key_exists('desc', $item) ): ?>

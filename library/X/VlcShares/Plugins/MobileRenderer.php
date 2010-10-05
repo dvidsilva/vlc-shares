@@ -16,7 +16,8 @@ class X_VlcShares_Plugins_MobileRenderer extends X_VlcShares_Plugins_Abstract {
 	}
 	
 	public function gen_afterPageBuild(&$items, Zend_Controller_Action $controller) {
-		if ( !((bool) $this->config('forced.enabled', false)) && !$this->helpers()->devices()->isAndroid() ) return;
+		// even if forced.enabled, don't build the page if the device is wiimc
+		if ( $this->helpers()->devices()->isWiimc() || ( !((bool) $this->config('forced.enabled', false)) && !$this->helpers()->devices()->isAndroid() )) return;
 		
 		X_Debug::i("Plugin triggered");
 
@@ -41,12 +42,11 @@ class X_VlcShares_Plugins_MobileRenderer extends X_VlcShares_Plugins_Abstract {
 			if ( $providerObj instanceof X_VlcShares_Plugins_ResolverInterface ) {
 				// location in request obj are base64_encoded
 				$view->view->locationRaw = $providerObj->resolveLocation(base64_decode($request->getParam('l', '')));
-			}
-			if ( $providerObj instanceof X_VlcShares_Plugins_ResolverParentInterface ) {
 				$view->view->parentLocation = $providerObj->getParentLocation(base64_decode($request->getParam('l', '')));
 			}
 		} catch (Exception $e) {
-			X_Debug::w('No provider O_o');
+			//die('No provider');
+			X_Debug::i('No provider O_o');
 		} 
 		
 		// set some vars for view

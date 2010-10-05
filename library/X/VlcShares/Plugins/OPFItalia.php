@@ -115,7 +115,8 @@ class X_VlcShares_Plugins_OPFItalia extends X_VlcShares_Plugins_Abstract impleme
 							), 'default', false
 						)
 					),
-					__CLASS__.':location'	=>	$href
+					__CLASS__.':location'	=>	$href,
+					'icon'	=>	'/images/icons/file_32.png'
 				);
 			}
 			
@@ -150,7 +151,8 @@ class X_VlcShares_Plugins_OPFItalia extends X_VlcShares_Plugins_Abstract impleme
 							), 'default', false
 						)
 					),
-					__CLASS__.':location'	=>	$i
+					__CLASS__.':location'	=>	$i,
+					'icon'	=>	'/images/icons/folder_32.png'
 				);
 			}
 		}
@@ -224,6 +226,16 @@ class X_VlcShares_Plugins_OPFItalia extends X_VlcShares_Plugins_Abstract impleme
 	function resolveLocation($location = null) {
 
 		return $location;
+		
+	}
+	
+	/**
+	 * No support for parent location
+	 * @see X_VlcShares_Plugins_ResolverInterface::getParentLocation
+	 * @param $location
+	 */
+	function getParentLocation($location = null) {
+		if ($location == null || $location == '') return false;
 		
 	}
 	

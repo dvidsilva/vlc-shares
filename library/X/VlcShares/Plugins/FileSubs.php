@@ -62,7 +62,8 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 						'action'	=>	'selection',
 						'pid'		=>	$this->getId()
 					), 'default', false)
-				)
+				),
+				'icon'		=>	'/images/manage/plugin.png',
 			)
 		);
 		

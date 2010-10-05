@@ -36,7 +36,8 @@ class X_VlcShares_Plugins_Controls extends X_VlcShares_Plugins_Abstract {
 	public function __construct() {
 		$this->setPriority('getControlItems')
 			->setPriority('execute')
-			->setPriority('getIndexManageLinks');
+			->setPriority('getIndexManageLinks')
+			->setPriority('getStreamItems');
 	}
 	
 	/**
@@ -61,6 +62,7 @@ class X_VlcShares_Plugins_Controls extends X_VlcShares_Plugins_Abstract {
 						'pid'		=>	$this->getId(),
 					), 'default', false)
 				),
+				'icon'	=>	'/images/icons/pause.png'
 			);
 		}
 		if ( $this->config('stop.enabled', true)) {
@@ -74,6 +76,7 @@ class X_VlcShares_Plugins_Controls extends X_VlcShares_Plugins_Abstract {
 						'pid'		=>	$this->getId(),
 					), 'default', false)
 				),
+				'icon'	=>	'/images/icons/stop.png'
 			);
 		}
 		if ( $this->config('forwardrelative.enabled', false)) {
@@ -88,7 +91,9 @@ class X_VlcShares_Plugins_Controls extends X_VlcShares_Plugins_Abstract {
 						'param'				=>	'' // this will replaced by wiimc....
 					), 'default', false)
 				),
-				'type'	=> X_Plx_Item::TYPE_SEARCH
+				'type'	=> X_Plx_Item::TYPE_SEARCH,
+				'icon'	=>	'/images/icons/forward.png',
+				'desc'	=>	X_Env::_('p_controls_forwardcustom_desc')
 			);
 		}
 		if ( $this->config('backrelative.enabled', false)) {
@@ -103,7 +108,9 @@ class X_VlcShares_Plugins_Controls extends X_VlcShares_Plugins_Abstract {
 						'param'				=>	'' // this will replaced by wiimc....
 					), 'default', false)
 				),
-				'type'	=> X_Plx_Item::TYPE_SEARCH
+				'type'	=> X_Plx_Item::TYPE_SEARCH,
+				'icon'	=>	'/images/icons/back.png',
+				'desc'	=>	X_Env::_('p_controls_backcustom_desc')
 			);
 		}
 		if ( $this->config('seek.enabled', true)) {
@@ -118,7 +125,9 @@ class X_VlcShares_Plugins_Controls extends X_VlcShares_Plugins_Abstract {
 						'param'				=>	'' // this will replaced by wiimc....
 					), 'default', false)
 				),
-				'type'	=> X_Plx_Item::TYPE_SEARCH
+				'type'	=> X_Plx_Item::TYPE_SEARCH,
+				'icon'	=>	'/images/icons/seek.png',
+				'desc'	=>	X_Env::_('p_controls_seektominute_desc')
 			);
 		}
 		
@@ -134,7 +143,8 @@ class X_VlcShares_Plugins_Controls extends X_VlcShares_Plugins_Abstract {
 						'param'				=>	'5' // this will replaced by wiimc....
 					), 'default', false)
 				),
-				'type'	=> X_Plx_Item::TYPE_SEARCH
+				'type'	=> X_Plx_Item::TYPE_SEARCH,
+				'icon'	=>	'/images/icons/back.png'
 			);
 			
 			
@@ -148,7 +158,8 @@ class X_VlcShares_Plugins_Controls extends X_VlcShares_Plugins_Abstract {
 						'param'				=>	'5' // this will replaced by wiimc....
 					), 'default', false)
 				),
-				'type'	=> X_Plx_Item::TYPE_SEARCH
+				'type'	=> X_Plx_Item::TYPE_SEARCH,
+				'icon'	=>	'/images/icons/forward.png'
 			);
 			
 			$return[] =	array(
@@ -161,7 +172,8 @@ class X_VlcShares_Plugins_Controls extends X_VlcShares_Plugins_Abstract {
 						'param'				=>	'30' // this will replaced by wiimc....
 					), 'default', false)
 				),
-				'type'	=> X_Plx_Item::TYPE_SEARCH
+				'type'	=> X_Plx_Item::TYPE_SEARCH,
+				'icon'	=>	'/images/icons/back.png'
 			);
 			
 			
@@ -175,7 +187,8 @@ class X_VlcShares_Plugins_Controls extends X_VlcShares_Plugins_Abstract {
 						'param'				=>	'30' // this will replaced by wiimc....
 					), 'default', false)
 				),
-				'type'	=> X_Plx_Item::TYPE_SEARCH
+				'type'	=> X_Plx_Item::TYPE_SEARCH,
+				'icon'	=>	'/images/icons/forward.png'
 			);
 			
 		}
@@ -241,13 +254,37 @@ class X_VlcShares_Plugins_Controls extends X_VlcShares_Plugins_Abstract {
 					'action'		=>	'index',
 					'key'			=>	'controls'
 				)),
-				'icon'		=>	'/images/manage/configs.png',
+				'icon'		=>	'/images/icons/controls.png',
 				'subinfos'	=> array()
 			),
 		);
 	
 	}
 	
+	/**
+	 * Add the link -go-to-controls-page- in stream page
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array 
+	 */
+	public function getStreamItems($provider, $location, Zend_Controller_Action $controller) {
+		$urlHelper = $controller->getHelper('url');
+
+		return array(
+			array(
+				'label'	=>	X_Env::_('p_controls_gotocontrols'),
+				'link'	=>	X_Env::completeUrl($urlHelper->url(array(
+						'controller'		=>	'controls',
+						'action'			=>	'control',
+					), 'default', false)
+				),
+				'icon'	=>	'/images/icons/controls.png'
+			),
+		);
+		
+	}
+		
 	
 	private function _action_stop(X_Vlc $vlc, $param) {
 		$vlc->forceKill();

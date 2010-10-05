@@ -11,7 +11,7 @@ require_once 'X/VlcShares/Plugins/Abstract.php';
  * @author ximarx
  *
  */
-class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverDisplayableInterface, X_VlcShares_Plugins_ResolverParentInterface {
+class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverDisplayableInterface {
 	
 	public function __construct() {
 		$this->setPriority('getCollectionsItems')
@@ -90,7 +90,8 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 									), 'default', false
 								)
 							),
-							__CLASS__.':location'	=>	"{$share->getId()}:{$path}{$entry->getFilename()}/"
+							__CLASS__.':location'	=>	"{$share->getId()}:{$path}{$entry->getFilename()}/",
+							'icon'		=>	'/images/icons/folder_32.png',
 						);
 						
 						
@@ -105,7 +106,8 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 									), 'default', false
 								)
 							),
-							__CLASS__.':location'	=>	"{$share->getId()}:{$path}{$entry->getFilename()}"
+							__CLASS__.':location'	=>	"{$share->getId()}:{$path}{$entry->getFilename()}",
+							'icon'		=>	'/images/icons/file_32.png',
 						);
 						
 					} else {
@@ -132,7 +134,9 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 							), 'default', false
 						)
 					),
-					__CLASS__.':location'	=>	"{$share->getId()}:/"
+					__CLASS__.':location'	=>	"{$share->getId()}:/",
+					'icon'		=>	'/images/icons/folder_32.png',
+					'desc'		=>	"{$share->getPath()}"
 				);
 			}
 		}
@@ -189,11 +193,15 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 		return realpath($share->getPath().$path);
 	}
 	
+	/**
+	 * @see X_VlcShares_Plugins_ResolverInterface::getParentLocation
+	 * @param $location
+	 */
 	function getParentLocation($location = null) {
 		if ($location == null || $location == '') return false;
 		
 		@list($shareId, $path) = explode(':', $location, 2);
-		if (rtrim($path,'\\/') == '' ) return '';
+		if (rtrim($path,'\\/') == '' ) return null;
 		
 		return $shareId.':'.rtrim(dirname($path),'\\/').'/';
 		

@@ -46,7 +46,7 @@ class X_VlcShares_Plugins_Helper_Devices extends X_VlcShares_Plugins_Helper_Abst
 	 */
 	public function getWiimcVersion() {
 		if ( $this->isWiimc() ) {
-			$split = split($_SERVER['HTTP_USER_AGENT'], '/');
+			$split = explode('/', $_SERVER['HTTP_USER_AGENT']);
 			return @$split[1];
 		} else {
 			return null;
