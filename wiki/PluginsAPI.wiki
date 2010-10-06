@@ -25,7 +25,7 @@ The following scheme reproduce the transactions between controlles and pages whi
 
 || http://vlc-shares.googlecode.com/svn/wiki/scheme-browse-reproduction.png ||
 
-== Plugin systems ==
+== Plugins System ==
 
 The core part of plugins system is the Plugin Broker ({{{X_VlcShares_Plugins_Broker}}} class) object. It acts as a container for plugin references and forwards trigger calls to each plugin that is registered for the trigger. This object is bootstrapped by another class ({{{X_VlcShares_Plugins}}}) that has the assignment of create plugin broker, register installed (and active) plugins into the broker, initialize plugins configs and initialize active plugin helpers.
 The plugin broker also provides services for register/unregister new plugins on the fly or for plugin retrieval by id or class.
