@@ -60,4 +60,4 @@ http://img827.imageshack.us/img827/4993/alpha5.png
 = You may find interesting... =
 
   * WiimcConfiguration: configure you WiiMC online media tab for VLCShares 
-  * AndroidDevicesConfiguration: configure VLCShares and Android Phones
+  * AndroidDeviceConfiguration: configure VLCShares and Android Phones
