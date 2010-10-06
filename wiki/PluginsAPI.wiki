@@ -136,7 +136,36 @@ return array(
 
 === Plugin Preferences ===
 
+Each plugin can have its own preferences or options. Those options are stored inside the database at plugin installation time and will be fetched and inserted in the plugin every time the plugin systems is initialized automatically. Plugins created and registered on the fly through the plugin broker need to be manually initialized.
+
+Inside the plugin scope, options are available through the {{{$this->options}}} class property as a {{{Zend_Config}}} object or through the function:
+{{{
+/**
+ * Return a config key value or the default specified as parameter
+ * if the key isn't registered. This function allow
+ * keys in dotted notation (key.subkey.subsubkey)
+ * @param string $key
+ * @param midex $default
+ */
+public function config($key, $default = null);
+}}}
+
+Options available in the plugin scope are read-only. To change config values must be used a proper interface provided by the plugin or the way offered by the ConfigController for lazy plugins.
+
 == Plugins Helpers ==
+
+VLCShares provide a set of plugin helpers for plugins and controllers. Each helper has its own interface and for more information you should read the helper documentation or the inline comments.
+The purpose of plugin helpers is to provide common services for all plugins. Each plugin helper is registered agains the plugin helper broker ({{{X_VlcShares_Plugins_Helper_Broker}}} class). A reference to helper broker is available through the {{{X_VlcShares_Plugins::helpers()}}} function or, in the plugin class scope, through the {{{X_VlcShares_Plugins_Abstract::helpers()}}} method. The helper broker allow to register/unregister new helpers on the fly. For more information read the inline comments.
+
+VLCShares has a set of core helpers:
+
+|| *Helper name* || Purpose ||
+|| Devices || Provide services for identify the device who made a page request through the user-agent ||
+|| FFMpeg || Allow to gain information about a stream, both remote than local ||
+|| MediaInfo || Allow to gain information about a local stream only ||
+|| Stream || Allow to gain information about a stream, both remote than local, through FFMpeg or MediaInfo. Using this helper you will get the infos and the system will choose the best adapter (FFMpeg or MediaInfo) for the stream ||
+|| GSpot || This helper is planned for local files analysis, but not implemented yet ||
+
 
 == How to create a new Plugin ==
 
