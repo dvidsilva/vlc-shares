@@ -1,0 +1,106 @@
+#summary One-sentence summary of this page.
+#labels Phase-Implementation
+#sidebar TOCPluginsAPI
+
+<wiki:toc max_depth="3" />
+
+= Introduction =
+
+= System Architecture =
+
+== Plugin Preferences ==
+
+== Plugins Helpers ==
+
+== How to create a new Plugin ==
+
+=== Priority System ===
+
+=== Standard Interfaces ===
+
+== Inputs and Outputs ==
+
+= Generic triggers =
+
+=== gen_afterPluginsInitialized ===
+
+=== gen_beforePageBuild ===
+
+=== gen_afterPageBuild ===
+
+=== gen_beforeInit ===
+
+=== gen_afterInit ===
+
+=== gen_preProviderSelection ===
+
+= Level 1 APIs =
+
+== Page: Index/Collections ==
+
+=== preGetCollectionsItems ===
+=== getCollectionsItems ===
+=== postGetCollectionsItems ===
+=== filterCollectionsItems ===
+
+== Page: Browse/Share ==
+
+=== preGetShareItems ===
+=== getShareItems ===
+=== postGetShareItems ===
+=== filterShareItems ===
+=== orderShareItems ===
+
+== Page: Browse/Mode ==
+
+=== preGetModeItems ===
+=== getModeItems ===
+=== postGetModeItems ===
+=== filterModeItems ===
+=== orderModeItems ===
+
+== Page: Browse/Selection ==
+
+=== preGetSelectionItems ===
+=== getSelectionItems ===
+=== postGetSelectionItems ===
+=== filterSelectionItems ===
+=== orderSelectionItems ===
+
+== Page: Browse/Stream ==
+
+=== preGetStreamItems ===
+=== getStreamItems ===
+=== postGetStreamItems ===
+=== preRegisterVlcArgs ===
+=== registerVlcArgs ===
+=== postRegisterVlcArgs ===
+=== preSpawnVlc ===
+=== postSpawnVlc ===
+
+== Page: Controls/Control ==
+
+=== preGetControlItems ===
+=== getControlItems ===
+=== postGetControlItems ===
+
+== Page: Controls/Execute ==
+
+=== preGetExecuteItems === 
+=== getExecuteItems ===
+=== postGetExecuteItems ===
+=== preExecute ===
+=== execute ===
+=== postExecute ===
+
+= Level 2 APIs =
+
+=== getIndexActionLinks ===
+=== getIndexManageLinks ===
+=== getIndexStatistics ===
+=== getIndexMessages ===
+=== getIndexNews ===
+=== preGetTestItems ===
+=== getTestItems ===
+=== postGetTestItems ===
+=== prepareConfigElement ===
