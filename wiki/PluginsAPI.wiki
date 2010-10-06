@@ -92,7 +92,13 @@ Valid values for {{{$priority}}} are positive integers. _0_ indicates top priori
 
 === Standard Interfaces ===
 
+VLCShares provides some standard interface for plugins.
+  * {{{X_VlcShares_Plugins_ResolverInterface}}}: data provider plugins should implement this interface for allow others plugin to resolve a decoded and absolute resource location.
+  * {{{X_VlcShares_Plugins_ResolverDisplayableInterface}}}: this interface extends {{{X_VlcShares_Plugins_ResolverInterface}}} and ensures that the returned value of {{{resolveLocation}}} function can be displayed by the interface. This interface has been added in VLCShares 0.5.1
+
 === Inputs and Outputs ===
+
+
 
 === Plugin Preferences ===
 
