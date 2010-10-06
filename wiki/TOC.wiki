@@ -1,5 +1,5 @@
 #labels Phase-Support
-[Home ↑ Home]
+   * [Home ↑ Home]
    * [Installation Installation]
       * [InstallationWindows Installation for Windows System]
       * [InstallationLinux Installation for Linux System]
