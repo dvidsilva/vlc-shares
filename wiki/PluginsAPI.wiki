@@ -3,7 +3,7 @@
 
 = Introduction =
 
-This document talk about the plugin system of VLCShares. This infos are aimed for developer.
+This document talks about the plugin system of VLCShares. This infos are aimed for developer.
 
 = System Architecture =
 
@@ -32,6 +32,39 @@ The plugin broker also provides services for register/unregister new plugins on 
 Usage example (can be executed anywhere inside the application):
 {{{
 $pluginBroker = X_VlcShares_Plugins::broker();
+$myPlugin = new My_Plugin_That_Does_Lots_Stuff();
+
+// register on the fly a new plugin
+$pluginBroker->register('myPluginId', $myPlugin);
+
+// check if plugin is registered
+if ( $pluginBroker->isRegistered('myPluginId') ) {
+   // ...and unregister it
+   $pluginBroker->unregisterPluginId('myPluginId');
+} else {
+   // ...or unregister all plugin of class...
+   $pluginBroker->unregisterPluginClass('My_Plugin_That_Does_Lots_Stuff');
+}
+
+// let's see what is registered now
+var_dump($pluginBroker->getPlugins());
+
+// i want a specific plugin by ID
+try {
+   $anotherPlugin = $pluginBroker->getPlugins('anotherPluginId');
+   $anotherPlugin->specificFunctionCall();
+} catch (Exception $e) {
+   // there isn't the plugin
+}
+
+// let's call a trigger function:
+// even if there is no gen_afterPluginsInitialized in the class
+// the magic function __call trap the call and forward it
+// to all plugin registered for that trigger
+$pluginBroker->gen_afterPluginsInitialized();
+
+// unregister all plugins
+$pluginBroker->unregisterAll();
 
 }}}
 
