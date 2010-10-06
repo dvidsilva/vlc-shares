@@ -23,7 +23,7 @@ Standard main controllers are:
 
 The following scheme reproduce the transactions between controlles and pages while in browse and reproduction mode
 
-http://vlc-shares.googlecode.com/svn/wiki/scheme-browse-reproduction.png
+|| http://vlc-shares.googlecode.com/svn/wiki/scheme-browse-reproduction.png ||
 
 == Plugin systems ==
 
@@ -98,7 +98,41 @@ VLCShares provides some standard interface for plugins.
 
 === Inputs and Outputs ===
 
+Input and Outputs of trigger functions are specified in the function comment. However, most of the trigger functions of level1 apis require arrays of page items as output.
 
+Page items are associative arrays with some selected keys. Below there is a list of valid keys
+
+|| *Key* || *Meaning* || *Value type* || *Required* || *Default* ||
+|| label || The name of the page item || String || true || no-default ||
+|| link || The URL address of the resource that you are describing || URL || true || no-default ||
+|| type || The type of resource that you are linking || video | playlist | search || false || playlist ||
+|| icon || An icon that will represent the item || String: a path of a file inside the /public/ dir || false || null, but some renderer could have a default ||
+|| desc || A short description of the item || String || false || null ||
+|| location || The plain location value of the item || String || false || null ||
+|| thumb || The location of a thumbnail image || URL || false || null, but some renderer could have a default ||
+|| highlight || If the renderer should highlight the item || Boolean || false || false ||
+
+Label and Link keys are mandatory, the others are optional. Any other key type can be used to specified plugin-specific key. It's better if you prepend the plugin-specific keys with a %PLUGIN_CLASS%: namespace to avoid overriding.
+
+This is a pratical example of how to specify a page items array. The item in the example is one of the items returned from the plugin FileSystem for the index/collections page:
+{{{
+return array(
+		array(
+			'label' => X_Env::_('p_filesystem_collectionindex'), 
+			'link'	=> X_Env::completeUrl(
+				$urlHelper->url(
+					array(
+						'controller' => 'browse',
+						'action' => 'share',
+						'p' => $this->getId(),
+					), 'default', true
+				)
+			),
+			'icon'	=> '/images/filesystem/logo.png',
+			'desc'	=> X_Env::_('p_filesystem_collectionindex_desc')
+		)
+	);
+}}}
 
 === Plugin Preferences ===
 
