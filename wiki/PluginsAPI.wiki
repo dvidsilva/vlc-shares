@@ -25,17 +25,47 @@ The following scheme reproduce the transactions between controlles and pages whi
 
 http://vlc-shares.googlecode.com/svn/wiki/scheme-browse-reproduction.png
 
-== Plugin Preferences ==
+== Plugin systems ==
+
+The core part of plugins system is the Plugin Broker ({{{X_VlcShares_Plugins_Broker}}} class) object. It acts as a container for plugin references and forwards trigger calls to each plugin that is registered for the trigger. This object is bootstrapped by another class ({{{X_VlcShares_Plugins}}}) that has the assignment of create plugin broker, register installed (and active) plugins into the broker, initialize plugins configs and initialize active plugin helpers.
+The plugin broker also provides services for register/unregister new plugins on the fly or for plugin retrieval by id or class.
+Usage example (can be executed anywhere inside the application):
+{{{
+$pluginBroker = X_VlcShares_Plugins::broker();
+
+}}}
+
+The controllers use the plugin broker to trigger functions of registered plugins.
+
+A valid plugin for VLCShares 0.5 must extends the abstract class {{{X_VlcShares_Plugins_Abstract}}}. This abstract class provides basic services for configuration store and retrieval, plugins priorities and a list of implemented and neutral (no interaction or return values) valid trigger functions.
+While creating a new plugin you must override one or more triggers and register the plugin for those triggers using the {{{setPriority}}} function.
+
+=== Priority System ===
+The priority system is used by the plugin broker to sort plugin calls. If a plugin want to register itself for a trigger, it must use the {{{setPriority}}} function:
+
+{{{
+/**
+ * Set priority for the trigger 
+ * (if priority for a trigger is not setted,
+ * the trigger callback will be ignored)
+ * @param string $triggerName
+ * @param int $priority
+ * @return X_VlcShares_Plugins_Abstract
+ */
+public function setPriority($triggerName, $priority = 50);
+}}}
+
+Valid values for {{{$priority}}} are positive integers. _0_ indicates top priority. If two or more plugins register their self for the same trigger with the same priority, they will be sorted by registration order.
+
+=== Standard Interfaces ===
+
+=== Inputs and Outputs ===
+
+=== Plugin Preferences ===
 
 == Plugins Helpers ==
 
 == How to create a new Plugin ==
-
-=== Priority System ===
-
-=== Standard Interfaces ===
-
-== Inputs and Outputs ==
 
 = Generic triggers =
 
