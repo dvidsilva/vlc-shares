@@ -41,11 +41,11 @@ Alpha 6 (Released: download and try it http://code.google.com/p/vlc-shares/downl
   * ~~Write a youtube plugin~~ (Moved to 0.5.1)
 
 Beta 1:
-  * Try to distribute vlc-shares as a module for easyphp
-  * Release a beta version
-  * Fix critical bugs
+  * ~~Try to distribute vlc-shares as a module for easyphp~~
+  * ~~Release a beta version~~
+  * ~~Fix critical bugs~~
 
 Release:
-  * Create documentation for plugins system
-  * Create newer installation tutorial
+  * ~~Create documentation for plugins system~~
+  * ~~Create newer installation tutorial~~
   * Create a video with best new features (as bookmarklets, megavideo, youtube, multiple interface)
