@@ -1,5 +1,5 @@
 #summary Installation tutorial for vlc-shares 0.5 for Windows
-#labels Featured,Phase-Deploy
+#labels Phase-Support,Featured,Phase-Deploy
 
 = Introduction =
 
@@ -59,5 +59,5 @@ http://img827.imageshack.us/img827/4993/alpha5.png
 
 = You may find interesting... =
 
-  * WiiMcConfiguration: configure you WiiMC online media tab for VLCShares 
-  * AndroidConfiguration: configure VLCShares and Android Phones
+  * WiimcConfiguration: configure you WiiMC online media tab for VLCShares 
+  * AndroidDevicesConfiguration: configure VLCShares and Android Phones
