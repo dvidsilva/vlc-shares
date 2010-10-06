@@ -1,12 +1,29 @@
-#summary One-sentence summary of this page.
+#summary VLCShares plugins system information
 #labels Phase-Implementation
-#sidebar TOCPluginsAPI
-
-<wiki:toc max_depth="3" />
 
 = Introduction =
 
+This document talk about the plugin system of VLCShares. This infos are aimed for developer.
+
 = System Architecture =
+
+VLCShares is built upon [http://framework.zend.com/ ZendFramework]. Understanding of the functioning of the framework is a recommended prerequisite to better understand how VLCShares works.
+
+VLCShares follows the MVC Pattern and integrates an independent Plugins System. Main controllers follow the baselines of ZendFramework (so, they are placed inside _application/controllers/_ folder) and follow ZendFramework name rules.
+
+Standard main controllers are:
+  * *IndexController*: index controller. Redirect the application flow to Management interface or Browse interface and provides collections index page.
+  * *ManageController*: management page controller. Dashboard and configs panels are provided by this controller. 
+  * *BrowseController*: manage the browse/stream functionality. The main work of this plugin is to reassemble resource returned by plugins.
+  * *ControlsController*: provides functionality for controls vlc's streams.
+  * *TestController*: execute system test and provides results.
+  * *ErrorController*: display error information
+  * *ConfigController*: provide a way to manage lazy plugins configurations without the need of create a plugin management interface for each plugin.
+  * *InstallerController*: execute initial configuration of VLCShares
+
+The following scheme reproduce the transactions between controlles and pages while in browse and reproduction mode
+
+http://code.google.com/p/vlc-shares/w/scheme-browse-reproduction.png
 
 == Plugin Preferences ==
 
