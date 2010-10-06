@@ -23,7 +23,7 @@ Standard main controllers are:
 
 The following scheme reproduce the transactions between controlles and pages while in browse and reproduction mode
 
-http://code.google.com/p/vlc-shares/w/scheme-browse-reproduction.png
+http://vlc-shares.googlecode.com/svn/wiki/scheme-browse-reproduction.png
 
 == Plugin Preferences ==
 
