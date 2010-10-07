@@ -52,9 +52,7 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 							'p' => $this->getId(),
 						), 'default', true
 					)
-				),
-				'icon'	=> '/images/dbforever/logo.png',
-				'desc'	=> X_Env::_('p_dbforever_collectionindex_desc')
+				)
 			)
 		);
 	}
@@ -102,8 +100,7 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 							), 'default', false
 						)
 					),
-					__CLASS__.':location'	=>	$href,
-					'icon'		=> '/images/icons/file_32.png'
+					__CLASS__.':location'	=>	$href
 				);
 				
 			}
@@ -121,8 +118,7 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 						), 'default', false
 					)
 				),
-				__CLASS__.':location'	=>	self::INDEX_NARUTO,
-				'icon'		=> '/images/icons/folder_32.png'
+				__CLASS__.':location'	=>	self::INDEX_NARUTO
 			);
 
 			$items[] = array(
@@ -134,8 +130,7 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 						), 'default', false
 					)
 				),
-				__CLASS__.':location'	=>	self::INDEX_ONEPIECE,
-				'icon'		=> '/images/icons/folder_32.png'
+				__CLASS__.':location'	=>	self::INDEX_ONEPIECE
 			);
 			
 			$items[] = array(
@@ -147,8 +142,7 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 						), 'default', false
 					)
 				),
-				__CLASS__.':location'	=>	self::INDEX_BLEACH,
-				'icon'		=> '/images/icons/folder_32.png'
+				__CLASS__.':location'	=>	self::INDEX_BLEACH
 			);
 			
 		}
@@ -253,34 +247,6 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 		
 	}
 	
-	/**
-	 * @see X_VlcShares_Plugins_ResolverInterface::getParentLocation
-	 * @param $location
-	 */
-	function getParentLocation($location = null) {
-		if ($location == null || $location == '') return false;
-		
-		if ( $location == self::INDEX_BLEACH || $location == self::INDEX_ONEPIECE || $location == self::INDEX_NARUTO ) {
-			return null; // no parent for category index. Fallback to normal index
-		} else {
-			if ( X_Env::startWith($location, '?page=') ) {
-				// ok, we are inside a category
-				$location = substr($location, strlen('?page='));
-				if ( X_Env::startWith($location, self::INDEX_BLEACH)) {
-					return self::INDEX_BLEACH;
-				} elseif ( X_Env::startWith($location, self::INDEX_BLEACH)) {
-					return self::INDEX_NARUTO;
-				} elseif ( X_Env::startWith($location, self::INDEX_ONEPIECE) || X_Env::startWith($location, 'strm_one_piece') ) {
-					// i need to use double condition because in the page i have an inconsitence
-					return self::INDEX_ONEPIECE;
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
-		}
-	}
 	
 	/**
 	 * Add the link for -manage-megavideo-

@@ -45,13 +45,6 @@ abstract class X_VlcShares_Plugins_Abstract {
 		}
 	}
 	
-	/**
-	 * Return a config key value or the default specified as parameter
-	 * if the key isn't registered. This function allow
-	 * keys in dotted notation (key.subkey.subsubkey)
-	 * @param string $key
-	 * @param midex $default
-	 */
 	public function config($key, $default = null) {
 		$splitted = explode('.', $key);
 		$configs = $this->configs;

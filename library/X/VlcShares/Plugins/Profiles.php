@@ -52,9 +52,7 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract {
 						'action'	=>	'selection',
 						'pid'		=>	$this->getId()
 					), 'default', false)
-				),
-				'icon'		=>	'/images/manage/plugin.png',
-				//'desc'		=>	X_Env::_('p_profiles_profilemode_desc')
+				)
 			)
 		);
 		

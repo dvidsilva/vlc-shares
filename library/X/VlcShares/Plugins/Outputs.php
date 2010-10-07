@@ -54,8 +54,7 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract {
 						'action'	=>	'selection',
 						'pid'		=>	$this->getId()
 					), 'default', false)
-				),
-				'icon'		=>	'/images/outputs/logo.png',
+				)
 			)
 		);
 		
@@ -192,8 +191,7 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract {
 			array(
 				'label'	=>	X_Env::_('p_outputs_gotostream'),
 				'link'	=>	$outputLink,
-				'type'	=>	X_Plx_Item::TYPE_VIDEO,
-				'icon'	=>	'/images/icons/play.png'
+				'type'	=>	X_Plx_Item::TYPE_VIDEO
 			)
 		);
 		
@@ -295,8 +293,7 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract {
 			array(
 				'label'	=>	X_Env::_('p_outputs_backstream'),
 				'link'	=>	$outputLink,
-				'type'	=>	X_Plx_Item::TYPE_VIDEO,
-				'icon'	=>	'/images/icons/play.png'
+				'type'	=>	X_Plx_Item::TYPE_VIDEO
 			)
 		);
 		

@@ -51,9 +51,7 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 							'p' => $this->getId(),
 						), 'default', true
 					)
-				),
-				'icon'	=> '/images/megavideo/logo.png',
-				'desc'	=> X_Env::_('p_megavideo_collectionindex_desc')
+				)
 			)
 		);
 	}
@@ -93,8 +91,7 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 							), 'default', false
 						)
 					),
-					__CLASS__.':location'	=>	$video->getId(),
-					'icon'	=>	'/images/icons/file_32.png'
+					__CLASS__.':location'	=>	$video->getId()
 				);
 			}
 			
@@ -114,8 +111,7 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 							), 'default', false
 						)
 					),
-					__CLASS__.':location'	=>	$share['category'],
-					'icon'	=>	'/images/icons/folder_32.png'
+					__CLASS__.':location'	=>	$share['category']
 				);
 			}
 		}
@@ -202,27 +198,6 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 		return $megavideo->get('URL');
 	}
 	
-	/**
-	 * @see X_VlcShares_Plugins_ResolverInterface::getParentLocation
-	 * @param $location
-	 */
-	function getParentLocation($location = null) {
-		if ($location == null || $location == '') return false;
-		
-		if ( is_numeric($location) && ((int) $location > 0 ) ) {
-			// should be a video id.
-			$model = new Application_Model_Megavideo();
-			Application_Model_MegavideoMapper::i()->find((int) $location, $model);
-			if ( $model->getId() !== null ) {
-				return $model->getCategory();
-			} else {
-				return null;
-			}
-		} else {
-			// should be a category name
-			return null;
-		}
-	}
 	
 	/**
 	 * Add the link Add megavideo link to actionLinks

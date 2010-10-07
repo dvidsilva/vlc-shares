@@ -48,9 +48,7 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 							'p' => $this->getId(),
 						), 'default', true
 					)
-				),
-				'icon'	=> '/images/animeland/logo.png',
-				'desc'	=> X_Env::_('p_animeland_collectionindex_desc')
+				)
 			)
 		);
 	}
@@ -135,8 +133,7 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 								), 'default', false
 							)
 						),
-						__CLASS__.':location'	=>	$href,
-						'icon'		=>	'/images/icons/file_32.png'
+						__CLASS__.':location'	=>	$href
 					);
 				} else {
 					$items[] = array(
@@ -149,8 +146,7 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 								), 'default', false
 							)
 						),
-						__CLASS__.':location'	=>	$href,
-						'icon'		=>	'/images/icons/folder_32.png'
+						__CLASS__.':location'	=>	$href
 					);
 				}
 				
@@ -257,15 +253,6 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 		
 	}
 	
-	/**
-	 * This plugin don't support
-	 * parent location resolver. So i redirect to history-1
-	 * @see X_VlcShares_Plugins_ResolverInterface::getParentLocation
-	 * @param $location
-	 */
-	function getParentLocation($location = null) {
-		return false;
-	}
 	
 	/**
 	 * Add the link for -manage-megavideo-
