@@ -8,7 +8,7 @@
 #     															#
 #################################################################
 
-VLC-SHARES v0.5 alpha 1 - 20/09/2010
+VLC-SHARES v0.5 - 07/10/2010
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -19,85 +19,49 @@ Vlc-share allow you to browse all files in your multimedia collection,
 select one of them and start the stream (with transcoding) through vlc.
 All of this through WiiMc (and the onlinemedia tab)
 
-For more info go to (in italian) 
-http://ximarx.netsons.org/blog/vlc-share/
-
-Sommario:
-PPP) Prerequisites
-1) Install & Configure
-2) WiiMc Configuration
-3) Changelog
-4) In the next release (maybe)
-5) Known issue
-6) Troubleshooting
-7) Acknowledgements
-
+For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 
 /==========---
-| PPP: Prerequisites
+| Changelog
 \==========---
 
-VLC-Share has been tested with:
- - Ubuntu 10.04
- - Windows XP Pro SP3
- 
-Linux Ubuntu 10.04 requirements:
- - Apache 2.2 (official repository)
- - PHP 5.3+ (official repository)
- - VLC 1.0.6+ (official repository)
- - netcat (official repository)
- - Zend Framework 1.10.3 (official repository)
- - php5-sqlite (official repository)
- 
-Windows XP Pro SP3 requirementes:
- - EasyPhp 5.3.2i+ (http://sourceforge.net/projects/quickeasyphp/files/EasyPHP/5.3.2i/EasyPHP-5.3.2i-setup.exe/download)
- - Zend Framework 1.10.6 minimal (http://framework.zend.com/releases/ZendFramework-1.10.6/ZendFramework-1.10.6-minimal.zip)
- - VLC 1.1.0+ (http://sourceforge.net/projects/vlc/files/1.1.0/win32/vlc-1.1.0-win32.exe/download)
- - netcat for windows (comes with vlc-shares)
- - sysinternals PsExec (comes with vlc-shares)
- - taskkill & tasklist (provided w/ Windows XP Professional)
-
-/==========---
-| 1: Install & Configure
-\==========---
-
-###!!! THOSE INSTRUCTIONS ARE OLD
-
-Installation & configuration tutorial:
-http://ximarx.netsons.org/blog/vlc-share/installation-and-configuration-guide/
-
-Config file is located in vlc-shares/application/configs/vlc-shares.config.ini
-Select the config template for your system, rename it in vlc-shares.config.ini
-and enjoy editing it :P
-
-/==========---
-| 2: Configure Wii (WiiMc)
-\==========---
-
-Add the line below in the file onlinemedia.xml in WiiMC directory
-
-<link name="VLC-Shares Collections" addr="http://IP_ADDRESS/vlc-shares/public/" /> 
-	
-before the last line (</file>).
-IP_ADDRESS = ip address of vlc-shares server
-
-/==========---
-| 3: Changelog
-\==========---
-
-*** 0.5 alpha 1 (20/09/2010) ***
+*** 0.5 (07/10/2010) ***
  - plugin system has been rewritten
- - new stream option selection mode
+ - new stream options selection mode
  - new seek controls (you can input position or shift time)
- - megavideo plugin management has been improved (the plugin core is missing)
- - new bookmarklets features for megavideo plugin (the plugin core is missing)
+ - megavideo plugin management has been improved
+ - new bookmarklets features for megavideo plugin
  - configuration moved to db (located in /data/db/vlc-shares.db)
  - All work out of box. Only vlc path must be selected
- - Shares, Profiles and Output type has been moved in the db. An interface will be available in alpha 3
- - Vlc_Commander_Rc has been flagged as deprecated
- - Only in alpha release until 0.5 default config file is placed in application/configs/vlc-shares.newconfig.ini
+ - Vlc_Commander_Rc has been flagged as deprecated and nc.exe removed from the package
+ - Removed old deprecated plugins
+ - Added layout support
+ - Added new manage interface
+ - Stabilized lvl 2 api:
+   * new api for news
+   * new api for alert
+   * new api for stats
+   * new api for quick actions
+   * new api for plugin management
+ - Blueprint css framework included in dev tree
+ - Jquery/Jquery ui/lightbox included in dev tree
+ - Added 2 soc plugins for expose how to use new lvl 2 apis (CoreStats and WidgetDevAlert)
+ - Configs interface has been added
+ - Plugins management is available through interface
+ - Bugfix to megavideo plugin
+ - FileSystem plugin has a management interface
+ - mediainfo and ffmpeg helper for stream analysis (embedded subs. auto profiles selection) implemented
+ - Added configs for helpers
+ - New plugin for videos in DBForever.net (in Italian)
+ - New plugin for videos in AnimeLand.it (in Italian)
+ - New plugin for south park episodies in AllSP.com (in English)
+ - New manage interface for Profiles plugin
+ - Added new plugin for NarutoGet.com
+ - Installation script added
+ - Added plugin for site opfitalia.net
+ - Added installer script for windows 
  
-
+ 
 *** 0.4.1 (20/7/2010) ***
  - plugin for Megavideo Library has been added
  - plugin for PLX->HTML conversion while browse collections with browser has been added
@@ -140,50 +104,19 @@ IP_ADDRESS = ip address of vlc-shares server
  
  
 /==========---
-| 4: In the next release (maybe)
+| In the next release (maybe)
 \==========---
  
- - change audio stream (language) on the fly
- - change subtitle on the fly
- - seek to position
  - parental control
  - login support
+ - better support for mobile devices
+ - thumbnails support
+ 
  
 /==========---
-| 5: Known issues
-\==========---
-
- - If one collection has shared only, WiiMc indicates "Error reading file"
- - trying to stream and transcoding from megavideo library can give audio only
- 	or no-audio/no-video output. This is a vlc bug with h264/aac files and
- 	transcode.
- 	More info here: https://trac.videolan.org/vlc/ticket/2850
- - trying to play megavideo files directly give wiimc dumps/no video/no audio
- 	output. Wiimc doesn't handle h264/aac files well.
-  
-/==========---
-| 6: Troubleshooting
+| Troubleshooting
 \==========---
 
  - i don't have Zend Framework in include_path and vlc-shares don't work:
  	copy Zend/ folder in Zend Framework 1.10.6-minimal zip file in "vlc-shares/library/" 
- - If one collection has shared only, WiiMc indicates "Error reading file":
- 	it's not a vlc-share problem :(. Add another dummy collection.
  		
-/==========---
-| 7: Acknowledgements
-\==========---
- 
- - The people who created VLC
- - The people who created WiiMc
- - The people who created Zend Framework
- - The people who created Apache
- - The people who created PHP
- - The people who created PsExec (SysInternals)
- - The people who created NetCat
- - The people who created NetCat for Windows
- - luruke, who created Megavideo Downloader class
- 	 (http://forum.codecall.net/classes-code-snippets/14324-php-megavideo-downloader.html)
- - The people who created $ringraziamento_value
- 
- 
