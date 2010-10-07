@@ -7,8 +7,8 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{2D3CDCAB-4146-42D2-83B6-E52B8BB7CE83}
 AppName=VLCShares
-AppVersion=0.5_beta1
-;AppVerName=VLCShares 0.5_beta1
+AppVersion=0.5
+;AppVerName=VLCShares 0.5
 AppPublisher=Ximarx
 AppPublisherURL=http://code.google.com/p/vlc-shares/
 AppSupportURL=http://code.google.com/p/vlc-shares/
