@@ -292,12 +292,14 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'narutoget.request.maxredirects', '0', '0', 'plugins', 0, 'p_animeland_conf_requestredirects_label', 'p_animeland_conf_requestredirects_desc', '');
 	
-INSERT INTO plugins ( `key`, `class`, `file`, `enabled`, `type` ) VALUES (
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
 	'firstrunsetup',
 	'X_VlcShares_Plugins_FirstRunSetup', 
 	'X/VlcShares/Plugins/FirstRunSetup.php',
+	'p_firstrunsetup_plglabel',
+	'p_firstrunsetup_plgdesc',
 	1,
-	0
+	1
 );
 	
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
