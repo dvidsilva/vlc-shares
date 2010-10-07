@@ -19,7 +19,7 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 			->setPriority('getShareItems')
 			->setPriority('getIndexManageLinks')
 			->setPriority('getIndexStatistics')
-			->setPriority('getIndexActionLinks');
+			/*->setPriority('getIndexActionLinks')*/;
 	}
 	
 	public function getCollectionsItems(Zend_Controller_Action $controller) {

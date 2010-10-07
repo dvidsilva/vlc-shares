@@ -292,7 +292,7 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 			$attr = $results->current()->nodeValue;
 			$attrs = explode("&", $attr);
 			foreach ($attrs as $attr) {
-				list($type, $value) = explode('=', $attr);
+				@list($type, $value) = explode('=', $attr);
 				if ( $type == 'video_src' ) {
 					$this->cachedLocation[$location] = $value;
 					return $value;
@@ -308,7 +308,7 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 			$attr = $results->current()->nodeValue;
 			$attrs = explode("&", $attr);
 			foreach ($attrs as $attr) {
-				list($type, $value) = explode('=', $attr);
+				@list($type, $value) = explode('=', $attr);
 				if ( $type == 'file' ) {
 					$this->cachedLocation[$location] = $value;
 					return $value;
