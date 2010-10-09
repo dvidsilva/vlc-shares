@@ -290,11 +290,14 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 		$results = $dom->queryXpath('//embed/attribute::src');
 		
 		if ( $results->valid() ) {
-
+			
 			$attr = $results->current()->nodeValue;
+			
+			X_Debug::i("Location source type1: $attr");
+			
 			$attrs = explode("&", $attr);
 			foreach ($attrs as $attr) {
-				@list($type, $value) = explode('=', $attr);
+				@list($type, $value) = explode('=', $attr, 2);
 				if ( $type == 'video_src' ) {
 					$this->cachedLocation[$location] = $value;
 					return $value;
@@ -308,9 +311,12 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 		if ( $results->valid() ) {
 
 			$attr = $results->current()->nodeValue;
+			
+			X_Debug::i("Location source type2: $attr");
+			
 			$attrs = explode("&", $attr);
 			foreach ($attrs as $attr) {
-				@list($type, $value) = explode('=', $attr);
+				@list($type, $value) = explode('=', $attr, 2);
 				if ( $type == 'file' ) {
 					$this->cachedLocation[$location] = $value;
 					return $value;
