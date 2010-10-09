@@ -69,7 +69,9 @@ class InstallerController extends Zend_Controller_Action
 	    	// after all, i will delete first run plugin from the db
 	    	$plugin = new Application_Model_Plugin();
 	    	Application_Model_PluginsMapper::i()->fetchByClass('X_VlcShares_Plugins_FirstRunSetup', $plugin);
-	    	Application_Model_PluginsMapper::i()->delete($plugin);
+	    	//Application_Model_PluginsMapper::i()->delete($plugin);
+			$plugin->setEnabled(false);
+			Application_Model_PluginsMapper::i()->save($plugin);
 	    	
 	    	$this->_helper->flashMessenger(X_Env::_('installer_op_completed'));
 	    	
