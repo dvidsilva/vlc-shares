@@ -45,7 +45,8 @@ In this tutorial will be used as placeholder the following strings:
   # Change line 49 from {{{Listen 127.0.0.1:80}}} to {{{Listen 0.0.0.0:80}}}. (An alternative should be to use *IP_ADDRESS* instead of 0.0.0.0)
   # Change line 119 from {{{#LoadModule rewrite_module modules/mod_rewrite.so}}} to {{{LoadModule rewrite_module modules/mod_rewrite.so}}}  <-- (Remove the #)
   # Change line 233 from {{{AllowOverride None}}} to {{{AllowOverride All}}}
-  # Save the changes and restart Apache server from the EasyPHP tray icon. [http://code.google.com/p/vlc-shares/downloads/detail?name=httpd.conf&can=2&q= A sample config file for EasyPHP 5.3.2i can be downloaded from Downloads section]
+  # Save the changes and restart Apache server from the EasyPHP tray icon. [http://code.google.com/p/vlc-shares/downloads/detail?name=httpd.conf&can=2&q= A sample config file for EasyPHP 5.3.3i can be downloaded from Downloads section]
+  # *WARNING*: some users report that EasyPHP sometimes doesn't recompile the apache config file: check the EasyPHP window (double click on EasyPHP tray icon to spawn it) for reports of a config file change. If there isn't any report, open manually the file *EASYPHP_DIR\apache\conf\httpd.conf* and manually change it as for the previous file. (steps: 7-8-9-10)
   # Right click on the EasyPHP tray icon, then select _configuration_->_PHP Extensions_
   # Check on _php_pdo_sqlite_, then click on Apply and restart Apache server again
   # *`[`optional`]`* Install/Unpack MediaInfo package
