@@ -53,7 +53,7 @@ class InstallerController extends Zend_Controller_Action
 
     	try {
     		
-	    	if ( file_exists(APPLICATION_PATH.'/../scripts/update.sqlite.sql') ) {
+	    	if ( false && file_exists(APPLICATION_PATH.'/../scripts/update.sqlite.sql') ) {
 
 	    		// an update is needed
 	    		// script should use transition
