@@ -122,7 +122,8 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	'wiimc.forced.fancy', '1', '1', 'plugins', 3, 'p_wiimcplxrenderer_conf_forcedfancy_label', 'p_wiimcplxrenderer_conf_forcedfancy_desc',	'');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'wiimc.forced.showRaw', '0', '0', 'plugins', 3, 'p_wiimcplxrenderer_conf_forcedshowraw_label', 'p_wiimcplxrenderer_conf_forcedshowraw_desc',	'');
-
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'wiimc.forced.showThumbs', '1', '1', 'plugins', 3, 'p_wiimcplxrenderer_conf_forcedshowthumbs_label', 'p_wiimcplxrenderer_conf_forcedshowthumbs_desc',	'');
 
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
 	'mobilerenderer',
@@ -135,6 +136,9 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 );
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'mobilerenderer.forced.enabled', '1', '0', 'plugins', 3, 'p_mobilerenderer_conf_forcedenabled_label', 'p_mobilerenderer_conf_forcedenabled_desc',	'');
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'mobilerenderer.coverflow.enabled', '1', '1', 'plugins', 3, 'p_mobilerenderer_conf_coverflowenabled_label', 'p_mobilerenderer_conf_coverflowenabled_desc',	'');
 
 	
 

@@ -31,5 +31,3 @@ class X_VlcShares_Plugins_WorkaroundWiimcPlaylistItemsBug extends X_VlcShares_Pl
 		}
 	}
 }
-
-?>

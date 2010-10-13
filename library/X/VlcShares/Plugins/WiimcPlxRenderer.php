@@ -31,9 +31,19 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 		foreach ( $items as $i => $item ) {
 			$plxItemName = (@$item['highlight'] ? '-) ' : '' ). $item['label'];
 			$plxItemType = (array_key_exists('type', $item) ? $item['type'] : X_Plx_Item::TYPE_PLAYLIST );
-			$plx->addItem(new X_Plx_Item($plxItemName, $item['link'], $plxItemType));
+			$plxItem = new X_Plx_Item($plxItemName, $item['link'], $plxItemType);
+			// this adds thumb support for wiimc
+			if ( array_key_exists('thumb', $item) ) {
+				// i have to be sure that image address is a complete url, no relative url is allowed for wiimc
+				if ( X_Env::startWith($item['thumb'], 'http') || X_Env::startWith($item['thumb'], 'https') ) {
+					$plxItem->setThumb($item['thumb']);
+				} else {
+					$plxItem->setThumb(X_Env::completeUrl($item['thumb']));
+				}
+			}
+			
+			$plx->addItem($plxItem);
 		}
-		
 		$this->_render($plx, $controller);
 	}
 	
@@ -81,6 +91,7 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 		// if isn't wiimc, add a conversion filter
 		if ( !$this->helpers()->devices()->isWiimc() && $this->config('forced.fancy', true)) {
 			$showRaw = $this->config('forced.showRaw', false);
+			$showThumbs = $this->config('forced.showThumbs', true);
 			$plxItems = $plx->getItems();
 			$body = include(dirname(__FILE__).'/WiimcPlxRenderer.fancy.phtml');
 		} else {

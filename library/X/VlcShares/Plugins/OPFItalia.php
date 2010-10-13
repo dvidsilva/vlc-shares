@@ -1,6 +1,7 @@
 <?php
 
 require_once 'X/VlcShares/Plugins/Abstract.php';
+require_once 'Zend/Dom/Query.php';
 
 
 /**

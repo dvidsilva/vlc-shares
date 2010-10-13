@@ -9,8 +9,8 @@
 /* @var $plxItems array */
 ?>
 <html>
-	<title><?php echo $plx->getTitle();?></title>
 <head>
+	<title><?php echo $plx->getTitle();?></title>
 </head>
 <body>
 	<h1><?php echo $plx->getTitle(); ?></h1>
@@ -23,6 +23,10 @@
 		<dd><?php echo X_Env::_('up_1_level_desc');?></dd>
 		<?php foreach ( $plxItems as $item) : ?>
 			<dt <?php echo (X_Env::startWith($item->getName(), '-) ') ? 'style="font-weight: bold"' : '' ) ?> >
+				<?php if ( $showThumbs && $item->getThumb() != null ) :?>
+					<br />
+					<img alt="<?php echo $item->getName()?>" src="<?php echo $item->getThumb(); ?>" height="100px" /><br />
+				<?php endif; ?>
 				<a href="<?php echo $item->getURL(); ?>"><?php echo $item->getName(); ?></a>
 			</dt>
 			<?php if ( $item->getDescription() != '' || $showRaw ):?>

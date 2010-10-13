@@ -48,11 +48,11 @@ class X_VlcShares_Plugins_Helper_Broker {
 		$this->devices = new X_VlcShares_Plugins_Helper_Devices($options->get('devices', new Zend_Config(array())));
 		$this->stream = new X_VlcShares_Plugins_Helper_Stream($options->get('stream', new Zend_Config(array())));
 		
-		$this->registerHelper('mediainfo', $this->mediainfo)
-			->registerHelper('gspot', $this->gspot)
-			->registerHelper('ffmpeg', $this->ffmpeg)
-			->registerHelper('devices', $this->devices)
-			->registerHelper('stream', $this->stream);
+		$this->registerHelper('mediainfo', $this->mediainfo, true)
+			->registerHelper('gspot', $this->gspot, true)
+			->registerHelper('ffmpeg', $this->ffmpeg, true)
+			->registerHelper('devices', $this->devices, true)
+			->registerHelper('stream', $this->stream, true);
 	}
 	
 	/**
@@ -88,9 +88,9 @@ class X_VlcShares_Plugins_Helper_Broker {
 	 * @param X_VlcShares_Plugins_Helper_Interface $helperObj
 	 * @return X_VlcShares_Plugins_Helper_Broker
 	 */
-	public function registerHelper($helperName, X_VlcShares_Plugins_Helper_Interface  $helperObj) {
+	public function registerHelper($helperName, X_VlcShares_Plugins_Helper_Interface  $helperObj, $silent = false) {
 		$this->_helpers[$helperName] = $helperObj;
-		X_Debug::i("Plugin helper $helperName registered");
+		if ( !$silent ) X_Debug::i("Plugin helper $helperName registered");
 		return $this;
 	}
 	

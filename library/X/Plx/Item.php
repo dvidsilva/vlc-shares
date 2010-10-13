@@ -60,7 +60,7 @@ class X_Plx_Item {
 			$output .= "player=".$this->getPlayer()."\n";
 		}
 		if ( $this->getThumb() != '' ) {
-			$output .= "thumb=".$this->getName()."\n";
+			$output .= "thumb=".$this->getThumb()."\n";
 		}
 		$output .= "\n";
 		return $output;

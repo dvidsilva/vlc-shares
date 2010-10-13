@@ -122,7 +122,8 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 					)
 				),
 				__CLASS__.':location'	=>	self::INDEX_NARUTO,
-				'icon'		=> '/images/icons/folder_32.png'
+				'icon'		=> '/images/icons/folder_32.png',
+				'thumb'		=> 'http://www.dbforever.net/img/banner/naruto_banner_grande.jpg'
 			);
 
 			$items[] = array(
@@ -135,7 +136,8 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 					)
 				),
 				__CLASS__.':location'	=>	self::INDEX_ONEPIECE,
-				'icon'		=> '/images/icons/folder_32.png'
+				'icon'		=> '/images/icons/folder_32.png',
+				'thumb'		=> 'http://www.dbforever.net/img/banner/onepiece_banner_grande.jpg'
 			);
 			
 			$items[] = array(
@@ -148,7 +150,8 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 					)
 				),
 				__CLASS__.':location'	=>	self::INDEX_BLEACH,
-				'icon'		=> '/images/icons/folder_32.png'
+				'icon'		=> '/images/icons/folder_32.png',
+				'thumb'		=> 'http://www.dbforever.net/img/banner/bleach_banner_grande.jpg'
 			);
 			
 		}

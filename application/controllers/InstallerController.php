@@ -66,6 +66,28 @@ class InstallerController extends Zend_Controller_Action
 		    	
 	    	}
 	    	
+	    	try {
+
+		    	if ( file_exists(APPLICATION_PATH.'/../scripts/backup.sqlite.sql') ) {
+	
+		    		// an update is needed
+		    		// script should use transition
+		    		$dataSql = file_get_contents(APPLICATION_PATH.'/../scripts/backup.sqlite.sql');
+		    		
+		    		if ( trim($dataSql) !== '' ) {
+						$bootstrap = $this->getFrontController()->getParam('bootstrap');
+				    	$db = $bootstrap->getResource('db'); 
+			    		
+				    	$db->getConnection()->exec($dataSql);
+		    		}
+		    	}
+	    		
+	    	} catch ( Exception $e ) {
+	    		X_Debug::e("DB Error while restoring: {$e->getMessage()}");
+	    		$this->_helper->flashMessenger(X_Env::_('installer_err_db').": {$e->getMessage()}");
+	    	}
+	    	
+	    	
 	    	// after all, i will delete first run plugin from the db
 	    	$plugin = new Application_Model_Plugin();
 	    	Application_Model_PluginsMapper::i()->fetchByClass('X_VlcShares_Plugins_FirstRunSetup', $plugin);

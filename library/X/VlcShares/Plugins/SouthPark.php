@@ -103,6 +103,8 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 			
 			$results = $dom->queryXpath('//div[@id="randomVideos"]//div[@class="randomTab"]//a[@class="previewDescriptionTitle"]');
 			
+			$resultsImages = $dom->queryXpath('//div[@id="randomVideos"]//div[@class="randomTab"]//img[1]/attribute::src');
+			
 			for ( $i = 0; $i < $results->count(); $i++, $results->next()) {
 				
 				$node = $results->current();
@@ -111,8 +113,18 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 				
 				$id = explode('id=', $href, 2);
 				$id = @$id[1];
+
+				$thumb = null;
+				try {
+					if ( $resultsImages->valid() ) {
+						$thumb = $resultsImages->current()->nodeValue;
+						$resultsImages->next();
+					}
+				} catch ( Exception $e) {
+					$thumb = null;
+				}
 				
-				$items[] = array(
+				$item = array(
 					'label'		=>	"$label",
 					'link'		=>	X_Env::completeUrl(
 						$urlHelper->url(
@@ -124,7 +136,13 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 					),
 					__CLASS__.':location'	=>	$id,
 					'icon'	=>	'/images/icons/file_32.png'
+					
 				);
+				if ( $thumb !== null ) {
+					$item['thumb'] = $thumb;
+				}
+				
+				$items[] = $item;
 				
 			}
 				
