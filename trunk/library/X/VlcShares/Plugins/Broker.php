@@ -14,9 +14,9 @@ class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 		'getId', 'helpers', 'setConfigs', 'setPriorities'
 	);
 	
-	public function registerPlugin($pluginId, X_VlcShares_Plugins_Abstract  $pluginObj) {
+	public function registerPlugin($pluginId, X_VlcShares_Plugins_Abstract  $pluginObj, $silent = false) {
 		$this->plugins[$pluginId] = $pluginObj;
-		X_Debug::i("Plugin registered: $pluginId");
+		if ( !$silent )	X_Debug::i("Plugin registered: $pluginId");
 	}
 	
 	public function isRegistered($pluginId) {

@@ -54,6 +54,7 @@ class X_VlcShares_Plugins_MobileRenderer extends X_VlcShares_Plugins_Abstract {
 		$view->view->items = $items;
 		$view->view->actionName = $request->getActionName();
 		$view->view->controllerName = $request->getControllerName();
+		$view->view->coverflowEnabled = $this->config('coverflow.enabled', true);
 
 	}
 	

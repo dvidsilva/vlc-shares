@@ -85,12 +85,16 @@ final class X_VlcShares_Plugins {
 				//	event-based -> function-based
 				$plugin = new $className();
 				$plugin->setConfigs(new Zend_Config($pValue));
-				self::$_pluginBroker->registerPlugin($pKey, $plugin );
+				self::$_pluginBroker->registerPlugin($pKey, $plugin, true );
 			}
 		}
 		
 		self::$_helperBroker = new X_VlcShares_Plugins_Helper_Broker($helpersOptions);
 		X_Debug::i("Plugin system enabled");
+		$pluginlist = implode(', ', array_keys(self::$_pluginBroker->getPlugins()));
+		X_Debug::i("Plugins registered: $pluginlist");
+		$helperlist = implode(', ', array_keys(self::$_helperBroker->getHelpers()));
+		X_Debug::i("Helpers registered: $helperlist");
 		
 		self::$_pluginBroker->gen_afterPluginsInitialized(self::$_pluginBroker);
 		
