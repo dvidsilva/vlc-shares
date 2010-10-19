@@ -1,3 +1,4 @@
+/*
 window.addEventListener("load", function() { setTimeout(loaded, 100); }, false);
 
 function loaded() {  
@@ -6,7 +7,7 @@ function loaded() {
 		window.scrollTo(0,1); // pan to the bottom, hides the location bar  
 	}
 }
-
+*/
 $().ready(function(){
 	// show/hide search form label
 	if ($("#search").val()=="") {

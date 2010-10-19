@@ -229,7 +229,8 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 				'label'		=>	X_Env::_('p_filesystem_actionadddirectory'),
 				'link'		=>	$urlHelper->url(array(
 					'controller'	=>	'filesystem',
-					'action'		=>	'add'
+					'action'		=>	'index',
+					'a'				=>	'add'
 				)),
 				'icon'		=>	'/images/plus.png'
 			)

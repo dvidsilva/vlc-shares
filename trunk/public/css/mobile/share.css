@@ -19,6 +19,7 @@ h2 {margin: 0 0 8px; color: #fff; font: normal normal 16px/16px Helvetica, sans-
 	background-repeat: no-repeat; 
 	background-position: 98% 50%;
 	position: relative;
+	word-wrap: break-word;
 }
 #wrapper .item:first-child {border-top: 0;}
 #wrapper .item img {float: left; margin: 2px 10px 0 0;}
@@ -31,7 +32,7 @@ h2 {margin: 0 0 8px; color: #fff; font: normal normal 16px/16px Helvetica, sans-
 #wrapper .items .details {background-image: none;}
 #wrapper .item h3 {margin: .5em 0;}
 #wrapper .item h3 a {color: #000; text-decoration: none;}
-#wrapper .item p {margin: 0 30px 0 0;}
+#wrapper .item p {margin: 0 30px 0 0; word-wrap: break-word;}
 .error {font-size: 14px; color: #900; padding: 10px 0;}
 #wrapper .items .details p {margin: 0 0 10px 0;}
 #wrapper .items .details .title {font-size: 140%; font-weight: bold;}

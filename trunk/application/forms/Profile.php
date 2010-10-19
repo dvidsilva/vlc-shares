@@ -23,7 +23,7 @@ class Application_Form_Profile extends Zend_Form
 			'required'   => true,
         	'filters'    => array('StringTrim'),
             'validators' => array(
-                array('validator' => 'StringLength', 'options' => array(0, 255))
+                array('validator' => 'StringLength', 'options' => array(0, 1000))
                 )
         ));
 
