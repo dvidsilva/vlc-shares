@@ -57,7 +57,7 @@ sudo gedit /etc/apache2/sites-enabled/000-default
 	allow from all
 </Directory>
 }}}
-and change it to:
+   and change it to:
 {{{
 <Directory /var/www/>
 	Options Indexes FollowSymLinks MultiViews
@@ -80,10 +80,12 @@ sudo /etc/init.d/apache2 restart
   # Select your language
   # Save changes
 
+
 = You may find interesting... =
 
   * WiimcConfiguration: configure you WiiMC online media tab for VLCShares 
   * AndroidDeviceConfiguration: configure VLCShares and Android Phones
+
 
 = Fedora =
 
