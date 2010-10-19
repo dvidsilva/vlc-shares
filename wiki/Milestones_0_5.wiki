@@ -1,5 +1,5 @@
 #summary Milestones for version 0.5
-#labels Phase-QA
+#labels Phase-QA,Deprecated
 
 = Introduction =
 
