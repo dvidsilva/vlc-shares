@@ -15,6 +15,9 @@ class FilesystemController extends X_Controller_Action {
 		$form = new Application_Form_FileSystemShare();
 		$form->setAction($this->_helper->url('save', 'filesystem'));
 		
+		$showNew = $this->getRequest()->getParam('a','new');
+		
+		$this->view->showNew = $showNew;
 		$this->view->form = $form;
 		$this->view->shares = $shares;
 		$this->view->messages = array_merge($this->_helper->flashMessenger->getMessages(), $this->_helper->flashMessenger->getCurrentMessages());
@@ -68,4 +71,5 @@ class FilesystemController extends X_Controller_Action {
 		}
 		$this->_helper->redirector('index', 'filesystem');
 	}
+	
 }
