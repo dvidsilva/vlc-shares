@@ -3,7 +3,7 @@
    * [Installation Installation]
       * [InstallationWindows Installation for Windows System]
       * [InstallationLinux Installation for Linux System]
-         * [InstallationLinux#Ubuntu Ubuntu]
+         * [InstallationLinux#Ubuntu Ubuntu_10.10]
          * [InstallationLinux#Fedora Fedora]
    * [VLCSharesConfiguration Configuration Tips]
       *  [AndroidDeviceConfiguration Android devices configuration]
