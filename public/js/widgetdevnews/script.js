@@ -2,8 +2,10 @@ $(document).ready(function() {
 	
 	debug.log('document.ready: /public/js/widgetdevnews/script.js');
 	
-	$('#widgetdevnews-commits').gFeed({  
-        url: 'https://code.google.com/feeds/p/vlc-shares/svnchanges/basic', 
+	$('#widgetdevnews .feed').gFeed({  
+        //url: 'https://code.google.com/feeds/p/vlc-shares/svnchanges/basic',
+		target: '#widgetdevnews',
+        tabs: true
     }); 
 	
 });

@@ -37,7 +37,9 @@ $(function(){
 		<div class="slides">
 			<?php foreach ($this->news as $i => $news) : ?>
 				<div class="manage-news-article" <?php echo ( @$news['tab'] ? "title=\"{$news['tab']}\"" : '' ); ?>>
-					<h3><?php echo @$news['title']?></h3>
+					<?php if ( @$news['title'] ) : ?>
+						<h3><?php echo @$news['title']?></h3>
+					<?php endif; ?>
 					<?php echo @$news['text']; ?>
 				</div>
 			<?php endforeach; ?>

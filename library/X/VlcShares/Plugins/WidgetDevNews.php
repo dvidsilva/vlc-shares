@@ -13,7 +13,7 @@ require_once 'X/VlcShares/Plugins/Abstract.php';
 class X_VlcShares_Plugins_WidgetDevNews extends X_VlcShares_Plugins_Abstract {
 	
 	public function __construct() {
-		$this->setPriority('getIndexNews'); // i add it near the top of the stack
+		$this->setPriority('getIndexNews');
 	}
 	
 	/**
@@ -35,13 +35,14 @@ class X_VlcShares_Plugins_WidgetDevNews extends X_VlcShares_Plugins_Abstract {
 			
 			$view->view->headScript()->appendFile('http://www.google.com/jsapi');
 			$view->view->headScript()->appendFile($view->view->baseUrl("/js/widgetdevnews/script.js"));
+			$view->view->headLink()->appendStylesheet($view->view->baseUrl('/css/widgetdevnews/style.css'));
 			
 			$text = include(dirname(__FILE__).'/WidgetDevNews.commits.phtml');
 			
 			return array(
 				array(
 					'tab'	=> X_Env::_('p_widgetdevnews_commits_tab'),
-					'title' => X_Env::_('p_widgetdevnews_commits_title'),
+					//'title' => X_Env::_('p_widgetdevnews_commits_title'),
 					'text'	=> $text
 				),
 			);
