@@ -1,0 +1,5 @@
+<?php ob_start(); ?>
+<div id="widgetdevnews-commits" style="overflow-y: auto; max-height: 100px;"></div>
+<?php 
+$output = ob_get_clean();
+return $output;  

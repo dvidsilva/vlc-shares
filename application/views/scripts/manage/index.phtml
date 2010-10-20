@@ -1,5 +1,21 @@
 <!-- application/views/scripts/manage/index.phtml -->
 <?php $this->headScript()->appendFile($this->baseUrl("/js/manage/index.js")); ?>
+<?php $this->headScript()->appendFile($this->baseUrl("/js/jquery.loopedslider.js")); ?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::APPEND); ?>
+
+$(function(){
+	$("#manage-news").loopedSlider({
+		container: 'slider-container',
+		containerClick: false,
+		slidespeed: 500,
+		fadespeed: 500,
+		addPagination: true,
+		pagination: 'slider-pagination'
+	});
+});
+
+<?php $this->headScript()->captureEnd(); ?>
+
 <?php $this->headTitle()->prepend('Home'); ?>
 
 <?php if ( count($this->messages) ) :?>
@@ -17,20 +33,24 @@
 
 <?php if ( count($this->news) ) :?>
 <div class="span-24 last" id="manage-news">
-	<div class="span-1" id="manage-news-leftarrow">
-		<img src="<?php echo $this->baseUrl('/images/left_arrow_big.png'); ?>" alt="left" />
+	<div class="slider-container">
+		<div class="slides">
+			<?php foreach ($this->news as $i => $news) : ?>
+				<div class="manage-news-article" <?php echo ( @$news['tab'] ? "title=\"{$news['tab']}\"" : '' ); ?>>
+					<h3><?php echo @$news['title']?></h3>
+					<?php echo @$news['text']; ?>
+				</div>
+			<?php endforeach; ?>
+		</div>
 	</div>
-	<div class="belt span-22">
-		<?php foreach ($this->news as $i => $news) : ?>
-			<div class="manage-news-article">
-				<h3><?php echo @$news['title']?></h3>
-				<?php echo @$news['text']; ?>
-			</div>
-		<?php endforeach; ?>
-	</div>
-	<div class="span-1 last" id="manage-news-rightarrow">
-		<img src="<?php echo $this->baseUrl('/images/right_arrow_big.png'); ?>" alt="right" />
-	</div>
+	<!-- 
+	<a href="#" class="previous">
+		<img alt="prev" src="<?php echo $this->baseUrl('/images/left_arrow_slider.png'); ?>">
+	</a>
+	<a href="#" class="next">
+		<img alt="next" src="<?php echo $this->baseUrl('/images/right_arrow_slider.png'); ?>">
+	</a>
+	 -->
 </div>
 <?php endif; ?>
 
