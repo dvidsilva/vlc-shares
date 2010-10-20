@@ -336,3 +336,13 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'opfitalia.request.maxredirects', '0', '0', 'plugins', 0, 'p_opfitalia_conf_requestredirects_label', 'p_opfitalia_conf_requestredirects_desc', '');
 
+	
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'widgetDevNews',
+	'X_VlcShares_Plugins_WidgetDevNews', 
+	'X/VlcShares/Plugins/WidgetDevNews.php',
+	'p_widgetdevnews_plglabel',
+	'p_widgetdevnews_plgdesc',
+	1,
+	1
+);

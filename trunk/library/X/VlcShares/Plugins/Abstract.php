@@ -643,6 +643,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @return array The format of the array should be:
 	 * 		array(
 	 * 			array(
+ 	 * 				'tab'	=> TAB LABEL,
 	 * 				'title' => ITEM TITLE,
 	 * 				'text' => HTML STYLIZED TEXT 
 	 * 			), ...

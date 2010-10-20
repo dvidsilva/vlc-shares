@@ -83,3 +83,16 @@ CREATE INDEX "plg_outputs_id" ON "plg_outputs" ("id");
 INSERT INTO plg_outputs (id, label, arg, link, cond_devices, weight) SELECT * FROM plg_outputs_back;
 
 DROP TABLE IF EXISTS plg_outputs_back;
+
+-- Add new WidgetDevNews Plugin
+
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'widgetDevNews',
+	'X_VlcShares_Plugins_WidgetDevNews', 
+	'X/VlcShares/Plugins/WidgetDevNews.php',
+	'p_widgetdevnews_plglabel',
+	'p_widgetdevnews_plgdesc',
+	1,
+	1
+);
+
