@@ -12,6 +12,23 @@ $(function(){
 		addPagination: true,
 		pagination: 'slider-pagination'
 	});
+	
+	/*
+	var showNews = $('<div id="manage-shownews">Show news</div>');
+	showNews.click(function () {
+		showNews.fadeOut();
+		$('#manage-news').fadeIn();
+	});
+	
+	$('#manage-news').before(showNews).hide();
+	*/
+	
+	//$("#manage-news ul .active").removeClass('active');
+	$('#manage-news .slider-container').hide();
+	$('#manage-news ul li').click(function (){
+		$('#manage-news .slider-container').fadeIn();
+	});
+	
 });
 
 <?php $this->headScript()->captureEnd(); ?>
