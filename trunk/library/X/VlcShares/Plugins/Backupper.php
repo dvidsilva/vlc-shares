@@ -92,15 +92,9 @@ class X_VlcShares_Plugins_Backupper extends X_VlcShares_Plugins_Abstract impleme
 		foreach ($configs as $model) {
 			/* @var $model Application_Model_Config */
 			$return['configs'][] = array(
-				'id'			=> $model->getId(), 
 				'key'			=> $model->getKey(),
 				'value'			=> $model->getValue(),
-				'default'		=> $model->getDefault(),
 				'section'		=> $model->getSection(),
-				'label'			=> $model->getLabel(),
-				'description'	=> $model->getDescription(),
-				'type'			=> $model->getType(),
-				'class'			=> $model->getClass()
 			);
 		}
 		
@@ -109,13 +103,7 @@ class X_VlcShares_Plugins_Backupper extends X_VlcShares_Plugins_Abstract impleme
 		foreach ($plugins as $model) {
 			/* @var $model Application_Model_Plugin */
 			$return['plugins'][] = array(
-				'id'			=> $model->getId(), 
 				'key'			=> $model->getKey(),
-				'class'			=> $model->getClass(),
-				'file'			=> $model->getFile(),
-				'label'			=> $model->getLabel(),
-				'description'	=> $model->getDescription(),
-				'type'			=> $model->getType(),
 				'enabled'		=> ($model->isEnabled() ? 1 : 0)
 			);
 		}

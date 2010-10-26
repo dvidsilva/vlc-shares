@@ -55,6 +55,8 @@ class BackupperController extends X_Controller_Action
     		X_Debug::e("Error while parsing backupper data directory: {$e->getMessage()}");
     	}
     	
+    	rsort($restorables);
+    	
     	$this->view->backuppables = $backuppables;
     	$this->view->restorables = $restorables;
     	$this->view->messages = $this->_helper->flashMessenger->getMessages();
@@ -94,6 +96,8 @@ class BackupperController extends X_Controller_Action
     			
     			$date = date("Ymd_His");
 
+    			$type = $fastAction !== false ? $fastAction : 'custom';
+    			
     			$data['metadata'] = array(
     				'version'	=> X_VlcShares::VERSION,
     				'created'	=> date('d/m/Y H:i:s')
@@ -101,7 +105,7 @@ class BackupperController extends X_Controller_Action
     			
     			$data['plugins'] = $items;
     			
-    			$filename = APPLICATION_PATH . "/../data/backupper/backup_{$date}.xml";
+    			$filename = APPLICATION_PATH . "/../data/backupper/backup_{$date}_{$type}.xml";
     			$configs = new Zend_Config($data);
     			$writer->setFilename($filename);
     			
