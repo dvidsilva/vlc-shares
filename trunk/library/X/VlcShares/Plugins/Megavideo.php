@@ -326,12 +326,12 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 	 */
 	function getBackupItems() {
 		
-		$return = array('configs' => array(), 'plugins' => array());
+		$return = array();
 		$videos = Application_Model_MegavideoMapper::i()->fetchAll();
 		
 		foreach ($videos as $model) {
 			/* @var $model Application_Model_Config */
-			$return['videos'][] = array(
+			$return['video'][] = array(
 				'id'			=> $model->getId(), 
 	            'idVideo'   	=> $model->getIdVideo(),
 	            'description'	=> $model->getDescription(),

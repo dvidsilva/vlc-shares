@@ -1,7 +1,7 @@
 <!-- application/views/scripts/backupper/index.phtml -->
 
 <?php $this->headLink()->appendStylesheet($this->baseUrl('/css/backupper/style.css')); ?>
-<?php //$this->headScript()->appendFile($this->baseUrl("/js/backupper/index.js")); ?>
+<?php $this->headScript()->appendFile($this->baseUrl("/js/backupper/index.js")); ?>
 <?php $this->headTitle()->prepend(X_Env::_('p_backupper_title')); ?>
 
 <div class="span-24 last" id="back-to-home">
@@ -28,10 +28,10 @@
 </div>
 <?php endif; ?>
 
-
 <div class="span-11 box">
 	<h2><?php echo X_Env::_('p_backupper_backuppablelist_title'); ?></h2>
 	<p><?php echo X_Env::_('p_backupper_backuppablelist_desc'); ?></p>
+	<p><a href="javascript:void();" id="select-all"><?php echo X_Env::_('p_backupper_backuppablelist_selectall'); ?></a></p>
 	<form method="post" action="<?php echo $this->url(array('controller' => 'backupper', 'action' => 'backup'), 'default', true); ?>">
 		<?php foreach ( $this->backuppables as $i => $label): ?>
 			<div>
