@@ -117,7 +117,7 @@ class BackupperController extends X_Controller_Action
     			}
     			
     		} else {
-    			$this->_helper->flashMessenger(array('text' => X_Env::_('p_backupper_backup_nobackupactionneeded'), 'type' => 'info' ));
+    			$this->_helper->flashMessenger(array('text' => X_Env::_('p_backupper_backup_nobackupactionneeded'), 'type' => 'warning' ));
     		}
     	}
     	
