@@ -3,8 +3,9 @@ require_once 'X/VlcShares.php';
 require_once 'X/VlcShares/Plugins/Abstract.php';
 require_once 'Zend/Config.php';
 require_once 'Zend/Controller/Request/Abstract.php';
+require_once 'X/VlcShares/Plugins/BackuppableInterface.php';
 
-class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract {
+class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_BackuppableInterface {
 
 	public function __construct() {
 		
@@ -348,5 +349,38 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract {
 		return $output;
 		
 	}
+
+	/**
+	 * Backup profiles
+	 * This is not a trigger of plugin API. It's called by Backupper plugin
+	 */
+	function getBackupItems() {
+		
+		$return = array();
+		$models = Application_Model_OutputsMapper::i()->fetchAll();
+		
+		foreach ($models as $model) {
+			/* @var $model Application_Model_Output */
+			$return['output'][] = array(
+				'id'			=> $model->getId(), 
+	            'arg'   => $model->getArg(),
+	        	'cond_devices' => $model->getCondDevices(),
+	        	'label' => $model->getLabel(),
+	        	'weight' => $model->getWeight(),
+	        	'link' => $model->getLink()
+			);
+		}
+		
+		return $return;
+	}
+	
+	/**
+	 * Restore backupped profiles
+	 * This is not a trigger of plugin API. It's called by Backupper plugin
+	 */
+	function restoreItems($items) {
+		
+	}
+	
 	
 }

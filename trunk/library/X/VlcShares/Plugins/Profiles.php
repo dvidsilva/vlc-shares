@@ -1,6 +1,7 @@
 <?php 
 
 require_once 'X/VlcShares/Plugins/Abstract.php';
+require_once 'X/VlcShares/Plugins/BackuppableInterface.php';
 
 /**
  * Expose and allow the selection of different transcoding profiles
@@ -9,7 +10,7 @@ require_once 'X/VlcShares/Plugins/Abstract.php';
  * @author ximarx
  *
  */
-class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract {
+class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_BackuppableInterface {
 	
 	public function __construct() {
 		$this->setPriority('getModeItems')
@@ -291,5 +292,41 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract {
 		return $profile;
 		
 	}
+	
+	
+	/**
+	 * Backup profiles
+	 * This is not a trigger of plugin API. It's called by Backupper plugin
+	 */
+	function getBackupItems() {
+		
+		$return = array();
+		$models = Application_Model_ProfilesMapper::i()->fetchAll();
+		
+		foreach ($models as $model) {
+			/* @var $model Application_Model_Profile */
+			$return['profile'][] = array(
+				'id'			=> $model->getId(), 
+	            'arg'   		=> $model->getArg(),
+	            'cond_providers' => $model->getCondProviders(),
+	        	'cond_formats' 	=> $model->getCondFormats(),
+	        	'cond_devices'	=> $model->getCondDevices(),
+	        	'label' 		=> $model->getLabel(),
+	        	'weight'		=> $model->getWeight()
+			);
+		}
+		
+		return $return;
+	}
+	
+	/**
+	 * Restore backupped profiles
+	 * This is not a trigger of plugin API. It's called by Backupper plugin
+	 */
+	function restoreItems($items) {
+		
+	}
+	
+	
 }
 
