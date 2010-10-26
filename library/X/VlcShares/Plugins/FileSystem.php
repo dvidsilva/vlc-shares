@@ -1,7 +1,7 @@
 <?php
 
 require_once 'X/VlcShares/Plugins/Abstract.php';
-
+require_once 'X/VlcShares/Plugins/BackuppableInterface.php';
 
 /**
  * VlcShares 0.4.2+ plugin:
@@ -11,7 +11,7 @@ require_once 'X/VlcShares/Plugins/Abstract.php';
  * @author ximarx
  *
  */
-class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverDisplayableInterface {
+class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverDisplayableInterface, X_VlcShares_Plugins_BackuppableInterface {
 	
 	public function __construct() {
 		$this->setPriority('getCollectionsItems')
@@ -300,6 +300,35 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 		
 	}
 	
+	/**
+	 * Backup shared directories
+	 * This is not a trigger of plugin API. It's called by Backupper plugin
+	 */
+	function getBackupItems() {
+		
+		$return = array();
+		$models = Application_Model_FilesystemSharesMapper::i()->fetchAll();
+		
+		foreach ($models as $model) {
+			/* @var $model Application_Model_FilesystemShare */
+			$return['share'][] = array(
+				'id'			=> $model->getId(), 
+	            'path'   		=> $model->getPath(),
+	            'image' 		=> $model->getImage(),
+	        	'label' 		=> $model->getLabel(),
+			);
+		}
+		
+		return $return;
+	}
 	
+	/**
+	 * Restore backupped shared directories
+	 * This is not a trigger of plugin API. It's called by Backupper plugin
+	 */
+	function restoreItems($items) {
+		
+	}
 	
+		
 }

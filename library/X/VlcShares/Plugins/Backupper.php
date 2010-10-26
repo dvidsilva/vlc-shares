@@ -91,7 +91,7 @@ class X_VlcShares_Plugins_Backupper extends X_VlcShares_Plugins_Abstract impleme
 		
 		foreach ($configs as $model) {
 			/* @var $model Application_Model_Config */
-			$return['configs'][] = array(
+			$return['configs']['config'][] = array(
 				'key'			=> $model->getKey(),
 				'value'			=> $model->getValue(),
 				'section'		=> $model->getSection(),
@@ -102,7 +102,7 @@ class X_VlcShares_Plugins_Backupper extends X_VlcShares_Plugins_Abstract impleme
 		
 		foreach ($plugins as $model) {
 			/* @var $model Application_Model_Plugin */
-			$return['plugins'][] = array(
+			$return['plugins']['plugin'][] = array(
 				'key'			=> $model->getKey(),
 				'enabled'		=> ($model->isEnabled() ? 1 : 0)
 			);
