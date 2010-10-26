@@ -2,6 +2,7 @@
 
 require_once 'X/VlcShares/Plugins/Abstract.php';
 require_once 'Megavideo.php'; // megavideo wrapper
+require_once 'X/VlcShares/Plugins/BackuppableInterface.php';
 
 
 /**
@@ -9,7 +10,7 @@ require_once 'Megavideo.php'; // megavideo wrapper
  * @author ximarx
  *
  */
-class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
+class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface, X_VlcShares_Plugins_BackuppableInterface {
 	
 	public function __construct() {
 		$this->setPriority('getCollectionsItems')
@@ -316,7 +317,39 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 				)
 			)
 		);
+	}
+	
+	
+	/**
+	 * Backup all videos in db
+	 * This is not a trigger of plugin API. It's called by Backupper plugin
+	 */
+	function getBackupItems() {
+		
+		$return = array('configs' => array(), 'plugins' => array());
+		$videos = Application_Model_MegavideoMapper::i()->fetchAll();
+		
+		foreach ($videos as $model) {
+			/* @var $model Application_Model_Config */
+			$return['videos'][] = array(
+				'id'			=> $model->getId(), 
+	            'idVideo'   	=> $model->getIdVideo(),
+	            'description'	=> $model->getDescription(),
+	            'category'		=> $model->getCategory(),
+	        	'label'			=> $model->getLabel(),
+			);
+		}
+		
+		return $return;
+	}
+	
+	/**
+	 * Restore backupped videos 
+	 * This is not a trigger of plugin API. It's called by Backupper plugin
+	 */
+	function restoreItems($items) {
 		
 	}
+	
 	
 }

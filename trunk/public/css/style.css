@@ -23,6 +23,7 @@
 	padding: 1em;
 	border: 1px solid;
 	font-weight: bold;
+	margin-bottom: 0.1em;
 }
 
 #manage-messages li.info {

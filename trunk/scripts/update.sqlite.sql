@@ -96,3 +96,15 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	1
 );
 
+-- Add new Backupper Plugin
+
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'backupper',
+	'X_VlcShares_Plugins_Backupper', 
+	'X/VlcShares/Plugins/Backupper.php',
+	'p_backupper_plglabel',
+	'p_backupper_plgdesc',
+	1,
+	1
+);
+
