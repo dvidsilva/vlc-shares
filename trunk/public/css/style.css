@@ -21,9 +21,10 @@
 
 #manage-messages li {
 	padding: 1em;
-	border: 1px solid;
+	border: 0px solid;
 	font-weight: bold;
 	margin-bottom: 0.1em;
+	border-radius: 0.5em;
 }
 
 #manage-messages li.info {
@@ -33,16 +34,16 @@
 }
 
 #manage-messages li.warning {
-	background-color: #ECE8BD;
+	background-color: #F6FF9F;
 	border-color: #BEB01C;
-	color: #BEB01C;
+	color: #51540D;
 }
 
-#manage-messages li.error,#manage-messages li.fatal {
+#manage-messages li.error, #manage-messages li.fatal {
 	background-color: #EDCECD;
 	border-color: #c00;
 	color: #c00;
-	margin-bottom: 0em;
+	margin-bottom: 0.1em;
 }
 
 .manage-container .boxes .box {
