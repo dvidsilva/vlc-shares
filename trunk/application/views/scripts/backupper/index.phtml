@@ -35,7 +35,7 @@
 	<form method="post" action="<?php echo $this->url(array('controller' => 'backupper', 'action' => 'backup'), 'default', true); ?>">
 		<?php foreach ( $this->backuppables as $i => $label): ?>
 			<div>
-				<?php echo $this->formCheckbox("components[$i]", true); ?> <label for="<?php echo $i?>"><?php echo $label ?></label>
+				<?php echo $this->formCheckbox("components[$i]", true); ?> <label for="components-<?php echo $i?>"><?php echo $label ?></label>
 			</div>
 		<?php endforeach; ?>
 		<div>
@@ -48,16 +48,21 @@
 	<h2><?php echo X_Env::_('p_backupper_restorablelist_title'); ?></h2>
 	<p><?php echo X_Env::_('p_backupper_restorablelist_desc'); ?></p>
 	<?php if ( count( $this->restorables) ) :?>
-		<form method="post" action="<?php echo $this->url(array('controller' => 'backupper', 'action' => 'restore'), 'default', true); ?>">
+		<form method="post" action="<?php echo $this->url(array('controller' => 'backupper', 'action' => 'rinfo'), 'default', true); ?>">
 			<div>
-				<?php echo $this->formRadio('file', $i, null, $this->restorables, "</div>\n<div>"); ?>
+				<?php echo $this->formRadio('file', null, null, $this->restorables, "</div>\n<div>"); ?>
 			</div>
 			<div>
 				<?php echo $this->formSubmit('submit', X_Env::_('p_backupper_dorestore') );?>
 			</div>
 		</form>
 	<?php else: ?>
-		<center><p><i><?php echo X_Env::_('p_backupper_restoreablelist_noitem'); ?></i></p></center>
+		<center>
+		<p><i><?php echo X_Env::_('p_backupper_restoreablelist_noitem'); ?></i></p>
+		<?php if ($this->showActiveAlert): ?>
+			<p><a href="<?php echo $this->url(array('controller'=>'backupper', 'action' => 'alert', 'status' => 'on'));?>"><?php echo X_Env::_('p_backupper_warningmessage_nobackupadd') ?></a></p>
+		<?php endif; ?>
+		</center>
 	<?php endif; ?>
 </div>
 

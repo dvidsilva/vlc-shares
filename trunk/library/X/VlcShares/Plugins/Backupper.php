@@ -12,6 +12,7 @@ class X_VlcShares_Plugins_Backupper extends X_VlcShares_Plugins_Abstract impleme
 		
 		$this
 			->setPriority('getIndexActionLinks')
+			->setPriority('getIndexMessages')
 			->setPriority('getIndexManageLinks');
 		
 	}	
@@ -117,6 +118,58 @@ class X_VlcShares_Plugins_Backupper extends X_VlcShares_Plugins_Abstract impleme
 	 */
 	function restoreItems($items) {
 		
+	}
+	
+	/**
+	 * Retrieve statistic from plugins
+	 * @param Zend_Controller_Action $this
+	 * @return array The format of the array should be:
+	 * 		array(
+	 * 			array(
+	 * 				'title' => ITEM TITLE,
+	 * 				'label' => ITEM LABEL,
+	 * 				'stats' => array(INFO, INFO, INFO),
+	 * 				'provider' => array('controller', 'index', array()) // if provider is setted, stats key is ignored 
+	 * 			), ...
+	 * 		)
+	 */
+	public function getIndexMessages(Zend_Controller_Action $controller) {
+
+		X_Debug::i('Plugin triggered');
+		
+		
+		$type = 'warning';
+		$showError = true;
+    	try {
+    		$backupDir = new DirectoryIterator(APPLICATION_PATH . "/../data/backupper/");
+    		
+    		foreach ($backupDir as $entry) {
+    			if ( $entry->isFile() && pathinfo($entry->getFilename(), PATHINFO_EXTENSION) == 'xml' && X_Env::startWith($entry->getFilename(), 'backup_') ) {
+    				$showError = false;
+    				break;
+    			}
+    		}
+    		
+    	} catch ( Exception $e) {
+    		X_Debug::e("Error while parsing backupper data directory: {$e->getMessage()}");
+    	}
+		
+    	$showError = $showError && $this->config('alert.enabled', true);
+    	
+		if ( $showError ) {
+			
+			$urlHelper = $controller->getHelper('url');
+			/* @var $urlHelper Zend_Controller_Action_Helper_Url */
+			
+			$removeAlertLink = $urlHelper->url(array('controller'=>'backupper', 'action' => 'alert', 'status' => 'off'));
+			
+			return array(
+				array(
+					'type' => $type,
+					'text' => X_Env::_('p_backupper_warningmessage_nobackup') . " <a href=\"$removeAlertLink\">".X_Env::_('p_backupper_warningmessage_nobackupremove').'</a>' 
+				),
+			);
+		}
 	}
 	
 }
