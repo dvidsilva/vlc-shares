@@ -38,7 +38,27 @@ class Application_Model_MegavideoMapper
         }
         return $this->_dbTable;
     }
- 
+
+    /*
+     * Allow to save items without megavideo check
+     * @param Application_Model_Megavideo $megavideo video info
+     */
+    public function directSave(Application_Model_Megavideo $megavideo) {
+        $data = array(
+            'idVideo'   => $megavideo->getIdVideo(),
+            'description' => $megavideo->getDescription(),
+            'category' => $megavideo->getCategory(),
+        	'label' => $megavideo->getLabel(),
+        );
+        
+        if (null === ($id = $megavideo->getId())) {
+            unset($data['id']);
+            $this->getDbTable()->insert($data);
+        } else {
+            $this->getDbTable()->update($data, array('id = ?' => $id));
+        }
+    }
+    
     public function save(Application_Model_Megavideo $megavideo)
     {
         $wrapper = new Megavideo($megavideo->getIdVideo());

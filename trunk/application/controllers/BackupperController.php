@@ -77,6 +77,8 @@ class BackupperController extends X_Controller_Action
     function backupAction() {
     	
     	//$message = var_export($this->getRequest()->getPost(), true);
+    	
+    	ignore_user_abort();
 
     	/* @var $request Zend_Controller_Request_Http */
     	$request = $this->getRequest();
@@ -179,6 +181,70 @@ class BackupperController extends X_Controller_Action
 			$this->_helper->flashMessenger(array('text' => X_Env::_('p_backupper_err_malformedrestorefile'), 'type' => 'error' ));
 		}
 		
+    }
+    
+    
+    function restoreAction() {
+    	
+    	ignore_user_abort();
+    	
+    	/* @var $request Zend_Controller_Request_Http */
+    	$request = $this->getRequest();
+    	
+    	if ( $request->isPost() ) {
+    		
+    		$file = $request->getPost('file', false);
+    		if ( $file === false 
+    				|| !X_Env::startWith(realpath(APPLICATION_PATH . "/../data/backupper/$file"), realpath(APPLICATION_PATH . "/../data/backupper/")) // this ensure no ../
+    				|| !file_exists(APPLICATION_PATH . "/../data/backupper/$file")) {
+    				
+    			$this->_helper->flashMessenger(array('text' => X_Env::_('p_backupper_err_invalidrestorefile'), 'type' => 'warning' ));
+    			$this->_helper->redirector('index', 'backupper');
+    		}
+    		
+    		try {
+    			/* @var $backuppedData Zend_Config_Xml */
+    			$backuppedData = new Zend_Config_Xml(APPLICATION_PATH . "/../data/backupper/$file");
+    		} catch (Exception $e) {
+    			$this->_helper->flashMessenger(array('text' => X_Env::_('p_backupper_err_malformedrestorefile'), 'type' => 'error' ));
+    			$this->_helper->redirector('index', 'backupper');
+    		}
+    		
+    		//die('<pre>'.var_export($backuppedData->toArray(), true).'</pre>');
+    		
+    		$components = $request->getPost('components', array());
+    		
+    		if ( count($components) ) {
+	    		$plugins = X_VlcShares_Plugins::broker()->getPlugins();
+	    		$items = array();
+	    		foreach ($plugins as $pId => $plugin ) {
+	    			if ( array_key_exists($pId, $components) && ((bool) $components[$pId]) )  {
+	    				if ( $plugin instanceof X_VlcShares_Plugins_BackuppableInterface ) {
+	    					//$toBackup[$pId] = $plugin;
+	    					try {
+	    						$returned = $plugin->restoreItems($backuppedData->plugins->$pId->toArray());
+	    						X_Debug::i("Plugins $pId restored");
+	    						if ( $returned ) {
+	    							$this->_helper->flashMessenger(array('text' => $returned, 'type' => 'info' ));
+	    						} else {
+	    							$this->_helper->flashMessenger(array('text' => X_Env::_('p_backupper_restore_done_plugin').": $pId", 'type' => 'info' ));
+	    						}
+	    					} catch (Exception $e) {
+	    						X_Debug::e("Error restoring $pId: {$e->getMessage()}");
+	    						$this->_helper->flashMessenger(array('text' => X_Env::_('p_backupper_err_pluginnotrestored').": $pId, {$e->getMessage()}", 'type' => 'error' ));
+	    					}
+	    				}
+	    			}
+	    		}
+	    		$this->_helper->flashMessenger(array('text' => X_Env::_('p_backupper_restore_done'), 'type' => 'info' ));
+    		} else {
+    			$this->_helper->flashMessenger(array('text' => X_Env::_('p_backupper_restore_norestoreactionneeded'), 'type' => 'warning' ));
+    		}
+    	}
+    	
+    	$this->_helper->redirector('index', 'backupper');
+    	
+    	
     }
     
     function alertAction() {

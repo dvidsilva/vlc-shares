@@ -311,7 +311,7 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 		
 		foreach ($models as $model) {
 			/* @var $model Application_Model_FilesystemShare */
-			$return['share'][] = array(
+			$return['shares'][] = array(
 				'id'			=> $model->getId(), 
 	            'path'   		=> $model->getPath(),
 	            'image' 		=> $model->getImage(),
@@ -328,6 +328,24 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 	 */
 	function restoreItems($items) {
 		
+		$shares = Application_Model_FilesystemSharesMapper::i()->fetchAll();
+		// cleaning up all shares
+		foreach ($shares as $share) {
+			Application_Model_FilesystemSharesMapper::i()->delete($share);
+		}
+	
+		foreach (@$items['shares'] as $shareInfo) {
+			$share = new Application_Model_FilesystemShare();
+			$share->setPath(@$shareInfo['path'])
+				->setImage(@$shareInfo['image'])
+				->setLabel(@$shareInfo['label']);
+			// i don't set id, or db adapter will try to update old data that i cleaned
+			Application_Model_FilesystemSharesMapper::i()->save($share);
+		}
+		
+		return X_Env::_('p_filesystem_backupper_restoreditems'). ": " .count($items['shares']);
+		
+		//return parent::restoreItems($items);
 	}
 	
 		

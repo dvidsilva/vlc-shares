@@ -92,7 +92,7 @@ class X_VlcShares_Plugins_Backupper extends X_VlcShares_Plugins_Abstract impleme
 		
 		foreach ($configs as $model) {
 			/* @var $model Application_Model_Config */
-			$return['configs']['config'][] = array(
+			$return['configs'][$model->getKey()] = array(
 				'key'			=> $model->getKey(),
 				'value'			=> $model->getValue(),
 				'section'		=> $model->getSection(),
@@ -103,7 +103,7 @@ class X_VlcShares_Plugins_Backupper extends X_VlcShares_Plugins_Abstract impleme
 		
 		foreach ($plugins as $model) {
 			/* @var $model Application_Model_Plugin */
-			$return['plugins']['plugin'][] = array(
+			$return['plugins'][$model->getKey()] = array(
 				'key'			=> $model->getKey(),
 				'enabled'		=> ($model->isEnabled() ? 1 : 0)
 			);
@@ -115,8 +115,81 @@ class X_VlcShares_Plugins_Backupper extends X_VlcShares_Plugins_Abstract impleme
 	/**
 	 * Restore core configs and plugins list in db 
 	 * This is not a trigger of plugin API. It's called by Backupper plugin
+	 * @param array $items Array format: 
+	 * 		array(
+	 * 			'plugins' => array(
+	 * 				array(
+	 * 					'key' => PLUGIN_KEY
+	 * 					'enabled' => 1|0
+	 *				),...
+	 *			),
+	 *			'configs' => array(
+	 *				array(
+	 *					'key' => CONFIG_KEY
+	 *					'value' => CONFIG_VALUE
+	 *					'section' => CONFIG_SECTION
+	 *				)
+	 *			)
+	 *		)
 	 */
 	function restoreItems($items) {
+		
+		
+		$pluginsStatusChanged = 0;
+		$pluginsStatusErrors = 0;
+		$configsStatusChanged = 0;
+		$configsStatusErrors = 0;
+
+		// as first thing i restore plugins status
+		$plugins = Application_Model_PluginsMapper::i()->fetchAll();
+		foreach ($plugins as $plugin) {
+			/* @var $plugin Application_Model_Plugin */
+			if ( array_key_exists($plugin->getKey(), $items['plugins'])) {
+				if ( $plugin->isEnabled() != ((bool) @$items['plugins'][$plugin->getKey()]['enabled'] ) ) {
+					$plugin->setEnabled((bool) @$items['plugins'][$plugin->getKey()]['enabled']);
+					// i need to commit change
+					try {
+						Application_Model_PluginsMapper::i()->save($plugin);
+						$pluginsStatusChanged++;
+					} catch ( Exception $e) {
+						X_Debug::e("Failed to update plugin {$plugin->getKey()} status to {$items['plugins'][$plugin->getKey()]['enabled']}");
+						$pluginsStatusErrors++;
+					}
+				}
+			}
+		}
+		
+		// then i restore configs status
+		$configs = Application_Model_ConfigsMapper::i()->fetchAll();
+		foreach ($configs as $config) {
+			/* @var $config Application_Model_Config */
+			if ( array_key_exists($config->getKey(), $items['configs'])) {
+				if ( $config->getSection() == @$items['configs'][$config->getKey()]['section'] && $config->getValue() != ($items['configs'][$config->getKey()]['value'] ) ) {
+					$config->setValue( @$items['configs'][$config->getKey()]['value']);
+					// i need to commit change
+					try {
+						Application_Model_ConfigsMapper::i()->save($config);
+						$configsStatusChanged++;
+					} catch ( Exception $e) {
+						X_Debug::e("Failed to update plugin {$config->getKey()} status to {$items['configs'][$config->getKey()]['value']}");
+						$configsStatusErrors++;
+					}
+				}
+			}
+		}
+		
+		
+		// return a custom message with restore results
+		return X_Env::_('p_backupper_restorereport_main').'<br/><dl style="margin: 1em 3em;">'
+			.'<dt>'.X_Env::_('p_backupper_restorereport_configchanged').'</dt>'
+			.'<dd>'.$configsStatusChanged.'</dd>'
+			.'<dt>'.X_Env::_('p_backupper_restorereport_configerrors').'</dt>'
+			.'<dd>'.$configsStatusErrors.'</dd>'
+			.'<dt>'.X_Env::_('p_backupper_restorereport_pluginchanged').'</dt>'
+			.'<dd>'.$pluginsStatusChanged.'</dd>'
+			.'<dt>'.X_Env::_('p_backupper_restorereport_pluginerrors').'</dt>'
+			.'<dd>'.$pluginsStatusErrors.'</dd>'
+		.'</dl>';
 		
 	}
 	

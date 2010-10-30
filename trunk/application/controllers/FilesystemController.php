@@ -15,7 +15,12 @@ class FilesystemController extends X_Controller_Action {
 		$form = new Application_Form_FileSystemShare();
 		$form->setAction($this->_helper->url('save', 'filesystem'));
 		
-		$showNew = $this->getRequest()->getParam('a','new');
+		$showNew = $this->getRequest()->getParam('a',false);
+		if ( $showNew == 'new' ) {
+			$showNew = true;
+		} else {
+			$showNew = false;
+		}
 		
 		$this->view->showNew = $showNew;
 		$this->view->form = $form;

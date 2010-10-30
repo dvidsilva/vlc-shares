@@ -305,7 +305,7 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 		
 		foreach ($models as $model) {
 			/* @var $model Application_Model_Profile */
-			$return['profile'][] = array(
+			$return['profiles'][] = array(
 				'id'			=> $model->getId(), 
 	            'arg'   		=> $model->getArg(),
 	            'cond_providers' => $model->getCondProviders(),
@@ -325,8 +325,27 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 	 */
 	function restoreItems($items) {
 		
+		$models = Application_Model_ProfilesMapper::i()->fetchAll();
+		// cleaning up all shares
+		foreach ($models as $model) {
+			Application_Model_ProfilesMapper::i()->delete($model);
+		}
+	
+		foreach (@$items['profiles'] as $modelInfo) {
+			$model = new Application_Model_Profile();
+			$model->setArg(@$modelInfo['arg'])
+				->setCondProviders(@$modelInfo['cond_providers'])
+				->setCondFormats(@$modelInfo['cond_formats'])
+				->setCondDevices(@$modelInfo['cond_devices'])
+				->setLabel(@$modelInfo['label'])
+				->setWeight(@$modelInfo['weight'])
+				;
+			// i don't set id, or db adapter will try to update old data that i cleaned
+			Application_Model_ProfilesMapper::i()->save($model);
+		}
+		
+		return X_Env::_('p_profiles_backupper_restoreditems'). ": " .count($items['profiles']);
+		
 	}
-	
-	
 }
 

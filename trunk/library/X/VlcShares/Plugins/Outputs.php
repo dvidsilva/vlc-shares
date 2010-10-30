@@ -361,7 +361,7 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract implement
 		
 		foreach ($models as $model) {
 			/* @var $model Application_Model_Output */
-			$return['output'][] = array(
+			$return['outputs'][] = array(
 				'id'			=> $model->getId(), 
 	            'arg'   => $model->getArg(),
 	        	'cond_devices' => $model->getCondDevices(),
@@ -379,6 +379,27 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract implement
 	 * This is not a trigger of plugin API. It's called by Backupper plugin
 	 */
 	function restoreItems($items) {
+		
+		$models = Application_Model_OutputsMapper::i()->fetchAll();
+		// cleaning up all shares
+		foreach ($models as $model) {
+			Application_Model_OutputsMapper::i()->delete($model);
+		}
+	
+		foreach (@$items['outputs'] as $modelInfo) {
+			$model = new Application_Model_Output();
+			$model->setArg(@$modelInfo['arg'])
+				->setLink(@$modelInfo['link'])
+				->setCondDevices(@$modelInfo['cond_devices'])
+				->setLabel(@$modelInfo['label'])
+				->setWeight(@$modelInfo['weight'])
+				;
+			// i don't set id, or db adapter will try to update old data that i cleaned
+			Application_Model_OutputsMapper::i()->save($model);
+		}
+		
+		return X_Env::_('p_outputs_backupper_restoreditems'). ": " .count($items['outputs']);
+		
 		
 	}
 	
