@@ -330,8 +330,8 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 		$videos = Application_Model_MegavideoMapper::i()->fetchAll();
 		
 		foreach ($videos as $model) {
-			/* @var $model Application_Model_Config */
-			$return['video'][] = array(
+			/* @var $model Application_Model_Megavideo */
+			$return['videos'][] = array(
 				'id'			=> $model->getId(), 
 	            'idVideo'   	=> $model->getIdVideo(),
 	            'description'	=> $model->getDescription(),
@@ -348,6 +348,28 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 	 * This is not a trigger of plugin API. It's called by Backupper plugin
 	 */
 	function restoreItems($items) {
+
+		//return parent::restoreItems($items);
+		
+		$models = Application_Model_MegavideoMapper::i()->fetchAll();
+		// cleaning up all shares
+		foreach ($models as $model) {
+			Application_Model_MegavideoMapper::i()->delete($model->getId());
+		}
+	
+		foreach (@$items['videos'] as $modelInfo) {
+			$model = new Application_Model_Megavideo();
+			$model->setIdVideo(@$modelInfo['idVideo']) 
+				->setDescription(@$modelInfo['description'])
+				->setCategory(@$modelInfo['category'])
+				->setLabel(@$modelInfo['label'])
+				;
+			// i don't set id, or db adapter will try to update old data that i cleaned
+			Application_Model_MegavideoMapper::i()->directSave($model);
+		}
+		
+		return X_Env::_('p_megavideo_backupper_restoreditems'). ": " .count($items['videos']);
+		
 		
 	}
 	

@@ -3,11 +3,13 @@
 <?php $this->headLink()->appendStylesheet($this->baseUrl('/css/filesystem/style.css')); ?>
 <?php $this->headScript()->appendFile($this->baseUrl("/js/filesystem/index.js")); ?>
 <?php $this->headTitle()->prepend(X_Env::_('p_filesystem_title')); ?>
-<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::APPEND); ?>
-	$(document).ready(function() {
-		$('.quickbox-add').click();
-	});
-<?php $this->headScript()->captureEnd(); ?>
+<?php if ( $this->showNew ) :?>
+	<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::APPEND); ?>
+		$(document).ready(function() {
+			$('.quickbox-add').click();
+		});
+	<?php $this->headScript()->captureEnd(); ?>
+<?php endif; ?>
 
 
 <div class="span-24 last" id="back-to-home">

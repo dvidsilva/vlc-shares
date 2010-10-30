@@ -94,6 +94,18 @@ abstract class X_VlcShares_Plugins_Abstract {
 		return $this;
 	}
 
+	/**
+	 * This function is part of Backuppable interface, but
+	 * Abstract doesn't implement it. I added it here, so plugins 
+	 * which implement this interface could use this function to
+	 * debug restorable data.
+	 * They should only add a line:
+	 * <pre>return parent::restoreItems($items);</pre> to debug data
+	 */
+	function restoreItems($items) {
+		return "I got this items: <br/><pre>".var_export($items, true)."</pre>";
+	}
+	
 	//=== GENERAL TRIGGER ===//
 	
 	/**
