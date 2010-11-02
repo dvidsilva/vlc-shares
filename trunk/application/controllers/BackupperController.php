@@ -107,7 +107,7 @@ class BackupperController extends X_Controller_Action
     		if ( count($items) ) {
     			$writer = new Zend_Config_Writer_Xml();
     			
-    			$date = date("Ymd_His");
+    			$date = date("Y-m-d_H-i-s");
 
     			$type = $fastAction !== false ? $fastAction : 'custom';
     			

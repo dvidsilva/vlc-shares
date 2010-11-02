@@ -133,7 +133,12 @@ class ManageController extends X_Controller_Action
     			if (!$isError) {
     				$this->_helper->flashMessenger(X_Env::_('configs_save_done'));
     			}
-    			$this->_helper->redirector('configs', 'manage');
+    			
+    			if ( $form->getValue('isapply') == '1' ) {
+    				$this->_helper->redirector('configs', 'manage');
+    			} else {
+    				$this->_helper->redirector('index', 'manage');
+    			}
     			
     		} else {
     			$this->_forward('configs');
@@ -286,6 +291,7 @@ class ManageController extends X_Controller_Action
 	    			'3' => X_Env::_('config_debug_level_optinfo'),
 	    		));
 	    	} catch(Exception $e) { X_Debug::w("No debug level settings? O_o"); }
+	    	
     	}
     	
     	if ( $posts !== null && is_array($posts)  ) {
