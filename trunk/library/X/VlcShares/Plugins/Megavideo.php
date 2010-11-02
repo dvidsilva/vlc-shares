@@ -331,7 +331,7 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 		
 		foreach ($videos as $model) {
 			/* @var $model Application_Model_Megavideo */
-			$return['videos'][] = array(
+			$return['videos']['video-'.$model->getId()] = array(
 				'id'			=> $model->getId(), 
 	            'idVideo'   	=> $model->getIdVideo(),
 	            'description'	=> $model->getDescription(),

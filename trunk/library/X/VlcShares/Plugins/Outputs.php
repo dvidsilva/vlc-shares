@@ -361,7 +361,7 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract implement
 		
 		foreach ($models as $model) {
 			/* @var $model Application_Model_Output */
-			$return['outputs'][] = array(
+			$return['outputs']['output-'.$model->getId()] = array(
 				'id'			=> $model->getId(), 
 	            'arg'   => $model->getArg(),
 	        	'cond_devices' => $model->getCondDevices(),
