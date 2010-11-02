@@ -222,7 +222,13 @@ class BackupperController extends X_Controller_Action
 	    				if ( $plugin instanceof X_VlcShares_Plugins_BackuppableInterface ) {
 	    					//$toBackup[$pId] = $plugin;
 	    					try {
-	    						$returned = $plugin->restoreItems($backuppedData->plugins->$pId->toArray());
+	    						$data = $backuppedData->plugins->$pId;
+	    						if ( !is_object($data) || !method_exists($data, 'toArray') ) {
+	    							$data = array();
+	    						} else {
+	    							$data = $data->toArray();
+	    						}
+	    						$returned = $plugin->restoreItems($data);
 	    						X_Debug::i("Plugins $pId restored");
 	    						if ( $returned ) {
 	    							$this->_helper->flashMessenger(array('text' => $returned, 'type' => 'info' ));

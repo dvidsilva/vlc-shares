@@ -311,7 +311,7 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 		
 		foreach ($models as $model) {
 			/* @var $model Application_Model_FilesystemShare */
-			$return['shares'][] = array(
+			$return['shares']['share-'.$model->getId()] = array(
 				'id'			=> $model->getId(), 
 	            'path'   		=> $model->getPath(),
 	            'image' 		=> $model->getImage(),

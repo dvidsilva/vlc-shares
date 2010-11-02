@@ -305,7 +305,7 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 		
 		foreach ($models as $model) {
 			/* @var $model Application_Model_Profile */
-			$return['profiles'][] = array(
+			$return['profiles']['profile-'.$model->getId()] = array(
 				'id'			=> $model->getId(), 
 	            'arg'   		=> $model->getArg(),
 	            'cond_providers' => $model->getCondProviders(),

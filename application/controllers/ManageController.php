@@ -66,7 +66,7 @@ class ManageController extends X_Controller_Action
 		$this->view->manageLinks = $manageLinks;
 		$this->view->statistics = $statistics;
 		$this->view->news = $news;
-		$this->view->messages = $messages;
+		$this->view->messages = array_merge($this->_helper->flashMessenger->getMessages(), $messages);
     	
 		
 		// i need to get first class links

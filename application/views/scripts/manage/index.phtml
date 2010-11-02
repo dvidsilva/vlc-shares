@@ -13,17 +13,6 @@ $(function(){
 		pagination: 'slider-pagination'
 	});
 	
-	/*
-	var showNews = $('<div id="manage-shownews">Show news</div>');
-	showNews.click(function () {
-		showNews.fadeOut();
-		$('#manage-news').fadeIn();
-	});
-	
-	$('#manage-news').before(showNews).hide();
-	*/
-	
-	//$("#manage-news ul .active").removeClass('active');
 	$('#manage-news .slider-container').hide();
 	$('#manage-news ul li').click(function (){
 		$('#manage-news .slider-container').fadeIn();
@@ -39,6 +28,7 @@ $(function(){
 <div class="span-24 last" id="manage-messages">
 	<ul>
 		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
 			<li class="<?php echo @$message['type']?>">
 				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
 				<?php echo $message['text']?>
