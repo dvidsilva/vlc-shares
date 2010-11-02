@@ -75,5 +75,14 @@ $(document).ready(function() {
 		});
 	});
 	
+	var $apply = $('<button id="apply" type="button" name="apply">'+applyLabel+'</button>');
+	$('#submit').after($apply);
+	
+	$apply.click(function (event) {
+		
+		$('form#configs #isapply').val('1');
+		$('form#configs #submit').click();
+		
+	});
 	
 });

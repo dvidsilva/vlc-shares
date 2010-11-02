@@ -40,7 +40,7 @@ class X_VlcShares_Plugins_RedirectControls extends X_VlcShares_Plugins_Abstract 
 		$vlc = X_Vlc::getLastInstance();
 		
 		if ( $vlc === null ) {
-			X_Debug::f("No vlc instance");
+			X_Debug::i("No vlc instance");
 			return;
 		}
 		

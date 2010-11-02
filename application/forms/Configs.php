@@ -86,6 +86,14 @@ class Application_Form_Configs extends Zend_Form
             'label'    => X_Env::_('configs_form_submit'),
         	'decorators' => array('ViewHelper')
         ));
+
+        // Add the submit button
+        $this->addElement('hidden', 'isapply', array(
+            'ignore'   => true,
+        	'value'	   => 0,
+        	'decorators' => array('ViewHelper')
+        ));
+        
         
         // Add the submit button
         $this->addElement('button', 'abort', array(
@@ -102,7 +110,7 @@ class Application_Form_Configs extends Zend_Form
         	'decorators' => array('ViewHelper')
         ));
         
-        $this->addDisplayGroup(array('submit', 'abort', 'hash'), 'buttons');
+        $this->addDisplayGroup(array('submit', 'abort', 'csrf', 'isapply'), 'buttons');
         
     }
 }

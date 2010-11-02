@@ -21,6 +21,7 @@ foreach ( $dg as $g ) {
 <?php $this->headScript()->appendFile($this->baseUrl("/js/manage/configs.js")); ?>
 <?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
 		var showAdvLabel = "<?php echo X_Env::_('configs_showadvaced'); ?>";
+		var applyLabel = "<?php echo X_Env::_('apply'); ?>";
 	<?php $this->headScript()->captureEnd(); ?>
 <?php $this->headTitle()->prepend(X_Env::_('configs_title')); ?>
 
