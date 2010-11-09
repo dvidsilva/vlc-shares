@@ -9,7 +9,8 @@ class Application_Model_Plugin extends Application_Model_Abstract {
 		file VARCHAR(255) DEFAULT NULL,
 		label VARCHAR(255) DEFAULT NULL,
 		description VARCHAR(255) DEFAULT NULL,
-		`type` INTEGER NOT NULL DEFAULT 0
+		`type` INTEGER NOT NULL DEFAULT 0,
+		version VARCHAR(16) DEFAULT NULL
 	);
 	*/
 	
@@ -25,6 +26,7 @@ class Application_Model_Plugin extends Application_Model_Abstract {
 	private $description;
 	private $type;
 	private $enabled;
+	private $version;
 	
 	/**
 	 * @return the $id
@@ -80,6 +82,13 @@ class Application_Model_Plugin extends Application_Model_Abstract {
 	 */
 	public function isEnabled() {
 		return $this->enabled;
+	}
+	
+	/**
+	 * @return the $version
+	 */
+	public function getVersion() {
+		return $this->version;
 	}
 	
 	/**
@@ -151,6 +160,15 @@ class Application_Model_Plugin extends Application_Model_Abstract {
 	 */
 	public function setEnabled($enabled) {
 		$this->enabled = (bool) $enabled;
+		return $this;
+	}
+
+	/**
+	 * @param $version the $version to set
+	 * @return Application_Model_Plugin
+	 */
+	public function setVersion($version) {
+		$this->version = (string) $version;
 		return $this;
 	}
 	

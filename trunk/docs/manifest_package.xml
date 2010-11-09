@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vs-manifest type="package">
+	<manifest haltOnError="false">manifest_plugin.xml</manifest>
+	<manifest haltOnError="true">manifest_plugin.xml</manifest>
+	<manifest haltOnError="false">sampleplg/manifest_plugin.xml</manifest>
+</vs-manifest>

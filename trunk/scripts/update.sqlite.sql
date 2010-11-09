@@ -26,7 +26,7 @@ CREATE INDEX "plg_profiles_id" ON "plg_profiles" ("id");
 
 -- Insert new profiles for 0.5.1
 
-INSERT INTO plg_profiles (label, arg) VALUES
+INSERT INTO plg_profiles (label, arg) VALUESversion VARCHAR(16) DEFAULT NULL
 	('Hq',
 	'transcode{venc=ffmpeg,vcodec=mp2v,vb=4000,scale=.5,width=640,fps=25,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}'
 	);	
@@ -108,3 +108,6 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	1
 );
 
+-- Add new column to plugin table
+
+ALTER TABLE plugins ADD COLUMN version VARCHAR(16) DEFAULT NULL;
