@@ -44,7 +44,8 @@ class Application_Model_PluginsMapper extends Application_Model_AbstractMapper {
 			'label'			=> $model->getLabel(),
 			'description'	=> $model->getDescription(),
 			'type'			=> $model->getType(),
-			'enabled'		=> ($model->isEnabled() ? 1 : 0)
+			'enabled'		=> ($model->isEnabled() ? 1 : 0),
+			'version'		=> $model->getVersion()
 		);
 		
 		if (null === ($id = $model->getId ())) {
@@ -65,6 +66,27 @@ class Application_Model_PluginsMapper extends Application_Model_AbstractMapper {
 		$this->_populate($row, $model);
 	}
 	
+	public function fetchByKey($key, Application_Model_Plugin $model) {
+		$result = $this->getDbTable ()->fetchAll ( array('key = ?' => $key));
+		if (0 == count ( $result )) {
+			return;
+		}
+		$row = $result->current ();
+		$this->_populate($row, $model);
+	}
+	
+	public function fetchByType($type = Application_Model_Plugin::USER) {
+		$resultSet = $this->getDbTable ()->fetchAll ( array('type = ?' => $type));
+		$entries = array ();
+		foreach ( $resultSet as $row ) {
+			$mappedClass = $this->getMappedClass();
+			$entry = new $mappedClass();
+			$this->_populate($row, $entry);
+			$entries [] = $entry;
+		}
+		return $entries;
+	}
+	
 	/**
 	 * 
 	 * @param unknown_type $row
@@ -78,7 +100,8 @@ class Application_Model_PluginsMapper extends Application_Model_AbstractMapper {
 			->setLabel($row->label)
 			->setDescription($row->description)
 			->setType($row->type)
-			->setEnabled($row->enabled);
+			->setEnabled($row->enabled)
+			->setVersion($row->version);
 	}
 	
 	public function delete(Application_Model_Plugin $model) {

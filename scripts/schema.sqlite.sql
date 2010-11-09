@@ -67,7 +67,8 @@ CREATE TABLE plugins (
 	label VARCHAR(255) DEFAULT NULL,
 	description VARCHAR(255) DEFAULT NULL,
 	`type` INTEGER NOT NULL DEFAULT 0,
-	enabled INTEGER NOT NULL DEFAULT 0
+	enabled INTEGER NOT NULL DEFAULT 0,
+	version VARCHAR(16) DEFAULT NULL
 );
 
 CREATE INDEX "plugins_id" ON "plugins" ("id");

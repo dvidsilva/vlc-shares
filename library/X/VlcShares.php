@@ -2,6 +2,7 @@
 
 class X_VlcShares {
 	const VERSION = '0.5.1_dev';
+	const VERSION_CLEAN = '0.5.1';
 	private $CONFIG_PATH;
 	
 	
