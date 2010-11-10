@@ -54,7 +54,8 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 					)
 				),
 				'icon'	=> '/images/megavideo/logo.png',
-				'desc'	=> X_Env::_('p_megavideo_collectionindex_desc')
+				'desc'	=> X_Env::_('p_megavideo_collectionindex_desc'),
+				'itemType'		=>	'folder'
 			)
 		);
 	}
@@ -95,7 +96,8 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 						)
 					),
 					__CLASS__.':location'	=>	$video->getId(),
-					'icon'	=>	'/images/icons/file_32.png'
+					'icon'	=>	'/images/icons/file_32.png',
+					'itemType'		=>	'file'
 				);
 			}
 			
@@ -116,7 +118,8 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 						)
 					),
 					__CLASS__.':location'	=>	$share['category'],
-					'icon'	=>	'/images/icons/folder_32.png'
+					'icon'	=>	'/images/icons/folder_32.png',
+					'itemType'		=>	'folder'
 				);
 			}
 		}

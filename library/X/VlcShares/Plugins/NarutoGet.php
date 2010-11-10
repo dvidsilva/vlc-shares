@@ -54,7 +54,8 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 					)
 				),
 				'icon'	=> '/images/narutoget/logo.png',
-				'desc'	=> X_Env::_('p_narutoget_collectionindex_desc')
+				'desc'	=> X_Env::_('p_narutoget_collectionindex_desc'),
+				'itemType'		=>	'folder'
 			)
 		);
 	}
@@ -110,7 +111,8 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 							)
 						),
 						__CLASS__.':location'	=>	$href,
-						'icon'	=>	'/images/icons/file_32.png'
+						'icon'	=>	'/images/icons/file_32.png',
+						'itemType'		=>	'file'
 					);
 					
 				}

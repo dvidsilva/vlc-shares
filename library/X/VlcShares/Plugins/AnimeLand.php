@@ -50,7 +50,8 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 					)
 				),
 				'icon'	=> '/images/animeland/logo.png',
-				'desc'	=> X_Env::_('p_animeland_collectionindex_desc')
+				'desc'	=> X_Env::_('p_animeland_collectionindex_desc'),
+				'itemType' => 'folder'
 			)
 		);
 	}
@@ -100,7 +101,9 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 							), 'default', false
 						)
 					),
-					__CLASS__.':location'	=>	$href
+					__CLASS__.':location'	=>	$href,
+					'icon'		=>	'/images/icons/file_32.png',
+					'itemType' => 'file'
 				);
 				
 			}
@@ -136,7 +139,8 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 							)
 						),
 						__CLASS__.':location'	=>	$href,
-						'icon'		=>	'/images/icons/file_32.png'
+						'icon'		=>	'/images/icons/file_32.png',
+						'itemType' => 'file'
 					);
 				} else {
 					$items[] = array(
@@ -150,7 +154,8 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 							)
 						),
 						__CLASS__.':location'	=>	$href,
-						'icon'		=>	'/images/icons/folder_32.png'
+						'icon'		=>	'/images/icons/folder_32.png',
+						'itemType'	=>	'folder',
 					);
 				}
 				

@@ -47,9 +47,22 @@ class X_VlcShares_Plugins_Helper_Devices extends X_VlcShares_Plugins_Helper_Abst
 	public function getWiimcVersion() {
 		if ( $this->isWiimc() ) {
 			$split = explode('/', $_SERVER['HTTP_USER_AGENT']);
-			return @$split[1];
+			return str_replace('+', '', @$split[1]);
 		} else {
 			return null;
+		}
+	}
+	
+	/**
+	 * return true if device is WiiMC with Enhancement Pack V+
+	 * @return boolean
+	 */
+	public function isWiimcEnhanced() {
+		if ( $this->isWiimc() ) {
+			$split = explode('/', $_SERVER['HTTP_USER_AGENT']);
+			return (strpos(@$split[1], '+') !== false);
+		} else {
+			return false;
 		}
 	}
 	

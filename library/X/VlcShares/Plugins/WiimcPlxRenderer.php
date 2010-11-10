@@ -28,10 +28,18 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 			X_Env::_('p_wiimcplxrenderer_plxdescription_'.$request->getControllerName().'_'.$request->getActionName())
 		);
 		
+		$enhanced = $this->helpers()->devices()->isWiimcEnhanced() && $this->config('support.enhanced', true);
+		
 		foreach ( $items as $i => $item ) {
 			$plxItemName = (@$item['highlight'] ? '-) ' : '' ). $item['label'];
 			$plxItemType = (array_key_exists('type', $item) ? $item['type'] : X_Plx_Item::TYPE_PLAYLIST );
 			$plxItem = new X_Plx_Item($plxItemName, $item['link'], $plxItemType);
+			
+			// this adds support for enchanced version of wiimc
+			if ( $enhanced && array_key_exists( 'itemType', $item) && $item['itemType'] == 'folder' ) {
+				$plxItem->setType('folder');
+			}
+			
 			// this adds thumb support for wiimc
 			if ( array_key_exists('thumb', $item) ) {
 				// i have to be sure that image address is a complete url, no relative url is allowed for wiimc

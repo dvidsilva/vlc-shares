@@ -54,7 +54,8 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 					)
 				),
 				'icon'	=> '/images/dbforever/logo.png',
-				'desc'	=> X_Env::_('p_dbforever_collectionindex_desc')
+				'desc'	=> X_Env::_('p_dbforever_collectionindex_desc'),
+				'itemType'		=>	'folder',
 			)
 		);
 	}
@@ -103,7 +104,8 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 						)
 					),
 					__CLASS__.':location'	=>	$href,
-					'icon'		=> '/images/icons/file_32.png'
+					'icon'		=> '/images/icons/file_32.png',
+					'itemType'		=>	'file'
 				);
 				
 			}
@@ -123,7 +125,8 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 				),
 				__CLASS__.':location'	=>	self::INDEX_NARUTO,
 				'icon'		=> '/images/icons/folder_32.png',
-				'thumb'		=> 'http://www.dbforever.net/img/banner/naruto_banner_grande.jpg'
+				'thumb'		=> 'http://www.dbforever.net/img/banner/naruto_banner_grande.jpg',
+				'itemType'		=>	'folder'
 			);
 
 			$items[] = array(
@@ -137,7 +140,8 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 				),
 				__CLASS__.':location'	=>	self::INDEX_ONEPIECE,
 				'icon'		=> '/images/icons/folder_32.png',
-				'thumb'		=> 'http://www.dbforever.net/img/banner/onepiece_banner_grande.jpg'
+				'thumb'		=> 'http://www.dbforever.net/img/banner/onepiece_banner_grande.jpg',
+				'itemType'		=>	'folder'
 			);
 			
 			$items[] = array(
@@ -151,7 +155,8 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 				),
 				__CLASS__.':location'	=>	self::INDEX_BLEACH,
 				'icon'		=> '/images/icons/folder_32.png',
-				'thumb'		=> 'http://www.dbforever.net/img/banner/bleach_banner_grande.jpg'
+				'thumb'		=> 'http://www.dbforever.net/img/banner/bleach_banner_grande.jpg',
+				'itemType'		=>	'folder'
 			);
 			
 		}

@@ -50,7 +50,8 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 					)
 				),
 				'icon'	=> '/images/filesystem/logo.png',
-				'desc'	=> X_Env::_('p_filesystem_collectionindex_desc')
+				'desc'	=> X_Env::_('p_filesystem_collectionindex_desc'),
+				'itemType' => 'folder'
 			)
 		);
 	}
@@ -92,6 +93,7 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 							),
 							__CLASS__.':location'	=>	"{$share->getId()}:{$path}{$entry->getFilename()}/",
 							'icon'		=>	'/images/icons/folder_32.png',
+							'itemType'	=>	'folder'
 						);
 						
 						
@@ -108,6 +110,7 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 							),
 							__CLASS__.':location'	=>	"{$share->getId()}:{$path}{$entry->getFilename()}",
 							'icon'		=>	'/images/icons/file_32.png',
+							'itemType'	=>	'file'
 						);
 						
 					} else {
@@ -136,7 +139,8 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 					),
 					__CLASS__.':location'	=>	"{$share->getId()}:/",
 					'icon'		=>	'/images/icons/folder_32.png',
-					'desc'		=>	"{$share->getPath()}"
+					'desc'		=>	"{$share->getPath()}",
+					'itemType'	=>	'folder'
 				);
 			}
 		}
