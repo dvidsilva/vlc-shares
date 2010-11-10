@@ -68,7 +68,8 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 					)
 				),
 				'icon'	=> '/images/southpark/logo.png',
-				'desc'	=> X_Env::_('p_southpark_collectionindex_desc')
+				'desc'	=> X_Env::_('p_southpark_collectionindex_desc'),
+				'itemType'		=>	'folder'
 			)
 		);
 	}
@@ -135,7 +136,8 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 						)
 					),
 					__CLASS__.':location'	=>	$id,
-					'icon'	=>	'/images/icons/file_32.png'
+					'icon'	=>	'/images/icons/file_32.png',
+					'itemType'		=>	'file'
 					
 				);
 				if ( $thumb !== null ) {
@@ -160,7 +162,8 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 						)
 					),
 					__CLASS__.':location'	=>	$key,
-					'icon'	=>	'/images/icons/folder_32.png'
+					'icon'	=>	'/images/icons/folder_32.png',
+					'itemType'		=>	'folder'
 				);
 			}
 		}

@@ -124,6 +124,8 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	'wiimc.forced.showRaw', '0', '0', 'plugins', 3, 'p_wiimcplxrenderer_conf_forcedshowraw_label', 'p_wiimcplxrenderer_conf_forcedshowraw_desc',	'');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'wiimc.forced.showThumbs', '1', '1', 'plugins', 3, 'p_wiimcplxrenderer_conf_forcedshowthumbs_label', 'p_wiimcplxrenderer_conf_forcedshowthumbs_desc',	'');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'wiimc.support.enhanced', '1', '1', 'plugins', 3, 'p_wiimcplxrenderer_conf_supportenhanced_label', 'p_wiimcplxrenderer_conf_supportenhanced_desc',	'');
 
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
 	'mobilerenderer',

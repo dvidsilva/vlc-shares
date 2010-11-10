@@ -111,3 +111,9 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 -- Add new column to plugin table
 
 ALTER TABLE plugins ADD COLUMN version VARCHAR(16) DEFAULT NULL;
+
+
+-- Add Enhanced Wiimc version support
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'wiimc.support.enhanced', '1', '1', 'plugins', 3, 'p_wiimcplxrenderer_conf_supportenhanced_label', 'p_wiimcplxrenderer_conf_supportenhanced_desc',	'');
+
