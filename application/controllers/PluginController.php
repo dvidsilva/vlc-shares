@@ -93,7 +93,78 @@ class PluginController extends X_Controller_Action
 		
 	}
 	
+	function uconfirmAction() {
+		
+		$key = $this->getRequest()->getParam('key', false);
+		if ( $key !== false ) {
+			$plugin = new Application_Model_Plugin();
+			Application_Model_PluginsMapper::i()->fetchByKey($key, $plugin);
+			if ( $plugin->getId() !== null && $plugin->getKey() == $key && $plugin->getType() == Application_Model_Plugin::USER) {
+				
+				$form = new Application_Form_PluginUConfirm();
+				$form->key->setValue($key);
+				
+				$this->view->plugin = $plugin;
+				$this->view->form = $form;
+			} else {
+				$this->_helper->flashMessenger(array('text' => X_Env::_('plugin_err_invalidkey'), 'type' => 'error'));
+				$this->_helper->redirector('index', 'plugin');
+			}
+		} else {
+			$this->_helper->flashMessenger(array('text' => X_Env::_('plugin_err_invalidkey'), 'type' => 'error'));
+			$this->_helper->redirector('index', 'plugin');
+		}
+	}
+	
 	function uninstallAction() {
+		
+		/* @var $request Zend_Controller_Request_Http */
+		$request = $this->getRequest();
+		
+		if ( !$request->isPost() ) {
+			$this->_helper->flashMessenger(array('text' => X_Env::_('plugin_err_invalidrequest'), 'type' => 'error'));
+			$this->_helper->redirector('index', 'plugin');
+		}
+		
+		$form = new Application_Form_PluginUConfirm();
+
+		if ( !$form->isValid($request->getPost())) {
+			$this->_helper->flashMessenger(array('text' => X_Env::_('plugin_err_invalidrequest'), 'type' => 'error'));
+			$this->_helper->redirector('index', 'plugin');
+		}
+
+		$key = $form->getValue('key', false);
+		if ( $key === false ) {
+			$this->_helper->flashMessenger(array('text' => X_Env::_('plugin_err_invalidkey'), 'type' => 'error'));
+			$this->_helper->redirector('index', 'plugin');
+		}
+		
+		$plugin = new Application_Model_Plugin();
+		Application_Model_PluginsMapper::i()->fetchByKey($key, $plugin);
+		if ( $plugin->getId() === null || $plugin->getKey() != $key || $plugin->getType() != Application_Model_Plugin::USER) {
+			$this->_helper->flashMessenger(array('text' => X_Env::_('plugin_err_invalidplugin'), 'type' => 'error'));
+			$this->_helper->redirector('index', 'plugin');
+		}
+
+		// time to get uninstall informations
+		
+		$manifest = APPLICATION_PATH . '/../data/plugin/_uninstall/'.$plugin->getKey().'/manifest.xml';
+		if ( file_exists($manifest) ) {
+			try {
+				$this->_uninstall($manifest);
+				// all done, continue
+			} catch (Exception $e) {
+				$this->_helper->flashMessenger(array('text' => X_Env::_('plugin_err_uninstall_processingmanifest').": {$e->getMessage()}", 'type' => 'error'));
+				$this->_helper->redirector('index', 'plugin');
+			}
+		} else {
+			$this->_helper->flashMessenger(array('text' => X_Env::_('plugin_warn_uninstall_manifestnotfound'), 'type' => 'warning'));
+		}
+		
+		Application_Model_PluginsMapper::i()->delete($plugin);
+		
+		$this->_helper->flashMessenger(array('text' => X_Env::_('plugin_uninstall_done'), 'type' => 'info'));
+		$this->_helper->redirector('index', 'plugin');
 		
 	}
  
@@ -204,5 +275,36 @@ class PluginController extends X_Controller_Action
 		}
 	}
 	
+	private function _uninstall($manifest) {
+		
+		/* @var $egg X_Egg */
+		$egg = X_Egg::factory($manifest, APPLICATION_PATH.'/../');
+		
+		foreach ( $egg->getFiles() as $file ) {
+			/* @var $file X_Egg_File */
+			@unlink($file->getDestination());
+		}
+		
+		$uninstallSql = $egg->getUninstallSQL();
+		if ( $uninstallSql !== null && file_exists(dirname($manifest)."/uninstall.sql") ) {
+	    	try {
+	    		$dataSql = file_get_contents(dirname($manifest)."/uninstall.sql");
+	    		if ( trim($dataSql) !== '' ) {
+					$bootstrap = $this->getFrontController()->getParam('bootstrap');
+			    	$db = $bootstrap->getResource('db'); 
+			    	$db->getConnection()->exec($dataSql);
+	    		}
+	    	} catch ( Exception $e ) {
+	    		X_Debug::e("DB Error while uninstalling: {$e->getMessage()}");
+	    		$this->_helper->flashMessenger(X_Env::_('plugin_err_uninstallerror_sqlerror').": {$e->getMessage()}");
+	    	}
+	    	@unlink(dirname($manifest)."/uninstall.sql");
+		}
+		
+		@unlink($manifest);
+		@rmdir(dirname($manifest));
+		
+		return true;
+	}
 }
 

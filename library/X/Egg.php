@@ -38,7 +38,7 @@ class X_Egg {
 		$this->manifestFile = $manifestFile;
 		
 		if ( !file_exists($manifestFile) ) {
-			throw new Exception('Metadata file not found');
+			throw new Exception('Manifest file not found');
 		}
 		
 		/* @var $dom Zend_Dom_Query */
@@ -222,6 +222,13 @@ class X_Egg {
 		}
 	} 
 	
+	/**
+	 * Factory of X_Egg: accepts a manifest file or a xegg (zip) archive
+	 * @param string $eggfile path to manifest file or xegg file
+	 * @param string $dest_basepath destination root path
+	 * @param string $tmp_path temp dir for xegg unpack (ignored if $eggfile is a manifest)
+	 * @return X_Egg
+	 */
 	public static function factory($eggfile, $dest_basepath, $tmp_path = false) {
 		
 		$egg = new X_Egg();
@@ -230,7 +237,7 @@ class X_Egg {
 		$extension = strtolower(pathinfo($eggfile, PATHINFO_EXTENSION ));
 		if ( $extension == 'xml' ) {
 			// i only have to read it
-			$metadataFile = $eggfile;
+			$manifestFile = $eggfile;
 			$basepath = dirname($eggfile);
 		} elseif ( $extension == 'zip' || $extension == 'xegg' ) {
 			// i have to unpack the zip file
