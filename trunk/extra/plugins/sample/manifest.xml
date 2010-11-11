@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vs-manifest type="plugin">
+	<metadata>
+		<!-- 
+			Label: plugin name. This will be added inside the column label of plugins table. You can use translation string
+			Description: plugin description. This will be added inside the column description of plugins table
+			Version: plugin version. This will be added inside the column version of plugins table
+			Status: plugin release status. This is ignored at this time, but required. Future version will require it
+			Key: plugin key. BE CAREFULL when you choose your plugin key. 2 plugins with the same key can't be installed at the same time. This value will be added inside the column key of plugins table
+			File: plugin main file. This file will be required from plugin bootstrapper. This value will be added inside column file of plugins table.
+			Class: plugin main class. This value will be added inside column class of plugins table. Read plugin development guide for more info
+			Compatibility/From: lower version of VLCShares that is compatible with this plugin.
+			Compatibility/To: [OPTIONAL] highter version of VLCShares that is compatible with this plugin.
+		 -->
+		<label>Sample plugin</label>
+		<description>This plugin is an example to show how to create installable plugins for VLCShares 0.5</description>
+		<version>0.1</version>
+		<status>stable</status>
+		<key>sample</key>
+		<file>X/VlcShares/Plugins/Sample.php</file>
+		<class>X_VlcShares_Plugins_Sample</class>
+		<compatibility>
+			<from>0.5</from>
+			<to>0.6</to>
+		</compatibility>
+	</metadata>
+	<!-- 
+	Inside <files> must be insered a list of all files that must be copied from the archive to the VLCShares directory. Every file 
+	directory listed inside the <files> tag must be included inside the archive using the root folder of the archive as
+	the root of <files> tag
+	The tag lists reproduce the directory structure of VLCShares. The root folder of VLCShares is the <files> tag
+	To rappresent a file who have to be copied, you must use the <file> tag and insert the file name as <file> node value
+	-->
+	<files>
+		<library>
+			<X>
+				<VlcShares>
+					<Plugins>
+						<file>Sample.php</file>
+					</Plugins>
+				</VlcShares>
+			</X>
+		</library>
+	</files>
+	<!--
+		Inside the <database> tag you can specify the SQL installation script file (<install>) and the SQL uninstallation script file (<uninstall>)
+		This files must be placed inside the root of the archive 
+	 -->
+	<database>
+		<install>install.sql</install>
+		<!--
+			<uninstall>myuninstall.sql</uninstall> 
+		 -->
+	</database>
+</vs-manifest>

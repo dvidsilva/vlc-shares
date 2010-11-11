@@ -1,3 +1,12 @@
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'plugininstaller',
+	'X_VlcShares_Plugins_PluginInstaller', 
+	'X/VlcShares/Plugins/PluginInstaller.php',
+	'p_plugininstaller_plglabel',
+	'p_plugininstaller_plgdesc',
+	1,
+	1
+);
 
 
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
