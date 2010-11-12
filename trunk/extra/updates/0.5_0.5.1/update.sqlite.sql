@@ -137,3 +137,12 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 -- Add Enhanced Wiimc version support
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'wiimc.support.enhanced', '1', '1', 'plugins', 3, 'p_wiimcplxrenderer_conf_supportenhanced_label', 'p_wiimcplxrenderer_conf_supportenhanced_desc',	'');
+
+	
+-- Change configs default configs
+UPDATE configs SET `value` = '0' WHERE `key` = 'wiimc.forced.enabled';
+UPDATE configs SET `value` = '0' WHERE `key` = 'wiimc.forced.showRaw';
+UPDATE configs SET `default` = '1' WHERE `key` = 'wiimc.forced.fancy';
+
+	
+	
