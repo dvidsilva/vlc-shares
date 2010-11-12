@@ -73,7 +73,7 @@ class X_VlcShares_Plugins_PluginInstaller extends X_VlcShares_Plugins_Abstract {
 	private function _checkWritable($dir) {
 		
 		$dir = rtrim($dir, '\\/');
-		X_Debug::i('Cleaning dir '.$dir);
+		X_Debug::i('Checking dir '.$dir);
 		if (is_dir($dir)) { 
 			$objects = scandir($dir); 
 			foreach ($objects as $object) { 

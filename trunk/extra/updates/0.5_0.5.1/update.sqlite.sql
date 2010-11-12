@@ -1,13 +1,6 @@
 
 -- UPDATE DATABASE FROM 0.5 -> 0.5.1
 
-INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'mobilerenderer.coverflow.enabled', '1', '1', 'plugins', 3, 'p_mobilerenderer_conf_coverflowenabled_label', 'p_mobilerenderer_conf_coverflowenabled_desc',	'');
-
-INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'wiimc.forced.showThumbs', '1', '1', 'plugins', 3, 'p_wiimcplxrenderer_conf_forcedshowthumbs_label', 'p_wiimcplxrenderer_conf_forcedshowthumbs_desc',	'');
-
-
 -- Update plg_profiles.arg type from varchar255 -> text -- [sqlite don't allow column rename or remove]
 DROP TABLE IF EXISTS plg_profiles;
 DROP INDEX IF EXISTS "plg_profiles_id";
@@ -26,7 +19,7 @@ CREATE INDEX "plg_profiles_id" ON "plg_profiles" ("id");
 
 -- Insert new profiles for 0.5.1
 
-INSERT INTO plg_profiles (label, arg) VALUESversion VARCHAR(16) DEFAULT NULL
+INSERT INTO plg_profiles (label, arg) VALUES
 	('Hq',
 	'transcode{venc=ffmpeg,vcodec=mp2v,vb=4000,scale=.5,width=640,fps=25,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}'
 	);	
@@ -112,8 +105,35 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 
 ALTER TABLE plugins ADD COLUMN version VARCHAR(16) DEFAULT NULL;
 
+-- Add new plugins added in 0.5 -> 0.5.1
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'plugininstaller',
+	'X_VlcShares_Plugins_PluginInstaller', 
+	'X/VlcShares/Plugins/PluginInstaller.php',
+	'p_plugininstaller_plglabel',
+	'p_plugininstaller_plgdesc',
+	1,
+	1
+);
 
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'mobilerenderer',
+	'X_VlcShares_Plugins_MobileRenderer', 
+	'X/VlcShares/Plugins/MobileRenderer.php',
+	'p_mobilerenderer_plglabel',
+	'p_mobilerenderer_plgdesc',
+	1,
+	1
+);
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'mobilerenderer.forced.enabled', '1', '0', 'plugins', 3, 'p_mobilerenderer_conf_forcedenabled_label', 'p_mobilerenderer_conf_forcedenabled_desc',	'');
+	
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'mobilerenderer.coverflow.enabled', '1', '1', 'plugins', 3, 'p_mobilerenderer_conf_coverflowenabled_label', 'p_mobilerenderer_conf_coverflowenabled_desc',	'');
+
+-- Add Thumbs support
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'wiimc.forced.showThumbs', '1', '1', 'plugins', 3, 'p_wiimcplxrenderer_conf_forcedshowthumbs_label', 'p_wiimcplxrenderer_conf_forcedshowthumbs_desc',	'');
 -- Add Enhanced Wiimc version support
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'wiimc.support.enhanced', '1', '1', 'plugins', 3, 'p_wiimcplxrenderer_conf_supportenhanced_label', 'p_wiimcplxrenderer_conf_supportenhanced_desc',	'');
-
