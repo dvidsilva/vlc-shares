@@ -13,6 +13,6 @@ This tutorial is under development and shows how to update from vlc-shares 0.5 t
 *THIS IS A TEST VERSION OF VLCSHARES*
 
   # Download 'UPDATE_vlc-shares_0.5-to-0.5.1_beta1.zip' from the download section.
-  # Unpack the contents inside the directory _vlc-shares/public/__ of your vlc-shares installation directory
+  # Unpack the contents inside the directory _vlc-shares/public/_ of your vlc-shares installation directory
   # *Be sure that all vlc-shares directories are writable*
   # Open your browser at http://localhost/vlc-shares/public/update.php
