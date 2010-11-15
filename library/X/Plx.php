@@ -15,6 +15,7 @@ class X_Plx {
 	private $background = '';
 	private $logo = '';
 	private $items = array();
+	private $customTags = array();
 	
 	/**
 	 * Create a new playlist
@@ -36,8 +37,10 @@ class X_Plx {
 	public function __call($name, $argv) {
 		if ( substr($name,0,3) == 'set' && count($argv) === 1 ) {
 			$lowered = strtolower(substr($name, 3));
-			if ( property_exists($this, $lowered) && $lowered != 'items' ) {
+			if ( property_exists($this, $lowered) && $lowered != 'items' && $lowered != 'customtags' ) {
 				$this->$lowered = $argv[0];
+			} else {
+				$this->customTags[$lowered] = $argv[0];
 			}
 			return $this;
 		} elseif ( substr($name,0,3) == 'get' && count($argv) === 0 ) {
@@ -62,6 +65,13 @@ class X_Plx {
 		if ( $this->getLogo() != '' )
 		$output .= "logo=".$this->getLogo()."\n";
 		$output .= "description=".$this->getDescription()."\n";
+		
+		if ( count($this->customTags) > 0 ) {
+			foreach ($this->customTags as $tag => $value) {
+				$output .= "$tag=$value"."\n";
+			}
+		}
+		
 		$output .= "\n";
 		return $output;
 	}
