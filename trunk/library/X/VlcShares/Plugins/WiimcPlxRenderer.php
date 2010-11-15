@@ -23,12 +23,16 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 
 		$request = $controller->getRequest();
 		
+		$enhanced = $this->helpers()->devices()->isWiimcEnhanced() && $this->config('support.enhanced', true);
+		
 		$plx = new X_Plx(
 			X_Env::_('p_wiimcplxrenderer_plxtitle_'.$request->getControllerName().'_'.$request->getActionName()),
 			X_Env::_('p_wiimcplxrenderer_plxdescription_'.$request->getControllerName().'_'.$request->getActionName())
 		);
 		
-		$enhanced = $this->helpers()->devices()->isWiimcEnhanced() && $this->config('support.enhanced', true);
+		if ($enhanced && $request->getControllerName() == 'index' && $request->getActionName() == 'collections' ) {
+			$plx->setWiimcplus_assert_mainmenu('true');
+		}
 		
 		foreach ( $items as $i => $item ) {
 			$plxItemName = (@$item['highlight'] ? '-) ' : '' ). $item['label'];
