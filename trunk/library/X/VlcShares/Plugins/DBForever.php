@@ -251,6 +251,10 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 			foreach ($attrs as $attr) {
 				list($type, $value) = explode('=', $attr);
 				if ( $type == 'file' ) {
+					// fix for relative links inside bleach category
+					if ( !X_Env::startWith($value, 'http://') ) {
+						$value = "http://www.dbforever.net$value";
+					}
 					$this->cachedLocation[$location] = $value;
 					return $value;
 				}
