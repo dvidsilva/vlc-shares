@@ -38,7 +38,7 @@ class X_Page_Item_Statistic extends X_Page_Item_Link {
 	 * @return X_Page_Item_Statistic
 	 */
 	public function setTitle($title) {
-		$this->title = title;
+		$this->title = $title;
 		return $this;
 	}
 	
