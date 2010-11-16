@@ -16,7 +16,7 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 		->setPriority('getIndexManageLinks');
 	}
 	
-	public function gen_afterPageBuild(&$items, Zend_Controller_Action $controller) {
+	public function gen_afterPageBuild(X_Page_ItemList_PItem &$list, Zend_Controller_Action $controller) {
 		if ( !((bool) $this->config('forced.enabled', false)) && !$this->helpers()->devices()->isWiimc() ) return;
 		
 		X_Debug::i("Plugin triggered");
@@ -30,28 +30,61 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 			X_Env::_('p_wiimcplxrenderer_plxdescription_'.$request->getControllerName().'_'.$request->getActionName())
 		);
 		
-		if ($enhanced && $request->getControllerName() == 'index' && $request->getActionName() == 'collections' ) {
-			$plx->setWiimcplus_assert_mainmenu('true');
+		// wiimc plus custom tags
+		if ( $enhanced ) {
+			$plx->setWiimcplus_generator_name('vlc-shares'); // uses the __call api
+			$plx->setWiimcplus_generator_version(X_VlcShares::VERSION_CLEAN); // uses the __call api
+			if ( $request->getControllerName() == 'index' && $request->getActionName() == 'collections' ) {
+				$plx->setWiimcplus_assert_mainmenu('true'); // uses the __call api
+			}
 		}
 		
-		foreach ( $items as $i => $item ) {
-			$plxItemName = (@$item['highlight'] ? '-) ' : '' ). $item['label'];
-			$plxItemType = (array_key_exists('type', $item) ? $item['type'] : X_Plx_Item::TYPE_PLAYLIST );
-			$plxItem = new X_Plx_Item($plxItemName, $item['link'], $plxItemType);
+		foreach ( $list->getItems() as $i => $item ) {
+			/* @var $item X_Page_Item_PItem */
+			$plxItemName = ($item->isHighlight() ? '-) ' : '' ). $item->getLabel();
+
+			$plxItemWiimcplusIcon = null;
 			
-			// this adds support for enchanced version of wiimc
-			if ( $enhanced && array_key_exists( 'itemType', $item) && $item['itemType'] == 'folder' ) {
-				$plxItem->setType('folder');
+			switch ( $item->getType() ) {
+				case X_Page_Item_PItem::TYPE_CONTAINER:
+						// check for type=folder if wiimcplus
+						$plxItemType = $enhanced ? 'folder' : X_Plx_Item::TYPE_PLAYLIST;
+						$plxItemWiimcplusIcon = 'folder';
+						break;
+				case X_Page_Item_PItem::TYPE_ELEMENT:
+						$plxItemType = X_Plx_Item::TYPE_PLAYLIST;
+						if ( $request->getControllerName() == 'browse' && $request->getActionName() == 'share' ) {
+							$plxItemWiimcplusIcon = 'file';
+						}
+						break;
+				case X_Page_Item_PItem::TYPE_REQUEST:
+						$plxItemType = X_Plx_Item::TYPE_SEARCH;
+						break;
+				case X_Page_Item_PItem::TYPE_PLAYABLE:
+						$plxItemType = X_Plx_Item::TYPE_VIDEO;
+						break;
+				default: $plxItemType = $item->getType();
 			}
 			
-			// this adds thumb support for wiimc
-			if ( array_key_exists('thumb', $item) ) {
-				// i have to be sure that image address is a complete url, no relative url is allowed for wiimc
-				if ( X_Env::startWith($item['thumb'], 'http') || X_Env::startWith($item['thumb'], 'https') ) {
-					$plxItem->setThumb($item['thumb']);
+			/* @var $urlHelper Zend_Controller_Action_Helper_Url */
+			$urlHelper = $controller->getHelper('url');
+						
+			$plxItemUrl = $item->isUrl() ? $item->getLink() : X_Env::completeUrl($urlHelper->url($item->getLink(), $item->getRoute(), $item->isReset()));
+			
+			$plxItem = new X_Plx_Item($plxItemName, $plxItemUrl, $plxItemType);
+			
+			if ( $item->getThumbnail() != null ) {
+				if ( X_Env::startWith($item->getThumbnail(), 'http') || X_Env::startWith($item->getThumbnail(), 'https') ) {
+					$plxItem->setThumb($item->getThumbnail());
 				} else {
-					$plxItem->setThumb(X_Env::completeUrl($item['thumb']));
+					$plxItem->setThumb(X_Env::completeUrl($item->getThumbnail()));
 				}
+			}
+			
+			if ( $enhanced ) {
+				if ( $plxItemWiimcplusIcon !== null ) {
+					$plxItem->setWiimcplus_icon($plxItemWiimcplusIcon); 
+				}			
 			}
 			
 			$plx->addItem($plxItem);

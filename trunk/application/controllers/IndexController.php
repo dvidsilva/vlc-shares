@@ -18,18 +18,19 @@ class IndexController extends X_Controller_Action
 
     public function collectionsAction() {
     	
-    	$pageItems = array();
+    	$pageItems = new X_Page_ItemList_PItem();
     	// links on top
-    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->preGetCollectionsItems($this));
+    	$pageItems->merge(X_VlcShares_Plugins::broker()->preGetCollectionsItems($this));
     	// normal links
-    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->getCollectionsItems($this));
+    	$pageItems->merge(X_VlcShares_Plugins::broker()->getCollectionsItems($this));
     	// bottom links
-		$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->postGetCollectionsItems($this));
+		$pageItems->merge(X_VlcShares_Plugins::broker()->postGetCollectionsItems($this));
 		
 		// filter out items (parental-control / hidden file / system dir)
-		foreach ($pageItems as $key => $item) {
+		foreach ($pageItems->getItems() as $key => $item) {
 			if ( in_array(false, X_VlcShares_Plugins::broker()->filterCollectionsItems($item, $this)) ) {
-				unset($pageItems[$key]);
+				//unset($pageItems[$key]);
+				$pageItems->remove($item);
 			}
 		}
 		

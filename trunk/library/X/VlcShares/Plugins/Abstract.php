@@ -156,10 +156,10 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * if android: --> output should be html mobile format (low res screen)
 	 * if pc: --> full size output
 	 * 
-	 * @param array $items items in the page
+	 * @param X_Page_ItemList_PItem $items items in the page
 	 * @param Zend_Controller_Action $controller the controller who handle the request
 	 */
-	public function gen_afterPageBuild($items, Zend_Controller_Action $controller) {}
+	public function gen_afterPageBuild(X_Page_ItemList_PItem $items, Zend_Controller_Action $controller) {}
 
 	/**
 	 * Triggered at the top of X_Controller_Action::init(),

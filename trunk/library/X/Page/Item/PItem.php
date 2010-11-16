@@ -70,7 +70,7 @@ class X_Page_Item_PItem extends X_Page_Item_Link {
 	 * Get the thumbnail URL
 	 * @return string
 	 */
-	public function getThumbnail($thumbnail) {
+	public function getThumbnail() {
 		return $this->thumbnail;
 	}
 	
