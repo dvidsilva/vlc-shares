@@ -45,8 +45,10 @@ class X_Plx {
 			return $this;
 		} elseif ( substr($name,0,3) == 'get' && count($argv) === 0 ) {
 			$lowered = strtolower(substr($name, 3));
-			if ( property_exists($this, $lowered) ) {
+			if ( property_exists($this, $lowered) && $lowered != 'customtags' ) {
 				return $this->$lowered;
+			} else {
+				return @$this->customTags[$lowered];
 			}
 		}
 	}

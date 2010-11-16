@@ -14,6 +14,7 @@ class X_Plx_Item {
 	private $type = '';
 	private $player = '';
 	private $thumb = '';
+	private $customTags = array();
 	
 	/**
 	 * Create a playlist entry
@@ -39,14 +40,18 @@ class X_Plx_Item {
 	public function __call($name, $argv) {
 		if ( substr($name,0,3) == 'set' && count($argv) === 1 ) {
 			$lowered = strtolower(substr($name, 3));
-			if ( property_exists($this, $lowered) ) {
+			if ( property_exists($this, $lowered) && $lowered != 'customtags' ) {
 				$this->$lowered = $argv[0];
+			} else {
+				$this->customTags[$lowered] = $argv[0];
 			}
 			return $this;
 		} elseif ( substr($name,0,3) == 'get' && count($argv) === 0 ) {
 			$lowered = strtolower(substr($name, 3));
-			if ( property_exists($this, $lowered) ) {
+			if ( property_exists($this, $lowered) && $lowered != 'customtags' ) {
 				return $this->$lowered;
+			} else {
+				return @$this->customTags[$lowered];
 			}
 		}
 	}
@@ -61,6 +66,11 @@ class X_Plx_Item {
 		}
 		if ( $this->getThumb() != '' ) {
 			$output .= "thumb=".$this->getThumb()."\n";
+		}
+		if ( count($this->customTags) > 0 ) {
+			foreach ($this->customTags as $tag => $value) {
+				$output .= "$tag=$value"."\n";
+			}
 		}
 		$output .= "\n";
 		return $output;
