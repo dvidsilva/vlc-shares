@@ -172,27 +172,35 @@ $(function(){
 				</div>
 			<?php endforeach; ?>
 		</div>
-		<?php if ( count($this->statistics ) ) :?>
+		<?php if ( $v_statistics != null && count($v_statistics->getItems() ) ) :?>
 			<div class="span-8 last" id="manage-statistics">
 				<h3><?php echo X_Env::_('manage_statistics'); ?></h3>
-				<?php foreach ($this->statistics as $i => $statistic) : ?>
+				<?php foreach ($v_statistics->getItems() as $i => $statistic) : ?>
+					<?php /* @var $statistic X_Page_Item_Statistic */ ?>
 					<div class="span-8 last statistic">
 						<div class="span-7 last box title clickable">
 							<div class="boxitem-stackicon ui-state-default" title="Mostra">
 								<span class="ui-icon ui-icon-triangle-1-s">Mostra</span>
 							</div>
-							<h4><?php echo @$statistic['title'] ?></h4>
+							<h4><?php echo $statistic->getTitle() ?></h4>
 						</div>
 						<div class="span-7 box last folded">
-							<?php if (is_array(@$statistic['provider']) ) :?>
+							<?php if ( $statistic->getLink() != null ) :?>
+								<?php 
+								$provider = $statistic->getLink();
+								$params = clone $provider;
+								unset($params['action']);
+								unset($params['controller']);
+								unset($params['module']);
+								?>
 								<?php echo $this->action(
-										@$statistic['provider']['action'],
-										@$statistic['provider']['controller'],
-										@$statistic['provider']['module'],
-										@$statistic['provider']['params']); ?>
+										@$provider['action'],
+										@$provider['controller'],
+										@$provider['module'],
+										@$params); ?>
 							<?php else:?>
 								<ul>
-									<?php foreach ( @$statistic['stats'] as $i => $stat) :?>
+									<?php foreach ( @$statistic->getStats() as $i => $stat) :?>
 										<li><?php echo $stat; ?></li>
 									<?php endforeach; ?>
 								</ul>

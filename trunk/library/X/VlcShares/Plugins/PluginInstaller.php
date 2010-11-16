@@ -51,6 +51,7 @@ class X_VlcShares_Plugins_PluginInstaller extends X_VlcShares_Plugins_Abstract {
 				
 				$this->_checkWritable(APPLICATION_PATH . '/../'. $dir);
 			}
+			$test->setReason('OK');
 		} catch (Exception $e) {
 			$test->setType(X_Page_Item_Message::TYPE_FATAL);
 			$test->setReason($e->getMessage());

@@ -87,7 +87,8 @@ class X_Page_ItemList_News extends X_Page_ItemList {
 	 * @param X_Page_ItemList_News $list
 	 * @return X_Page_ItemList_News
 	 */
-	public function merge(X_Page_ItemList_News $list) {
+	public function merge(X_Page_ItemList_News $list = null) {
+		if ( $list == null ) return $this;
 		foreach ($list->getItems() as $item) {
 			$this->append($item);
 		}
