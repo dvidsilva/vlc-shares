@@ -212,17 +212,9 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 	}
 	
 	/**
-	 * Add the link Add megavideo link to actionLinks
+	 * Add the link Add new shared folder link to actionLinks
 	 * @param Zend_Controller_Action $this
-	 * @return array The format of the array should be:
-	 * 		array(
-	 * 			array(
-	 * 				'label' => ITEM LABEL,
-	 * 				'link'	=> HREF,
-	 * 				'highlight'	=> true|false,
-	 * 				'icon'	=> ICON_HREF
-	 * 			), ...
-	 * 		)
+	 * @return X_Page_ItemList_ActionLink
 	 */
 	public function getIndexActionLinks(Zend_Controller_Action $controller) {
 		
@@ -237,83 +229,40 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 				), 'default', true);
 		return new X_Page_ItemList_ActionLink(array($link));
 		
-		/*
-		return array(
-			array(
-				'label'		=>	X_Env::_('p_filesystem_actionadddirectory'),
-				'link'		=>	$urlHelper->url(array(
-					'controller'	=>	'filesystem',
-					'action'		=>	'index',
-					'a'				=>	'add'
-				)),
-				'icon'		=>	'/images/plus.png'
-			)
-		);
-		*/
 	}
 	
 	/**
-	 * Add the link for -manage-megavideo-
+	 * Add the link for -manage-sharef-folders-
 	 * @param Zend_Controller_Action $this
-	 * @return array The format of the array should be:
-	 * 		array(
-	 * 			array(
-	 * 				'title' => ITEM TITLE,
-	 * 				'label' => ITEM LABEL,
-	 * 				'link'	=> HREF,
-	 * 				'highlight'	=> true|false,
-	 * 				'icon'	=> ICON_HREF,
-	 * 				'subinfos' => array(INFO, INFO, INFO)
-	 * 			), ...
-	 * 		)
+	 * @return X_Page_ItemList_ManageLink
 	 */
 	public function getIndexManageLinks(Zend_Controller_Action $controller) {
 		
-		
-
-		$urlHelper = $controller->getHelper('url');
-		
-		return array(
-			array(
-				'title'		=>	X_Env::_('p_filesystem_managetitle'),
-				'label'		=>	X_Env::_('p_filesystem_mlink'),
-				'link'		=>	$urlHelper->url(array(
+		$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_filesystem_mlink'));
+		$link->setTitle(X_Env::_('p_filesystem_managetitle'))
+			->setIcon('/images/filesystem/logo.png')
+			->setLink(array(
 					'controller'	=>	'filesystem',
-					'action'		=>	'index'
-				)),
-				'icon'		=>	'/images/filesystem/logo.png',
-				'subinfos'	=> array()
-			),
-		);
+					'action'		=>	'index',
+			), 'default', true);
+		return new X_Page_ItemList_ManageLink(array($link));
 	
 	}
 	
 	/**
-	 * Retrieve statistic from plugins
+	 * Show the number of shared folders in the dashboard
 	 * @param Zend_Controller_Action $this
-	 * @return array The format of the array should be:
-	 * 		array(
-	 * 			array(
-	 * 				'title' => ITEM TITLE,
-	 * 				'label' => ITEM LABEL,
-	 * 				'stats' => array(INFO, INFO, INFO),
-	 * 				'provider' => array('controller', 'index', array()) // if provider is setted, stats key is ignored 
-	 * 			), ...
-	 * 		)
+	 * @return X_Page_ItemList_Statistic
 	 */
 	public function getIndexStatistics(Zend_Controller_Action $controller) {
 		
 		$collections = count(Application_Model_FilesystemSharesMapper::i()->fetchAll()); // FIXME create count functions
 		
-		return array(
-			array(
-				'title'	=> X_Env::_('p_filesystem_statstitle'),
-				'label'	=> X_Env::_('p_filesystem_statstitle'),
-				'stats'	=>	array(
-					X_Env::_('p_filesystem_statcollections').": $collections",
-				)
-			)
-		);
+		$stat = new X_Page_Item_Statistic($this->getId(), X_Env::_('p_filesystem_statstitle'));
+		$stat->setTitle(X_Env::_('p_filesystem_statstitle'))
+			->appendStat(X_Env::_('p_filesystem_statcollections').": $collections");
+
+		return new X_Page_ItemList_Statistic(array($stat));
 		
 	}
 	
