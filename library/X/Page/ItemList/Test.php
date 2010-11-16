@@ -87,7 +87,8 @@ class X_Page_ItemList_Test extends X_Page_ItemList_Message {
 	 * @param X_Page_ItemList_Test $list
 	 * @return X_Page_ItemList_Test
 	 */
-	public function merge(X_Page_ItemList_Test $list) {
+	public function merge(X_Page_ItemList_Test $list = null) {
+		if ( $list == null ) return $this;
 		foreach ($list->getItems() as $item) {
 			$this->append($item);
 		}

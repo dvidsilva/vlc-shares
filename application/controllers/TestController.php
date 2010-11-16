@@ -6,6 +6,8 @@ require_once 'Zend/Config.php';
 require_once 'Zend/Translate.php';
 require_once 'X/Env.php';
 require_once 'X/VlcShares.php';
+require_once 'X/Page/Item/Test.php';
+require_once 'X/Page/ItemList/Test.php';
 
 
 class TestController extends X_Controller_Action
@@ -17,11 +19,11 @@ class TestController extends X_Controller_Action
     	$tests = $this->doSystemTests();
 
     	if ( $this->options ) {
-	    	$tests = array_merge($tests, X_VlcShares_Plugins::broker()->preGetTestItems($this->options, $this));
+	    	$tests->merge(X_VlcShares_Plugins::broker()->preGetTestItems($this->options, $this));
 	    	// normal links
-	    	$tests = array_merge($tests, X_VlcShares_Plugins::broker()->getTestItems($this->options, $this));
+	    	$tests->merge(X_VlcShares_Plugins::broker()->getTestItems($this->options, $this));
 	    	// bottom links
-			$tests = array_merge($tests, X_VlcShares_Plugins::broker()->postGetTestItems($this->options, $this));
+			$tests->merge(X_VlcShares_Plugins::broker()->postGetTestItems($this->options, $this));
     		
 			$debugPath = sys_get_temp_dir().'/vlcShares.debug.log';
 			if ( $this->options->general->debug->path != null && trim($this->options->general->debug->path) != '' ) {
@@ -33,11 +35,14 @@ class TestController extends X_Controller_Action
     	
     }
 
+    /**
+	 * @return X_Page_ItemList_Test
+     */
     public function doSystemTests() {
     	
     	$tests = array();
     	
-    	$tests[] = $this->_check('VLCShares version', null, X_VlcShares::VERSION);
+    	$tests[] = $this->_check('VLCShares version', true, X_VlcShares::VERSION);
     	$tests[] = $this->_check('VLC path is valid ('.$this->options->vlc->path.')', $this->_vlcPathCheck($this->options->vlc->path));
     	
     	$tests[] = $this->_check('Language file is valid ('.$this->options->general->languageFile.')', $this->_languageCheck($this->options->general->languageFile));
@@ -52,13 +57,29 @@ class TestController extends X_Controller_Action
     		$tests[] = $this->_check('FFMpeg path is valid ('.$this->options->helpers->ffmpeg->path.')', $this->_ffmpegCheck($this->options->helpers->ffmpeg->path));
     	}
     	
+    	$tests = new X_Page_ItemList_Test($tests);
+    	
     	return $tests;
     	
     }
     
     
     private function _check($name, $test, $success = 'Success', $failure = 'Failure') {
-    	return array($name, $test, ( ($test === true || $test === null) ? $success : $failure));
+    	//return array($name, $test, ( ($test === true || $test === null) ? $success : $failure));
+    	$t = new X_Page_Item_Test($name, $name);
+    	if ( is_bool($test) ) {
+	    	if ( $test ) {
+	    		$t->setType(X_Page_Item_Test::TYPE_INFO);
+	    		$t->setReason($success);
+	    	} else {
+	    		$t->setType(X_Page_Item_Test::TYPE_ERROR);
+	    		$t->setReason($failure);
+	    	}
+    	} else {
+    		$t->setType($test);
+    		$t->setReason($success);
+    	}
+    	return $t;
     }
     
 	private function _vlcPathCheck($vlcPath) {

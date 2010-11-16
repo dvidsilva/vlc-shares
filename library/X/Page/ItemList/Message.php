@@ -87,7 +87,8 @@ class X_Page_ItemList_Message extends X_Page_ItemList {
 	 * @param X_Page_ItemList_Message $list
 	 * @return X_Page_ItemList_Message
 	 */
-	public function merge(X_Page_ItemList_Message $list) {
+	public function merge(X_Page_ItemList_Message $list = null) {
+		if ( $list == null ) return $this;
 		foreach ($list->getItems() as $item) {
 			$this->append($item);
 		}

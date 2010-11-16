@@ -13,15 +13,14 @@
 <h2>Results:</h2>
 <div class="span-24 last" id="manage-messages" style="margin-bottom: 2em;">
 	<ul>
-		<?php foreach ($this->tests as $i => $test ): ?>
-			<?php
-				$message = array('text' => $test[0].': '.$test[2]);
-				if ( $test[1] === false ) $message['type'] = 'error';
-				else $message['type'] = 'info';
-			?>
-			<li class="<?php echo @$message['type']?>">
-				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
-				<?php echo $message['text']?>
+		<?php foreach ($this->tests->getItems() as $i => $test ): ?>
+			<?php /* @var $test X_Page_Item_Test */ ?>
+			<li class="<?php echo $test->getType(); ?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$test->getType()}.png");?>" alt="<?php echo $test->getType(); ?>" />
+				<?php echo $test->getLabel()?>
+				<?php if ( $test->getReason() != null ): ?>
+					-> <?php echo $test->getReason(); ?> 
+				<?php endif; ?>
 			</li>
 		<?php endforeach; ?>
 	</ul>

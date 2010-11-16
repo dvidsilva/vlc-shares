@@ -87,7 +87,8 @@ class X_Page_ItemList_ManageLink extends X_Page_ItemList {
 	 * @param X_Page_ItemList_ManageLink $list
 	 * @return X_Page_ItemList_ManageLink
 	 */
-	public function merge(X_Page_ItemList_ManageLink $list) {
+	public function merge(X_Page_ItemList_ManageLink $list = null) {
+		if ( $list == null ) return $this;
 		foreach ($list->getItems() as $item) {
 			$this->append($item);
 		}

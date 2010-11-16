@@ -87,7 +87,8 @@ class X_Page_ItemList_PItem extends X_Page_ItemList {
 	 * @param X_Page_ItemList_PItem $list
 	 * @return X_Page_ItemList_PItem
 	 */
-	public function merge(X_Page_ItemList_PItem $list) {
+	public function merge(X_Page_ItemList_PItem $list = null) {
+		if ( $list == null ) return $this;
 		foreach ($list->getItems() as $item) {
 			$this->append($item);
 		}
