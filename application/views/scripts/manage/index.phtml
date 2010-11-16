@@ -1,4 +1,22 @@
 <!-- application/views/scripts/manage/index.phtml -->
+<?php 
+
+/* @var $v_messages X_Page_ItemList_Message */
+$v_messages = $this->messages;
+
+/* @var $v_news X_Page_ItemList_News */
+$v_news = $this->news;
+
+/* @var $v_actionLinks X_Page_ItemList_ActionLink */
+$v_actionLinks = $this->actionLinks;
+
+/* @var $v_manageLinks X_Page_ItemList_ManageLink */
+$v_manageLinks = $this->manageLinks;
+
+/* @var $v_statistics X_Page_ItemList_Statistics */
+$v_statistics = $this->statistics;
+
+?>
 <?php $this->headScript()->appendFile($this->baseUrl("/js/manage/index.js")); ?>
 <?php $this->headScript()->appendFile($this->baseUrl("/js/jquery.loopedslider.js")); ?>
 <?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::APPEND); ?>
@@ -24,30 +42,31 @@ $(function(){
 
 <?php $this->headTitle()->prepend('Home'); ?>
 
-<?php if ( count($this->messages) ) :?>
+<?php if ( count($v_messages->getItems()) ) :?>
 <div class="span-24 last" id="manage-messages">
 	<ul>
-		<?php foreach ($this->messages as $i => $message ): ?>
-			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
-			<li class="<?php echo @$message['type']?>">
-				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
-				<?php echo $message['text']?>
+		<?php foreach ($v_messages->getItems() as $i => $message ): ?>
+			<?php /* @var $message X_Page_Item_Message */ ?>
+			<li class="<?php echo $message->getType(); ?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message->getType()}.png");?>" alt="<?php echo $message->getType(); ?>" />
+				<?php echo $message->getLabel(); ?>
 			</li>
 		<?php endforeach; ?>
 	</ul>
 </div>
 <?php endif; ?>
 
-<?php if ( count($this->news) ) :?>
+<?php if ( $v_news != null && count($v_news->getItems()) ) :?>
 <div class="span-24 last" id="manage-news">
 	<div class="slider-container">
 		<div class="slides">
-			<?php foreach ($this->news as $i => $news) : ?>
-				<div class="manage-news-article" <?php echo ( @$news['tab'] ? "title=\"{$news['tab']}\"" : '' ); ?>>
-					<?php if ( @$news['title'] ) : ?>
-						<h3><?php echo @$news['title']?></h3>
+			<?php foreach ($v_news->getItems() as $i => $news) : ?>
+				<?php /* @var $news X_Page_Item_News */ ?>
+				<div class="manage-news-article" <?php echo ( $news->getTab() != null ? "title=\"{$news->getTab()}\"" : '' ); ?>>
+					<?php if ( $news->getLabel() != '' ) : ?>
+						<h3><?php echo $news->getLabel(); ?></h3>
 					<?php endif; ?>
-					<?php echo @$news['text']; ?>
+					<?php echo $news->getContent(); ?>
 				</div>
 			<?php endforeach; ?>
 		</div>
@@ -83,20 +102,29 @@ $(function(){
 				</div>
 			<?php endforeach; ?>
 		</div>
-		<?php if ( count($this->actionLinks) ) :?>
+		<?php if ( $v_actionLinks != null && count($v_actionLinks->getItems()) ) :?>
 			<div class="span-7 box last">
 				<h4><?php echo X_Env::_('manage_goto_actionstitle'); ?></h4>
 				<div class="scrollable">
 					<ul class="hoverable">
-						<?php foreach ( $this->actionLinks as $i => $link) :?>
+						<?php foreach ( $v_actionLinks->getItems() as $i => $link) :?>
+							<?php /* @var $link X_Page_Item_ActionLink */ ?>
+							<?php
+								$_link = '';
+								if ( $link->isUrl() ) {
+									$_link = $link->getLink();
+								} else {
+									$_link = $this->url($link->getLink(), $link->getRoute(), $link->isReset());
+								}
+							?>
 							<li>
-								<a href="<?php echo $link['link']?>">
-									<?php if ( @$link['icon'] ) : ?>
-										<img class="icon" src="<?php echo $this->baseUrl($link['icon']); ?>" />
+								<a href="<?php echo $_link; ?>">
+									<?php if ( $link->getIcon() != null ) : ?>
+										<img class="icon" src="<?php echo $this->baseUrl($link->getIcon()); ?>" />
 									<?php else: ?>
 										<img class="icon" src="<?php echo $this->baseUrl('/images/right_arrow.png'); ?>" />								
 									<?php endif; ?>
-									<?php echo $link['label']?>
+									<?php echo $link->getLabel(); ?>
 								</a>
 							</li>
 						<?php endforeach; ?>
@@ -114,27 +142,29 @@ $(function(){
 	</div>
 	<div class="span-23 boxes box last">
 		<div class="span-15">
-			<?php foreach ($this->manageLinks as $i => $link ): ?>
+			<?php foreach ($v_manageLinks->getItems() as $i => $link ): ?>
+				<?php /* @var $link X_Page_Item_ManageLink */ ?>
 				<div class="span-4 box clickable">
-					<h4><?php echo $link['title']; ?></h4>
+					<h4><?php echo $link->getTitle(); ?></h4>
 					<div class="span-1">
-						<?php if ( @$link['icon'] ):?>
-							<img alt="<?php echo $link['label']; ?>" class="thumb" src="<?php echo $this->baseUrl($link['icon']);?>" />
+						<?php if ( $link->getIcon() != null ):?>
+							<img alt="<?php echo $link->getLabel(); ?>" class="thumb" src="<?php echo $this->baseUrl($link->getIcon());?>" />
 						<?php else:?>
-							<img alt="<?php echo $link['label']; ?>" class="thumb" src="<?php echo $this->baseUrl('/images/manage/plugin.png');?>" />
+							<img alt="<?php echo $link->getLabel(); ?>" class="thumb" src="<?php echo $this->baseUrl('/images/manage/plugin.png');?>" />
 						<?php endif;?>
 					</div>
 					<div class="span-3 last mainlink">
-						<a href="<?php echo $link['link']?>">
+						<a href="<?php echo $link->isUrl() ? $link->getLink() : $this->url($link->getLink(), $link->getRoute(), $link->isReset()); ?>">
 							<img class="arrow" src="<?php echo $this->baseUrl('/images/right_arrow.png'); ?>" />
-							<?php echo $link['label']?>
+							<?php echo $link->getLabel() ?>
 						</a>
 					</div>
-					<?php if ( @count($link['subinfos']) ):?>
+					<?php if ( count($link->getSubinfos()->getItems()) ):?>
 						<ul>
-							<?php foreach ( $link['subinfos'] as $j => $info) :?>
+							<?php foreach ( $link->getSubinfos()->getItems() as $j => $info) :?>
+								<?php /* @var $info X_Page_Item_ActionLink */ ?>
 								<li>
-									<?php echo $info; ?>
+									<a href="<?php echo $info->isUrl() ? $info->getLink() : $this->url($info->getLink(), $info->getRoute(), $info->isReset()); ?>"><?php echo $info->getLabel(); ?></a>
 								</li>
 							<?php endforeach; ?>
 						</ul>

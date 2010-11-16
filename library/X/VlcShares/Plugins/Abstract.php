@@ -5,6 +5,23 @@ require_once 'Zend/Config.php';
 require_once 'X/VlcShares/Plugins/Helper/Interface.php';
 require_once 'X/VlcShares/Plugins/Helper/Abstract.php';
 
+// required for return values of trigger
+require_once 'X/Page/Item.php';
+require_once 'X/Page/Item/Link.php';
+require_once 'X/Page/Item/PItem.php';
+require_once 'X/Page/Item/ActionLink.php';
+require_once 'X/Page/Item/ManageLink.php';
+require_once 'X/Page/Item/Statistic.php';
+require_once 'X/Page/Item/Message.php';
+require_once 'X/Page/Item/News.php';
+
+require_once 'X/Page/ItemList.php';
+require_once 'X/Page/ItemList/PItem.php';
+require_once 'X/Page/ItemList/ActionLink.php';
+require_once 'X/Page/ItemList/ManageLink.php';
+require_once 'X/Page/ItemList/Statistic.php';
+require_once 'X/Page/ItemList/Message.php';
+require_once 'X/Page/ItemList/News.php';
 
 abstract class X_VlcShares_Plugins_Abstract {
 
@@ -176,14 +193,14 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * This hook can also used for redirect application flow
 	 * 
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array
+	 * @return X_Page_ItemList_PItem
 	 */
 	public function preGetCollectionsItems(Zend_Controller_Action $controller) {}
 	
 	/**
 	 * Return items that should be added in collection list
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array 
+	 * @return X_Page_ItemList_PItem 
 	 */
 	public function getCollectionsItems(Zend_Controller_Action $controller) {}
 	
@@ -192,7 +209,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * This hook can also used for redirect application flow
 	 * 
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array
+	 * @return X_Page_ItemList_PItem
 	 */
 	public function postGetCollectionsItems(Zend_Controller_Action $controller) {}
 	
@@ -204,11 +221,11 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * 
 	 * Plugins who check per-item acl or blacklist should hook here
 	 * 
-	 * @param mixed $item
+	 * @param X_Page_Item_PItem $item
 	 * @param Zend_Controller_Action $controller
 	 * @return boolean true if item is ok, false if item should be discarded
 	 */
-	public function filterCollectionsItems($item, Zend_Controller_Action $controller) {}
+	public function filterCollectionsItems(X_Page_Item_PItem $item, Zend_Controller_Action $controller) {}
 
 	
 	//=== END OF Index:collections ===//
@@ -222,7 +239,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to share
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array
+	 * @return X_Page_ItemList_PItem
 	 */
 	public function preGetShareItems($provider, $location, Zend_Controller_Action $controller) {}
 	
@@ -231,7 +248,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to share
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array 
+	 * @return X_Page_ItemList_PItem 
 	 */
 	public function getShareItems($provider, $location, Zend_Controller_Action $controller) {}
 	
@@ -242,7 +259,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to share
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array
+	 * @return X_Page_ItemList_PItem
 	 */
 	public function postGetShareItems($provider, $location, Zend_Controller_Action $controller) {}
 	
@@ -254,17 +271,17 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * 
 	 * Plugins who check per-item acl or blacklist should hook here
 	 * 
-	 * @param mixed $item
+	 * @param X_Page_Item_PItem $item
 	 * @param string $provider
 	 * @param Zend_Controller_Action $controller
 	 * @return boolean true if item is ok, false if item should be discarded
 	 */
-	public function filterShareItems($item, $provider, Zend_Controller_Action $controller) {}
+	public function filterShareItems(X_Page_Item_PItem $item, $provider, Zend_Controller_Action $controller) {}
 	
 	/**
 	 * Allow plugin to shuffle/order items
 	 * Plugin should use $provider to get location real location
-	 * @param array &$items list of items
+	 * @param array &$items array of X_Page_Item_PItem
 	 * @param string $provider id of the plugin the handle the request
 	 * @param Zend_Controller_Action $controller
 	 */
@@ -282,7 +299,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to stream
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array
+	 * @return X_Page_ItemList_PItem
 	 */
 	public function preGetModeItems($provider, $location, Zend_Controller_Action $controller) {}
 	
@@ -291,7 +308,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to stream
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array 
+	 * @return X_Page_ItemList_PItem 
 	 */
 	public function getModeItems($provider, $location, Zend_Controller_Action $controller) {}
 	
@@ -302,7 +319,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to stream
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array
+	 * @return X_Page_ItemList_PItem
 	 */
 	public function postGetModeItems($provider, $location, Zend_Controller_Action $controller) {}
 	
@@ -314,17 +331,17 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * 
 	 * Plugins who check per-item acl or blacklist should hook here
 	 * 
-	 * @param mixed $item
+	 * @param X_Page_Item_PItem $item
 	 * @param string $provider
 	 * @param Zend_Controller_Action $controller
 	 * @return boolean true if item is ok, false if item should be discarded
 	 */
-	public function filterModeItems($item, $provider, Zend_Controller_Action $controller) {}
+	public function filterModeItems(X_Page_Item_PItem $item, $provider, Zend_Controller_Action $controller) {}
 	
 	/**
 	 * Allow plugin to shuffle/order items
 	 * Plugin should use $provider to get location real location
-	 * @param array &$items list of items
+	 * @param array &$items array of X_Page_Item_PItem
 	 * @param string $provider id of the plugin the handle the request
 	 * @param Zend_Controller_Action $controller
 	 */
@@ -343,7 +360,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @param string $location to stream
 	 * @param string $pid pluginId who serves preferences selection options
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array
+	 * @return X_Page_ItemList_PItem
 	 */
 	public function preGetSelectionItems($provider, $location, $pid, Zend_Controller_Action $controller) {}
 	
@@ -353,7 +370,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @param string $location to stream
 	 * @param string $pid pluginId who serves preferences selection options
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array 
+	 * @return X_Page_ItemList_PItem 
 	 */
 	public function getSelectionItems($provider, $location, $pid, Zend_Controller_Action $controller) {}
 	
@@ -365,7 +382,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @param string $location to stream
 	 * @param string $pid pluginId who serves preferences selection options
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array
+	 * @return X_Page_ItemList_PItem
 	 */
 	public function postGetSelectionItems($provider, $location, $pid, Zend_Controller_Action $controller) {}
 	
@@ -377,18 +394,18 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * 
 	 * Plugins who check per-item acl or blacklist should hook here
 	 * 
-	 * @param mixed $item
+	 * @param X_Page_Item_PItem $item
 	 * @param string $provider
 	 * @param string $pid pluginId who serves preferences selection options
 	 * @param Zend_Controller_Action $controller
 	 * @return boolean true if item is ok, false if item should be discarded
 	 */
-	public function filterSelectionItems($item, $provider, $pid, Zend_Controller_Action $controller) {}
+	public function filterSelectionItems(X_Page_Item_PItem $item, $provider, $pid, Zend_Controller_Action $controller) {}
 	
 	/**
 	 * Allow plugin to shuffle/order items
 	 * Plugin should use $provider to get location real location
-	 * @param array &$items list of items
+	 * @param array &$items array of X_Page_Item_PItem
 	 * @param string $provider id of the plugin the handle the request
 	 * @param string $pid pluginId who serves preferences selection options
 	 * @param Zend_Controller_Action $controller
@@ -407,7 +424,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to stream
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array
+	 * @return X_Page_ItemList_PItem
 	 */
 	public function preGetStreamItems($provider, $location, Zend_Controller_Action $controller) {}
 	
@@ -416,7 +433,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to stream
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array 
+	 * @return X_Page_ItemList_PItem 
 	 */
 	public function getStreamItems($provider, $location, Zend_Controller_Action $controller) {}
 	
@@ -427,7 +444,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to stream
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array
+	 * @return X_Page_ItemList_PItem
 	 */
 	public function postGetStreamItems($provider, $location, Zend_Controller_Action $controller) {}
 
@@ -492,14 +509,14 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * Return items that should be added at the beginning of the list
 	 * 
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array
+	 * @return X_Page_ItemList_PItem
 	 */
 	public function preGetControlItems(Zend_Controller_Action $controller) {}
 	
 	/**
 	 * Return items that should be added in collection list
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array 
+	 * @return X_Page_ItemList_PItem 
 	 */
 	public function getControlItems(Zend_Controller_Action $controller) {}
 	
@@ -508,7 +525,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * This hook can also used for redirect application flow
 	 * 
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array
+	 * @return X_Page_ItemList_PItem
 	 */
 	public function postGetControlItems(Zend_Controller_Action $controller) {}	
 
@@ -522,7 +539,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @param string $pid
 	 * @param string $action
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array
+	 * @return X_Page_ItemList_PItem
 	 */
 	public function preGetExecuteItems($pid, $action, Zend_Controller_Action $controller) {}
 	
@@ -531,7 +548,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @param string $pid
 	 * @param string $action
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array 
+	 * @return X_Page_ItemList_PItem 
 	 */
 	public function getExecuteItems($pid, $action, Zend_Controller_Action $controller) {}
 	
@@ -542,7 +559,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @param string $pid
 	 * @param string $action
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array
+	 * @return X_Page_ItemList_PItem
 	 */
 	public function postGetExecuteItems($pid, $action, Zend_Controller_Action $controller) {}	
 	
@@ -589,15 +606,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * This link will be inserted in a box and shown as a list
 	 * for shortcuts
 	 * @param Zend_Controller_Action $this
-	 * @return array The format of the array should be:
-	 * 		array(
-	 * 			array(
-	 * 				'label' => ITEM LABEL,
-	 * 				'link'	=> HREF,
-	 * 				'highlight'	=> true|false,
-	 * 				'icon'	=> ICON_HREF
-	 * 			), ...
-	 * 		)
+	 * @return X_Page_ItemList_ActionLink
 	 */
 	public function getIndexActionLinks(Zend_Controller_Action $controller) {}
 	
@@ -607,59 +616,28 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * for shortcuts. First link will be used for box, other links
 	 * will be added in a list below
 	 * @param Zend_Controller_Action $this
-	 * @return array The format of the array should be:
-	 * 		array(
-	 * 			array(
-	 * 				'title' => ITEM TITLE,
-	 * 				'label' => ITEM LABEL,
-	 * 				'link'	=> HREF,
-	 * 				'highlight'	=> true|false,
-	 * 				'icon'	=> ICON_HREF,
-	 * 				'subinfos' => array(INFO, INFO, INFO)
-	 * 			), ...
-	 * 		)
+	 * @return X_Page_ItemList_ManageLink
 	 */
 	public function getIndexManageLinks(Zend_Controller_Action $controller) {}
 	
 	/**
 	 * Retrieve statistic from plugins
 	 * @param Zend_Controller_Action $this
-	 * @return array The format of the array should be:
-	 * 		array(
-	 * 			array(
-	 * 				'title' => ITEM TITLE,
-	 * 				'label' => ITEM LABEL,
-	 * 				'stats' => array(INFO, INFO, INFO),
-	 * 				'provider' => array('controller', 'index', array()) // if provider is setted, stats key is ignored 
-	 * 			), ...
-	 * 		)
+	 * @return X_Page_ItemList_Statistic
 	 */
 	public function getIndexStatistics(Zend_Controller_Action $controller) {}
 	
 	/**
 	 * Retrieve messages queue from plugins
 	 * @param Zend_Controller_Action $this
-	 * @return array The format of the array should be:
-	 * 		array(
-	 * 			array(
-	 * 				'type' => info|warning|alert|fatal,
-	 * 				'text' => ITEM TEXT,
-	 * 			), ...
-	 * 		)
+	 * @return X_Page_ItemList_Message
 	 */
 	public function getIndexMessages(Zend_Controller_Action $controller) {}
 	
 	/**
 	 * Retrieve news from plugins
 	 * @param Zend_Controller_Action $this
-	 * @return array The format of the array should be:
-	 * 		array(
-	 * 			array(
- 	 * 				'tab'	=> TAB LABEL,
-	 * 				'title' => ITEM TITLE,
-	 * 				'text' => HTML STYLIZED TEXT 
-	 * 			), ...
-	 * 		)
+	 * @return X_Page_ItemList_News
 	 */
 	public function getIndexNews(Zend_Controller_Action $controller) {}
 	
@@ -667,7 +645,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * Allow plugins to insert new tests
 	 * @param Zend_Config $options
 	 * @param Zend_Controller_Action $controller
-	 * @return array format: array(array('testname', 'teststatus', 'testmessage'), array...)
+	 * @return X_Page_ItemList_Message
 	 */
 	public function preGetTestItems(Zend_Config $options,Zend_Controller_Action $controller) {}
 
@@ -675,7 +653,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * Allow plugins to insert new tests
 	 * @param Zend_Config $options
 	 * @param Zend_Controller_Action $controller
-	 * @return array format: array(array('testname', 'teststatus', 'testmessage'), array...)
+	 * @return X_Page_ItemList_Message
 	 */
 	public function getTestItems(Zend_Config $options,Zend_Controller_Action $controller) {}
 	
@@ -683,7 +661,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * Allow plugins to insert new tests
 	 * @param Zend_Config $options
 	 * @param Zend_Controller_Action $controller
-	 * @return array format: array(array('testname', 'teststatus', 'testmessage'), array...)
+	 * @return X_Page_ItemList_Message
 	 */
 	public function postGetTestItems(Zend_Config $options,Zend_Controller_Action $controller) {}
 	

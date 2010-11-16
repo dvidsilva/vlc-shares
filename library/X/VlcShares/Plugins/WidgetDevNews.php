@@ -39,6 +39,12 @@ class X_VlcShares_Plugins_WidgetDevNews extends X_VlcShares_Plugins_Abstract {
 			
 			$text = include(dirname(__FILE__).'/WidgetDevNews.commits.phtml');
 			
+			$item = new X_Page_Item_News($this->getId(), '');
+			$item->setTab(X_Env::_('p_widgetdevnews_commits_tab'))
+				->setContent($text);
+			
+			return new X_Page_ItemList_News(array($item));
+			/*
 			return array(
 				array(
 					'tab'	=> X_Env::_('p_widgetdevnews_commits_tab'),
@@ -46,6 +52,7 @@ class X_VlcShares_Plugins_WidgetDevNews extends X_VlcShares_Plugins_Abstract {
 					'text'	=> $text
 				),
 			);
+			*/
 		} catch (Exception $e) {
 			X_Debug::e('No view O_o');
 		}

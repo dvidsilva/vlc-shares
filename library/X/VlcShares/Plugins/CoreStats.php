@@ -17,17 +17,9 @@ class X_VlcShares_Plugins_CoreStats extends X_VlcShares_Plugins_Abstract {
 	}
 	
 	/**
-	 * Retrieve statistic from plugins
+	 * Retrieve core statistics
 	 * @param Zend_Controller_Action $this
-	 * @return array The format of the array should be:
-	 * 		array(
-	 * 			array(
-	 * 				'title' => ITEM TITLE,
-	 * 				'label' => ITEM LABEL,
-	 * 				'stats' => array(INFO, INFO, INFO),
-	 * 				'provider' => array('controller', 'index', array()) // if provider is setted, stats key is ignored 
-	 * 			), ...
-	 * 		)
+	 * @return X_Page_ItemList_Statistic
 	 */
 	public function getIndexStatistics(Zend_Controller_Action $controller) {
 		
@@ -50,20 +42,15 @@ class X_VlcShares_Plugins_CoreStats extends X_VlcShares_Plugins_Abstract {
 		
 		$vlc = (X_Vlc::getLastInstance()->isRunning() ? X_Env::_('p_corestats_vlcrunning_yes') : X_Env::_('p_corestats_vlcrunning_no'));
 		
-		return array(
-			array(
-				'title'	=> X_Env::_('p_corestats_statstitle'),
-				'label'	=> X_Env::_('p_corestats_statstitle'),
-				'stats'	=>	array(
-					X_Env::_('p_corestats_vlcrunning').": $vlc",
-					X_Env::_('p_corestats_pluginnumber').": $plugins",
-					X_Env::_('p_corestats_helpernumber').": $helpers",
-					X_Env::_('p_corestats_pluginslist').": $pluginsList",
-					X_Env::_('p_corestats_helperlist').": $helpersList",
-				)
-			)
-		);
-		
+		$stat = new X_Page_Item_Statistic($this->getId(), X_Env::_('p_corestats_statstitle'));
+		$stat->setTitle(X_Env::_('p_corestats_statstitle'))
+			->appendStat(X_Env::_('p_corestats_vlcrunning').": $vlc")
+			->appendStat(X_Env::_('p_corestats_pluginnumber').": $plugins")
+			->appendStat(X_Env::_('p_corestats_helpernumber').": $helpers")
+			->appendStat(X_Env::_('p_corestats_pluginslist').": $pluginsList")
+			->appendStat(X_Env::_('p_corestats_helperlist').": $helpersList");
+
+		return new X_Page_ItemList_Statistic(array($stat));
 	}
 	
 	
