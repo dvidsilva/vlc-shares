@@ -243,21 +243,15 @@ class X_VlcShares_Plugins_Controls extends X_VlcShares_Plugins_Abstract {
 	 */
 	public function getIndexManageLinks(Zend_Controller_Action $controller) {
 
-		$urlHelper = $controller->getHelper('url');
-		
-		return array(
-			array(
-				'title'		=>	X_Env::_('p_controls_managetitle'),
-				'label'		=>	X_Env::_('p_controls_mlink'),
-				'link'		=>	$urlHelper->url(array(
+		$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_controls_mlink'));
+		$link->setTitle(X_Env::_('p_controls_managetitle'))
+			->setIcon('/images/icons/controls.png')
+			->setLink(array(
 					'controller'	=>	'config',
 					'action'		=>	'index',
 					'key'			=>	'controls'
-				)),
-				'icon'		=>	'/images/icons/controls.png',
-				'subinfos'	=> array()
-			),
-		);
+			), 'default', true);
+		return new X_Page_ItemList_ManageLink(array($link));
 	
 	}
 	

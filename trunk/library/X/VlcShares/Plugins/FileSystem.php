@@ -228,6 +228,16 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 		
 		$urlHelper = $controller->getHelper('url');
 		
+		$link = new X_Page_Item_ActionLink($this->getId(), X_Env::_('p_filesystem_actionadddirectory'));
+		$link->setIcon('/images/plus.png')
+			->setLink(array(
+					'controller'	=>	'filesystem',
+					'action'		=>	'index',
+					'a'				=>	'add'
+				), 'default', true);
+		return new X_Page_ItemList_ActionLink(array($link));
+		
+		/*
 		return array(
 			array(
 				'label'		=>	X_Env::_('p_filesystem_actionadddirectory'),
@@ -239,6 +249,7 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 				'icon'		=>	'/images/plus.png'
 			)
 		);
+		*/
 	}
 	
 	/**
@@ -257,6 +268,8 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 	 * 		)
 	 */
 	public function getIndexManageLinks(Zend_Controller_Action $controller) {
+		
+		
 
 		$urlHelper = $controller->getHelper('url');
 		

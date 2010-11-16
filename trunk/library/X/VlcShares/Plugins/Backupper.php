@@ -32,8 +32,17 @@ class X_VlcShares_Plugins_Backupper extends X_VlcShares_Plugins_Abstract impleme
 	 */
 	public function getIndexActionLinks(Zend_Controller_Action $controller) {
 		
-		$urlHelper = $controller->getHelper('url');
+		$link = new X_Page_Item_ActionLink($this->getId(), X_Env::_('p_backupper_actionbackupall'));
+		$link->setIcon('/images/backupper/backupall.png')
+			->setLink(array(
+					'controller'	=>	'backupper',
+					'action'		=>	'backup',
+					'a'				=>	'all'
+			), 'default', true);
+		return new X_Page_ItemList_ActionLink(array($link));
 		
+		/*
+		$urlHelper = $controller->getHelper('url');
 		return array(
 			array(
 				'label'		=>	X_Env::_('p_backupper_actionbackupall'),
@@ -45,6 +54,7 @@ class X_VlcShares_Plugins_Backupper extends X_VlcShares_Plugins_Abstract impleme
 				'icon'		=>	'/images/backupper/backupall.png'
 			)
 		);
+		*/
 	}
 		
 	/**
@@ -64,20 +74,14 @@ class X_VlcShares_Plugins_Backupper extends X_VlcShares_Plugins_Abstract impleme
 	 */
 	public function getIndexManageLinks(Zend_Controller_Action $controller) {
 
-		$urlHelper = $controller->getHelper('url');
-		
-		return array(
-			array(
-				'title'		=>	X_Env::_('p_backupper_managetitle'),
-				'label'		=>	X_Env::_('p_backupper_mlink'),
-				'link'		=>	$urlHelper->url(array(
+		$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_backupper_mlink'));
+		$link->setTitle(X_Env::_('p_backupper_managetitle'))
+			->setIcon('/images/backupper/logo.png')
+			->setLink(array(
 					'controller'	=>	'backupper',
 					'action'		=>	'index',
-				)),
-				'icon'		=>	'/images/backupper/logo.png',
-				'subinfos'	=> array()
-			),
-		);
+			), 'default', true);
+		return new X_Page_ItemList_ManageLink(array($link));
 	}
 	
 	
@@ -236,12 +240,13 @@ class X_VlcShares_Plugins_Backupper extends X_VlcShares_Plugins_Abstract impleme
 			
 			$removeAlertLink = $urlHelper->url(array('controller'=>'backupper', 'action' => 'alert', 'status' => 'off'));
 			
-			return array(
-				array(
-					'type' => $type,
-					'text' => X_Env::_('p_backupper_warningmessage_nobackup') . " <a href=\"$removeAlertLink\">".X_Env::_('p_backupper_warningmessage_nobackupremove').'</a>' 
-				),
+			$mess = new X_Page_Item_Message(
+				$this->getId(),
+				X_Env::_('p_backupper_warningmessage_nobackup') . " <a href=\"$removeAlertLink\">".X_Env::_('p_backupper_warningmessage_nobackupremove').'</a>'
 			);
+			$mess->setType($type);
+			return new X_Page_ItemList_Message(array($mess));
+			
 		}
 	}
 	

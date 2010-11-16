@@ -44,7 +44,29 @@ class ManageController extends X_Controller_Action
     		),
     	);
 
-    	$messages = X_VlcShares_Plugins::broker()->getIndexMessages($this);
+    	/* @var $messages X_Page_ItemList_Message */
+    	$messages = new X_Page_ItemList_Message();
+    	$messages->merge(X_VlcShares_Plugins::broker()->getIndexMessages($this));
+    	$fm = $this->_helper->flashMessenger->getMessages();
+    	foreach ($fm as $i => $m) {
+    		$_m = new X_Page_Item_Message("fm-$i", '');
+    		if ( is_array($m) ) { 
+    			if ( array_key_exists('type', $m) ) {
+    				$_m->setType($m['type']);
+    			}
+    			if ( array_key_exists('text', $m) ) {
+    				$_m->setLabel($m['text']);
+    			}
+    		} else {
+    			$_m->setType(X_Page_Item_Message::TYPE_WARNING)
+    				->setLabel((string) $m);
+    		}
+    		$messages->append($_m);
+    	}
+    	
+    	
+    	// I need to add messages from the status
+    	
     	
     	$news = X_VlcShares_Plugins::broker()->getIndexNews($this);
     	
@@ -66,7 +88,7 @@ class ManageController extends X_Controller_Action
 		$this->view->manageLinks = $manageLinks;
 		$this->view->statistics = $statistics;
 		$this->view->news = $news;
-		$this->view->messages = array_merge($this->_helper->flashMessenger->getMessages(), $messages);
+		$this->view->messages = $messages;
     	
 		
 		// i need to get first class links

@@ -243,8 +243,18 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 	 */
 	public function getIndexActionLinks(Zend_Controller_Action $controller) {
 		
-		$urlHelper = $controller->getHelper('url');
 		
+
+		$link = new X_Page_Item_ActionLink($this->getId(), X_Env::_('p_megavideo_actionaddvideo'));
+		$link->setIcon('/images/plus.png')
+			->setLink(array(
+					'controller'	=>	'megavideo',
+					'action'		=>	'add',
+				), 'default', true);
+		return new X_Page_ItemList_ActionLink(array($link));
+		
+		/*
+		$urlHelper = $controller->getHelper('url');
 		return array(
 			array(
 				'label'		=>	X_Env::_('p_megavideo_actionaddvideo'),
@@ -256,6 +266,7 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 			),
 			
 		);
+		*/
 	}
 	
 	/**

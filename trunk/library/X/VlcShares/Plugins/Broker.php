@@ -1,6 +1,7 @@
 <?php
 
 require_once ('X/VlcShares/Plugins/Abstract.php');
+require_once 'X/Page/ItemList.php';
 
 class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 
@@ -85,7 +86,7 @@ class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 					$toBeCalled[$priority][$pluginId] = $pluginObj;
 				}
 			}
-			$returnedVal = array();
+			$returnedVal = null;
 			ksort($toBeCalled);
 			foreach ( $toBeCalled as $priorityStack ) {
 				foreach ( $priorityStack as $pluginId => $pluginObj ) {
@@ -93,12 +94,18 @@ class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 					$return = call_user_func_array(array($pluginObj, $funcName), $funcParams);
 					if ( $return !== null ) {
 						//$returnedVal[$pluginId] = $return;
-						if ( is_array($return) ) {
-							// TODO
-							// check for key relocation
-							$returnedVal = array_merge($returnedVal, $return);
+						if ( $return instanceof X_Page_ItemList ) {
+							if ( $returnedVal == null ) {
+								$returnedVal = $return;
+							} else {
+								$returnedVal->merge($return);
+							}
 						} else {
-							$returnedVal[] = $return;
+							if ( $returnedVal == null) {
+								$returnedVal = array($return);
+							} else {
+								$returnedVal[] = $return;
+							}
 						}
 					}
 				}
@@ -111,4 +118,3 @@ class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 	}
 }
 
-?>

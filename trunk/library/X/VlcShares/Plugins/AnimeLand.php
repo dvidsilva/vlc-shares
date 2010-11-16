@@ -273,37 +273,21 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 	}
 	
 	/**
-	 * Add the link for -manage-megavideo-
+	 * Add the link for -manage-animeland-
 	 * @param Zend_Controller_Action $this
-	 * @return array The format of the array should be:
-	 * 		array(
-	 * 			array(
-	 * 				'title' => ITEM TITLE,
-	 * 				'label' => ITEM LABEL,
-	 * 				'link'	=> HREF,
-	 * 				'highlight'	=> true|false,
-	 * 				'icon'	=> ICON_HREF,
-	 * 				'subinfos' => array(INFO, INFO, INFO)
-	 * 			), ...
-	 * 		)
+	 * @return X_Page_ItemList_ManageLink
 	 */
 	public function getIndexManageLinks(Zend_Controller_Action $controller) {
-
-		$urlHelper = $controller->getHelper('url');
 		
-		return array(
-			array(
-				'title'		=>	X_Env::_('p_animeland_managetitle'),
-				'label'		=>	X_Env::_('p_animeland_mlink'),
-				'link'		=>	$urlHelper->url(array(
+		$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_animeland_mlink'));
+		$link->setTitle(X_Env::_('p_animeland_managetitle'))
+			->setIcon('/images/animeland/logo.png')
+			->setLink(array(
 					'controller'	=>	'config',
 					'action'		=>	'index',
 					'key'			=>	'animeland'
-				)),
-				'icon'		=>	'/images/animeland/logo.png',
-				'subinfos'	=> array()
-			),
-		);
+			), 'default', true);
+		return new X_Page_ItemList_ManageLink(array($link));
 	}
 	
 	private function _loadPage($uri) {

@@ -51,12 +51,18 @@ class X_VlcShares_Plugins_WidgetDevAlert extends X_VlcShares_Plugins_Abstract {
 		}
 		
 		if ( $showError ) {
+			/*
 			return array(
 				array(
 					'type' => $type,
 					'text' => X_Env::_('p_widgetdevalert_warningmessage')
 				),
 			);
+			*/
+			// Ported to new api
+			$m = new X_Page_Item_Message($this->getId(), X_Env::_('p_widgetdevalert_warningmessage'));
+			$m->setType($type);
+			return new X_Page_ItemList_Message(array($m));
 		}
 		
 	}
