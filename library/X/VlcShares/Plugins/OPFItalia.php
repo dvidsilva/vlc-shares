@@ -247,35 +247,20 @@ class X_VlcShares_Plugins_OPFItalia extends X_VlcShares_Plugins_Abstract impleme
 	/**
 	 * Add the link for -manage-megavideo-
 	 * @param Zend_Controller_Action $this
-	 * @return array The format of the array should be:
-	 * 		array(
-	 * 			array(
-	 * 				'title' => ITEM TITLE,
-	 * 				'label' => ITEM LABEL,
-	 * 				'link'	=> HREF,
-	 * 				'highlight'	=> true|false,
-	 * 				'icon'	=> ICON_HREF,
-	 * 				'subinfos' => array(INFO, INFO, INFO)
-	 * 			), ...
-	 * 		)
+	 * @return X_Page_ItemList_ManageLink
 	 */
 	public function getIndexManageLinks(Zend_Controller_Action $controller) {
 
-		$urlHelper = $controller->getHelper('url');
-		
-		return array(
-			array(
-				'title'		=>	X_Env::_('p_opfitalia_managetitle'),
-				'label'		=>	X_Env::_('p_opfitalia_mlink'),
-				'link'		=>	$urlHelper->url(array(
+		$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_opfitalia_mlink'));
+		$link->setTitle(X_Env::_('p_opfitalia_managetitle'))
+			->setIcon('/images/opfitalia/logo.png')
+			->setLink(array(
 					'controller'	=>	'config',
 					'action'		=>	'index',
 					'key'			=>	'opfitalia'
-				)),
-				'icon'		=>	'/images/opfitalia/logo.png',
-				'subinfos'	=> array()
-			),
-		);
+			), 'default', true);
+		return new X_Page_ItemList_ManageLink(array($link));
+		
 	}
 	
 	private function _loadPage($uri) {

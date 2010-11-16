@@ -20,15 +20,7 @@ class X_VlcShares_Plugins_Backupper extends X_VlcShares_Plugins_Abstract impleme
 	/**
 	 * Add the link "backup all systems" actionLinks
 	 * @param Zend_Controller_Action $this
-	 * @return array The format of the array should be:
-	 * 		array(
-	 * 			array(
-	 * 				'label' => ITEM LABEL,
-	 * 				'link'	=> HREF,
-	 * 				'highlight'	=> true|false,
-	 * 				'icon'	=> ICON_HREF
-	 * 			), ...
-	 * 		)
+	 * @return X_Page_ItemList_ActionLink
 	 */
 	public function getIndexActionLinks(Zend_Controller_Action $controller) {
 		
@@ -41,36 +33,12 @@ class X_VlcShares_Plugins_Backupper extends X_VlcShares_Plugins_Abstract impleme
 			), 'default', true);
 		return new X_Page_ItemList_ActionLink(array($link));
 		
-		/*
-		$urlHelper = $controller->getHelper('url');
-		return array(
-			array(
-				'label'		=>	X_Env::_('p_backupper_actionbackupall'),
-				'link'		=>	$urlHelper->url(array(
-					'controller'	=>	'backupper',
-					'action'		=>	'backup',
-					'a'				=>	'all'
-				)),
-				'icon'		=>	'/images/backupper/backupall.png'
-			)
-		);
-		*/
 	}
 		
 	/**
-	 * Add the link for -manage-output-
+	 * Add the link for -manage-backupper-
 	 * @param Zend_Controller_Action $this
-	 * @return array The format of the array should be:
-	 * 		array(
-	 * 			array(
-	 * 				'title' => ITEM TITLE,
-	 * 				'label' => ITEM LABEL,
-	 * 				'link'	=> HREF,
-	 * 				'highlight'	=> true|false,
-	 * 				'icon'	=> ICON_HREF,
-	 * 				'subinfos' => array(INFO, INFO, INFO)
-	 * 			), ...
-	 * 		)
+	 * @return X_Page_ItemList_ManageLink
 	 */
 	public function getIndexManageLinks(Zend_Controller_Action $controller) {
 

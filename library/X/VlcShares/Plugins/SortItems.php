@@ -66,4 +66,3 @@ class X_VlcShares_Plugins_SortItems extends X_VlcShares_Plugins_Abstract {
 	}
 	
 }
-?>

@@ -14,6 +14,7 @@ require_once 'X/Page/Item/ManageLink.php';
 require_once 'X/Page/Item/Statistic.php';
 require_once 'X/Page/Item/Message.php';
 require_once 'X/Page/Item/News.php';
+require_once 'X/Page/Item/Test.php';
 
 require_once 'X/Page/ItemList.php';
 require_once 'X/Page/ItemList/PItem.php';
@@ -22,6 +23,7 @@ require_once 'X/Page/ItemList/ManageLink.php';
 require_once 'X/Page/ItemList/Statistic.php';
 require_once 'X/Page/ItemList/Message.php';
 require_once 'X/Page/ItemList/News.php';
+require_once 'X/Page/ItemList/Test.php';
 
 abstract class X_VlcShares_Plugins_Abstract {
 
@@ -645,7 +647,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * Allow plugins to insert new tests
 	 * @param Zend_Config $options
 	 * @param Zend_Controller_Action $controller
-	 * @return X_Page_ItemList_Message
+	 * @return X_Page_ItemList_Test
 	 */
 	public function preGetTestItems(Zend_Config $options,Zend_Controller_Action $controller) {}
 
@@ -653,7 +655,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * Allow plugins to insert new tests
 	 * @param Zend_Config $options
 	 * @param Zend_Controller_Action $controller
-	 * @return X_Page_ItemList_Message
+	 * @return X_Page_ItemList_Test
 	 */
 	public function getTestItems(Zend_Config $options,Zend_Controller_Action $controller) {}
 	
@@ -661,7 +663,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * Allow plugins to insert new tests
 	 * @param Zend_Config $options
 	 * @param Zend_Controller_Action $controller
-	 * @return X_Page_ItemList_Message
+	 * @return X_Page_ItemList_Test
 	 */
 	public function postGetTestItems(Zend_Config $options,Zend_Controller_Action $controller) {}
 	

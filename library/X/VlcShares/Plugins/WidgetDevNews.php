@@ -19,14 +19,7 @@ class X_VlcShares_Plugins_WidgetDevNews extends X_VlcShares_Plugins_Abstract {
 	/**
 	 * Retrieve news from plugins
 	 * @param Zend_Controller_Action $this
-	 * @return array The format of the array should be:
-	 * 		array(
-	 * 			array(
-	 * 				'tab'	=> TAB LABEL
-	 * 				'title' => ITEM TITLE,
-	 * 				'text' => HTML STYLIZED TEXT 
-	 * 			), ...
-	 * 		)
+	 * @return X_Page_ItemList_News
 	 */
 	public function getIndexNews(Zend_Controller_Action $controller) {
 	
@@ -44,15 +37,7 @@ class X_VlcShares_Plugins_WidgetDevNews extends X_VlcShares_Plugins_Abstract {
 				->setContent($text);
 			
 			return new X_Page_ItemList_News(array($item));
-			/*
-			return array(
-				array(
-					'tab'	=> X_Env::_('p_widgetdevnews_commits_tab'),
-					//'title' => X_Env::_('p_widgetdevnews_commits_title'),
-					'text'	=> $text
-				),
-			);
-			*/
+			
 		} catch (Exception $e) {
 			X_Debug::e('No view O_o');
 		}
