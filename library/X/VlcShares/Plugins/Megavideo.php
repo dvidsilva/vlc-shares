@@ -242,8 +242,6 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 	 * 		)
 	 */
 	public function getIndexActionLinks(Zend_Controller_Action $controller) {
-		
-		
 
 		$link = new X_Page_Item_ActionLink($this->getId(), X_Env::_('p_megavideo_actionaddvideo'));
 		$link->setIcon('/images/plus.png')
@@ -252,85 +250,43 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 					'action'		=>	'add',
 				), 'default', true);
 		return new X_Page_ItemList_ActionLink(array($link));
-		
-		/*
-		$urlHelper = $controller->getHelper('url');
-		return array(
-			array(
-				'label'		=>	X_Env::_('p_megavideo_actionaddvideo'),
-				'link'		=>	$urlHelper->url(array(
-					'controller'	=>	'megavideo',
-					'action'		=>	'add'
-				)),
-				'icon'		=>	'/images/plus.png'
-			),
-			
-		);
-		*/
 	}
 	
 	/**
 	 * Add the link for -manage-megavideo-
 	 * @param Zend_Controller_Action $this
-	 * @return array The format of the array should be:
-	 * 		array(
-	 * 			array(
-	 * 				'title' => ITEM TITLE,
-	 * 				'label' => ITEM LABEL,
-	 * 				'link'	=> HREF,
-	 * 				'highlight'	=> true|false,
-	 * 				'icon'	=> ICON_HREF,
-	 * 				'subinfos' => array(INFO, INFO, INFO)
-	 * 			), ...
-	 * 		)
+	 * @return X_Page_ItemList_ManageLink
 	 */
 	public function getIndexManageLinks(Zend_Controller_Action $controller) {
 
-		$urlHelper = $controller->getHelper('url');
-		
-		return array(
-			array(
-				'title'		=>	X_Env::_('p_megavideo_managetitle'),
-				'label'		=>	X_Env::_('p_megavideo_mlink'),
-				'link'		=>	$urlHelper->url(array(
+		$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_megavideo_mlink'));
+		$link->setTitle(X_Env::_('p_megavideo_managetitle'))
+			->setIcon('/images/megavideo/logo.png')
+			->setLink(array(
 					'controller'	=>	'megavideo',
-					'action'		=>	'index'
-				)),
-				'icon'		=>	'/images/megavideo/logo.png',
-				'subinfos'	=>	array()
-			),
-			
-		);
+					'action'		=>	'index',
+			), 'default', true);
+		return new X_Page_ItemList_ManageLink(array($link));
+		
 	}
 	
 	/**
 	 * Retrieve statistic from plugins
 	 * @param Zend_Controller_Action $this
-	 * @return array The format of the array should be:
-	 * 		array(
-	 * 			array(
-	 * 				'title' => ITEM TITLE,
-	 * 				'label' => ITEM LABEL,
-	 * 				'stats' => array(INFO, INFO, INFO),
-	 * 				'provider' => array('controller', 'index', array()) // if provider is setted, stats key is ignored 
-	 * 			), ...
-	 * 		)
+	 * @return X_Page_ItemList_Statistic
 	 */
 	public function getIndexStatistics(Zend_Controller_Action $controller) {
 		
 		$categories = count(Application_Model_MegavideoMapper::i()->fetchCategories()); // FIXME create count functions
 		$videos = count(Application_Model_MegavideoMapper::i()->fetchAll()); // FIXME create count functions
 		
-		return array(
-			array(
-				'title'	=> X_Env::_('p_megavideo_statstitle'),
-				'label'	=> X_Env::_('p_megavideo_statstitle'),
-				'stats'	=>	array(
-					X_Env::_('p_megavideo_statcategories').": $categories",
-					X_Env::_('p_megavideo_statvideos').": $videos",
-				)
-			)
-		);
+		$stat = new X_Page_Item_Statistic($this->getId(), X_Env::_('p_megavideo_statstitle'));
+		$stat->setTitle(X_Env::_('p_megavideo_statstitle'))
+			->appendStat(X_Env::_('p_megavideo_statcategories').": $categories")
+			->appendStat(X_Env::_('p_megavideo_statvideos').": $videos");
+
+		return new X_Page_ItemList_Statistic(array($stat));
+		
 	}
 	
 	
