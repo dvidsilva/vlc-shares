@@ -41,7 +41,6 @@ class X_VlcShares_Plugins_StreamInfo extends X_VlcShares_Plugins_Abstract {
 			
 			$item = new X_Page_Item_PItem('streaminfo-onair', X_Env::_('p_streaminfo_onair'). ": {$vlc->getCurrentName()}");
 			$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
-				->setIcon('/images/icons/play.png')
 				->setLink(X_Env::completeUrl($urlHelper->url()));
 			$return->append($item);
 			
@@ -53,7 +52,6 @@ class X_VlcShares_Plugins_StreamInfo extends X_VlcShares_Plugins_Abstract {
 
 			$item = new X_Page_Item_PItem('streaminfo-time', "{$currentTime}/{$totalTime}");
 			$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
-				->setIcon('/images/icons/play.png')
 				->setLink(X_Env::completeUrl($urlHelper->url()));
 			$return->append($item);
 		}

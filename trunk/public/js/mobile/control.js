@@ -8,7 +8,7 @@ function loaded() {
 }
 */
 $().ready(function(){
-	$('.item.search').click(function (event) {
+	$('.item.request').click(function (event) {
 		event.stopPropagation();
 		event.preventDefault();
 		

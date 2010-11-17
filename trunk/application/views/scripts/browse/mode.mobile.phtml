@@ -1,4 +1,8 @@
 <!-- application/views/scripts/index/collections.mobile.phtml -->
+<?php
+/* @var $v_items X_Page_ItemList_PItem */
+$v_items = $this->items; 
+?>
 <?php $this->headScript()->appendFile($this->baseUrl("/js/mobile/mode.js")); ?>
 <?php $this->headLink()->appendStylesheet($this->baseUrl('/css/mobile/mode.css'), 'screen'); ?> 
 <?php $this->headTitle()->prepend(X_Env::_('p_mobilerenderer_browse_mode')); ?>
@@ -33,19 +37,20 @@
 		</li>
 		-->
 		<?php $preOption = true; ?>
-		<?php foreach ($this->items as $i => $item):?>
-			<?php if ( $item['label'] == X_Env::_('_____options_separator_____')) { $preOption = false; continue; }?>
+		<?php foreach ($v_items->getItems() as $i => $item):?>
+			<?php /* @var $item X_Page_Item_PItem */ ?>
+			<?php if ( $item->getKey() == 'core-separator' ) { $preOption = false; continue; }?>
 			<li class="item <?php echo $preOption ? 'play' : 'option'; ?>">
-				<?php if ( array_key_exists('icon', $item) ): ?>
-					<img src="<?php echo $this->baseUrl($item['icon']); ?>"	alt="" width="32px" height="32px" />
+				<?php if ( $item->getIcon() != null ): ?>
+					<img src="<?php echo $this->baseUrl($item->getIcon()); ?>"	alt="" width="32px" height="32px" />
 				<?php elseif ($preOption) : ?>
 					<img src="<?php echo $this->baseUrl('/images/mobile/play.png'); ?>" width="32px" height="32px" alt="" />
 				<?php endif; ?>
-				<p class="title"><a href="<?php echo $item['link']; ?>"><?php echo $item['label']; ?></a></p>
-				<?php if ( array_key_exists('desc', $item) ): ?>
-					<p class="date"><?php echo $item['desc']; ?></p>
+				<p class="title"><a href="<?php echo $item->isUrl() ? $item->getLink() : $this->url($item->getLink(), $item->getRoute(), $item->isReset()) ; ?>"><?php echo $item->getLabel(); ?></a></p>
+				<?php if ( $item->getDescription() != null ): ?>
+					<p class="date"><?php echo $item->getDescription(); ?></p>
 				<?php endif; ?>
-				<a href="<?php echo $item['link']; ?>" class="button"></a>
+				<a href="<?php echo $item->isUrl() ? $item->getLink() : $this->url($item->getLink(), $item->getRoute(), $item->isReset()) ; ?>" class="button"></a>
 				<?php if (!$preOption): ?>
 					<ul class="items"></ul>
 				<?php endif; ?>

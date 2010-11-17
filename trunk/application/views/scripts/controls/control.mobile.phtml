@@ -1,4 +1,8 @@
-<!-- application/views/scripts/browse/stream.mobile.phtml -->
+<!-- application/views/scripts/controls/control.mobile.phtml -->
+<?php
+/* @var $v_items X_Page_ItemList_PItem */
+$v_items = $this->items; 
+?>
 <?php $this->headScript()->appendFile($this->baseUrl("/js/mobile/control.js")); ?>
 <?php $this->headLink()->appendStylesheet($this->baseUrl('/css/mobile/control.css'), 'screen'); ?> 
 <?php $this->headTitle()->prepend(X_Env::_('p_mobilerenderer_controls_control')); ?>
@@ -19,17 +23,18 @@
 	<h2><?php echo $this->locationRaw; ?></h2>
 	<ul class="items">
 		<?php $preOption = true; ?>
-		<?php foreach ($this->items as $i => $item):?>
-			<?php if ( $item['label'] == X_Env::_('_____options_separator_____')) { $preOption = false; continue; }?>
-			<li class="item <?php echo @$item['type']; ?>">
-				<?php if ( array_key_exists('icon', $item) ): ?>
-					<img src="<?php echo $this->baseUrl($item['icon']); ?>"	alt="" width="32px" height="32px" />
+		<?php foreach ($v_items->getItems() as $i => $item):?>
+			<?php /* @var $item X_Page_Item_PItem */ ?>
+			<?php if ( $item->getKey() == 'core-separator' ) { $preOption = false; continue; }?>
+			<li class="item <?php echo $item->getType(); ?>">
+				<?php if ( $item->getIcon() != null ): ?>
+					<img src="<?php echo $this->baseUrl($item->getIcon()); ?>"	alt="" width="32px" height="32px" />
 				<?php endif; ?>
-				<p class="title"><a href="<?php echo $item['link']; ?>"><?php echo $item['label']; ?></a></p>
-				<?php if ( array_key_exists('desc', $item) ): ?>
-					<p class="desc"><?php echo $item['desc']; ?></p>
+				<p class="title"><a href="<?php echo $item->isUrl() ? $item->getLink() : $this->url($item->getLink(), $item->getRoute(), $item->isReset()) ; ?>"><?php echo $item->getLabel(); ?></a></p>
+				<?php if ( $item->getDescription() != null ): ?>
+					<p class="desc"><?php echo $item->getDescription(); ?></p>
 				<?php endif; ?>
-				<a href="<?php echo $item['link']; ?>" class="button"></a>
+				<a href="<?php echo $item->isUrl() ? $item->getLink() : $this->url($item->getLink(), $item->getRoute(), $item->isReset()) ; ?>" class="button"></a>
 				<div class="clear"></div>
 			</li>
 		<?php endforeach; ?>
