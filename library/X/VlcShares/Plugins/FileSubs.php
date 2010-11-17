@@ -82,13 +82,11 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		X_Debug::i('Plugin triggered');		
 		
 		$urlHelper = $controller->getHelper('url');
+		$link = new X_Page_Item_PItem($this->getId().'-header', X_Env::_('p_filesubs_selection_title'));
+		$link->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+			->setLink(X_Env::completeUrl($urlHelper->url()));
+		return new X_Page_ItemList_PItem();
 		
-		return array(
-			array(
-				'label' => X_Env::_('p_filesubs_selection_title'),
-				'link'	=>	X_Env::completeUrl($urlHelper->url()),
-			),
-		);
 	}
 	
 	public function getSelectionItems($provider, $location, $pid, Zend_Controller_Action $controller) {
@@ -113,18 +111,17 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		$currentSub = $controller->getRequest()->getParam($this->getId(), false);
 		if ( $currentSub !== false ) $currentSub = base64_decode($currentSub);
 
-		$return = array(
-			array(
-				'label'	=>	X_Env::_('p_filesubs_selection_none'),
-				'link'	=>	X_Env::completeUrl($urlHelper->url(array(
-						'action'	=>	'mode',
-						$this->getId() => null, // unset this plugin selection
-						'pid'		=>	null
-					), 'default', false)
-				),
-				'highlight' => ($currentSub === false)
-			)
-		);
+		$return = new X_Page_ItemList_PItem();
+		$item = new X_Page_Item_PItem($this->getId().'-none', X_Env::_('p_filesubs_selection_none'));
+		$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+			->setLink(array(
+					'action'	=>	'mode',
+					$this->getId() => null, // unset this plugin selection
+					'pid'		=>	null
+				), 'default', false)
+			->setHighlight($currentSub === false);
+		$return->append($item);
+		
 		
 		// i do the check for this on top
 		// location param come in a plugin encoded way
@@ -138,17 +135,16 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 			//X_Debug::i(var_export($infileSubs, true));
 			foreach ($infileSubs as $streamId => $sub) {
 				X_Debug::i("Valid infile-sub: [{$streamId}] {$sub['language']} ({$sub['format']})");
-				$return[] = array(
-					'label'	=>	X_Env::_("p_filesubs_subtype_".self::STREAM)." {$streamId} {$sub['language']} {$sub['format']}",
-					'link'	=>	X_Env::completeUrl($urlHelper->url(array(
+				$item = new X_Page_Item_PItem($this->getId().'-stream-'.$streamId, X_Env::_("p_filesubs_subtype_".self::STREAM)." {$streamId} {$sub['language']} {$sub['format']}");
+				$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+					->setCustom(__CLASS__.':sub', self::STREAM.":{$streamId}")
+					->setLink(array(
 							'action'	=>	'mode',
 							'pid'		=>	null,
 							$this->getId() => base64_encode(self::STREAM.":{$streamId}") // set this plugin selection as stream:$streamId
 						), 'default', false)
-					),
-					'highlight' => ($currentSub == self::STREAM.":{$streamId}"),
-					__CLASS__.':sub' => self::STREAM.":{$streamId}"
-				);
+					->setHighlight($currentSub == self::STREAM.":{$streamId}");
+				$return->append($item);
 			}
 		}
 		
@@ -162,19 +158,18 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 			$extSubs = $this->getFSSubs($dirname, $filename);
 			foreach ($extSubs as $streamId => $sub) {
 				X_Debug::i("Valid extfile-sub: {$sub['language']} ({$sub['format']})");
-				$return[] = array(
-					'label'	=>	X_Env::_("p_filesubs_subtype_".self::FILE)." {$sub['language']} ({$sub['format']})",
-					'link'	=>	X_Env::completeUrl($urlHelper->url(array(
+				$item = new X_Page_Item_PItem($this->getId().'-file-'.$streamId, X_Env::_("p_filesubs_subtype_".self::FILE)." {$sub['language']} ({$sub['format']})");
+				$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+					->setCustom(__CLASS__.':sub', self::FILE.":{$streamId}")
+					->setLink(array(
 							'action'	=>	'mode',
 							'pid'		=>	null,
 							$this->getId() => base64_encode(self::FILE.":{$streamId}") // set this plugin selection as stream:$streamId
 						), 'default', false)
-					),
-					'highlight' => ($currentSub == self::FILE.":{$streamId}"),
-					__CLASS__.':sub' => self::FILE.":{$streamId}"
-				);
-			}
+					->setHighlight($currentSub == self::FILE.":{$streamId}");
+				$return->append($item);
 				
+			}
 			
 		}
 		

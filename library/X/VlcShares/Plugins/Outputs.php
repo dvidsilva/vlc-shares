@@ -76,12 +76,10 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract implement
 		
 		$urlHelper = $controller->getHelper('url');
 		
-		return array(
-			array(
-				'label' => X_Env::_('p_outputs_selection_title'),
-				'link'	=>	X_Env::completeUrl($urlHelper->url()),
-			),
-		);
+		$link = new X_Page_Item_PItem($this->getId().'-header', X_Env::_('p_outputs_selection_title'));
+		$link->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+			->setLink(X_Env::completeUrl($urlHelper->url()));
+		return new X_Page_ItemList_PItem();
 	}
 	
 	/**
@@ -103,18 +101,16 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract implement
 		// in $currentSub i get the name of the current profile
 		$currentOutput = $controller->getRequest()->getParam($this->getId(), false);
 
-		$return = array(
-			array(
-				'label'	=>	X_Env::_('p_outputs_selection_auto'),
-				'link'	=>	X_Env::completeUrl($urlHelper->url(array(
-						'action'	=>	'mode',
-						$this->getId() => null, // unset this plugin selection
-						'pid'		=>	null
-					), 'default', false)
-				),
-				'highlight' => ($currentOutput === false)
-			)
-		);
+		$return = new X_Page_ItemList_PItem();
+		$item = new X_Page_Item_PItem($this->getId().'-auto', X_Env::_('p_outputs_selection_auto'));
+		$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+			->setLink(array(
+					'action'	=>	'mode',
+					$this->getId() => null, // unset this plugin selection
+					'pid'		=>	null
+				), 'default', false)
+			->setHighlight($currentOutput === false);
+		$return->append($item);
 		
 		
 		// check for infile subs
@@ -130,17 +126,16 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract implement
 		foreach ($outputs as $output) {
 			/* @var $profile Application_Model_Output */
 			X_Debug::i("Valid output: [{$output->getId()}] {$output->getLabel()} ({$output->getCondDevices()})");
-			$return[] = array(
-				'label'	=>	$output->getLabel(),
-				'link'	=>	X_Env::completeUrl($urlHelper->url(array(
+			$item = new X_Page_Item_PItem($this->getId().'-'.$output->getId(), $output->getLabel());
+			$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+				->setCustom(__CLASS__.':output', $output->getId())
+				->setLink(array(
 						'action'	=>	'mode',
 						'pid'		=>	null,
 						$this->getId() => $output->getId() // set this plugin selection as profileId
 					), 'default', false)
-				),
-				'highlight' => ($currentOutput == $output->getId()),
-				__CLASS__.':output' => $output->getId()
-			);
+				->setHighlight($currentOutput == $output->getId());
+			$return->append($item);
 		}
 	
 	
