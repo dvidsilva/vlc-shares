@@ -28,6 +28,7 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract implement
 	 * @param string $provider
 	 * @param string $location
 	 * @param Zend_Controller_Action $controller
+	 * @return X_Page_ItemList_PItem
 	 */
 	public function getModeItems($provider, $location, Zend_Controller_Action $controller) {
 		
@@ -48,17 +49,15 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract implement
 			}
 		}
 		
-		return array(
-			array(
-				'label'	=>	X_Env::_('p_outputs_output').": $outputLabel",
-				'link'	=>	X_Env::completeUrl($urlHelper->url(array(
-						'action'	=>	'selection',
-						'pid'		=>	$this->getId()
-					), 'default', false)
-				),
-				'icon'		=>	'/images/outputs/logo.png',
-			)
-		);
+		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_outputs_output').": $outputLabel");
+		$link->setIcon('/images/outputs/logo.png')
+			->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+			->setLink(array(
+					'action'	=>	'selection',
+					'pid'		=>	$this->getId()
+				), 'default', false);
+
+		return new X_Page_ItemList_PItem(array($link));
 		
 	}
 	

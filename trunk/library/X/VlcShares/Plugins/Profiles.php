@@ -27,6 +27,7 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 	 * @param string $provider
 	 * @param string $location
 	 * @param Zend_Controller_Action $controller
+	 * @return X_Page_ItemList_PItem
 	 */
 	public function getModeItems($provider, $location, Zend_Controller_Action $controller) {
 		
@@ -46,19 +47,16 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 			}
 		}
 		
-		return array(
-			array(
-				'label'	=>	X_Env::_('p_profiles_profile').": $profileLabel",
-				'link'	=>	X_Env::completeUrl($urlHelper->url(array(
-						'action'	=>	'selection',
-						'pid'		=>	$this->getId()
-					), 'default', false)
-				),
-				'icon'		=>	'/images/manage/plugin.png',
-				//'desc'		=>	X_Env::_('p_profiles_profilemode_desc')
-			)
-		);
-		
+		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_profiles_profile').": $profileLabel");
+		$link->setIcon('/images/manage/plugin.png')
+			->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+			//->setDescription(X_Env::_('p_profiles_profilemode_desc'))
+			->setLink(array(
+					'action'	=>	'selection',
+					'pid'		=>	$this->getId()
+				), 'default', false);
+
+		return new X_Page_ItemList_PItem(array($link));
 	}
 
 	public function preGetSelectionItems($provider, $location, $pid, Zend_Controller_Action $controller) {

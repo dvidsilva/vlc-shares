@@ -84,7 +84,16 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 			if ( $enhanced ) {
 				if ( $plxItemWiimcplusIcon !== null ) {
 					$plxItem->setWiimcplus_icon($plxItemWiimcplusIcon); 
-				}			
+				}
+				if ( $item->getKey() == 'core-separator' ) {
+					$plxItem->setWiimcplus_assert_separator('true');
+				}
+				if ( $item->getKey() == 'core-directwatch' ) {
+					$plxItem->setWiimcplus_assert_directwatch('true');
+				}
+				if ( $item->getKey() == 'core-play' ) {
+					$plxItem->setWiimcplus_assert_startvlc('true');
+				}
 			}
 			
 			$plx->addItem($plxItem);
