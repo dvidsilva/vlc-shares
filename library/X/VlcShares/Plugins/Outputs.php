@@ -149,7 +149,7 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract implement
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to stream
 	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 * @return array 
+	 * @return X_Page_ItemList_PItem 
 	 */
 	public function getStreamItems($provider, $location, Zend_Controller_Action $controller) {
 		
@@ -183,14 +183,11 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract implement
 			), $outputLink
 		);
 		
-		return array(
-			array(
-				'label'	=>	X_Env::_('p_outputs_gotostream'),
-				'link'	=>	$outputLink,
-				'type'	=>	X_Plx_Item::TYPE_VIDEO,
-				'icon'	=>	'/images/icons/play.png'
-			)
-		);
+		$item = new X_Page_Item_PItem($this->getId(), X_Env::_('p_outputs_gotostream'));
+		$item->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
+			->setIcon('/images/icons/play.png')
+			->setLink($outputLink);
+		return new X_Page_ItemList_PItem(array($item));
 		
 	}
 	

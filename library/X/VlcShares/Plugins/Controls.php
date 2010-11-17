@@ -265,17 +265,14 @@ class X_VlcShares_Plugins_Controls extends X_VlcShares_Plugins_Abstract {
 	public function getStreamItems($provider, $location, Zend_Controller_Action $controller) {
 		$urlHelper = $controller->getHelper('url');
 
-		return array(
-			array(
-				'label'	=>	X_Env::_('p_controls_gotocontrols'),
-				'link'	=>	X_Env::completeUrl($urlHelper->url(array(
+		$item = new X_Page_Item_PItem($this->getId(), X_Env::_('p_controls_gotocontrols'));
+		$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+			->setIcon('/images/icons/controls.png')
+			->setLink(array(
 						'controller'		=>	'controls',
 						'action'			=>	'control',
-					), 'default', false)
-				),
-				'icon'	=>	'/images/icons/controls.png'
-			),
-		);
+					), 'default', false);
+		return new X_Page_ItemList_PItem(array($item));
 		
 	}
 		

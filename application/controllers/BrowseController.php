@@ -218,7 +218,7 @@ class BrowseController extends X_Controller_Action {
     	$this->vlc->spawn(); // in test leave this commented out
     	X_VlcShares_Plugins::broker()->postSpawnVlc($this->vlc, $provider, $location, $this);
     	
-		$pageItems = array();
+		$pageItems = new X_Page_ItemList_PItem();
 		
 		// i can't add here the go to play button
 		// because i don't know the output type
@@ -227,11 +227,11 @@ class BrowseController extends X_Controller_Action {
 		// will be always enabled
     	
     	// top links
-		$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->preGetStreamItems($provider, $location, $this));
+		$pageItems->merge(X_VlcShares_Plugins::broker()->preGetStreamItems($provider, $location, $this));
     	// normal links
-    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->getStreamItems($provider, $location, $this));
+    	$pageItems->merge(X_VlcShares_Plugins::broker()->getStreamItems($provider, $location, $this));
     	// bottom links
-		$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->postGetStreamItems($provider, $location, $this));    	
+		$pageItems->merge(X_VlcShares_Plugins::broker()->postGetStreamItems($provider, $location, $this));    	
     	
     	
 		// trigger for page creation
