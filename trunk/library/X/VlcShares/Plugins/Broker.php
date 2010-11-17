@@ -91,6 +91,7 @@ class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 			foreach ( $toBeCalled as $priorityStack ) {
 				foreach ( $priorityStack as $pluginId => $pluginObj ) {
 					/* @var $pluginObj X_VlcShares_Plugins_Abstract */
+					//X_Debug::i("Calling ".get_class($pluginObj)."::$funcName"); // for problem, uncomment this
 					$return = call_user_func_array(array($pluginObj, $funcName), $funcParams);
 					if ( $return !== null ) {
 						//$returnedVal[$pluginId] = $return;
@@ -103,7 +104,7 @@ class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 						} else {
 							if ( $returnedVal == null) {
 								$returnedVal = array($return);
-							} else {
+							} elseif ( is_array($returnedVal) ) {
 								$returnedVal[] = $return;
 							}
 						}

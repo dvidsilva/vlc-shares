@@ -116,7 +116,7 @@ class X_Page_Item_PItem extends X_Page_Item_Link {
 	 * @return X_Page_Item_PItem
 	 */
 	public function setIcon($icon) {
-		$this->icon = icon;
+		$this->icon = $icon;
 		return $this;
 	}
 	

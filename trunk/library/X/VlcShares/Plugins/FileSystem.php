@@ -22,40 +22,34 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 			->setPriority('getIndexActionLinks');
 	}
 	
+	/**
+	 * Return the -shared-folders- link
+	 * for the collection index
+	 * @param Zend_Controller_Action $controller
+	 * @return X_Page_ItemList_PItem
+	 */
 	public function getCollectionsItems(Zend_Controller_Action $controller) {
 		
 		X_Debug::i("Plugin triggered");
 		
-		// usando le opzioni, determino quali link inserire
-		// all'interno della pagina delle collections
-		
-		$urlHelper = $controller->getHelper('url');
-		/* @var $urlHelper Zend_Controller_Action_Helper_Url */
-		
-		//$serverUrl = $controller->getFrontController()->getBaseUrl();
-		$request = $controller->getRequest();
-		/* @var $request Zend_Controller_Request_Http */
-		//$request->get
-		
-		return array(
-			array(
-				'label' => X_Env::_('p_filesystem_collectionindex'), 
-				'link'	=> X_Env::completeUrl(
-					$urlHelper->url(
-						array(
-							'controller' => 'browse',
-							'action' => 'share',
-							'p' => $this->getId(),
-						), 'default', true
-					)
-				),
-				'icon'	=> '/images/filesystem/logo.png',
-				'desc'	=> X_Env::_('p_filesystem_collectionindex_desc'),
-				'itemType' => 'folder'
-			)
-		);
+		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_filesystem_collectionindex'));
+		$link->setIcon('/images/filesystem/logo.png')
+			->setDescription(X_Env::_('p_filesystem_collectionindex_desc'))
+			->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+			->setLink(
+				array(
+					'controller' => 'browse',
+					'action' => 'share',
+					'p' => $this->getId(),
+				), 'default', true
+			);
+		return new X_Page_ItemList_PItem(array($link));
 	}
 	
+	/**
+	 * Return a list of page items for the current $location
+	 * if the $provider is this
+	 */
 	public function getShareItems($provider, $location, Zend_Controller_Action $controller) {
 		// this plugin add items only if it is the provider
 		if ( $provider != $this->getId() ) return;
@@ -64,7 +58,7 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 		
 		$urlHelper = $controller->getHelper('url');
 		
-		$items = array();
+		$items = new X_Page_ItemList_PItem();
 		
 		if ( $location != '' ) {
 			list($shareId, $path) = explode(':', $location, 2);
@@ -82,36 +76,24 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 						continue;
 		
 					if ( $entry->isDir() ) {
-						$items[] = array(
-							'label'		=>	"{$entry->getFilename()}/",
-							'link'		=>	X_Env::completeUrl(
-								$urlHelper->url(
-									array(
-										'l'	=>	base64_encode("{$share->getId()}:{$path}{$entry->getFilename()}/")
-									), 'default', false
-								)
-							),
-							__CLASS__.':location'	=>	"{$share->getId()}:{$path}{$entry->getFilename()}/",
-							'icon'		=>	'/images/icons/folder_32.png',
-							'itemType'	=>	'folder'
-						);
-						
-						
+						$item = new X_Page_Item_PItem($this->getId().'-'.$entry->getFilename().'/', "{$entry->getFilename()}/");
+						$item->setIcon('/images/icons/folder_32.png')
+							->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+							->setCustom(__CLASS__.':location', "{$share->getId()}:{$path}{$entry->getFilename()}/")
+							->setLink(array(
+								'l'	=>	base64_encode("{$share->getId()}:{$path}{$entry->getFilename()}/")
+							), 'default', false);
+						$items->append($item);
 					} else if ($entry->isFile() ) {
-						$items[] = array(
-							'label'		=>	"{$entry->getFilename()}",
-							'link'		=>	X_Env::completeUrl(
-								$urlHelper->url(
-									array(
-										'action' => 'mode',
-										'l'	=>	base64_encode("{$share->getId()}:{$path}{$entry->getFilename()}")
-									), 'default', false
-								)
-							),
-							__CLASS__.':location'	=>	"{$share->getId()}:{$path}{$entry->getFilename()}",
-							'icon'		=>	'/images/icons/file_32.png',
-							'itemType'	=>	'file'
-						);
+						$item = new X_Page_Item_PItem($this->getId().'-'.$entry->getFilename(), "{$entry->getFilename()}");
+						$item->setIcon('/images/icons/file_32.png')
+							->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+							->setCustom(__CLASS__.':location', "{$share->getId()}:{$path}{$entry->getFilename()}")
+							->setLink(array(
+								'action' => 'mode',
+								'l'	=>	base64_encode("{$share->getId()}:{$path}{$entry->getFilename()}")
+							), 'default', false);
+						$items->append($item);
 						
 					} else {
 						// scarta i symlink
@@ -124,24 +106,17 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 		} else {
 			// if location is not specified,
 			// show collections
-			
 			$shares = Application_Model_FilesystemSharesMapper::i()->fetchAll();
 			foreach ( $shares as $share ) {
 				/* @var $share Application_Model_FilesystemShare */
-				$items[] = array(
-					'label'		=>	$share->getLabel(),
-					'link'		=>	X_Env::completeUrl(
-						$urlHelper->url(
-							array(
-								'l'	=>	base64_encode("{$share->getId()}:/")
-							), 'default', false
-						)
-					),
-					__CLASS__.':location'	=>	"{$share->getId()}:/",
-					'icon'		=>	'/images/icons/folder_32.png',
-					'desc'		=>	"{$share->getPath()}",
-					'itemType'	=>	'folder'
-				);
+				$item = new X_Page_Item_PItem($this->getId().'-'.$share->getLabel(), $share->getLabel());
+				$item->setIcon('/images/icons/folder_32.png')
+					->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+					->setCustom(__CLASS__.':location', "{$share->getId()}:/")
+					->setLink(array(
+						'l'	=>	base64_encode("{$share->getId()}:/")
+					), 'default', false);
+				$items->append($item);
 			}
 		}
 		
