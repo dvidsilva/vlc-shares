@@ -25,39 +25,25 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 	/**
 	 * Add the main link for megavideo library
 	 * @param Zend_Controller_Action $controller
+	 * @return X_Page_ItemList_PItem
 	 */
 	public function getCollectionsItems(Zend_Controller_Action $controller) {
 		
 		X_Debug::i("Plugin triggered");
+
+		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_megavideo_collectionindex'));
+		$link->setIcon('/images/megavideo/logo.png')
+			->setDescription(X_Env::_('p_megavideo_collectionindex_desc'))
+			->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+			->setLink(
+				array(
+					'controller' => 'browse',
+					'action' => 'share',
+					'p' => $this->getId(),
+				), 'default', true
+			);
+		return new X_Page_ItemList_PItem(array($link));
 		
-		// usando le opzioni, determino quali link inserire
-		// all'interno della pagina delle collections
-		
-		$urlHelper = $controller->getHelper('url');
-		/* @var $urlHelper Zend_Controller_Action_Helper_Url */
-		
-		//$serverUrl = $controller->getFrontController()->getBaseUrl();
-		$request = $controller->getRequest();
-		/* @var $request Zend_Controller_Request_Http */
-		//$request->get
-		
-		return array(
-			array(
-				'label' => X_Env::_('p_megavideo_collectionindex'), 
-				'link'	=> X_Env::completeUrl(
-					$urlHelper->url(
-						array(
-							'controller' => 'browse',
-							'action' => 'share',
-							'p' => $this->getId(),
-						), 'default', true
-					)
-				),
-				'icon'	=> '/images/megavideo/logo.png',
-				'desc'	=> X_Env::_('p_megavideo_collectionindex_desc'),
-				'itemType'		=>	'folder'
-			)
-		);
 	}
 	
 	/**
@@ -65,6 +51,7 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 	 * @param unknown_type $provider
 	 * @param unknown_type $location
 	 * @param Zend_Controller_Action $controller
+	 * @return X_Page_ItemList_PItem
 	 */
 	public function getShareItems($provider, $location, Zend_Controller_Action $controller) {
 		// this plugin add items only if it is the provider
@@ -74,7 +61,7 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 		
 		$urlHelper = $controller->getHelper('url');
 		
-		$items = array();
+		$items = new X_Page_ItemList_PItem();
 		
 		if ( $location != '' ) {
 			
@@ -85,42 +72,31 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 			
 			foreach ($videos as $video) {
 				/* @var $video Application_Model_Megavideo */
-				$items[] = array(
-					'label'		=>	"{$video->getLabel()}",
-					'link'		=>	X_Env::completeUrl(
-						$urlHelper->url(
-							array(
-								'action' => 'mode',
-								'l'	=>	base64_encode($video->getId())
-							), 'default', false
-						)
-					),
-					__CLASS__.':location'	=>	$video->getId(),
-					'icon'	=>	'/images/icons/file_32.png',
-					'itemType'		=>	'file'
-				);
+				$item = new X_Page_Item_PItem($this->getId().'-'.$video->getId(), $video->getLabel());
+				$item->setIcon('/images/icons/file_32.png')
+					->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+					->setCustom(__CLASS__.':location', $video->getId())
+					->setLink(array(
+						'action' => 'mode',
+						'l'	=>	base64_encode($video->getId())
+					), 'default', false);
+				$items->append($item);
 			}
 			
 		} else {
 			// if location is not specified,
 			// show collections
-			
 			$categories = Application_Model_MegavideoMapper::i()->fetchCategories();
 			foreach ( $categories as $share ) {
 				/* @var $share Application_Model_FilesystemShare */
-				$items[] = array(
-					'label'		=>	"{$share['category']} ({$share['links']})",
-					'link'		=>	X_Env::completeUrl(
-						$urlHelper->url(
-							array(
-								'l'	=>	base64_encode($share['category'])
-							), 'default', false
-						)
-					),
-					__CLASS__.':location'	=>	$share['category'],
-					'icon'	=>	'/images/icons/folder_32.png',
-					'itemType'		=>	'folder'
-				);
+				$item = new X_Page_Item_PItem($this->getId().'-'.$share['category'], "{$share['category']} ({$share['links']})");
+				$item->setIcon('/images/icons/folder_32.png')
+					->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+					->setCustom(__CLASS__.':location', $share['category'])
+					->setLink(array(
+						'l'	=>	base64_encode($share['category'])
+					), 'default', false);
+				$items->append($item);
 			}
 		}
 		
@@ -174,11 +150,12 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 		
 		if ( $video->getId() != null ) {
 			$megavideo = new Megavideo($video->getIdVideo());
-	    	return array(array(
-				'label'		=>	X_Env::_('p_megavideo_watchdirectly'),
-				'link'		=>	$megavideo->get('URL'),
-	    		'type'		=>	X_Plx_Item::TYPE_VIDEO	
-			));
+			
+			$link = new X_Page_Item_PItem('core-directwatch', X_Env::_('p_megavideo_watchdirectly'));
+			$link->setIcon('/images/icons/play.png')
+				->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
+				->setLink($megavideo->get('URL'));
+			return new X_Page_ItemList_PItem(array($link));
 		}
 		
 	}
