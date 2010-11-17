@@ -1,4 +1,8 @@
 <!-- application/views/scripts/index/share.mobile.phtml -->
+<?php
+/* @var $v_items X_Page_ItemList_PItem */
+$v_items = $this->items; 
+?>
 <?php $this->headScript()->appendFile($this->baseUrl("/js/mobile/share.js")); ?>
 <?php $this->headLink()->appendStylesheet($this->baseUrl('/css/mobile/share.css'), 'screen'); ?> 
 <?php $this->headTitle()->prepend(X_Env::_('p_mobilerenderer_browse_share')); ?>
@@ -86,15 +90,17 @@
 <?php if ($this->coverflowEnabled) : ?>
 	<div id="thumbs">
 		<ul id="flip">
-			<?php foreach ($this->items as $i => $item):?>
-				<li><a href="<?php echo $item['link']; ?>"> <span class="title"><?php echo @$item['label']; ?></span>
-						<?php if (@$item['thumb']) : ?>
-							<img src="<?php echo $item['thumb']; ?>"
-				title="<?php echo $item['label']; ?>" />
+			<?php foreach ($v_items->getItems() as $i => $item):?>
+				<?php /* @var $item X_Page_Item_PItem */ ?>
+				<li><a href="<?php echo $item->isUrl() ? $item->getLink() : $this->url($item->getLink(), $item->getRoute(), $item->isReset()) ; ?>"> <span class="title"><?php echo $item->getLabel(); ?></span>
+						<?php if ($item->getThumbnail() != null ) : ?>
+							<?php if ( X_Env::startWith($item->getThumbnail(), 'http') || X_Env::startWith($item->getThumbnail(), 'https') ) : ?>
+								<img src="<?php echo $item->getThumbnail(); ?>"	title="<?php echo $item->getLabel(); ?>" />
+							<?php else: ?>
+								<img src="<?php echo $this->baseUrl($item->getThumbnail()); ?>"	title="<?php echo $item->getLabel(); ?>" />
+							<?php endif;?>
 						<?php else: ?>
-							<img
-				src="<?php echo $this->baseUrl('/images/icons/folder.png'); ?>"
-				title="<?php echo $item['label']; ?>" />
+							<img src="<?php echo $this->baseUrl('/images/icons/folder.png'); ?>" title="<?php echo $item->getLabel(); ?>" />
 						<?php endif; ?>
 					</a></li>
 			<?php endforeach; ?>
@@ -113,17 +119,17 @@
 			<div class="clear"></div>
 		</li>
 		-->
-		<?php foreach ($this->items as $i => $item):?>
+		<?php foreach ($v_items->getItems() as $i => $item):?>
+			<?php /* @var $item X_Page_Item_PItem */ ?>
 			<li class="item">
-				<?php if ( array_key_exists('icon', $item) ): ?>
-					<img src="<?php echo $this->baseUrl($item['icon']); ?>"
-		height="32px" width="32px" alt="" />
+				<?php if ( $item->getIcon() != null ): ?>
+					<img src="<?php echo $this->baseUrl($item->getIcon()); ?>"	height="32px" width="32px" alt="" />
 				<?php endif; ?>
-				<p class="title"><a href="<?php echo $item['link']; ?>"><?php echo $item['label']; ?></a></p>
-				<?php if ( array_key_exists('desc', $item) ): ?>
-					<p class="date"><?php echo $item['desc']; ?></p>
+				<p class="title"><a href="<?php echo $item->isUrl() ? $item->getLink() : $this->url($item->getLink(), $item->getRoute(), $item->isReset()) ; ?>"><?php echo $item->getLabel(); ?></a></p>
+				<?php if ( $item->getDescription() != null ): ?>
+					<p class="date"><?php echo $item->getDescription(); ?></p>
 				<?php endif; ?>
-				<a href="<?php echo $item['link']; ?>" class="button"></a>
+				<a href="<?php echo $item->isUrl() ? $item->getLink() : $this->url($item->getLink(), $item->getRoute(), $item->isReset()) ; ?>" class="button"></a>
 	<div class="clear"></div>
 	</li>
 		<?php endforeach; ?>
