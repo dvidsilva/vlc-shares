@@ -372,7 +372,7 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract implement
 			$model = new Application_Model_Output();
 			$model->setArg(@$modelInfo['arg'])
 				->setLink(@$modelInfo['link'])
-				->setCondDevices(@$modelInfo['cond_devices'])
+				->setCondDevices(@$modelInfo['cond_devices'] !== '' ? @$modelInfo['cond_devices'] : null)
 				->setLabel(@$modelInfo['label'])
 				->setWeight(@$modelInfo['weight'])
 				;

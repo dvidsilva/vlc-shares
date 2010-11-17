@@ -59,6 +59,9 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 		return new X_Page_ItemList_PItem(array($link));
 	}
 
+	/**
+	 * Show the header inside the selection page
+	 */
 	public function preGetSelectionItems($provider, $location, $pid, Zend_Controller_Action $controller) {
 		// we want to expose items only if pid is this plugin
 		if ( $this->getId() != $pid) return;
@@ -67,18 +70,11 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 		
 		$urlHelper = $controller->getHelper('url');
 		
-		return array(
-			array(
-				'label' => X_Env::_('p_profiles_selection_title'),
-				'link'	=>	X_Env::completeUrl($urlHelper->url()),
-			),
-			/*
-			array(
-				'label' => X_Env::_('p_profiles_selection_current').': '.$profileLabel,
-				'link'	=>	X_Env::completeUrl($urlHelper->url()),
-			)
-			*/
-		);
+		$link = new X_Page_Item_PItem($this->getId().'-header', X_Env::_('p_profiles_selection_title'));
+		$link->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+			->setLink(X_Env::completeUrl($urlHelper->url()));
+		return new X_Page_ItemList_PItem();
+		
 	}
 	
 	public function getSelectionItems($provider, $location, $pid, Zend_Controller_Action $controller) {
@@ -138,19 +134,16 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 			
 			$profiles = Application_Model_ProfilesMapper::i()->fetchByConds($codecCond, $deviceCond, $providerClass);
 
-			
-			$return = array(
-				array(
-					'label'	=>	X_Env::_('p_profiles_selection_auto'),
-					'link'	=>	X_Env::completeUrl($urlHelper->url(array(
-							'action'	=>	'mode',
-							$this->getId() => null, // unset this plugin selection
-							'pid'		=>	null
-						), 'default', false)
-					),
-					'highlight' => ($currentLabel === false)
-				)
-			);
+			$return = new X_Page_ItemList_PItem();
+			$item = new X_Page_Item_PItem($this->getId().'-auto', X_Env::_('p_profiles_selection_auto'));
+			$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+				->setLink(array(
+						'action'	=>	'mode',
+						$this->getId() => null, // unset this plugin selection
+						'pid'		=>	null
+					), 'default', false)
+				->setHighlight($currentLabel === false);
+			$return->append($item);
 			
 			if ( count($profiles) ) {
 				X_Debug::i("Valid profiles for $location ($codecCond / $deviceCond): ".count($profiles));
@@ -162,16 +155,15 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 			foreach ($profiles as $profile) {
 				/* @var $profile Application_Model_Profile */
 				X_Debug::i("Valid profile: [{$profile->getId()}] {$profile->getLabel()} ({$profile->getCondFormats()} / {$profile->getCondDevices()})");
-				$return[] = array(
-					'label'	=>	$profile->getLabel(),
-					'link'	=>	X_Env::completeUrl($urlHelper->url(array(
+				$item = new X_Page_Item_PItem($this->getId().'-'.$profile->getId(), $profile->getLabel());
+				$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+					->setLink(array(
 							'action'	=>	'mode',
 							'pid'		=>	null,
 							$this->getId() => $profile->getId() // set this plugin selection as profileId
 						), 'default', false)
-					),
-					'highlight' => ($currentLabel == $profile->getLabel())
-				);
+					->setHighlight($currentLabel == $profile->getLabel());
+				$return->append($item);
 			}
 			
 			// general profiles are in the bottom of array
@@ -215,6 +207,7 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 			
 			if ( $this->config('store.session', false) ) {
 				// store the link in session for future use
+				// TODO add session support
 			}
 			
 		} else {
@@ -316,9 +309,9 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 		foreach (@$items['profiles'] as $modelInfo) {
 			$model = new Application_Model_Profile();
 			$model->setArg(@$modelInfo['arg'])
-				->setCondProviders(@$modelInfo['cond_providers'])
-				->setCondFormats(@$modelInfo['cond_formats'])
-				->setCondDevices(@$modelInfo['cond_devices'])
+				->setCondProviders(@$modelInfo['cond_providers'] !== '' ? @$modelInfo['cond_providers'] : null )
+				->setCondFormats(@$modelInfo['cond_formats'] !== '' ? @$modelInfo['cond_formats'] : null )
+				->setCondDevices(@$modelInfo['cond_devices'] !== '' ? @$modelInfo['cond_devices'] : null)
 				->setLabel(@$modelInfo['label'])
 				->setWeight(@$modelInfo['weight'])
 				;
