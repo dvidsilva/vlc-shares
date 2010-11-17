@@ -283,15 +283,11 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract implement
 			), $outputLink
 		);
 		
-		return array(
-			array(
-				'label'	=>	X_Env::_('p_outputs_backstream'),
-				'link'	=>	$outputLink,
-				'type'	=>	X_Plx_Item::TYPE_VIDEO,
-				'icon'	=>	'/images/icons/play.png'
-			)
-		);
-		
+		$item = new X_Page_Item_PItem($this->getId(), X_Env::_('p_outputs_backstream'));
+		$item->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
+			->setIcon('/images/icons/play.png')
+			->setLink($outputLink);
+		return new X_Page_ItemList_PItem(array($item));
 		
 	}
 	

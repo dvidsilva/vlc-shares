@@ -34,25 +34,28 @@ class X_VlcShares_Plugins_StreamInfo extends X_VlcShares_Plugins_Abstract {
 		
 		$vlc = X_Vlc::getLastInstance();
 		
-		$return = array();
+		$return = new X_Page_ItemList_PItem();
 		
 		if ( $this->config('show.title', true)) {
 			// show the title of the file
-			$return[] =	array(
-				'label'	=>	X_Env::_('p_streaminfo_onair'). ": {$vlc->getCurrentName()}",
-				'link'	=>	X_Env::completeUrl($urlHelper->url()),
-			);
+			
+			$item = new X_Page_Item_PItem('streaminfo-onair', X_Env::_('p_streaminfo_onair'). ": {$vlc->getCurrentName()}");
+			$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+				->setIcon('/images/icons/play.png')
+				->setLink(X_Env::completeUrl($urlHelper->url()));
+			$return->append($item);
+			
 		}
 		
 		if ( $this->config('show.time', false)) {
 			$currentTime = X_Env::formatTime($vlc->getCurrentTime());
 			$totalTime = X_Env::formatTime($vlc->getTotalTime());
-			
-			// show current position
-			$return[] =	array(
-				'label'	=>	"{$currentTime}/{$totalTime}",
-				'link'	=>	X_Env::completeUrl($urlHelper->url()),
-			);
+
+			$item = new X_Page_Item_PItem('streaminfo-time', "{$currentTime}/{$totalTime}");
+			$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+				->setIcon('/images/icons/play.png')
+				->setLink(X_Env::completeUrl($urlHelper->url()));
+			$return->append($item);
 		}
 		
 		return $return;
