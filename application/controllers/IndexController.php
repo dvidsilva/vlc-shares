@@ -28,7 +28,8 @@ class IndexController extends X_Controller_Action
 		
 		// filter out items (parental-control / hidden file / system dir)
 		foreach ($pageItems->getItems() as $key => $item) {
-			if ( in_array(false, X_VlcShares_Plugins::broker()->filterCollectionsItems($item, $this)) ) {
+			$results = X_VlcShares_Plugins::broker()->filterCollectionsItems($item, $this);
+			if ( $results != null && in_array(false, $results) ) {
 				//unset($pageItems[$key]);
 				$pageItems->remove($item);
 			}

@@ -21,12 +21,15 @@ class X_VlcShares_Plugins_FilterExt extends X_VlcShares_Plugins_Abstract {
 	}
 	
 	/**
-	 * @param array $item
+	 * Check $item extension and return false if it isn't inside a list of valid extensions
+	 * It works only if $provider is X_VlcShares_Plugins_FileSystem
+	 * and if $item as custom param X_VlcShares_Plugins_FileSystem:location
+	 * @param X_Page_Item_PItem $item
 	 * @param string $provider
 	 * @param Zend_Controller_Action $controller
 	 * @return boolean|null true or null if file is ok, false otherwise (will be filtered out)
 	 */
-	public function filterShareItems($item, $provider, Zend_Controller_Action $controller) {
+	public function filterShareItems(X_Page_Item_PItem $item, $provider, Zend_Controller_Action $controller) {
 		try {
 			$plugin = X_VlcShares_Plugins::broker()->getPlugins($provider);
 			if ( is_a($plugin, 'X_VlcShares_Plugins_FileSystem' ) && 
@@ -35,7 +38,7 @@ class X_VlcShares_Plugins_FilterExt extends X_VlcShares_Plugins_Abstract {
 				// so i have code suggestions
 				// X_VlcShares_Plugins_FileSystem register a custom param in item
 				// for location lookup
-				$location = $plugin->resolveLocation(@$item['X_VlcShares_Plugins_FileSystem:location']);
+				$location = $plugin->resolveLocation($item->getCustom('X_VlcShares_Plugins_FileSystem:location'));
 				// i must check for $location !== false as a fallback for no custom param case
 				if ( $location !== false && file_exists($location) ) {
 					// i have a location to check for hidden files:

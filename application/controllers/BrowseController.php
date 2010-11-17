@@ -26,21 +26,6 @@ class BrowseController extends X_Controller_Action {
 		
 	}
 	
-	/*
-	// vlc check if running is done at plugin level
-	// with a predispatch trigger
-	public function preDispatch() {
-		
-		X_Env::debug(__METHOD__);
-		
-		// devo controllare se vlc e' attivo, ma non posso farlo 
-		// tramite pid su windows
-		if ( $this->vlc->isRunning() ) {
-			$this->_forward('control', 'controls');
-		}
-	}
-	*/
-	
 	/**
 	 * The default action - show the home page
 	 */
@@ -61,24 +46,27 @@ class BrowseController extends X_Controller_Action {
 		}
 		$location = base64_decode($request->getParam('l', ''));
 
-    	$pageItems = array();
+    	$pageItems = new X_Page_ItemList_PItem();
     	
     	// links on top
-    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->preGetShareItems($provider, $location, $this));
+    	$pageItems->merge(X_VlcShares_Plugins::broker()->preGetShareItems($provider, $location, $this));
     	// normal links
-    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->getShareItems($provider, $location, $this));
+    	$pageItems->merge(X_VlcShares_Plugins::broker()->getShareItems($provider, $location, $this));
     	// bottom links
-		$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->postGetShareItems($provider, $location, $this));
+		$pageItems->merge(X_VlcShares_Plugins::broker()->postGetShareItems($provider, $location, $this));
 		
 		// filter out items (parental-control / hidden file / system dir)
-		foreach ($pageItems as $key => $item) {
-			if ( in_array(false, X_VlcShares_Plugins::broker()->filterShareItems($item, $provider, $this)) ) {
-				unset($pageItems[$key]);
+		foreach ($pageItems->getItems() as $key => $item) {
+			$results = X_VlcShares_Plugins::broker()->filterShareItems($item, $provider, $this);
+			if ( $results != null && in_array(false, $results) ) {
+				$pageItems->remove($item);
 			}
 		}
 		
-		
-		X_VlcShares_Plugins::broker()->orderShareItems(&$pageItems, $provider,  $this);
+		// I have to rebuild the itemlist because I can't rearrange items orders
+		$items = $pageItems->getItems();
+		X_VlcShares_Plugins::broker()->orderShareItems(&$items, $provider,  $this);
+		$pageItems = new X_Page_ItemList_PItem($items);
 		
 		
 		// trigger for page creation
