@@ -91,8 +91,11 @@ class Megavideo
           
          function getxml() 
          { 
-               $this->xml = file_get_contents("http://www.megavideo.com/xml/videolink.php?v=".$this->id."&id=".time()) or 
-                           die("Error!\n");       
+               $this->xml = file_get_contents("http://www.megavideo.com/xml/videolink.php?v=".$this->id."&id=".time()); // or
+               				//die("Error!\n"); 
+               if ( $this->xml === false ) {
+					throw new Exception('Megavideo wrapper error: file_get_contents');
+               }       
          } 
           
           
