@@ -43,35 +43,19 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 	public function getCollectionsItems(Zend_Controller_Action $controller) {
 		
 		X_Debug::i("Plugin triggered");
-		
-		// usando le opzioni, determino quali link inserire
-		// all'interno della pagina delle collections
-		
-		$urlHelper = $controller->getHelper('url');
-		/* @var $urlHelper Zend_Controller_Action_Helper_Url */
-		
-		//$serverUrl = $controller->getFrontController()->getBaseUrl();
-		$request = $controller->getRequest();
-		/* @var $request Zend_Controller_Request_Http */
-		//$request->get
-		
-		return array(
-			array(
-				'label' => X_Env::_('p_southpark_collectionindex'), 
-				'link'	=> X_Env::completeUrl(
-					$urlHelper->url(
-						array(
-							'controller' => 'browse',
-							'action' => 'share',
-							'p' => $this->getId(),
-						), 'default', true
-					)
-				),
-				'icon'	=> '/images/southpark/logo.png',
-				'desc'	=> X_Env::_('p_southpark_collectionindex_desc'),
-				'itemType'		=>	'folder'
-			)
-		);
+
+		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_southpark_collectionindex'));
+		$link->setIcon('/images/southpark/logo.png')
+			->setDescription(X_Env::_('p_southpark_collectionindex_desc'))
+			->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+			->setLink(
+				array(
+					'controller' => 'browse',
+					'action' => 'share',
+					'p' => $this->getId(),
+				), 'default', true
+			);
+		return new X_Page_ItemList_PItem(array($link));
 	}
 	
 	/**
@@ -92,7 +76,7 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 		
 		$urlHelper = $controller->getHelper('url');
 		
-		$items = array();
+		$items = new X_Page_ItemList_PItem();
 		
 		if ( $location != '' && array_key_exists((int) $location, $this->seasons) ) {
 			
@@ -125,46 +109,35 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 					$thumb = null;
 				}
 				
-				$item = array(
-					'label'		=>	"$label",
-					'link'		=>	X_Env::completeUrl(
-						$urlHelper->url(
-							array(
-								'action' => 'mode',
-								'l'	=>	base64_encode($id)
-							), 'default', false
-						)
-					),
-					__CLASS__.':location'	=>	$id,
-					'icon'	=>	'/images/icons/file_32.png',
-					'itemType'		=>	'file'
-					
-				);
+				$item = new X_Page_Item_PItem($this->getId().'-'.$label, $label);
+				$item->setIcon('/images/icons/file_32.png')
+					->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+					->setCustom(__CLASS__.':location', $id)
+					->setLink(array(
+						'action' => 'mode',
+						'l'	=>	base64_encode($id)
+					), 'default', false);
 				if ( $thumb !== null ) {
-					$item['thumb'] = $thumb;
+					$item->setThumbnail($thumb);
 				}
-				
-				$items[] = $item;
-				
+				$items->append($item);
 			}
 				
 			
 		} else {
 			
 			foreach ($this->seasons as $key => $seasons) {
-				$items[] = array(
-					'label'		=>	X_Env::_('p_southpark_season_n').": $key",
-					'link'		=>	X_Env::completeUrl(
-						$urlHelper->url(
-							array(
-								'l'	=>	base64_encode($key)
-							), 'default', false
-						)
-					),
-					__CLASS__.':location'	=>	$key,
-					'icon'	=>	'/images/icons/folder_32.png',
-					'itemType'		=>	'folder'
-				);
+				
+				$item = new X_Page_Item_PItem($this->getId().'-'.$key, X_Env::_('p_southpark_season_n').": $key");
+				$item->setIcon('/images/icons/folder_32.png')
+					->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+					->setCustom(__CLASS__.':location', $key)
+					->setLink(array(
+						'action' => 'share',
+						'l'	=>	base64_encode($key)
+					), 'default', false);
+				$items->append($item);
+				
 			}
 		}
 		
@@ -216,14 +189,12 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 		$url = $this->resolveLocation($location);
 		
 		if ( $url ) {
-	    	return array(array(
-				'label'		=>	X_Env::_('p_southpark_watchdirectly'),
-				'link'		=>	$url,
-	    		'type'		=>	X_Plx_Item::TYPE_VIDEO	
-			));
+			$link = new X_Page_Item_PItem('core-directwatch', X_Env::_('p_southpark_watchdirectly'));
+			$link->setIcon('/images/icons/play.png')
+				->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
+				->setLink($url);
+			return new X_Page_ItemList_PItem(array($link));
 		}
-		
-		
 		
 	}
 	

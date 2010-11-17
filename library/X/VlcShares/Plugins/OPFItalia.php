@@ -27,34 +27,18 @@ class X_VlcShares_Plugins_OPFItalia extends X_VlcShares_Plugins_Abstract impleme
 		
 		X_Debug::i("Plugin triggered");
 		
-		// usando le opzioni, determino quali link inserire
-		// all'interno della pagina delle collections
-		
-		$urlHelper = $controller->getHelper('url');
-		/* @var $urlHelper Zend_Controller_Action_Helper_Url */
-		
-		//$serverUrl = $controller->getFrontController()->getBaseUrl();
-		$request = $controller->getRequest();
-		/* @var $request Zend_Controller_Request_Http */
-		//$request->get
-		
-		return array(
-			array(
-				'label' => X_Env::_('p_opfitalia_collectionindex'), 
-				'link'	=> X_Env::completeUrl(
-					$urlHelper->url(
-						array(
-							'controller' => 'browse',
-							'action' => 'share',
-							'p' => $this->getId(),
-						), 'default', true
-					)
-				),
-				'icon'	=> '/images/opfitalia/logo.png',
-				'desc'	=> X_Env::_('p_opfitalia_collectionindex_desc'),
-				'itemType'		=>	'folder'
-			)
-		);
+		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_opfitalia_collectionindex'));
+		$link->setIcon('/images/opfitalia/logo.png')
+			->setDescription(X_Env::_('p_opfitalia_collectionindex_desc'))
+			->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+			->setLink(
+				array(
+					'controller' => 'browse',
+					'action' => 'share',
+					'p' => $this->getId(),
+				), 'default', true
+			);
+		return new X_Page_ItemList_PItem(array($link));
 	}
 	
 	/**
@@ -71,7 +55,7 @@ class X_VlcShares_Plugins_OPFItalia extends X_VlcShares_Plugins_Abstract impleme
 		
 		$urlHelper = $controller->getHelper('url');
 		
-		$items = array();
+		$items = new X_Page_ItemList_PItem();
 		
 		//try to disable SortItems plugin, so link are listed as in html page
 		X_VlcShares_Plugins::broker()->unregisterPluginClass('X_VlcShares_Plugins_SortItems');
@@ -106,24 +90,28 @@ class X_VlcShares_Plugins_OPFItalia extends X_VlcShares_Plugins_Abstract impleme
 				}
 				
 				@$epName = $node->parentNode->nextSibling->nextSibling->firstChild->nodeValue;
+
+				$item = new X_Page_Item_PItem($this->getId().'-'."$label-$epName", "$label: $epName");
+				$item->setIcon('/images/icons/file_32.png')
+					->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+					->setCustom(__CLASS__.':location', $href)
+					->setLink(array(
+						'action' => 'mode',
+						'l'	=>	base64_encode($href)
+					), 'default', false);
+				$items->append($item);
 				
-				$items[] = array(
-					'label'		=>	"$label: $epName",
-					'link'		=>	X_Env::completeUrl(
-						$urlHelper->url(
-							array(
-								'action' => 'mode',
-								'l'	=>	base64_encode($href)
-							), 'default', false
-						)
-					),
-					__CLASS__.':location'	=>	$href,
-					'icon'	=>	'/images/icons/file_32.png',
-					'itemType'		=>	'file'
-				);
 			}
 			
 			if ( count($items) == 0 ) {
+				
+				$item = new X_Page_Item_PItem($this->getId().'-ops', X_Env::_('p_opfitalia_opsnovideo'));
+				$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+					->setLink(X_Env::completeUrl(
+						$urlHelper->url()
+					));
+				$items->append($item);
+				
 				$items[] = array(
 					'label'		=>	X_Env::_('p_opfitalia_opsnovideo'),
 					'link'		=>	X_Env::completeUrl(
@@ -145,19 +133,15 @@ class X_VlcShares_Plugins_OPFItalia extends X_VlcShares_Plugins_Abstract impleme
 			
 				$label = $results->current()->nodeValue;
 				
-				$items[] = array(
-					'label'		=>	X_Env::_('p_opfitalia_saga') . ": $label",
-					'link'		=>	X_Env::completeUrl(
-						$urlHelper->url(
-							array(
-								'l'	=>	base64_encode($i)
-							), 'default', false
-						)
-					),
-					__CLASS__.':location'	=>	$i,
-					'icon'	=>	'/images/icons/folder_32.png',
-					'itemType'		=>	'folder'
-				);
+				$item = new X_Page_Item_PItem($this->getId()."-$label", X_Env::_('p_opfitalia_saga') . ": $label");
+				$item->setIcon('/images/icons/folder_32.png')
+					->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+					->setCustom(__CLASS__.':location', $i)
+					->setLink(array(
+						'l'	=>	base64_encode($i)
+					), 'default', false);
+				$items->append($item);
+				
 			}
 		}
 		
@@ -209,14 +193,12 @@ class X_VlcShares_Plugins_OPFItalia extends X_VlcShares_Plugins_Abstract impleme
 		$url = $this->resolveLocation($location);
 		
 		if ( $url ) {
-	    	return array(array(
-				'label'		=>	X_Env::_('p_opfitalia_watchdirectly'),
-				'link'		=>	$url,
-	    		'type'		=>	X_Plx_Item::TYPE_VIDEO	
-			));
+			$link = new X_Page_Item_PItem('core-directwatch', X_Env::_('p_opfitalia_watchdirectly'));
+			$link->setIcon('/images/icons/play.png')
+				->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
+				->setLink($url);
+			return new X_Page_ItemList_PItem(array($link));
 		}
-		
-		
 		
 	}
 	

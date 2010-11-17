@@ -27,7 +27,8 @@ class X_VlcShares_Plugins_SortItems extends X_VlcShares_Plugins_Abstract {
 		X_Debug::i('Plugin triggered');
 		try {
 			$plugin = X_VlcShares_Plugins::broker()->getPlugins($provider);
-			if ( is_a($plugin, 'X_VlcShares_Plugins_FileSystem' ) ) {
+			// TODO check for problem if i always use sortFolderBased
+			if ( true || is_a($plugin, 'X_VlcShares_Plugins_FileSystem' ) ) {
 				X_Debug::i('Sort sortFolderBased');
 				usort($items, array(__CLASS__, 'sortFolderBased'));
 			} else {
