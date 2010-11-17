@@ -3,6 +3,7 @@
 require_once 'X/VlcShares/Plugins/Abstract.php';
 require_once 'Megavideo.php'; // megavideo wrapper
 require_once 'X/VlcShares/Plugins/BackuppableInterface.php';
+require_once 'X/VlcShares/Plugins/Helper/Megavideo.php';
 
 
 /**
@@ -13,13 +14,23 @@ require_once 'X/VlcShares/Plugins/BackuppableInterface.php';
 class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface, X_VlcShares_Plugins_BackuppableInterface {
 	
 	public function __construct() {
-		$this->setPriority('getCollectionsItems')
+		$this
+			->setPriority('gen_beforeInit')
+			->setPriority('getCollectionsItems')
 			->setPriority('preRegisterVlcArgs')
 			->setPriority('getShareItems')
 			->setPriority('preGetModeItems')
 			->setPriority('getIndexActionLinks')
 			->setPriority('getIndexStatistics')
 			->setPriority('getIndexManageLinks');
+		
+	}
+	
+	/**
+	 * Registers a megavideo helper inside the helper broker
+	 */
+	public function gen_beforeInit(Zend_Controller_Action $controller) {
+		$this->helpers()->registerHelper('megavideo', new X_VlcShares_Plugins_Helper_Megavideo());
 	}
 	
 	/**
