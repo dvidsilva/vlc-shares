@@ -49,147 +49,129 @@ class X_VlcShares_Plugins_Controls extends X_VlcShares_Plugins_Abstract {
 	
 		$urlHelper = $controller->getHelper('url');
 		
-		$return = array();
+		$return = new X_Page_ItemList_PItem();
 
 		if ( $this->config('pauseresume.enabled', false)) {
 			// pause/resume
-			$return[] =	array(
-				'label'	=>	X_Env::_('p_controls_pauseresume'),
-				'link'	=>	X_Env::completeUrl($urlHelper->url(array(
-						'controller'		=>	'controls',
-						'action'	=>	'execute',
-						'a'			=>	'pause',
-						'pid'		=>	$this->getId(),
-					), 'default', false)
-				),
-				'icon'	=>	'/images/icons/pause.png'
-			);
+			$item = new X_Page_Item_PItem('controls-pauseresume', X_Env::_('p_controls_pauseresume'));
+			$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+				->setIcon('/images/icons/pause.png')
+				->setLink(array(
+					'controller'		=>	'controls',
+					'action'	=>	'execute',
+					'a'			=>	'pause',
+					'pid'		=>	$this->getId(),
+				), 'default', false);
+			$return->append($item);
 		}
 		if ( $this->config('stop.enabled', true)) {
 			// stop
-			$return[] =	array(
-				'label'	=>	X_Env::_('p_controls_stop'),
-				'link'	=>	X_Env::completeUrl($urlHelper->url(array(
-						'controller'		=>	'controls',
-						'action'	=>	'execute',
-						'a'			=>	'stop',
-						'pid'		=>	$this->getId(),
-					), 'default', false)
-				),
-				'icon'	=>	'/images/icons/stop.png'
-			);
+			$item = new X_Page_Item_PItem('controls-stop', X_Env::_('p_controls_stop'));
+			$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+				->setIcon('/images/icons/stop.png')
+				->setLink(array(
+					'controller'		=>	'controls',
+					'action'	=>	'execute',
+					'a'			=>	'stop',
+					'pid'		=>	$this->getId(),
+				), 'default', false);
+			$return->append($item);
 		}
 		if ( $this->config('forwardrelative.enabled', false)) {
 			// forward relative
-			$return[] =	array(
-				'label'	=>	X_Env::_('p_controls_forwardcustom'),
-				'link'	=>	X_Env::completeUrl($urlHelper->url(array(
-						'controller'		=>	'controls',
-						'action'			=>	'execute',
-						'a'					=>	'forward',
-						'pid'				=>	$this->getId(),
-						'param'				=>	'' // this will replaced by wiimc....
-					), 'default', false)
-				),
-				'type'	=> X_Plx_Item::TYPE_SEARCH,
-				'icon'	=>	'/images/icons/forward.png',
-				'desc'	=>	X_Env::_('p_controls_forwardcustom_desc')
-			);
+			$item = new X_Page_Item_PItem('controls-forwardcustom', X_Env::_('p_controls_forwardcustom'));
+			$item->setType(X_Page_Item_PItem::TYPE_REQUEST)
+				->setIcon('/images/icons/forward.png')
+				->setDescription(X_Env::_('p_controls_forwardcustom_desc'))
+				->setLink(array(
+					'controller'		=>	'controls',
+					'action'			=>	'execute',
+					'a'					=>	'forward',
+					'pid'				=>	$this->getId(),
+					'param'				=>	'' // this will replaced by wiimc....
+				), 'default', false);
+			$return->append($item);
 		}
 		if ( $this->config('backrelative.enabled', false)) {
 			// rewind relative
-			$return[] =	array(
-				'label'	=>	X_Env::_('p_controls_backcustom'),
-				'link'	=>	X_Env::completeUrl($urlHelper->url(array(
-						'controller'		=>	'controls',
-						'action'			=>	'execute',
-						'a'					=>	'back',
-						'pid'				=>	$this->getId(),
-						'param'				=>	'' // this will replaced by wiimc....
-					), 'default', false)
-				),
-				'type'	=> X_Plx_Item::TYPE_SEARCH,
-				'icon'	=>	'/images/icons/back.png',
-				'desc'	=>	X_Env::_('p_controls_backcustom_desc')
-			);
+			$item = new X_Page_Item_PItem('controls-backcustom', X_Env::_('p_controls_backcustom'));
+			$item->setType(X_Page_Item_PItem::TYPE_REQUEST)
+				->setIcon('/images/icons/back.png')
+				->setDescription(X_Env::_('p_controls_backcustom_desc'))
+				->setLink(array(
+					'controller'		=>	'controls',
+					'action'			=>	'execute',
+					'a'					=>	'back',
+					'pid'				=>	$this->getId(),
+					'param'				=>	'' // this will replaced by wiimc....
+				), 'default', false);
+			$return->append($item);
 		}
 		if ( $this->config('seek.enabled', true)) {
 			// seek to time
-			$return[] =	array(
-				'label'	=>	X_Env::_('p_controls_seektominute'),
-				'link'	=>	X_Env::completeUrl($urlHelper->url(array(
-						'controller'		=>	'controls',
-						'action'			=>	'execute',
-						'a'					=>	'seek',
-						'pid'				=>	$this->getId(),
-						'param'				=>	'' // this will replaced by wiimc....
-					), 'default', false)
-				),
-				'type'	=> X_Plx_Item::TYPE_SEARCH,
-				'icon'	=>	'/images/icons/seek.png',
-				'desc'	=>	X_Env::_('p_controls_seektominute_desc')
-			);
+			$item = new X_Page_Item_PItem('controls-seek', X_Env::_('p_controls_seektominute'));
+			$item->setType(X_Page_Item_PItem::TYPE_REQUEST)
+				->setIcon('/images/icons/seek.png')
+				->setDescription(X_Env::_('p_controls_seektominute_desc'))
+				->setLink(array(
+					'controller'		=>	'controls',
+					'action'			=>	'execute',
+					'a'					=>	'seek',
+					'pid'				=>	$this->getId(),
+					'param'				=>	'' // this will replaced by wiimc....
+				), 'default', false);
+			$return->append($item);
 		}
 		
 		if ( $this->config('oldstylecontrols.enabled', false) ) {
+			
+			$item = new X_Page_Item_PItem('controls-back5', X_Env::_('p_controls_back_5'));
+			$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+				->setIcon('/images/icons/back.png')
+				->setLink(array(
+					'controller'		=>	'controls',
+					'action'			=>	'execute',
+					'a'					=>	'back',
+					'pid'				=>	$this->getId(),
+					'param'				=>	'5' // this will replaced by wiimc....
+				), 'default', false);
+			$return->append($item);
 
-			$return[] =	array(
-				'label'	=>	X_Env::_('p_controls_back_5'),
-				'link'	=>	X_Env::completeUrl($urlHelper->url(array(
-						'controller'		=>	'controls',
-						'action'			=>	'execute',
-						'a'					=>	'back',
-						'pid'				=>	$this->getId(),
-						'param'				=>	'5' // this will replaced by wiimc....
-					), 'default', false)
-				),
-				'type'	=> X_Plx_Item::TYPE_SEARCH,
-				'icon'	=>	'/images/icons/back.png'
-			);
-			
-			
-			$return[] =	array(
-				'label'	=>	X_Env::_('p_controls_forward_5'),
-				'link'	=>	X_Env::completeUrl($urlHelper->url(array(
-						'controller'		=>	'controls',
-						'action'			=>	'execute',
-						'a'					=>	'forward',
-						'pid'				=>	$this->getId(),
-						'param'				=>	'5' // this will replaced by wiimc....
-					), 'default', false)
-				),
-				'type'	=> X_Plx_Item::TYPE_SEARCH,
-				'icon'	=>	'/images/icons/forward.png'
-			);
-			
-			$return[] =	array(
-				'label'	=>	X_Env::_('p_controls_back_30'),
-				'link'	=>	X_Env::completeUrl($urlHelper->url(array(
-						'controller'		=>	'controls',
-						'action'			=>	'execute',
-						'a'					=>	'back',
-						'pid'				=>	$this->getId(),
-						'param'				=>	'30' // this will replaced by wiimc....
-					), 'default', false)
-				),
-				'type'	=> X_Plx_Item::TYPE_SEARCH,
-				'icon'	=>	'/images/icons/back.png'
-			);
-			
-			
-			$return[] =	array(
-				'label'	=>	X_Env::_('p_controls_forward_30'),
-				'link'	=>	X_Env::completeUrl($urlHelper->url(array(
-						'controller'		=>	'controls',
-						'action'			=>	'execute',
-						'a'					=>	'forward',
-						'pid'				=>	$this->getId(),
-						'param'				=>	'30' // this will replaced by wiimc....
-					), 'default', false)
-				),
-				'type'	=> X_Plx_Item::TYPE_SEARCH,
-				'icon'	=>	'/images/icons/forward.png'
-			);
+			$item = new X_Page_Item_PItem('controls-forward5', X_Env::_('p_controls_forward_5'));
+			$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+				->setIcon('/images/icons/forward.png')
+				->setLink(array(
+					'controller'		=>	'controls',
+					'action'			=>	'execute',
+					'a'					=>	'forward',
+					'pid'				=>	$this->getId(),
+					'param'				=>	'5' // this will replaced by wiimc....
+				), 'default', false);
+			$return->append($item);
+
+						$item = new X_Page_Item_PItem('controls-back30', X_Env::_('p_controls_back_30'));
+			$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+				->setIcon('/images/icons/back.png')
+				->setLink(array(
+					'controller'		=>	'controls',
+					'action'			=>	'execute',
+					'a'					=>	'back',
+					'pid'				=>	$this->getId(),
+					'param'				=>	'30' // this will replaced by wiimc....
+				), 'default', false);
+			$return->append($item);
+
+			$item = new X_Page_Item_PItem('controls-forward30', X_Env::_('p_controls_forward_30'));
+			$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+				->setIcon('/images/icons/forward.png')
+				->setLink(array(
+					'controller'		=>	'controls',
+					'action'			=>	'execute',
+					'a'					=>	'forward',
+					'pid'				=>	$this->getId(),
+					'param'				=>	'30' // this will replaced by wiimc....
+				), 'default', false);
+			$return->append($item);
 			
 		}
 		

@@ -62,42 +62,29 @@ class ControlsController extends X_Controller_Action {
 
 	public function controlAction() {
 		
-		
 		$request = $this->getRequest();
-		
-		//X_VlcShares_Plugins::broker()->gen_preProviderSelection($this);
-		
-		/*
-		$provider = $request->getParam('p', false);
-		if ( $provider === false || !X_VlcShares_Plugins::broker()->isRegistered($provider) ) {
-			throw new Exception("Invalid provider");
-		}
-		$location = base64_decode($request->getParam('l', ''));
-		*/
 
-    	$pageItems = array();
+    	$pageItems = new X_Page_ItemList_PItem();
     	
     	// links on top
-    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->preGetControlItems($this));
+    	$pageItems->merge(X_VlcShares_Plugins::broker()->preGetControlItems($this));
     	
-    	// add a separator
-    	$pageItems[] = array(
-			'label'		=>	X_Env::_('_____options_separator_____'),
-			'link'		=>	X_Env::completeUrl(
-				$this->_helper->url->url(array(
+    	// add separator between play items and options items
+    	$separator = new X_Page_Item_PItem('core-separator', X_Env::_('_____options_separator_____'));
+    	$separator->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+    		->setLink(array(
 					'controller'	=> 'controls',
 					'action'		=>	'control', // i want to be sure that fake buttons forward to main action to avoid multiple seek in time
 					'pid'			=>	null, // no pid auto url
 					'a'				=>	null, // no a for auto url
 					'param'			=>	null,
-				), 'default', false)
-			)
-		);
+				), 'default', false);
+    	$pageItems->append($separator);
     	
     	// normal links
-    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->getControlItems($this));
+    	$pageItems->merge(X_VlcShares_Plugins::broker()->getControlItems($this));
     	// bottom links
-		$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->postGetControlItems($this));
+		$pageItems->merge(X_VlcShares_Plugins::broker()->postGetControlItems($this));
 		
 		
 		// trigger for page creation
@@ -129,30 +116,27 @@ class ControlsController extends X_Controller_Action {
 		X_VlcShares_Plugins::broker()->postExecute($this->vlc, $pid, $a, $this);
 		
 		
-    	$pageItems = array();
+    	$pageItems = new X_Page_ItemList_PItem();
     	
     	// links on top
-    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->preGetExecuteItems($pid, $a, $this));
+    	$pageItems->merge(X_VlcShares_Plugins::broker()->preGetExecuteItems($pid, $a, $this));
     	
-    	// add a separator
-    	$pageItems[] = array(
-			'label'		=>	X_Env::_('_____options_separator_____'),
-			'link'		=>	X_Env::completeUrl(
-				$this->_helper->url->url(array(
+    	// add separator between play items and options items
+    	$separator = new X_Page_Item_PItem('core-separator', X_Env::_('_____options_separator_____'));
+    	$separator->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+    		->setLink(array(
 					'controller'	=> 'controls',
 					'action'		=>	'control', // i want to be sure that fake buttons forward to main action to avoid multiple seek in time
 					'pid'			=>	null, // no pid auto url
 					'a'				=>	null, // no a for auto url
 					'param'			=>	null,
-				), 'default', false)
-			)
-		);
-    	
+				), 'default', false);
+    	$pageItems->append($separator);
+    	    	
     	// normal links
-    	$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->getExecuteItems($pid, $a, $this));
+    	$pageItems->merge(X_VlcShares_Plugins::broker()->getExecuteItems($pid, $a, $this));
     	// bottom links
-		$pageItems = array_merge($pageItems, X_VlcShares_Plugins::broker()->postGetExecuteItems($pid, $a, $this));
-		
+		$pageItems->merge(X_VlcShares_Plugins::broker()->postGetExecuteItems($pid, $a, $this));
 		
 		// trigger for page creation
 		X_VlcShares_Plugins::broker()->gen_afterPageBuild(&$pageItems, $this);
