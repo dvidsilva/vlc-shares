@@ -29,35 +29,19 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 	public function getCollectionsItems(Zend_Controller_Action $controller) {
 		
 		X_Debug::i("Plugin triggered");
-		
-		// usando le opzioni, determino quali link inserire
-		// all'interno della pagina delle collections
-		
-		$urlHelper = $controller->getHelper('url');
-		/* @var $urlHelper Zend_Controller_Action_Helper_Url */
-		
-		//$serverUrl = $controller->getFrontController()->getBaseUrl();
-		$request = $controller->getRequest();
-		/* @var $request Zend_Controller_Request_Http */
-		//$request->get
-		
-		return array(
-			array(
-				'label' => X_Env::_('p_dbforever_collectionindex'), 
-				'link'	=> X_Env::completeUrl(
-					$urlHelper->url(
-						array(
-							'controller' => 'browse',
-							'action' => 'share',
-							'p' => $this->getId(),
-						), 'default', true
-					)
-				),
-				'icon'	=> '/images/dbforever/logo.png',
-				'desc'	=> X_Env::_('p_dbforever_collectionindex_desc'),
-				'itemType'		=>	'folder',
-			)
-		);
+
+		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_dbforever_collectionindex'));
+		$link->setIcon('/images/dbforever/logo.png')
+			->setDescription(X_Env::_('p_dbforever_collectionindex_desc'))
+			->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+			->setLink(
+				array(
+					'controller' => 'browse',
+					'action' => 'share',
+					'p' => $this->getId(),
+				), 'default', true
+			);
+		return new X_Page_ItemList_PItem(array($link));
 	}
 	
 	/**
@@ -74,7 +58,7 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 		
 		$urlHelper = $controller->getHelper('url');
 		
-		$items = array();
+		$items = new X_Page_ItemList_PItem();
 		
 		if ( $location != '' && ( $location == self::INDEX_NARUTO || $location == self::INDEX_ONEPIECE || $location == self::INDEX_BLEACH   ) ) {
 			
@@ -92,72 +76,50 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 				$node = $results->current();
 				$href = $node->getAttribute('href');
 				$label = $node->nodeValue;
-				
-				$items[] = array(
-					'label'		=>	"$label",
-					'link'		=>	X_Env::completeUrl(
-						$urlHelper->url(
-							array(
-								'action' => 'mode',
-								'l'	=>	base64_encode($href)
-							), 'default', false
-						)
-					),
-					__CLASS__.':location'	=>	$href,
-					'icon'		=> '/images/icons/file_32.png',
-					'itemType'		=>	'file'
-				);
+
+				$item = new X_Page_Item_PItem($this->getId().'-'.$label, $label);
+				$item->setIcon('/images/icons/file_32.png')
+					->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+					->setCustom(__CLASS__.':location', $href)
+					->setLink(array(
+						'action' => 'mode',
+						'l'	=>	base64_encode($href)
+					), 'default', false);
+				$items->append($item);
 				
 			}
 			
-			
-			
 		} else {
-			
-			$items[] = array(
-				'label'		=>	X_Env::_('p_dbforever_naruto_ep'),
-				'link'		=>	X_Env::completeUrl(
-					$urlHelper->url(
-						array(
-							'l'	=>	base64_encode(self::INDEX_NARUTO)
-						), 'default', false
-					)
-				),
-				__CLASS__.':location'	=>	self::INDEX_NARUTO,
-				'icon'		=> '/images/icons/folder_32.png',
-				'thumb'		=> 'http://www.dbforever.net/img/banner/naruto_banner_grande.jpg',
-				'itemType'		=>	'folder'
-			);
 
-			$items[] = array(
-				'label'		=>	X_Env::_('p_dbforever_onepiece_ep'),
-				'link'		=>	X_Env::completeUrl(
-					$urlHelper->url(
-						array(
-							'l'	=>	base64_encode(self::INDEX_ONEPIECE)
-						), 'default', false
-					)
-				),
-				__CLASS__.':location'	=>	self::INDEX_ONEPIECE,
-				'icon'		=> '/images/icons/folder_32.png',
-				'thumb'		=> 'http://www.dbforever.net/img/banner/onepiece_banner_grande.jpg',
-				'itemType'		=>	'folder'
-			);
+			$item = new X_Page_Item_PItem($this->getId().'-'.self::INDEX_NARUTO, X_Env::_('p_dbforever_naruto_ep'));
+			$item->setIcon('/images/icons/folder_32.png')
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+				->setCustom(__CLASS__.':location', self::INDEX_NARUTO)
+				->setThumbnail('http://www.dbforever.net/img/banner/naruto_banner_grande.jpg')
+				->setLink(array(
+					'l'	=>	base64_encode(self::INDEX_NARUTO)
+				), 'default', false);
+			$items->append($item);
+
+			$item = new X_Page_Item_PItem($this->getId().'-'.self::INDEX_ONEPIECE, X_Env::_('p_dbforever_onepiece_ep'));
+			$item->setIcon('/images/icons/folder_32.png')
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+				->setCustom(__CLASS__.':location', self::INDEX_ONEPIECE)
+				->setThumbnail('http://www.dbforever.net/img/banner/onepiece_banner_grande.jpg')
+				->setLink(array(
+					'l'	=>	base64_encode(self::INDEX_ONEPIECE)
+				), 'default', false);
+			$items->append($item);
 			
-			$items[] = array(
-				'label'		=>	X_Env::_('p_dbforever_bleach_ep'),
-				'link'		=>	X_Env::completeUrl(
-					$urlHelper->url(
-						array(
-							'l'	=>	base64_encode(self::INDEX_BLEACH)
-						), 'default', false
-					)
-				),
-				__CLASS__.':location'	=>	self::INDEX_BLEACH,
-				'icon'		=> '/images/icons/folder_32.png',
-				'thumb'		=> 'http://www.dbforever.net/img/banner/bleach_banner_grande.jpg',
-				'itemType'		=>	'folder'
-			);
+			$item = new X_Page_Item_PItem($this->getId().'-'.self::INDEX_BLEACH, X_Env::_('p_dbforever_bleach_ep'));
+			$item->setIcon('/images/icons/folder_32.png')
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+				->setCustom(__CLASS__.':location', self::INDEX_BLEACH)
+				->setThumbnail('http://www.dbforever.net/img/banner/bleach_banner_grande.jpg')
+				->setLink(array(
+					'l'	=>	base64_encode(self::INDEX_BLEACH)
+				), 'default', false);
+			$items->append($item);
 			
 		}
 		
@@ -209,15 +171,12 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 		$url = $this->resolveLocation($location);
 		
 		if ( $url ) {
-	    	return array(array(
-				'label'		=>	X_Env::_('p_dbforever_watchdirectly'),
-				'link'		=>	$url,
-	    		'type'		=>	X_Plx_Item::TYPE_VIDEO	
-			));
+			$link = new X_Page_Item_PItem('core-directwatch', X_Env::_('p_dbforever_watchdirectly'));
+			$link->setIcon('/images/icons/play.png')
+				->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
+				->setLink($url);
+			return new X_Page_ItemList_PItem(array($link));
 		}
-		
-		
-		
 	}
 	
 	private $cachedLocation = array();
