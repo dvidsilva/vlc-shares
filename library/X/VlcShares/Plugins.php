@@ -58,6 +58,9 @@ final class X_VlcShares_Plugins {
 			try {
 				if ( $options->$pKey ) {
 					$pValue = $options->$pKey->toArray();
+				} else {
+					// no configs
+					$pValue = array();
 				}
 			} catch (Exception $e ) { 
 				// no configs
@@ -84,6 +87,7 @@ final class X_VlcShares_Plugins {
 				// plugins system from
 				//	event-based -> function-based
 				$plugin = new $className();
+				//X_Debug::i($pKey . ":\n".var_export($pValue, true));
 				$plugin->setConfigs(new Zend_Config($pValue));
 				self::$_pluginBroker->registerPlugin($pKey, $plugin, true );
 			}
