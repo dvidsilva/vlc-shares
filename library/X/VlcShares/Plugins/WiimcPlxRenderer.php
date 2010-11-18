@@ -47,8 +47,7 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 			
 			switch ( $item->getType() ) {
 				case X_Page_Item_PItem::TYPE_CONTAINER:
-						// check for type=folder if wiimcplus
-						$plxItemType = $enhanced ? 'folder' : X_Plx_Item::TYPE_PLAYLIST;
+						$plxItemType = X_Plx_Item::TYPE_PLAYLIST;
 						$plxItemWiimcplusIcon = 'folder';
 						break;
 				case X_Page_Item_PItem::TYPE_ELEMENT:
