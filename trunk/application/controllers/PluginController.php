@@ -243,6 +243,9 @@ class PluginController extends X_Controller_Action
 			
 			// ... then copy
 			foreach ($toBeCopied as $copyInfo) {
+				if ( !file_exists(dirname($copyInfo['dest'])) ) {
+					@mkdir(dirname($copyInfo['dest']), 0777, true);
+				}
 				if ( !copy($copyInfo['src'], $copyInfo['dest']) ) {
 					$this->_helper->flashMessenger(array('text' => X_Env::_('plugin_err_installerror_copyerror').": <br/>".$copyInfo['src'].'<br/>'.$copyInfo['dest'], 'type' => 'error'));
 				}

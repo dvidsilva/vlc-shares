@@ -7,7 +7,7 @@
 		<status>stable</status>
 		<key>animedb</key>
 		<file>X/VlcShares/Plugins/AnimeDb.php</file>
-		<class>X_VlcShares_Plugins_AnimeDb.php</class>
+		<class>X_VlcShares_Plugins_AnimeDb</class>
 		<compatibility>
 			<from>0.5.1</from>
 			<to>0.6</to>
@@ -18,7 +18,7 @@
 			<X>
 				<VlcShares>
 					<Plugins>
-						<file>AnimeDB.php</file>
+						<file>AnimeDb.php</file>
 					</Plugins>
 				</VlcShares>
 			</X>
