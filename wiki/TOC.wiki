@@ -9,6 +9,7 @@
       *  [AndroidDeviceConfiguration Android devices configuration]
       *  [WiimcConfiguration Wiimc configuration]
    * [PluginsList Plugins infos]
+      *  [PluginsList#Installable_Plugins Installable Plugins
       *  [PluginsList#WiimcPlxRenderer WiimcPlxRenderer]
       *  [PluginsList#MobileRenderer MobileRenderer]
       *  [PluginsList#Profiles Profiles]
