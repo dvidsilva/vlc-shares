@@ -1,5 +1,6 @@
 <?php
 
+require_once 'Zend/Translate.php';
 require_once 'Zend/Config.php';
 require_once 'Zend/Controller/Front.php';
 require_once 'X/VlcShares/Plugins/Abstract.php';
@@ -18,6 +19,9 @@ class X_Env {
 	private static $_psExec = null;
 	private static $_debug = null;
 	private static $_pluginsEvents = array();
+	/**
+	 * @var Zend_Translate
+	 */
 	private static $_translator = null;
 	private static $_forcedPort = '80';
 	
@@ -173,17 +177,27 @@ class X_Env {
 	}
 	
 	static private $_stringsWriter = null;
+	
+	/**
+	 * Set a static reference to a global Zend_Translate object
+	 * usable through self::_() function
+	 * If called more then one time, from the second call
+	 * the $translator object will be appended to the previous one
+	 * @param Zend_Translate $translator
+	 */
 	static public function initTranslator(Zend_Translate $translator) {
 		//if ( true ) self::$_stringsWriter = new StringsWriter();
 		if ( is_null(self::$_translator) ) {
 			self::$_translator = $translator;
 			X_Debug::i("Translator enabled");
+		} else {
+			self::$_translator->getAdapter()->addTranslation($translator);
 		}
 	}
 	
 	
 	static public function _($message) {
-		if ( !is_null(self::$_stringsWriter)) self::$_stringsWriter->_($message);
+		//if ( !is_null(self::$_stringsWriter)) self::$_stringsWriter->_($message);
 		if ( !is_null(self::$_translator) ) {
 			return self::$_translator->_($message);
 		}
@@ -203,7 +217,7 @@ class X_Env {
 	 * @return string
 	 */
 	static public function encode($string) {
-		return rawurlencode(base64_encode($string));
+		return str_replace('/', '_', base64_encode($string));
 	}
 	
 	/**
@@ -212,7 +226,7 @@ class X_Env {
 	 * @return string
 	 */
 	static public function decode($string) {
-		return base64_decode(rawurldecode($string));
+		return base64_decode(str_replace('_', '/', $string));
 	}
 	
 }
