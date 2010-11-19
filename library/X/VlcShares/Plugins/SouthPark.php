@@ -115,7 +115,7 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 					->setCustom(__CLASS__.':location', $id)
 					->setLink(array(
 						'action' => 'mode',
-						'l'	=>	base64_encode($id)
+						'l'	=>	X_Env::encode($id)
 					), 'default', false);
 				if ( $thumb !== null ) {
 					$item->setThumbnail($thumb);
@@ -134,7 +134,7 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 					->setCustom(__CLASS__.':location', $key)
 					->setLink(array(
 						'action' => 'share',
-						'l'	=>	base64_encode($key)
+						'l'	=>	X_Env::encode($key)
 					), 'default', false);
 				$items->append($item);
 				

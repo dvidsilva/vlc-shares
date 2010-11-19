@@ -89,7 +89,7 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 					->setCustom(__CLASS__.':location', $video->getId())
 					->setLink(array(
 						'action' => 'mode',
-						'l'	=>	base64_encode($video->getId())
+						'l'	=>	X_Env::encode($video->getId())
 					), 'default', false);
 				$items->append($item);
 			}
@@ -105,7 +105,7 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 					->setType(X_Page_Item_PItem::TYPE_CONTAINER)
 					->setCustom(__CLASS__.':location', $share['category'])
 					->setLink(array(
-						'l'	=>	base64_encode($share['category'])
+						'l'	=>	X_Env::encode($share['category'])
 					), 'default', false);
 				$items->append($item);
 			}

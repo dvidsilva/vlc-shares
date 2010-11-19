@@ -36,13 +36,13 @@ class X_VlcShares_Plugins_MobileRenderer extends X_VlcShares_Plugins_Abstract {
 			$providerObj = X_VlcShares_Plugins::broker()->getPlugins($request->getParam('p',''));
 			$view->view->providerName = strtolower($providerObj->getId());
 			if ( $providerObj instanceof X_VlcShares_Plugins_ResolverDisplayableInterface ) {
-				// location in request obj are base64_encoded
-				$view->view->location = $providerObj->resolveLocation(base64_decode($request->getParam('l', '')));
+				// location in request obj are X_Env::encoded
+				$view->view->location = $providerObj->resolveLocation(X_Env::decode($request->getParam('l', '')));
 			}
 			if ( $providerObj instanceof X_VlcShares_Plugins_ResolverInterface ) {
-				// location in request obj are base64_encoded
-				$view->view->locationRaw = $providerObj->resolveLocation(base64_decode($request->getParam('l', '')));
-				$view->view->parentLocation = $providerObj->getParentLocation(base64_decode($request->getParam('l', '')));
+				// location in request obj are X_Env::encoded
+				$view->view->locationRaw = $providerObj->resolveLocation(X_Env::decode($request->getParam('l', '')));
+				$view->view->parentLocation = $providerObj->getParentLocation(X_Env::decode($request->getParam('l', '')));
 			}
 		} catch (Exception $e) {
 			//die('No provider');

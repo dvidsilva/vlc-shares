@@ -25,7 +25,7 @@ class ConfigController extends X_Controller_Action {
     	//$section = $this->getRequest()->getParam('section', false);
     	$section = 'plugins';
     	$key = $this->getRequest()->getParam('key', false);
-    	$redirect = base64_decode($this->getRequest()->getParam('r', ''));
+    	$redirect = X_Env::decode($this->getRequest()->getParam('r', ''));
     	if ( $redirect == '') {
     		$redirect = 'config:index';
     	}

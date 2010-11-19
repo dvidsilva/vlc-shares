@@ -39,6 +39,13 @@ class X_Page_Item_Link extends X_Page_Item {
 			$link = (string) $link;
 			$this->url = true;
 		} else {
+			// i need to urlencode location param for 
+			// base64 -> / char
+			/*
+			if ( array_key_exists('l', $link ) ) {
+				$link['l'] = urlencode($link['l']);
+			}
+			*/
 			$this->url = false;
 		}
 		$this->link = $link;

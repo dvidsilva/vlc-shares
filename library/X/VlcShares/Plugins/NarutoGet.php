@@ -38,7 +38,7 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 					'controller' => 'browse',
 					'action' => 'share',
 					'p' => $this->getId(),
-					//'l' => base64_encode(self::INDEX_SHIPPUDEN)
+					//'l' => X_Env::encode(self::INDEX_SHIPPUDEN)
 				), 'default', true
 			);
 		return new X_Page_ItemList_PItem(array($link));
@@ -90,7 +90,7 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 						->setCustom(__CLASS__.':location', $href)
 						->setLink(array(
 							'action' => 'mode',
-							'l'	=>	base64_encode($href)
+							'l'	=>	X_Env::encode($href)
 						), 'default', false);
 					$items->append($item);
 				}
@@ -119,7 +119,7 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 								$urlHelper->url(
 									array(
 										'action' => 'mode',
-										'l'	=>	base64_encode($href)
+										'l'	=>	X_Env::encode($href)
 									), 'default', false
 								)
 							),
@@ -151,7 +151,7 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 								$urlHelper->url(
 									array(
 										'action' => 'share',
-										'l'	=>	base64_encode("$type:$href")
+										'l'	=>	X_Env::encode("$type:$href")
 									), 'default', false
 								)
 							),
@@ -168,7 +168,7 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 					$urlHelper->url(
 						array(
 							'action' => 'share',
-							'l'	=>	base64_encode(self::INDEX_NARUTO)
+							'l'	=>	X_Env::encode(self::INDEX_NARUTO)
 						), 'default', false
 					)
 				),
@@ -180,7 +180,7 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 					$urlHelper->url(
 						array(
 							'action' => 'share',
-							'l'	=>	base64_encode(self::INDEX_SHIPPUDEN)
+							'l'	=>	X_Env::encode(self::INDEX_SHIPPUDEN)
 						), 'default', false
 					)
 				),

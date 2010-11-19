@@ -97,13 +97,13 @@ class X_VlcShares_Plugins_OPFItalia extends X_VlcShares_Plugins_Abstract impleme
 					->setCustom(__CLASS__.':location', $href)
 					->setLink(array(
 						'action' => 'mode',
-						'l'	=>	base64_encode($href)
+						'l'	=>	X_Env::encode($href)
 					), 'default', false);
 				$items->append($item);
 				
 			}
 			
-			if ( count($items) == 0 ) {
+			if ( count($items->getItems()) == 0 ) {
 				
 				$item = new X_Page_Item_PItem($this->getId().'-ops', X_Env::_('p_opfitalia_opsnovideo'));
 				$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
@@ -111,13 +111,6 @@ class X_VlcShares_Plugins_OPFItalia extends X_VlcShares_Plugins_Abstract impleme
 						$urlHelper->url()
 					));
 				$items->append($item);
-				
-				$items[] = array(
-					'label'		=>	X_Env::_('p_opfitalia_opsnovideo'),
-					'link'		=>	X_Env::completeUrl(
-						$urlHelper->url()
-					)
-				);
 			}
 			
 		} else {
@@ -138,7 +131,7 @@ class X_VlcShares_Plugins_OPFItalia extends X_VlcShares_Plugins_Abstract impleme
 					->setType(X_Page_Item_PItem::TYPE_CONTAINER)
 					->setCustom(__CLASS__.':location', $i)
 					->setLink(array(
-						'l'	=>	base64_encode($i)
+						'l'	=>	X_Env::encode($i)
 					), 'default', false);
 				$items->append($item);
 				

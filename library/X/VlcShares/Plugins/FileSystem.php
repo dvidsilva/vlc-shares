@@ -81,7 +81,7 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 							->setType(X_Page_Item_PItem::TYPE_CONTAINER)
 							->setCustom(__CLASS__.':location', "{$share->getId()}:{$path}{$entry->getFilename()}/")
 							->setLink(array(
-								'l'	=>	base64_encode("{$share->getId()}:{$path}{$entry->getFilename()}/")
+								'l'	=>	X_Env::encode("{$share->getId()}:{$path}{$entry->getFilename()}/")
 							), 'default', false);
 						$items->append($item);
 					} else if ($entry->isFile() ) {
@@ -91,7 +91,7 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 							->setCustom(__CLASS__.':location', "{$share->getId()}:{$path}{$entry->getFilename()}")
 							->setLink(array(
 								'action' => 'mode',
-								'l'	=>	base64_encode("{$share->getId()}:{$path}{$entry->getFilename()}")
+								'l'	=>	X_Env::encode("{$share->getId()}:{$path}{$entry->getFilename()}")
 							), 'default', false);
 						$items->append($item);
 						
@@ -114,7 +114,7 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 					->setType(X_Page_Item_PItem::TYPE_CONTAINER)
 					->setCustom(__CLASS__.':location', "{$share->getId()}:/")
 					->setLink(array(
-						'l'	=>	base64_encode("{$share->getId()}:/")
+						'l'	=>	X_Env::encode("{$share->getId()}:/")
 					), 'default', false);
 				$items->append($item);
 			}
