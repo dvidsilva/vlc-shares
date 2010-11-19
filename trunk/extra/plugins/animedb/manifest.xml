@@ -28,6 +28,13 @@
 				<file>README.txt</file>
 			</animedb>
 		</data>
+		<public>
+			<images>
+				<animedb>
+					<file>logo.png</file>
+				</animedb>
+			</images>
+		</public>
 		<languages>
 			<file>X_VlcShares_Plugins_AnimeDb.en_GB.ini</file>
 			<file>X_VlcShares_Plugins_AnimeDb.it_IT.ini</file>

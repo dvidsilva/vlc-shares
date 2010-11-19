@@ -46,7 +46,7 @@ class X_VlcShares_Plugins_AnimeDb extends X_VlcShares_Plugins_Abstract implement
 		X_Debug::i("Plugin triggered");
 		
 		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_animedb_collectionindex'));
-		$link//->setIcon('/images/animedb/logo.png')
+		$link->setIcon('/images/animedb/logo.png')
 			->setDescription(X_Env::_('p_animedb_collectionindex_desc'))
 			->setType(X_Page_Item_PItem::TYPE_CONTAINER)
 			->setLink(
@@ -248,7 +248,7 @@ class X_VlcShares_Plugins_AnimeDb extends X_VlcShares_Plugins_Abstract implement
 
 		$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_animedb_mlink'));
 		$link->setTitle(X_Env::_('p_animedb_managetitle'))
-			//->setIcon('/images/animedb/logo.png')
+			->setIcon('/images/animedb/logo.png')
 			->setLink(array(
 					'controller'	=>	'config',
 					'action'		=>	'index',
