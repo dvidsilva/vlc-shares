@@ -4,7 +4,6 @@ require_once ('X/VlcShares/Plugins/Helper/Abstract.php');
 require_once ('X/VlcShares/Plugins/Helper/Mediainfo.php');
 require_once ('X/VlcShares/Plugins/Helper/FFMpeg.php');
 require_once ('X/VlcShares/Plugins/Helper/StreaminfoInterface.php');
-require_once ('X/VlcShares/Plugins/Helper/GSpot.php');
 
 /**
  * Give info about a location

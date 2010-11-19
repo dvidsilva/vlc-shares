@@ -13,9 +13,9 @@ class X_VlcShares_Plugins_Helper_Broker {
 	private $mediainfo;
 	/**
 	 * 
-	 * @var X_VlcShares_Plugins_Helper_GSpot
+	 * @var X_VlcShares_Plugins_Helper_Language
 	 */
-	private $gspot;
+	private $language;
 
 	/**
 	 * 
@@ -43,13 +43,13 @@ class X_VlcShares_Plugins_Helper_Broker {
 	public function init(Zend_Config $options) {
 		
 		$this->mediainfo = new X_VlcShares_Plugins_Helper_Mediainfo($options->get('mediainfo', new Zend_Config(array())));
-		$this->gspot = new X_VlcShares_Plugins_Helper_GSpot($options->get('gspot', new Zend_Config(array())));
+		$this->language = new X_VlcShares_Plugins_Helper_Language($options->get('language', new Zend_Config(array())));
 		$this->ffmpeg = new X_VlcShares_Plugins_Helper_FFMpeg($options->get('ffmpeg', new Zend_Config(array())));
 		$this->devices = new X_VlcShares_Plugins_Helper_Devices($options->get('devices', new Zend_Config(array())));
 		$this->stream = new X_VlcShares_Plugins_Helper_Stream($options->get('stream', new Zend_Config(array())));
 		
 		$this->registerHelper('mediainfo', $this->mediainfo, true)
-			->registerHelper('gspot', $this->gspot, true)
+			->registerHelper('language', $this->language, true)
 			->registerHelper('ffmpeg', $this->ffmpeg, true)
 			->registerHelper('devices', $this->devices, true)
 			->registerHelper('stream', $this->stream, true);
@@ -61,9 +61,9 @@ class X_VlcShares_Plugins_Helper_Broker {
 	public function mediainfo() { return $this->mediainfo; }
 	
 	/**
-	 * @return X_VlcShares_Plugins_Helper_GSpot
+	 * @return X_VlcShares_Plugins_Helper_Language
 	 */
-	public function gspot() { return $this->gspot; }
+	public function language() { return $this->language; }
 	
 	/**
 	 * @return X_VlcShares_Plugins_Helper_FFMpeg
