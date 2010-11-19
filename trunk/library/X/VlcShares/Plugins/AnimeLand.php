@@ -82,7 +82,7 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 					->setCustom(__CLASS__.':location', $href)
 					->setLink(array(
 						'action' => 'mode',
-						'l'	=>	base64_encode($href)
+						'l'	=>	X_Env::encode($href)
 					), 'default', false);
 				$items->append($item);
 			}
@@ -114,7 +114,7 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 						->setCustom(__CLASS__.':location', $href)
 						->setLink(array(
 							'action' => 'mode',
-							'l'	=>	base64_encode($href)
+							'l'	=>	X_Env::encode($href)
 						), 'default', false);
 					$items->append($item);
 					
@@ -126,7 +126,7 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 						->setCustom(__CLASS__.':location', $href)
 						->setLink(array(
 							'action' => 'share',
-							'l'	=>	base64_encode($href)
+							'l'	=>	X_Env::encode($href)
 						), 'default', false);
 					$items->append($item);
 				}

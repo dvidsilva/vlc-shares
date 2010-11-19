@@ -72,7 +72,7 @@ $v_items = $this->items;
 	id="usc_mobile">VLC Shares</a>
 	<?php if ( $this->parentLocation !== false ) :?>
 		<a
-	href="<?php echo $this->url(array('l' => ($this->parentLocation == '' ? null : base64_encode($this->parentLocation))), 'default', false); ?>"
+	href="<?php echo $this->url(array('l' => ($this->parentLocation == '' ? null : X_Env::encode($this->parentLocation))), 'default', false); ?>"
 	id="app_icon"> <img
 	src="<?php echo $this->baseUrl('/images/mobile/back.png'); ?>" /> </a>
 	<?php else: ?>

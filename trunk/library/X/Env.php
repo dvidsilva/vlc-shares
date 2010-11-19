@@ -197,6 +197,24 @@ class X_Env {
 		return (substr($string, 0, strlen($substring)) == $substring);
 	}
 	
+	/**
+	 * Encode $string in a url-safe way
+	 * @param string $string
+	 * @return string
+	 */
+	static public function encode($string) {
+		return rawurlencode(base64_encode($string));
+	}
+	
+	/**
+	 * Decode $string in a url-safe way
+	 * @param string $string
+	 * @return string
+	 */
+	static public function decode($string) {
+		return base64_decode(rawurldecode($string));
+	}
+	
 }
 
 class StringsWriter {

@@ -50,7 +50,7 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		$subParam = $controller->getRequest()->getParam($this->getId(), false);
 		
 		if ( $subParam !== false ) {
-			$subParam = base64_decode($subParam);
+			$subParam = X_Env::decode($subParam);
 			list($type, $source) = explode(':', $subParam, 2);
 			$subLabel = X_Env::_("p_filesubs_subtype_$type")." ($source)";
 		}
@@ -109,7 +109,7 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		// i try to mark current selected sub based on $this->getId() param
 		// in $currentSub i get the name of the current profile
 		$currentSub = $controller->getRequest()->getParam($this->getId(), false);
-		if ( $currentSub !== false ) $currentSub = base64_decode($currentSub);
+		if ( $currentSub !== false ) $currentSub = X_Env::decode($currentSub);
 
 		$return = new X_Page_ItemList_PItem();
 		$item = new X_Page_Item_PItem($this->getId().'-none', X_Env::_('p_filesubs_selection_none'));
@@ -141,7 +141,7 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 					->setLink(array(
 							'action'	=>	'mode',
 							'pid'		=>	null,
-							$this->getId() => base64_encode(self::STREAM.":{$streamId}") // set this plugin selection as stream:$streamId
+							$this->getId() => X_Env::encode(self::STREAM.":{$streamId}") // set this plugin selection as stream:$streamId
 						), 'default', false)
 					->setHighlight($currentSub == self::STREAM.":{$streamId}");
 				$return->append($item);
@@ -164,7 +164,7 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 					->setLink(array(
 							'action'	=>	'mode',
 							'pid'		=>	null,
-							$this->getId() => base64_encode(self::FILE.":{$streamId}") // set this plugin selection as stream:$streamId
+							$this->getId() => X_Env::encode(self::FILE.":{$streamId}") // set this plugin selection as stream:$streamId
 						), 'default', false)
 					->setHighlight($currentSub == self::FILE.":{$streamId}");
 				$return->append($item);
@@ -194,7 +194,7 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		
 		if ( $subParam !== false ) {
 			
-			$subParam = base64_decode($subParam);
+			$subParam = X_Env::decode($subParam);
 			list ($type, $sub) = explode(':', $subParam, 2);
 
 			 if ( $type == self::FILE ) {

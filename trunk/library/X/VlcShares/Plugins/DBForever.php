@@ -83,7 +83,7 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 					->setCustom(__CLASS__.':location', $href)
 					->setLink(array(
 						'action' => 'mode',
-						'l'	=>	base64_encode($href)
+						'l'	=>	X_Env::encode($href)
 					), 'default', false);
 				$items->append($item);
 				
@@ -97,7 +97,7 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 				->setCustom(__CLASS__.':location', self::INDEX_NARUTO)
 				->setThumbnail('http://www.dbforever.net/img/banner/naruto_banner_grande.jpg')
 				->setLink(array(
-					'l'	=>	base64_encode(self::INDEX_NARUTO)
+					'l'	=>	X_Env::encode(self::INDEX_NARUTO)
 				), 'default', false);
 			$items->append($item);
 
@@ -107,7 +107,7 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 				->setCustom(__CLASS__.':location', self::INDEX_ONEPIECE)
 				->setThumbnail('http://www.dbforever.net/img/banner/onepiece_banner_grande.jpg')
 				->setLink(array(
-					'l'	=>	base64_encode(self::INDEX_ONEPIECE)
+					'l'	=>	X_Env::encode(self::INDEX_ONEPIECE)
 				), 'default', false);
 			$items->append($item);
 			
@@ -117,7 +117,7 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 				->setCustom(__CLASS__.':location', self::INDEX_BLEACH)
 				->setThumbnail('http://www.dbforever.net/img/banner/bleach_banner_grande.jpg')
 				->setLink(array(
-					'l'	=>	base64_encode(self::INDEX_BLEACH)
+					'l'	=>	X_Env::encode(self::INDEX_BLEACH)
 				), 'default', false);
 			$items->append($item);
 			

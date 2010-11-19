@@ -10,7 +10,7 @@ $v_items = $this->items;
 <div id="site_header">
 	<a href="<?php echo $this->url(array('controller' => 'index', 'action' => 'collections'), 'default', true); ?>" id="usc_mobile">VLC Shares</a>
 	<?php if ( $this->parentLocation !== false ) :?>
-		<a href="<?php echo $this->url(array('controller' => 'browse', 'action' => 'share', 'l' => ( $this->parentLocation === null ? null : base64_encode($this->parentLocation)), 'p' => $this->provider), 'default', true); ?>" id="app_icon">
+		<a href="<?php echo $this->url(array('controller' => 'browse', 'action' => 'share', 'l' => ( $this->parentLocation === null ? null : X_Env::encode($this->parentLocation)), 'p' => $this->provider), 'default', true); ?>" id="app_icon">
 			<img src="<?php echo $this->baseUrl('/images/mobile/back.png'); ?>" />
 		</a>
 	<?php else: ?>

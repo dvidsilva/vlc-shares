@@ -16,7 +16,7 @@ URL=http://<?php echo $_SERVER["HTTP_HOST"] . $this->url(
     array(
         'controller'	=> 'browse',
         'action'		=> 'stream',
-        'url'			=> base64_encode($this->cPath),
+        'url'			=> X_Env::encode($this->cPath),
     	'shareId'		=> $this->shareId,
     	'qId'			=> $entry->qualityId,
     	'subId'			=> $entry->subId 

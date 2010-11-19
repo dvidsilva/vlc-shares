@@ -105,7 +105,7 @@ class ControlsController extends X_Controller_Action {
 		if ( $provider === false || !X_VlcShares_Plugins::broker()->isRegistered($provider) ) {
 			throw new Exception("Invalid provider");
 		}
-		$location = base64_decode($request->getParam('l', ''));
+		$location = X_Env::decode($request->getParam('l', ''));
 		*/
 		
 		$pid = $request->getParam('pid', false);
