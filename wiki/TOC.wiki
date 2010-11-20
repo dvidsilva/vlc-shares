@@ -9,7 +9,7 @@
       *  [AndroidDeviceConfiguration Android devices configuration]
       *  [WiimcConfiguration Wiimc configuration]
    * [PluginsList Plugins]
-      *  [PluginsList#Plugins_Installer Plugin Installer]
+      *  [PluginsList#Plugin_Installer Plugin Installer]
       *  [PluginsList#Plugins_List Available plugins list]
          *   [PluginsList#Data_Providers Data Providers]
       *  [PluginsList#Plugins_Guides Plugins Guide]
