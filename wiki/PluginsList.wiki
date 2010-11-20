@@ -1,11 +1,25 @@
 #summary Information about plugins
 #labels Phase-Support
 
+=Plugin Installer=
+
 =Plugins List=
 
-== Data Providers ==
+==Data Providers==
 
 This kind of plugins adds new collections inside VLCShares
 
 || *Name* || *Key* || *Last Version* || *Compatibility* || *Description* ||
-|| *AnimeDb* || animedb || 0.1 beta 1 || 0.5.1 beta 2 or later || Adds the site animedb.tv inside VLCShares_ ||
+|| [PluginsList#AnimeDb *AnimeDb*] || animedb || 0.1 beta 1 || 0.5.1 beta 2 or later || Adds the site animedb.tv inside VLCShares_ ||
+
+=Plugins Guide=
+
+==WiimcPlxRenderer==
+
+==MobileRenderer==
+
+==Profiles==
+
+==Outputs==
+
+==AnimeDb==
