@@ -8,7 +8,7 @@ require_once 'X/Page/Item/Test.php';
  * 
  * 
  */
-class X_Page_ItemList_Test extends X_Page_ItemList_Message {
+class X_Page_ItemList_Test extends X_Page_ItemList {
 	
 	/**
 	 * Create a new List of items
@@ -31,9 +31,9 @@ class X_Page_ItemList_Test extends X_Page_ItemList_Message {
 	 * @param X_Page_Item_Test $item
 	 * @return X_Page_ItemList_Test
 	 */
-	public function append(X_Page_Item_Test $item) {
-		$this->items[] = $item;
-		return $this;
+	public function append(X_Page_Item $item) {
+		if ( !($item instanceof X_Page_Item_Test ) ) return $this;
+		return parent::append($item);
 	}
 	
 	/**
@@ -42,21 +42,9 @@ class X_Page_ItemList_Test extends X_Page_ItemList_Message {
 	 * @param X_Page_Item_Test $item
 	 * @return X_Page_ItemList_Test 
 	 */
-	public function replace($key, X_Page_Item_Test $item) {
-		if ( $key instanceof X_Page_Item_Test) {
-			$key = $key->getKey();
-		} else {
-			$key = (string) $key;
-		}
-		foreach ( $this->getItems() as $k => $i ) {
-			if ( $i->getKey() == $key ) {
-				$this->items[$k] = $item;
-				return $this;
-			}
-		}
-		// if there is no key = $key, i simply append the $item
-		$this->append($item);
-		return $this;
+	public function replace($key, X_Page_Item $item) {
+		if ( !($item instanceof X_Page_Item_Test ) ) return $this;
+		return parent::replace($key, $item);
 	}
 	
 	/**
@@ -70,16 +58,11 @@ class X_Page_ItemList_Test extends X_Page_ItemList_Message {
 	/**
 	 * Get an item by $key
 	 * @param string $key
-	 * @return X_Page_ItemList_ActionLink
+	 * @return X_Page_ItemList_Test
 	 * @throws Exception if $key isn't in the list
 	 */
 	public function getItem($key) {
-		foreach ($this->getItems() as $item) {
-			if ( $item->getKey() == $key) {
-				return $item;
-			}
-		}
-		throw new Exception("No item with key '$key' in the list");
+		return parent::getItem($key);
 	}
 	
 	/**
@@ -87,12 +70,9 @@ class X_Page_ItemList_Test extends X_Page_ItemList_Message {
 	 * @param X_Page_ItemList_Test $list
 	 * @return X_Page_ItemList_Test
 	 */
-	public function merge(X_Page_ItemList_Test $list = null) {
-		if ( $list == null ) return $this;
-		foreach ($list->getItems() as $item) {
-			$this->append($item);
-		}
-		return $this;
+	public function merge(X_Page_ItemList $list = null) {
+		if ( !($list instanceof X_Page_ItemList_Test ) || $list == null ) return $this;
+		return parent::merge($list);
 	}
 	
 	/**
@@ -102,5 +82,6 @@ class X_Page_ItemList_Test extends X_Page_ItemList_Message {
 	public function remove($item) {
 		return parent::remove($item);
 	}
+	
 }
 

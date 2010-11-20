@@ -233,7 +233,7 @@ class X_VlcShares_Plugins_AnimeDb extends X_VlcShares_Plugins_Abstract implement
 		if ( count($split) == 1 ) {
 			return false;
 		} else {
-			array_pop(&$split);
+			array_pop($split);
 			return implode('/', $split);
 		}
 	}

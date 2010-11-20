@@ -15,7 +15,7 @@ class X_VlcShares_Plugins_MobileRenderer extends X_VlcShares_Plugins_Abstract {
 		->setPriority('getIndexManageLinks');
 	}
 	
-	public function gen_afterPageBuild(&$items, Zend_Controller_Action $controller) {
+	public function gen_afterPageBuild(X_Page_ItemList_PItem $items, Zend_Controller_Action $controller) {
 		// even if forced.enabled, don't build the page if the device is wiimc
 		if ( $this->helpers()->devices()->isWiimc() || ( !((bool) $this->config('forced.enabled', false)) && !$this->helpers()->devices()->isAndroid() )) return;
 		
