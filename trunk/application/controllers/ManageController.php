@@ -297,7 +297,9 @@ class ManageController extends X_Controller_Action
 	    	$languages = array();
 	    	foreach ( new DirectoryIterator(APPLICATION_PATH ."/../languages/") as $entry ) {
 	    		if ( $entry->isFile() && pathinfo($entry->getFilename(), PATHINFO_EXTENSION) == 'ini' ) {
-	    			$languages[$entry->getFilename()] = $entry->getFilename();
+	    			if ( count(explode('.',$entry->getFilename())) == 2 ) {
+	    				$languages[$entry->getFilename()] = $entry->getFilename();
+	    			}
 	    		}
 	    	}
 	    	try {
