@@ -57,7 +57,7 @@
 				<?php foreach ($this->plugins as $plugin): ?>
 				<?php /* @var $plugin Application_Model_Plugin */ ?>
 					<tr>
-						<td class="plugin-name"><?php echo $plugin->getLabel(); ?></td>
+						<td class="plugin-name"><?php echo X_Env::_($plugin->getLabel()); ?></td>
 						<td class="plugin-key"><?php echo $plugin->getKey(); ?></td>
 						<td class="plugin-version"><?php echo $plugin->getVersion() != null ? $plugin->getVersion() : X_VlcShares::VERSION; ?></td>
 						<td class="plugin-actions">
