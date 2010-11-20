@@ -44,3 +44,22 @@ This kind of plugins adds new collections inside VLCShares
 
 ==Anime Db==
 
+The `AnimeDb` plugin allow to watch all videos of the _AnimeDb.tv_ site through VLCShares. This plugin is compatible with versions 0.5.1beta2 and later.
+A Xegg archive of `AnimeDb` in stored inside the download section of this site and can be installed through the PluginInstaller interface. [PluginsList#How_to_install_new_plugins Follow this tutorial] to install the component.
+
+
+The management interface is available clicking on the `AnimeDb` dashboard icon
+
+http://vlc-shares.googlecode.com/svn/wiki/images/animedb_dashboard.png
+
+To be sure to watch all videos, you have to insert a valid AnimeDb.tv username/password in  plugin configuration panel. AnimeDb.tv accounts can be registered freely in the site.
+
+http://vlc-shares.googlecode.com/svn/wiki/images/animedb_configs.png
+
+After you have completed the installation and configuration procedure, AnimeDb.tv videos will be available in the VLCShares's Collections Index
+
+http://vlc-shares.googlecode.com/svn/wiki/images/animedb_collections.png
+
+
+
+
