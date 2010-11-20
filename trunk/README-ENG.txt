@@ -8,7 +8,7 @@
 #     															#
 #################################################################
 
-VLC-SHARES v0.5 - 12/11/2010
+VLC-SHARES v0.5.1 beta2 - 20/11/2010
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -25,13 +25,19 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 | Changelog
 \==========---
 
-*** 0.5.1 (12/11/2010) ***
+*** 0.5.1 Beta 3 (20/11/2010) ***
  - new MobileRenderer plugin for better navigation with android devices
  - new PluginInstaller (required to install standalone plugins)
  - new Backup/Restore system for configurations
  - tweaks
  - better transcoding profiles for android devices
  - bugfixes 
+ - changes inside plugin api (input and output params)
+ - Added and improved support for WiiMC+
+ - Critical fixes
+ - PclZip library updated to last version
+ - Code tweaks
+ - [EXTRA] Plugin for AnimeDB.tv 
 
 *** 0.5 (07/10/2010) ***
  - plugin system has been rewritten
