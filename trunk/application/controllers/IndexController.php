@@ -36,7 +36,7 @@ class IndexController extends X_Controller_Action
 		}
 		
 		// trigger for page creation
-		X_VlcShares_Plugins::broker()->gen_afterPageBuild(&$pageItems, $this);
+		X_VlcShares_Plugins::broker()->gen_afterPageBuild($pageItems, $this);
     	
     }
 	public function pcAction() {

@@ -250,7 +250,7 @@ class X_Egg {
 				$tmp_path = rtrim($tmp_path, '\\/').'/';
 			}
 			$egg->_cleanFlag = true;
-			$pclzip->extract($tmp_path);
+			$pclzip->extract(PCLZIP_OPT_PATH, $tmp_path);
 
 			$manifestFile = $tmp_path.'manifest.xml';
 			$basepath = $tmp_path;

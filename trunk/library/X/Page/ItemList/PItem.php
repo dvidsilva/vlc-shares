@@ -31,32 +31,20 @@ class X_Page_ItemList_PItem extends X_Page_ItemList {
 	 * @param X_Page_Item_PItem $item
 	 * @return X_Page_ItemList_PItem
 	 */
-	public function append(X_Page_Item_PItem $item) {
-		$this->items[] = $item;
-		return $this;
+	public function append(X_Page_Item $item) {
+		if ( !($item instanceof X_Page_Item_PItem ) ) return $this;
+		return parent::append($item);
 	}
 	
 	/**
 	 * Replace an old item with key $key with $item
-	 * @param string|X_Page_Item $key
+	 * @param string|X_Page_Item_PItem $key
 	 * @param X_Page_Item_PItem $item
 	 * @return X_Page_ItemList_PItem 
 	 */
-	public function replace($key, X_Page_Item_PItem $item) {
-		if ( $key instanceof X_Page_Item_PItem) {
-			$key = $key->getKey();
-		} else {
-			$key = (string) $key;
-		}
-		foreach ( $this->getItems() as $k => $i ) {
-			if ( $i->getKey() == $key ) {
-				$this->items[$k] = $item;
-				return $this;
-			}
-		}
-		// if there is no key = $key, i simply append the $item
-		$this->append($item);
-		return $this;
+	public function replace($key, X_Page_Item $item) {
+		if ( !($item instanceof X_Page_Item_PItem ) ) return $this;
+		return parent::replace($key, $item);
 	}
 	
 	/**
@@ -74,12 +62,7 @@ class X_Page_ItemList_PItem extends X_Page_ItemList {
 	 * @throws Exception if $key isn't in the list
 	 */
 	public function getItem($key) {
-		foreach ($this->getItems() as $item) {
-			if ( $item->getKey() == $key) {
-				return $item;
-			}
-		}
-		throw new Exception("No item with key '$key' in the list");
+		return parent::getItem($key);
 	}
 	
 	/**
@@ -87,12 +70,9 @@ class X_Page_ItemList_PItem extends X_Page_ItemList {
 	 * @param X_Page_ItemList_PItem $list
 	 * @return X_Page_ItemList_PItem
 	 */
-	public function merge(X_Page_ItemList_PItem $list = null) {
-		if ( $list == null ) return $this;
-		foreach ($list->getItems() as $item) {
-			$this->append($item);
-		}
-		return $this;
+	public function merge(X_Page_ItemList $list = null) {
+		if ( !($list instanceof X_Page_ItemList_PItem ) || $list == null ) return $this;
+		return parent::merge($list);
 	}
 	
 	/**

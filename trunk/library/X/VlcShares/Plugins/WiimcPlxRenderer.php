@@ -16,7 +16,7 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 		->setPriority('getIndexManageLinks');
 	}
 	
-	public function gen_afterPageBuild(X_Page_ItemList_PItem &$list, Zend_Controller_Action $controller) {
+	public function gen_afterPageBuild(X_Page_ItemList_PItem $list, Zend_Controller_Action $controller) {
 		if ( !((bool) $this->config('forced.enabled', false)) && !$this->helpers()->devices()->isWiimc() ) return;
 		
 		X_Debug::i("Plugin triggered");

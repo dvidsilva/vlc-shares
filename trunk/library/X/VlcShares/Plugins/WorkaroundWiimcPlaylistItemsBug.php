@@ -19,7 +19,7 @@ class X_VlcShares_Plugins_WorkaroundWiimcPlaylistItemsBug extends X_VlcShares_Pl
 		$this->setPriority('gen_afterPageBuild', 0);
 	}
 	
-	public function gen_afterPageBuild(X_Page_ItemList_PItem &$items, Zend_Controller_Action $controller) {
+	public function gen_afterPageBuild(X_Page_ItemList_PItem $items, Zend_Controller_Action $controller) {
 		if ( $this->helpers()->devices()->isWiimc() && $this->helpers()->devices()->isWiimcBeforeVersion('1.0.9') ) {
 			if ( count($items->getItems()) === 1 ) {
 				X_Debug::i("Plugin triggered");
