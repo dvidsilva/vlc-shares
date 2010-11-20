@@ -2,6 +2,9 @@
 #labels Phase-Support
 
 =Plugin Installer=
+The PluginInstaller is a special plugin that allows the installation of external plugins inside VLCShares
+
+
 
 =Plugins List=
 
