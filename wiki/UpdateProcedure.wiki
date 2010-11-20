@@ -14,6 +14,8 @@ This tutorial is under development and shows how to update from vlc-shares 0.5 t
 
 *THOSE ARE TEST VERSIONS OF VLCSHARES*
 
+*WARNING: vlc-shares updates come with an old version of pclzip library. If you using 64 bit OS, don't use this updates. Install the newer version from scratch*
+
 ==0.5 -> 0.5.1beta1==
 
   # Download 'UPDATE_vlc-shares_0.5-to-0.5.1_beta1.zip' from the download section.
