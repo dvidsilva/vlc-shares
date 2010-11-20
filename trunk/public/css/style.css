@@ -25,6 +25,8 @@
 	font-weight: bold;
 	margin-bottom: 0.1em;
 	border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+	-moz-border-radius: 0.5em;
 }
 
 #manage-messages li.info {
@@ -350,6 +352,9 @@ div.scrollable {
 	height: 130px;
 	padding: 10px;
 	border-radius: 1em;
+	-webkit-border-radius: 1em;
+	-moz-border-radius: 1em;
+	
 }
 
 ul.slider-pagination {
@@ -383,6 +388,8 @@ ul.slider-pagination li.active a {
 	color: black;
 	padding-bottom: 1.2em;
 	border-radius: 0em 0em 1em 1em;
+	-webkit-border-radius: 0em 0em 1em 1em;
+	-moz-border-radius: 0em 0em 1em 1em;
 	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
 	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
 }
@@ -398,3 +405,6 @@ ul.slider-pagination li.active a {
 	margin-top: -2px;
 }
 
+.zend_form input[type="text"] {
+	width: 95%;
+}
