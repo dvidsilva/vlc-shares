@@ -2,9 +2,26 @@
 #labels Phase-Support
 
 =Plugin Installer=
+
 The PluginInstaller is a special plugin that allows the installation of external plugins inside VLCShares
 
+It's installed by default from vlc-shares 0.5.1beta1 (but for some bugs, plugin eggs for version 0.5.1beta1 aren't compatible with PluginInstaller version that comes with vlc-shares 0.5.1beta2 or later.
 
+The PluginInstaller interface is available clicking on the icon in the vlc-shares's dashboard:
+
+http://vlc-shares.googlecode.com/svn/wiki/images/plugininstaller_dashboard.png
+
+== How to install new plugins ==
+
+There is nothing more easy than this: you have only to submit the plugin xegg file from the PluginInstaller interface in the right side of the page:
+
+http://vlc-shares.googlecode.com/svn/wiki/images/plugininstaller_panel_install.png
+
+You will find all previously additional installed plugins in the list on the right side of the PluginInstaller management interface in the left side of the screen:
+
+http://vlc-shares.googlecode.com/svn/wiki/images/plugininstaller_panel_list.png
+
+A list of additional plugins is available in the [PluginsList#Plugins_List Plugins List] section, below.
 
 =Plugins List=
 
@@ -13,7 +30,7 @@ The PluginInstaller is a special plugin that allows the installation of external
 This kind of plugins adds new collections inside VLCShares
 
 || *Name* || *Key* || *Last Version* || *Compatibility* || *Description* ||
-|| *[PluginsList#AnimeDb Anime_Db]* || animedb || 0.1 beta 1 || 0.5.1 beta 2 or later || Adds the site animedb.tv inside VLCShares_ ||
+|| *[PluginsList#Anime_Db Anime Db]* || animedb || 0.1 beta 1 || 0.5.1 beta 2 or later || Adds the site animedb.tv inside VLCShares_ ||
 
 =Plugins Guide=
 
@@ -26,3 +43,4 @@ This kind of plugins adds new collections inside VLCShares
 ==Outputs==
 
 ==Anime Db==
+
