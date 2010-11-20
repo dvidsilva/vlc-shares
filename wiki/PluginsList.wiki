@@ -13,7 +13,7 @@ The PluginInstaller is a special plugin that allows the installation of external
 This kind of plugins adds new collections inside VLCShares
 
 || *Name* || *Key* || *Last Version* || *Compatibility* || *Description* ||
-|| [PluginsList#AnimeDb *Anime_Db*] || animedb || 0.1 beta 1 || 0.5.1 beta 2 or later || Adds the site animedb.tv inside VLCShares_ ||
+|| *[PluginsList#AnimeDb Anime_Db]* || animedb || 0.1 beta 1 || 0.5.1 beta 2 or later || Adds the site animedb.tv inside VLCShares_ ||
 
 =Plugins Guide=
 
