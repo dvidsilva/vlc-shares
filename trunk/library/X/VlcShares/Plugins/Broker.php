@@ -76,6 +76,52 @@ class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 		return get_class($this->plugins[$pluginId]);
 	}
 	
+	/**
+	 * Forward this trigger to all registered plugins
+	 * I have to manually specify this for reference passing
+	 * @param array &$items array of X_Page_Item_PItem
+	 * @param string $provider id of the plugin the handle the request
+	 * @param Zend_Controller_Action $controller
+	 */
+	public function orderShareItems(&$items, $provider, Zend_Controller_Action $controller) {
+		$funcName = __FUNCTION__;
+		$toBeCalled = array();
+		foreach ($this->plugins as $pluginId => $pluginObj) {
+			/* @var $pluginObj X_VlcShares_Plugins_Abstract */
+			$priority = $pluginObj->getPriority($funcName);
+			if ( $priority !== -1 ) {
+				$toBeCalled[$priority][$pluginId] = $pluginObj;
+			}
+		}
+		$returnedVal = null;
+		ksort($toBeCalled);
+		foreach ( $toBeCalled as $priorityStack ) {
+			foreach ( $priorityStack as $pluginId => $pluginObj ) {
+				/* @var $pluginObj X_VlcShares_Plugins_Abstract */
+				//X_Debug::i("Calling ".get_class($pluginObj)."::$funcName"); // for problem, uncomment this
+				//$return = call_user_func_array(array($pluginObj, $funcName), $funcParams);
+				$return = $pluginObj->$funcName($items, $provider, $controller);
+				if ( $return !== null ) {
+					//$returnedVal[$pluginId] = $return;
+					if ( $return instanceof X_Page_ItemList ) {
+						if ( $returnedVal == null ) {
+							$returnedVal = $return;
+						} else {
+							$returnedVal->merge($return);
+						}
+					} else {
+						if ( $returnedVal == null) {
+							$returnedVal = array($return);
+						} elseif ( is_array($returnedVal) ) {
+							$returnedVal[] = $return;
+						}
+					}
+				}
+			}
+		}
+		return $returnedVal;
+	}
+
 	function __call($funcName, $funcParams) {
 		if ( method_exists('X_VlcShares_Plugins_Abstract', $funcName) && !in_array($funcName, $this->backlistedFunctions) ) {
 			$toBeCalled = array();

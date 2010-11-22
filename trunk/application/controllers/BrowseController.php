@@ -68,7 +68,7 @@ class BrowseController extends X_Controller_Action {
 		
 		// I have to rebuild the itemlist because I can't rearrange items orders
 		$items = $pageItems->getItems();
-		X_VlcShares_Plugins::broker()->orderShareItems(&$items, $provider,  $this);
+		X_VlcShares_Plugins::broker()->orderShareItems($items, $provider,  $this);
 		$pageItems = new X_Page_ItemList_PItem($items);
 		
 		
