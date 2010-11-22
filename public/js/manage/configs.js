@@ -1,4 +1,23 @@
 
+function setVlcPath(path) {
+	$('#vlc_path').val(path);
+	$('#iframe_frm-vlc-path').fadeIn().remove();
+	$('#browse_frm-vlc-path, #autosearch_frm-vlc-path').fadeIn();
+}
+
+function setMediainfoPath(path) {
+	$('#helpers_mediainfo_path').val(path);
+	$('#iframe_frm-helpers_mediainfo_path').fadeIn().remove();
+	$('#browse_frm-helpers_mediainfo_path').fadeIn();
+}
+
+function setFFMpegPath(path) {
+	$('#helpers_ffmpeg_path').val(path);
+	$('#iframe_frm-helpers_ffmpeg_path').fadeIn().remove();
+	$('#browse_frm-helpers_ffmpeg_path').fadeIn();
+}
+
+
 $(document).ready(function() {
 	
 	debug.log('document.ready: /public/js/manage/configs.js');
@@ -74,6 +93,28 @@ $(document).ready(function() {
 			}
 		});
 	});
+
+	$('form#configs #vlc_path').parent().append('<input id="browse_frm-vlc-path" type="button" value="Browse" />');
+	$('#browse_frm-vlc-path').click(function (event){
+		$('#browse_frm-vlc-path').after('<iframe id="iframe_frm-vlc-path" style="display:none;" src="' + baseUrl + '/manage/browse/f/file/c/setVlcPath" width="100%" height="300px"></iframe>');
+		$('#browse_frm-vlc-path, #autosearch_frm-vlc-path').fadeOut();
+		$('#iframe_frm-vlc-path').fadeIn();
+	});
+	
+	$('form#configs #helpers_mediainfo_path').parent().append('<input id="browse_frm-helpers_mediainfo_path" type="button" value="Browse" />');
+	$('#browse_frm-helpers_mediainfo_path').click(function (event){
+		$('#browse_frm-helpers_mediainfo_path').after('<iframe id="iframe_frm-helpers_mediainfo_path" style="display:none;" src="' + baseUrl + '/manage/browse/f/file/c/setMediainfoPath" width="100%" height="300px"></iframe>');
+		$('#browse_frm-helpers_mediainfo_path').fadeOut();
+		$('#iframe_frm-helpers_mediainfo_path').fadeIn();
+	});
+	
+	$('form#configs #helpers_ffmpeg_path').parent().append('<input id="browse_frm-helpers_ffmpeg_path" type="button" value="Browse" />');
+	$('#browse_frm-helpers_ffmpeg_path').click(function (event){
+		$('#browse_frm-helpers_ffmpeg_path').after('<iframe id="iframe_frm-helpers_ffmpeg_path" style="display:none;" src="' + baseUrl + '/manage/browse/f/file/c/setFFMpegPath" width="100%" height="300px"></iframe>');
+		$('#browse_frm-helpers_ffmpeg_path').fadeOut();
+		$('#iframe_frm-helpers_ffmpeg_path').fadeIn();
+	});
+	
 	
 	var $apply = $('<button id="apply" type="button" name="apply">'+applyLabel+'</button>');
 	$('#submit').after($apply);

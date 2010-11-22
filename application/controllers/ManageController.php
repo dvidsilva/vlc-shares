@@ -287,6 +287,76 @@ class ManageController extends X_Controller_Action
     	
     }
     
+    public function browseAction() {
+    	
+    	/* @var $request Zend_Controller_Request_Http */
+    	$request = $this->getRequest();
+    	
+    	$path = X_Env::decode($request->getParam('p', ''));
+    	$filter = $request->getParam('f', 'file');
+		$callback = $request->getParam('c', 'void');
+		
+    	$return = array();
+    	
+    	// i can't browse inside a file :)
+    	if ( !is_dir($path) ) $path = dirname($path);
+    	
+		$path = realpath($path);
+		if (is_dir($path) && is_readable($path)) { 
+			$objects = scandir($path); 
+			foreach ($objects as $object) { 
+				if ($object != "." ) {
+					if (@filetype($path."/".$object) == "dir" && is_readable($path."/".$object) ) {
+						$return[] = array(
+							'type' => 'folder',
+							'path'	=> $path."/".$object.'/',
+							'label'	=> $object.'/',
+							'href'	=> $this->_helper->url(
+								'browse',
+								'manage',
+								'default',
+								array(
+									'f' => $filter,
+									'p' => X_Env::encode($path."/".$object),
+									'c' => $callback
+								)
+							)
+						);
+					} elseif ($filter == 'file') {
+						//$array["/".$dir."/".$object] = md5_file($dir."/".$object);
+						$return[] = array(
+							'type' => 'file',
+							'path'	=> $path."/".$object,
+							'label'	=> $object,
+							'c' => $callback
+						);
+					}
+				} 
+			}
+	   		reset($objects);
+		}
+
+		usort($return, array(__CLASS__, 'sortFolderBased'));
+		
+		$return = array(
+			'path' => $path,
+			'filter' => $filter,
+			'items' => $return
+		);
+    	
+    	if ( $request->isXmlHttpRequest() ) {
+    		
+    		$this->_helper->json($return);
+    		
+    	} else {
+    		$this->_helper->layout()->disableLayout();
+    		$this->view->callback = $callback;
+    		$this->view->path = $return['path'];
+    		$this->view->filter = $return['filter'];
+    		$this->view->items = $return['items']; 
+    	}
+    }
+    
     private function _initConfigsForm($configs, $posts = null) {
     	
     	if ( $this->configForm === null ) {
@@ -324,6 +394,36 @@ class ManageController extends X_Controller_Action
 
     	return $this->configForm;
     }
+    
+    
+	static function sortFolderBased($item1, $item2) {
+		
+		// prevent warning for array modification
+		$type1 = $item1['type'];
+		$type2 = $item2['type'];
+		
+		if ( $type1 == 'folder' ) {
+			if ( $type2 == 'folder' ) {
+				return self::sortAlphabetically($item1, $item2);
+			} else {
+				return -1;
+			}
+		} else {
+			if ( $type2 == 'folder' ) {
+				return 1;
+			} else {
+				return self::sortAlphabetically($item1, $item2);
+			}
+		}
+	}
+	
+	static function sortAlphabetically($item1, $item2) {
+		// prevent warning for array modification
+		$label1 = $item1['label'];
+		$label2 = $item2['label'];
+		
+		return strcasecmp($label1, $label2);
+	}
     
 }
 
