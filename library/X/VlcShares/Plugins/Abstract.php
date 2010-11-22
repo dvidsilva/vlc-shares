@@ -340,15 +340,6 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 */
 	public function filterModeItems(X_Page_Item_PItem $item, $provider, Zend_Controller_Action $controller) {}
 	
-	/**
-	 * Allow plugin to shuffle/order items
-	 * Plugin should use $provider to get location real location
-	 * @param array &$items array of X_Page_Item_PItem
-	 * @param string $provider id of the plugin the handle the request
-	 * @param Zend_Controller_Action $controller
-	 */
-	public function orderModeItems(&$items, $provider, Zend_Controller_Action $controller) {}
-	
 
 	//=== END OF Browse:mode ===//
 
@@ -403,17 +394,6 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @return boolean true if item is ok, false if item should be discarded
 	 */
 	public function filterSelectionItems(X_Page_Item_PItem $item, $provider, $pid, Zend_Controller_Action $controller) {}
-	
-	/**
-	 * Allow plugin to shuffle/order items
-	 * Plugin should use $provider to get location real location
-	 * @param array &$items array of X_Page_Item_PItem
-	 * @param string $provider id of the plugin the handle the request
-	 * @param string $pid pluginId who serves preferences selection options
-	 * @param Zend_Controller_Action $controller
-	 */
-	public function orderSelectionItems(&$items, $provider, $pid, Zend_Controller_Action $controller) {}
-	
 	
 	//=== END OF Browse:selection ===//
 
