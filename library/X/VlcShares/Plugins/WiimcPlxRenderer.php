@@ -89,6 +89,9 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 				}
 				if ( $item->getKey() == 'core-directwatch' ) {
 					$plxItem->setWiimcplus_assert_directwatch('true');
+					if ( $item->getCustom('subtitle') != null ) {
+						$plxItem->setWiimcplus_subtitle($item->getCustom('subtitle'));
+					}
 				}
 				if ( $item->getKey() == 'core-play' ) {
 					$plxItem->setWiimcplus_assert_startvlc('true');
