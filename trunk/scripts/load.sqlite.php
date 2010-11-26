@@ -17,7 +17,7 @@ Zend_Loader_Autoloader::getInstance();
  
 // Define some CLI options
 $getopt = new Zend_Console_Getopt(array(
-	'withbackup|b' => 'Load database with backup data',
+	'withbuffer|b' => 'Load database with buffer data',
     'withdata|w' => 'Load database with sample data',
     'env|e-s'    => 'Application environment for which to create database (defaults to development)',
     'help|h'     => 'Help -- usage message',
@@ -38,7 +38,7 @@ if ($getopt->getOption('h')) {
  
 // Initialize values based on presence or absence of CLI options
 $withData = $getopt->getOption('w');
-$withBackup = $getopt->getOption('b');
+$withBuffer = $getopt->getOption('b');
 $env      = $getopt->getOption('e');
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (null === $env) ? 'development' : $env);
@@ -101,19 +101,6 @@ try {
 		echo 'Plugins Loaded.';
 		echo PHP_EOL;
 	}
-	
-	if ( $withBackup ) {
-		$dataSql = file_get_contents(dirname(__FILE__) . '/backup.sqlite.sql');
-		if ( trim($dataSql) != '' ) {
-			// use the connection directly to load sql in batches
-			$dbAdapter->getConnection()->exec($dataSql);
-			if ('testing' != APPLICATION_ENV) {
-				echo 'Backup Loaded.';
-				echo PHP_EOL;
-			}
-		}
-	}
-	
 	if ($withData) {
     	
         $dataSql = file_get_contents(dirname(__FILE__) . '/data.sqlite.sql');
@@ -124,7 +111,20 @@ try {
             echo PHP_EOL;
         }
     }
- 
+
+	if ( $withBuffer ) {
+		$dataSql = file_get_contents(dirname(__FILE__) . '/buffer.sqlite.sql');
+		if ( trim($dataSql) != '' ) {
+			// use the connection directly to load sql in batches
+			$dbAdapter->getConnection()->exec($dataSql);
+			if ('testing' != APPLICATION_ENV) {
+				echo 'Buffer Loaded.';
+				echo PHP_EOL;
+			}
+		}
+	}
+    
+    
 } catch (Exception $e) {
     echo 'AN ERROR HAS OCCURED:' . PHP_EOL;
     echo $e->getMessage() . PHP_EOL;
