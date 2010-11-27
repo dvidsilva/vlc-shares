@@ -33,7 +33,7 @@ INSERT INTO plg_youtube_videos VALUES
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'youtube.closedcaption.enabled','1','1','plugins',3,'p_youtube_conf_closedcaptionenabled_label','p_youtube_conf_closedcaptionenabled_desc','');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'youtube.quality.priority','18|5|34|35','18|5|34|35','plugins',0,'p_youtube_conf_qualitypriority_label','p_youtube_conf_qualitypriority_desc','');
+	'youtube.quality.priority','5|34|18|35','5|34|18|35','plugins',0,'p_youtube_conf_qualitypriority_label','p_youtube_conf_qualitypriority_desc','');
 	
 UPDATE plugins SET enabled=1 WHERE key = "youtube";
 
