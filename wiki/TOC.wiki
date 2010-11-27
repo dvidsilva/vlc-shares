@@ -24,6 +24,7 @@
       *  [UpdateProcedure#Manual_Procedure Manual Procedure]
          *  [UpdateProcedure#0.5_->_0.5.1beta1 From 0.5 to 0.5.1beta1]
          *  [UpdateProcedure#0.5.1beta1_->_0.5.1beta2 From 0.5.1beta1 to 0.5.1beta2]
+         *  [UpdateProcedure#0.5.1beta3_->_0.5.1beta4 From 0.5.1beta3 to 0.5.1beta4]
    * [PluginsAPI Plugins Development]
      * [PluginsAPI#System_Architecture System Architecture]
          * [PluginsAPI#Plugins_System Plugins System]
