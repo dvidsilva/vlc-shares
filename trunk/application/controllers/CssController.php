@@ -11,6 +11,7 @@ class CssController extends Zend_Controller_Action
         /* Initialize action controller here */
     	parent::init();
     	if ( $this->getRequest()->getActionName() != 'no-css.css' ) {
+    		$this->getResponse()->setHeader('Content-Type', 'text/css');
     		$this->_helper->redirector('no-css.css', 'css');
     	}
     }
