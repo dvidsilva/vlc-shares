@@ -30,7 +30,11 @@ $(document).ready(function() {
 	$('.quickbox-add-video').click(function (event) {
 		$('#p_youtube_framecontainer').empty().load(baseUrl + '/youtube/video #p_youtube_videoform');
 	});
-	
+
+	$('.quickbox-options').click(function (event) {
+		$(location).attr('href', baseUrl+'/config/index/key/youtube/r/'+redirectUrl);
+	});
+
 	
 	$('.p_youtube_category').click(function (event) {
 		event.preventDefault();

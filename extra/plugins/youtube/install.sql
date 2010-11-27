@@ -30,5 +30,10 @@ INSERT INTO plg_youtube_categories VALUES
 INSERT INTO plg_youtube_videos VALUES
 	(NULL, 1, 'VLCShares - Megavideo library and bookmarklets', 'GycWEv7cWLk', 'http://i.ytimg.com/vi/GycWEv7cWLk/0.jpg', 'The video show how to use the megavideo plugin of VLCShares and its bookmarklets feature. More infos about VLCShares: http://code.google.com/p/vlc-shares/' );
 	
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'youtube.closedcaption.enabled','1','1','plugins',3,'p_youtube_conf_closedcaptionenabled_label','p_youtube_conf_closedcaptionenabled_desc','');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'youtube.quality.priority','18|5|34|35','18|5|34|35','plugins',0,'p_youtube_conf_qualitypriority_label','p_youtube_conf_qualitypriority_desc','');
+	
 UPDATE plugins SET enabled=1 WHERE key = "youtube";
 

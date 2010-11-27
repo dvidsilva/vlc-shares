@@ -5,7 +5,7 @@ require_once 'Zend/Gdata/YouTube.php';
 
 class X_VlcShares_Plugins_Helper_Youtube extends X_VlcShares_Plugins_Helper_Abstract {
 
-	const VERSION = '0.1dev';
+	const VERSION = '0.1beta2';
 	const ITEMS_PER_PAGE = 50;
 	
 	private $_cachedSearch = array();
@@ -256,8 +256,8 @@ class X_VlcShares_Plugins_Helper_Youtube extends X_VlcShares_Plugins_Helper_Abst
 				);
 				
 				$sub['xml_url'] = 'http://video.google.com/timedtext?type=track&' 
-					.'lang='.utf8_encode($sub['lang_code']).'&'
-					.'name='.utf8_encode($sub['name']).'&'
+					.'lang='.urlencode(utf8_encode($sub['lang_code'])).'&'
+					.'name='.urlencode(utf8_encode($sub['name'])).'&'
 					.'v='.$this->_location;
 				//        "name=" + URLEncoder.encode(this.name, "UTF-8") +
                 //        "&lang=" + URLEncoder.encode(this.lang, "UTF-8") +
