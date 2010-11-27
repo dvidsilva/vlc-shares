@@ -428,7 +428,7 @@ class X_VlcShares_Plugins_Youtube extends X_VlcShares_Plugins_Abstract implement
 				
 				$returned = null;
 				
-				$qualityPriority = explode('|', $this->config('quality.priority', '18|5|34|35'));
+				$qualityPriority = explode('|', $this->config('quality.priority', '5|34|18|35'));
 				
 				foreach ($qualityPriority as $quality) {
 					if ( array_key_exists($quality, $formats)) {
