@@ -428,19 +428,18 @@ class X_VlcShares_Plugins_Youtube extends X_VlcShares_Plugins_Abstract implement
 				
 				$returned = null;
 				
-				if ( array_key_exists('35', $formats)) {
-					$returned = $formats['35'];
-				} elseif ( array_key_exists('34', $formats) ) {
-					$returned = $formats['34'];
-				} elseif ( array_key_exists('18', $formats) ) {
-					$returned = $formats['18'];
-				} elseif ( array_key_exists('34', $formats) ) {
-					$returned = $formats['5'];
-				} else {
-					// we can fallback to YouTubeVideoEntry data
-					false;
-				}
+				$qualityPriority = explode('|', $this->config('quality.priority', '18|5|34|35'));
 				
+				foreach ($qualityPriority as $quality) {
+					if ( array_key_exists($quality, $formats)) {
+						$returned = $formats[$quality];
+						X_Debug::i('Video format selected: '.$quality);
+						break;
+					}
+				}
+				if ( $returned === null ) {
+					$returned = false;
+				}
 				$toBeCached['url'] = $returned;
 				$this->cachedLocation[$location] = $toBeCached;
 				return $returned;

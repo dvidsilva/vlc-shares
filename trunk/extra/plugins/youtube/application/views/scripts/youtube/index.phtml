@@ -3,6 +3,9 @@
 <?php $this->headLink()->appendStylesheet($this->baseUrl('/css/youtube/style.css')); ?>
 <?php $this->headScript()->appendFile($this->baseUrl("/js/youtube/index.js")); ?>
 <?php $this->headTitle()->prepend(X_Env::_('p_youtube_title')); ?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
+	var redirectUrl = "<?php echo X_Env::encode('youtube:index'); ?>";
+<?php $this->headScript()->captureEnd(); ?> 
 
 <div class="span-24 last" id="back-to-home">
 	<div class="span-4 box back">
@@ -32,6 +35,8 @@
 	<button class="quickbox-add-account"><?php echo X_Env::_('p_youtube_account_new'); ?></button>
 	<button class="quickbox-add-category"><?php echo X_Env::_('p_youtube_category_new'); ?></button>
 	<button class="quickbox-add-video"><?php echo X_Env::_('p_youtube_video_new'); ?></button>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<button class="quickbox-options"><?php echo X_Env::_('p_youtube_options'); ?></button>
 </div>
 
 <h2><?php echo X_Env::_('p_youtube_main_title'); ?></h2>
