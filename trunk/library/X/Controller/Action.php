@@ -30,7 +30,7 @@ class X_Controller_Action extends Zend_Controller_Action {
 	protected $bootstrap = null;
 	
 	public function init() {
-
+		
 		X_VlcShares_Plugins::broker()->gen_beforeInit($this);		
 		
 		$this->bootstrap = $this->getFrontController()->getParam('bootstrap');
@@ -42,6 +42,7 @@ class X_Controller_Action extends Zend_Controller_Action {
 	}
 	
 	public function preDispatch() {
+		X_Debug::i("Required action: [".$this->getRequest()->getControllerName() . '/' . $this->getRequest()->getActionName() .']');
 		parent::preDispatch();
 		
 		// call plugins trigger
