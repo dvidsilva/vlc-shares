@@ -11,6 +11,7 @@ class JsController extends Zend_Controller_Action
         /* Initialize action controller here */
     	parent::init();
     	if ( $this->getRequest()->getActionName() != 'no-js.js' ) {
+    		$this->getResponse()->setHeader('Content-Type', 'text/javascript');
     		$this->_helper->redirector('no-js.js', 'js');
     	}
     }
