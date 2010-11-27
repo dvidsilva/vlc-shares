@@ -31,6 +31,7 @@ This kind of plugins adds new collections inside VLCShares
 
 || *Name* || *Key* || *Last Version* || *Compatibility* || *Description* ||
 || *[PluginsList#Anime_Db Anime Db]* || animedb || 0.1 beta 1 || 0.5.1 beta 2 or later || Adds the site animedb.tv inside VLCShares_ ||
+|| *[PluginYoutube Youtube]* || youtube || 0.1 beta 2 || 0.5.1 beta 4 or later || Adds Youtube inside VLCShares_, with support for closed caption ||
 
 =Plugins Guide=
 
@@ -59,7 +60,5 @@ http://vlc-shares.googlecode.com/svn/wiki/images/animedb_configs.png
 After you have completed the installation and configuration procedure, AnimeDb.tv videos will be available in the VLCShares's Collections Index
 
 http://vlc-shares.googlecode.com/svn/wiki/images/animedb_collections.png
-
-
 
 
