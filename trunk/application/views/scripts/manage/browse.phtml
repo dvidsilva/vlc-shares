@@ -59,13 +59,13 @@
 								<?php echo $item['label']; ?>
 							</a>
 							<?php if ( $this->filter == 'folder' ): ?>
-								<a href="javascript:parent.<?php echo "{$this->callback}('{$item['path']}')"; ?>;" style="float: right;">
+								<a href="javascript:parent.<?php echo "{$this->callback}('".str_replace('\\', '\\\\', $item['path'])."')"; ?>;" style="float: right;">
 									[<?php echo X_Env::_('select'); ?>]
 								</a>
 							<?php endif; ?>
 						<?php else: ?>
 							<?php echo $item['label']; ?>
-							<a href="javascript:parent.<?php echo "{$this->callback}('{$item['path']}')"; ?>;" style="float: right;">
+							<a href="javascript:parent.<?php echo "{$this->callback}('".str_replace('\\', '\\\\', $item['path'])."')"; ?>;" style="float: right;">
 								[<?php echo X_Env::_('select'); ?>]
 							</a>
 						<?php endif;?>

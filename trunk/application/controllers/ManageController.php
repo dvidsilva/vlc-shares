@@ -326,7 +326,7 @@ class ManageController extends X_Controller_Action
 						//$array["/".$dir."/".$object] = md5_file($dir."/".$object);
 						$return[] = array(
 							'type' => 'file',
-							'path'	=> $path."/".$object,
+							'path'	=> realpath($path."/".$object),
 							'label'	=> $object,
 							'c' => $callback
 						);
