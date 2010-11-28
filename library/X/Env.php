@@ -52,14 +52,20 @@ class X_Env {
 		if ( $spawnType == self::EXECUTE_PS_BACKGROUND ) {
 			if ( self::isWindows() ) {
 				// su windows leggo quanto tornato perche puo servire per il pid
-				$command = self::_psExec().$command;
+				$command = /*self::_psExec().*/$command;
+				$WshShell = new COM("WScript.Shell"); 
+				X_Debug::i("Executing: $command");
+				$lastLine = $WshShell->Run($command, 0,false); 
 			} else {
 				// su linux ignoro semplicemente l'output
 				$command = trim($command).' > /dev/null 2>&1';
+				X_Debug::i("Executing: $command");
+				$lastLine = exec($command, $output);
 			}
+		} else {
+			X_Debug::i("Executing: $command");
+			$lastLine = exec($command, $output);
 		}
-		self::debug(__METHOD__.": executing $command");
-		$lastLine = exec($command, $output);
 		
 		switch ($outputType) {
 			case self::EXECUTE_OUT_NONE: 
