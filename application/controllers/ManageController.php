@@ -252,15 +252,15 @@ class ManageController extends X_Controller_Action
 		
 		
 		$autosearch_WINDOWS = array(
-			'C:/Programmi/VideoLan/Vlc/vlc.exe',
-			'C:/Programmi/Vlc/vlc.exe',
-			'C:/Programmi/VideoLan/vlc.exe',
-			'C:/Program files/VideoLan/Vlc/vlc.exe',
-			'C:/Program files/Vlc/vlc.exe',
-			'C:/Program files/VideoLan/vlc.exe',
-			'C:/Program files (x86)/VideoLan/Vlc/vlc.exe',
-			'C:/Program files (x86)/Vlc/vlc.exe',
-			'C:/Program files (x86)/VideoLan/vlc.exe',
+			'C:\\Programmi\\VideoLan\\Vlc\\vlc.exe',
+			'C:\\Programmi\\Vlc\\vlc.exe',
+			'C:\\Programmi\\VideoLan\\vlc.exe',
+			'C:\\Program files\\VideoLan\\Vlc\\vlc.exe',
+			'C:\\Program files\\Vlc\\vlc.exe',
+			'C:\\Program files\\VideoLan\\vlc.exe',
+			'C:\\Program files (x86)\\VideoLan\\Vlc\\vlc.exe',
+			'C:\\Program files (x86)\\Vlc\\vlc.exe',
+			'C:\\Program files (x86)\\VideoLan\\vlc.exe',
 		);
 		    	
 		$searchPath = X_Env::isWindows() ? $autosearch_WINDOWS : $autosearch_LINUX;
