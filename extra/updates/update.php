@@ -275,7 +275,7 @@ function view_Main($currentVersion, $updateSqlFile, $scriptVersion, $validVersio
 						<a href="update.php?action=delete">You take the blue pill: delete all update files without update</a>
 					</li>
 					<li class="red">
-						<a href="update.php?action=delete">You take the red pill: update vlc-shares</a>
+						<a href="update.php?action=update">You take the red pill: update vlc-shares</a>
 					</li>
 				</ul>
 			</div>
