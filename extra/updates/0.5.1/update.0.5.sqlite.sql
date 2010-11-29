@@ -144,5 +144,14 @@ UPDATE configs SET `value` = '0' WHERE `key` = 'wiimc.forced.enabled';
 UPDATE configs SET `value` = '0' WHERE `key` = 'wiimc.forced.showRaw';
 UPDATE configs SET `default` = '1' WHERE `key` = 'wiimc.forced.fancy';
 
-	
-	
+-- Add a new plugin for empty lists	
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'emptylists',
+	'X_VlcShares_Plugins_EmptyLists', 
+	'X/VlcShares/Plugins/EmptyLists.php',
+	'p_emptylists_plglabel',
+	'p_emptylists_plgdesc',
+	1,
+	1
+);
+
