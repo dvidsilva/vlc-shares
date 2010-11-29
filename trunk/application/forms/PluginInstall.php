@@ -36,7 +36,7 @@ class Application_Form_PluginInstall extends Zend_Form
         // Add the submit button
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
-            'label'    => X_Env::_('submit'),
+            'label'    => X_Env::_('plugin_installsubmit'),
         	'decorators' => array('ViewHelper')
         ));
         
