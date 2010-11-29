@@ -34,22 +34,16 @@ function _checkWritable($dir) {
 // First I have to check for required files
 $requiredFiles = array(
 	'update.zip',
-	'update.sqlite.sql',
+	//'update.sqlite.sql',
 	'pclzip.php'
 );
 
 $unlinkFiles = array(
 	'update.zip',
-	'update.sqlite.sql',
+	//'update.sqlite.sql',
 	'pclzip.php',
 	'update.php'
 );
-
-foreach ($requiredFiles as $file) {
-	file_exists(dirname(__FILE__)."/$file") or die("Required file '$file' not found!!!");
-}
-
-require_once(realpath(dirname(__FILE__).'/pclzip.php'));
 
 // Initialize the application path and autoloading
 defined('APPLICATION_PATH')
@@ -78,6 +72,39 @@ try {
 	die($e->getMessage());
 }
 
+// I have to search for current vlc-shares version before change it
+// so, i include the X_VlcShares class to check for the version string
+$currentVersion = false;
+if ( file_exists(APPLICATION_PATH . '/../library/X/VlcShares.php') ) {
+	@include (APPLICATION_PATH . '/../library/X/VlcShares.php');
+	if ( class_exists('X_VlcShares') ) {
+		$currentVersion = X_VlcShares::VERSION;
+		echo "Current version: $currentVersion</br>";
+	} else {
+		echo '[WWW] Current version not found: X_VlcShares class missing</br>';
+	}
+} else {
+	echo '[WWW] Current version not found: X/VlcShares.php missing</br>';
+}
+
+if ( $currentVersion !== false ) {
+	$specificFile = "update.$currentVersion.sqlite.sql";
+	if ( file_exists(dirname(__FILE__)."/$specificFile") ) {
+		$requiredFiles[] = $specificFile;
+		$unlinkFiles[] = $specificFile;
+		$specificFile = dirname(__FILE__)."/$specificFile";
+	} else {
+		$specificFile = false;
+	}
+}
+
+foreach ($requiredFiles as $file) {
+	file_exists(dirname(__FILE__)."/$file") or die("Required file '$file' not found!!!");
+}
+
+require_once(realpath(dirname(__FILE__).'/pclzip.php'));
+
+
 $pclzip = new PclZip(realpath(dirname(__FILE__).'/update.zip'));
 $pclzip->extract(PCLZIP_OPT_PATH, APPLICATION_PATH . '/../', PCLZIP_OPT_REPLACE_NEWER);
 
@@ -90,12 +117,24 @@ $bootstrap->bootstrap('db');
 $dbAdapter = $bootstrap->getResource('db');
  
 try {
+	/*
 	$dataSql = file_get_contents(dirname(__FILE__) . '/update.sqlite.sql');
 	if ( trim($dataSql) != '' ) {
 		// use the connection directly to load sql in batches
 		$dbAdapter->getConnection()->exec($dataSql);
 		echo 'Database updated</br>';
 	}
+	*/
+	
+	if ( $specificFile !== false ) {
+		$dataSql = file_get_contents($specificFile);
+		if ( trim($dataSql) != '' ) {
+			// use the connection directly to load sql in batches
+			$dbAdapter->getConnection()->exec($dataSql);
+			echo "Database updated from version $currentVersion</br>";
+		}
+	}
+	
 } catch (Exception $e) {
     echo 'AN ERROR HAS OCCURED:' . $e->getMessage() . '<br/>';
 }
