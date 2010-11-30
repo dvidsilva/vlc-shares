@@ -155,3 +155,5 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	1
 );
 
+DELETE FROM plugins WHERE `key` = 'opfitalia'; 
+DELETE FROM configs WHERE `key` LIKE 'opfitalia.%';

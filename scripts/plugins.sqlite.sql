@@ -331,24 +331,6 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 );
 	
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
-	'opfitalia',
-	'X_VlcShares_Plugins_OPFItalia', 
-	'X/VlcShares/Plugins/OPFItalia.php',
-	'p_opfitalia_plglabel',
-	'p_opfitalia_plgdesc',
-	1,
-	1
-);
-
-INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'opfitalia.index.url', 'http://www.opfitalia.net/mediacenter/streaming.php', 'http://www.opfitalia.net/mediacenter/streaming.php', 'plugins', 0, 'p_opfitalia_conf_indexurl_label', 'p_opfitalia_conf_indexurl_desc', '');
-INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'opfitalia.request.timeout', '10', '10', 'plugins', 0, 'p_opfitalia_conf_requesttimeout_label', 'p_opfitalia_conf_requesttimeout_desc', '');
-INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'opfitalia.request.maxredirects', '0', '0', 'plugins', 0, 'p_opfitalia_conf_requestredirects_label', 'p_opfitalia_conf_requestredirects_desc', '');
-
-	
-INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
 	'widgetDevNews',
 	'X_VlcShares_Plugins_WidgetDevNews', 
 	'X/VlcShares/Plugins/WidgetDevNews.php',
