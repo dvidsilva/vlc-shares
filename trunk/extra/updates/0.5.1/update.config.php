@@ -39,5 +39,28 @@ function __update_pre($version) {
  * @return boolean
  */
 function __update_post($version) {
+	
+	// remove the opfitalia plugins files and directory
+	$files = array(
+		APPLICATION_PATH.'/../public/images/opfitalia/logo.png',
+		APPLICATION_PATH.'/../library/X/VlcShares/Plugins/OPFItalia.php'
+	);
+	
+	$folders = array(
+		APPLICATION_PATH.'/../public/images/opfitalia/'
+	);
+	
+	foreach ($files as $file) {
+		if ( !@unlink($file) ) {
+			echo "File not deleted: <b>'$file'</b>. Please, delete it manually!!!<br/>";
+		}
+	}
+	
+	foreach ($folders as $folder) {
+		if ( !@rmdir($folder) ) {
+			echo "Folder not deleted: <b>'$file'</b>. Please, delete it manually!!!<br/>";
+		}
+	}
+	
 	return true;
 }

@@ -39,6 +39,10 @@ class Megavideo
                preg_match('#\?v=(.+?)$#', $url, $id); 
                 
                $this->id = @$id[1]?$id[1]:$url; 
+               
+               // Ximarx's fix: reduce id to 8 
+               // so megaupload -> megavideo links work
+               $this->id = substr($this->id, 0, 8);
                 
                   $this->getxml(); 
                    

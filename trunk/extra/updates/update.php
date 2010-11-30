@@ -158,7 +158,7 @@ switch ($action) {
 		// time to unlink all files
 		foreach ($unlinkFiles as $file) {
 			if ( !@unlink(dirname(__FILE__)."/$file") ) {
-				echo "File not deleted: <b>'$file'</b>. Please, delete it manually!!!";
+				echo "File not deleted: <b>'$file'</b>. Please, delete it manually!!!<br/>";
 			} else { 
 				echo "File <b>'$file'</b> deleted<br/>";
 			}
