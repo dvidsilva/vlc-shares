@@ -23,6 +23,8 @@ Let's see what's inside the archive:
    * uninstall.sql
    * library/X/VlcShares/Plugins/Sample.php
 
+==Manifest.xml==
+
 The file {{{manifest.xml}}} is a manifest file for the plugin. The plugin installer will use the informations inside this file to install the plugin inside VLCShares.
 
 This is the manifest.xml content:
@@ -31,17 +33,6 @@ This is the manifest.xml content:
 <?xml version="1.0" encoding="UTF-8"?>
 <vs-manifest type="plugin">
 	<metadata>
-		<!-- 
-			Label: plugin name. This will be added inside the column label of plugins table. You can use translation string
-			Description: plugin description. This will be added inside the column description of plugins table
-			Version: plugin version. This will be added inside the column version of plugins table
-			Status: plugin release status. This is ignored at this time, but required. Future version will require it
-			Key: plugin key. BE CAREFULL when you choose your plugin key. 2 plugins with the same key can't be installed at the same time. This value will be added inside the column key of plugins table
-			File: plugin main file. This file will be required from plugin bootstrapper. This value will be added inside column file of plugins table.
-			Class: plugin main class. This value will be added inside column class of plugins table. Read plugin development guide for more info
-			Compatibility/From: lower version of VLCShares that is compatible with this plugin.
-			Compatibility/To: [OPTIONAL] highter version of VLCShares that is compatible with this plugin.
-		 -->
 		<label>Sample plugin</label>
 		<description>This plugin is an example to show how to create installable plugins for VLCShares 0.5</description>
 		<version>0.1</version>
@@ -54,13 +45,6 @@ This is the manifest.xml content:
 			<to>0.6</to>
 		</compatibility>
 	</metadata>
-	<!-- 
-	Inside <files> must be insered a list of all files that must be copied from the archive to the VLCShares directory. Every file 
-	directory listed inside the <files> tag must be included inside the archive using the root folder of the archive as
-	the root of <files> tag
-	The tag lists reproduce the directory structure of VLCShares. The root folder of VLCShares is the <files> tag
-	To rappresent a file who have to be copied, you must use the <file> tag and insert the file name as <file> node value
-	-->
 	<files>
 		<library>
 			<X>
@@ -72,20 +56,16 @@ This is the manifest.xml content:
 			</X>
 		</library>
 	</files>
-	<!--
-		Inside the <database> tag you can specify the SQL installation script file (<install>) and the SQL uninstallation script file (<uninstall>)
-		This files must be placed inside the root of the archive 
-	 -->
 	<database>
 		<install>install.sql</install>
-		<!--
-			<uninstall>myuninstall.sql</uninstall> 
-		 -->
+		<uninstall>uninstall.sql</uninstall> 
 	</database>
 </vs-manifest>
 }}}
 
 There are 3 main areas: metadata, files and database.
+
+===Metadata===
 
 {{{
 	<metadata>
@@ -104,11 +84,54 @@ There are 3 main areas: metadata, files and database.
 }}}
 
 The metadata tag contains all informations about the plugin:
-   * _label_: this plugin name. You can insert here a normal text or a translation string (for example {{{p_sample_pluginnamestring}}})
-   * _description_: this is the plugin description. As for the {{{label}}} tag, you can write here a normale text or a translation string
-   * _version_: the version of this plugin. Usually I use {{{MAINVERSION.MINORVERSION[_DEVVERSION]}}} notation for plugin version, but if you like you can use everything you like (for example {{{superrelease}}} or {{{orange}}} :P)
-   * _key_: this is a very important tag. Each plugin must have a unique key value. Can be at least one plugin for each key installed in each vlc-shares. So, when you choose your plugin key give a look at the official plugins list. Anyway I suggest to use alphabetic string only.
-   * _file_: path and filename of the main plugin file after a complete installation in a vlc-shares system. The path have to be relative to {{{vlc-shares/library/}}} folder. You can put the file where you like. Anyway, for coherency it's better if you put it inside the {{{X/VlcShares/Plugins/}}} folder.
-   * _class_: the main plugin classname. Nothing more, nothing less. You have only to remember that this class must extends {{{X_VlcShares_Plugins_Abstract}}}. We will explain this better later.
-   * _compatibility/from_: the version number of the first vlc-shares version that is compatible with this plugin. Remember that the comparison is executed again the vlc-shares CLEAN version (so, no _beta, _alpha or any other [_DEVVERSION]).
-   * _compatibility/to_: this param is optional. Can be used to give an upper bound to the version compatibility. VLCShares version has a notation like {{{EPICCHANGE.MAINVERSION.MINORVERSION[_DEVVERSION]}}}. The vlc-shares plugin compatibility will be broken only on {{{EPICCHANGE}}} or {{{MAINVERSION}}} changes. Should be safe to use 0.6 as upper bound.
+   * _*label*_: this plugin name. You can insert here a normal text or a translation string (for example {{{p_sample_pluginnamestring}}})
+   * _*description*_: this is the plugin description. As for the {{{label}}} tag, you can write here a normale text or a translation string
+   * _*version*_: the version of this plugin. Usually I use {{{MAINVERSION.MINORVERSION[_DEVVERSION]}}} notation for plugin version, but if you like you can use everything you like (for example {{{superrelease}}} or {{{orange}}} :P)
+   * _*key*_: this is a very important tag. Each plugin must have a unique key value. Can be at least one plugin for each key installed in each vlc-shares. So, when you choose your plugin key give a look at the official plugins list. Anyway I suggest to use alphabetic string only.
+   * _*file*_: path and filename of the main plugin file after a complete installation in a vlc-shares system. The path have to be relative to {{{vlc-shares/library/}}} folder. You can put the file where you like. Anyway, for coherency it's better if you put it inside the {{{X/VlcShares/Plugins/}}} folder.
+   * _*class*_: the main plugin classname. Nothing more, nothing less. You have only to remember that this class must extends {{{X_VlcShares_Plugins_Abstract}}}. We will explain this better later.
+   * _*compatibility/from*_: the version number of the first vlc-shares version that is compatible with this plugin. Remember that the comparison is executed again the vlc-shares CLEAN version (so, no _beta, _alpha or any other [_DEVVERSION]).
+   * _*compatibility/to*_: this param is optional. Can be used to give an upper bound to the version compatibility. VLCShares version has a notation like {{{EPICCHANGE.MAINVERSION.MINORVERSION[_DEVVERSION]}}}. The vlc-shares plugin compatibility will be broken only on {{{EPICCHANGE}}} or {{{MAINVERSION}}} changes. Should be safe to use 0.6 as upper bound.
+
+===Files===
+
+Inside the {{{files}}} tag you will find all folders and files that have to be copied inside the VLCShares folder
+
+{{{
+	<files>
+		<library>
+			<X>
+				<VlcShares>
+					<Plugins>
+						<file>Sample.php</file>
+					</Plugins>
+				</VlcShares>
+			</X>
+		</library>
+	</files>
+}}}
+
+You have to think about {{{files}}} tag as a root folder. The plugin installer will use the{{{vlc-shares/}}} folder as basepath. All tags inside the {{{files}}} tag will be evaluated as folder except the {{{file}}} tag, that is used to declare filename. All folders, if they don't exist, will be created only if there is at least a file inside them. So, if you have to create a empty folder you have to insert a dummy file inside it.
+
+Remember that folder and file names are case-sensitive. It means that {{{VlcShares}}} isn't the same of {{{VLCSHARES}}} or {{{vlcshares}}}.
+
+Just one more thing: the {{{file}}} tag is used to highlight filename. You can't use a folder named {{{file}}} inside the {{{files}}} tag or the plugin installer will recognize it as e {{{file}}} tag.
+
+In this example the plugin installer will create a folder {{{vlc-shares/library/X/VlcShares/Plugins/}}} and the file {{{Sample.php}}} will be copied inside it.
+
+You can place your files everywhere inside the {{{vlc-shares/}}} folder. I don't care. Anyway those are some conventions:
+
+   * Main plugin class is better if placed in the {{{/library/X/VlcShares/Plugins/}}} folder
+   * Helpers classes are better if placed in the {{{/library/X/VlcShares/Plugins/Helper/}}} folder
+   * Controllers classes are better if placed in the {{{/application/controllers/}}} folder
+   * Models classes are better if placed in the {{{/application/models/}}} folder
+   * DbTable classes are better if placed in the {{{/application/models/DbTable}}} folder
+   * Forms classes are better if placed in the {{{/application/forms/}}} folder
+   * View scripts are better if placed in the {{{/application/views/scripts/}}} folder
+   * Layout scripts are better if placed in the {{{/application/layouts/scripts}}} folder
+   * images/js/css MUST be placed in the {{{/public/}}} folder
+   * 3rd party libraries are better if placed in the {{{/library/}}} folder
+   * Plugins datas are better if placed in the {{{/data/}}} folder
+
+I'm near to forgot a thing: if you try to overwrite any existent file, the plugin installer will thrown an error and nothing will be done. If you really have the needs of patch or replace a file you have to write you own logic and execute it after the installation. Anyway, it's better to avoid.
+
