@@ -30,8 +30,9 @@ A list of additional plugins is available in the [PluginsList#Plugins_List Plugi
 This kind of plugins adds new collections inside VLCShares
 
 || *Name* || *Key* || *Last Version* || *Compatibility* || *Description* ||
-|| *[PluginsList#Anime_Db Anime Db]* || animedb || 0.1 beta 1 || 0.5.1 beta 2 or later || Adds the site animedb.tv inside VLCShares_ ||
-|| *[PluginYoutube Youtube]* || youtube || 0.1 beta 2 || 0.5.1 beta 4 or later || Adds Youtube inside VLCShares_, with support for closed caption ||
+|| *[PluginsList#Anime_Db Anime Db]* || animedb || 0.1 || 0.5.1 or later || Adds the site animedb.tv inside VLCShares_ ||
+|| *[PluginYoutube Youtube]* || youtube || 0.1 || 0.5.1 or later || Adds Youtube inside VLCShares_, with support for closed caption ||
+|| *[PluginsList#OPFItalia OPFItalia]* || opfitalia || 0.2 || 0.5.1 or later || Adds the site opfitalia.net inside VLCShares_ ||
 
 =Plugins Guide=
 
@@ -61,4 +62,20 @@ After you have completed the installation and configuration procedure, AnimeDb.t
 
 http://vlc-shares.googlecode.com/svn/wiki/images/animedb_collections.png
 
+==OPFItalia==
 
+The `OPFItalia` plugin allow to watch all videos of the _opfitalia.net_ site through VLCShares. This plugin is compatible with versions 0.5.1 and later.
+A Xegg archive of `OPFItalia` in stored inside the download section of this site and can be installed through the PluginInstaller interface. [PluginsList#How_to_install_new_plugins Follow this tutorial] to install the component.
+
+
+The management interface is available clicking on the `OPFItalia` dashboard icon
+
+http://vlc-shares.googlecode.com/svn/wiki/images/opfitalia_dashboard.png
+
+To be sure to watch all videos, you have to insert valid OPFItalia.net/streaming/ username/password in  plugin configuration panel. OPFItalia.net accounts can be registered freely in the site.
+
+http://vlc-shares.googlecode.com/svn/wiki/images/opfitalia_configs.png
+
+After you have completed the installation and configuration procedure, OPFItalia.net videos will be available in the VLCShares's Collections Index
+
+http://vlc-shares.googlecode.com/svn/wiki/images/opfitalia_collections.png
