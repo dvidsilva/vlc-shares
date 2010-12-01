@@ -281,9 +281,9 @@ There are a lot of triggers that can be used. The best place where find more inf
 
 Give a look at the images below and you will see the truth :P
 
+http://vlc-shares.googlecode.com/svn/wiki/images/api_dashboard.png
 
-
-
+http://vlc-shares.googlecode.com/svn/wiki/images/api_collections.png
 
 
 
