@@ -10,29 +10,16 @@ This tutorial describes how to update from an old version of VLCShares to a newe
 
 == Notes ==
 
-This tutorial is under development and shows how to update from vlc-shares 0.5 to 0.5.1beta1  or from 0.5.1beta1 to 0.5.1beta2
+This tutorial shows how to update from vlc-shares 0.5 (or 0.5.1beta4) to vlc-shares 0.5.1
 
-*THOSE ARE TEST VERSIONS OF VLCSHARES*
-
-*WARNING: vlc-shares updates come with an old version of pclzip library. If you using 64 bit OS, don't use this updates. Install the newer version from scratch*
 
 ==0.5 -> 0.5.1beta1==
 
-  # Download 'UPDATE_vlc-shares_0.5-to-0.5.1_beta1.zip' from the download section.
+  # Download 'UPDATE_vlc-shares_0.5.1.zip' from the download section.
   # Unpack the contents inside the directory _vlc-shares/public/_ of your vlc-shares installation directory
-  # *Be sure that all vlc-shares directories are writable*
   # Open your browser at http://localhost/vlc-shares/public/update.php
 
-==0.5.1beta1 -> 0.5.1beta2==
 
-  # Download 'UPDATE_vlc-shares_0.5.1_beta1-to-0.5.1_beta2.zip' from the download section.
-  # Unpack the contents inside the directory _vlc-shares/public/_ of your vlc-shares installation directory
-  # *Be sure that all vlc-shares directories are writable*
-  # Open your browser at http://localhost/vlc-shares/public/update.php
 
-==0.5.1beta3 -> 0.5.1beta4==
-
-  # Download 'UPDATE_vlc-shares_0.5.1_beta3-to-0.5.1_beta4.zip' from the download section.
-  # Unpack the contents inside the directory _vlc-shares/public/_ of your vlc-shares installation directory
-  # *Be sure that all vlc-shares directories are writable*
-  # Open your browser at http://localhost/vlc-shares/public/update.php
+  # Click on the red button (_blablablabla update vlc-shares_)
+  # Go back to the vlc-shares dashboard (http://localhost/vlc-shares/public/)
