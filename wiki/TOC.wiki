@@ -18,6 +18,7 @@
          *  [PluginsList#Profiles Profiles]
          *  [PluginsList#Outputs Outputs]
          *  [PluginsList#Anime_Db Anime Db]
+         *  [PluginsList#OPFItalia OPFItalia]
          *  [PluginYoutube Youtube]
    * [UpdateProcedure Update Procedure]
       *  [UpdateProcedure#Automatic_Procedure Automatic Procedure]
