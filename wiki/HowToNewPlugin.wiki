@@ -106,4 +106,9 @@ There are 3 main areas: metadata, files and database.
 The metadata tag contains all informations about the plugin:
    * _label_: this plugin name. You can insert here a normal text or a translation string (for example {{{p_sample_pluginnamestring}}})
    * _description_: this is the plugin description. As for the {{{label}}} tag, you can write here a normale text or a translation string
-   * _version_:
+   * _version_: the version of this plugin. Usually I use {{{MAINVERSION.MINORVERSION[_DEVVERSION]}}} notation for plugin version, but if you like you can use everything you like (for example {{{superrelease}}} or {{{orange}}} :P)
+   * _key_: this is a very important tag. Each plugin must have a unique key value. Can be at least one plugin for each key installed in each vlc-shares. So, when you choose your plugin key give a look at the official plugins list. Anyway I suggest to use alphabetic string only.
+   * _file_: path and filename of the main plugin file after a complete installation in a vlc-shares system. The path have to be relative to {{{vlc-shares/library/}}} folder. You can put the file where you like. Anyway, for coherency it's better if you put it inside the {{{X/VlcShares/Plugins/}}} folder.
+   * _class_: the main plugin classname. Nothing more, nothing less. You have only to remember that this class must extends {{{X_VlcShares_Plugins_Abstract}}}. We will explain this better later.
+   * _compatibility/from_: the version number of the first vlc-shares version that is compatible with this plugin. Remember that the comparison is executed again the vlc-shares CLEAN version (so, no _beta, _alpha or any other [_DEVVERSION]).
+   * _compatibility/to_: this param is optional. Can be used to give an upper bound to the version compatibility. VLCShares version has a notation like {{{EPICCHANGE.MAINVERSION.MINORVERSION[_DEVVERSION]}}}. The vlc-shares plugin compatibility will be broken only on {{{EPICCHANGE}}} or {{{MAINVERSION}}} changes. Should be safe to use 0.6 as upper bound.
