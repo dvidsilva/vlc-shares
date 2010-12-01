@@ -33,4 +33,4 @@
              * [PluginsAPI#Inputs_and_Outputs Inputs and Outputs]
              * [PluginsAPI#Plugins_Preferences Plugin Preferences]
          * [PluginsAPI#Plugins_Helpers Plugins Helpers]
-         * [PluginsAPI#How_to_create_a_new_Plugin How to create a new plugin]
+     * [PluginsAPI#How_to_create_a_new_Plugin How to create a new plugin]
