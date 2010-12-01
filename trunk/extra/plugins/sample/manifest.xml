@@ -14,7 +14,7 @@
 		 -->
 		<label>Sample plugin</label>
 		<description>This plugin is an example to show how to create installable plugins for VLCShares 0.5</description>
-		<version>0.1</version>
+		<version>0.5.1</version>
 		<status>stable</status>
 		<key>sample</key>
 		<file>X/VlcShares/Plugins/Sample.php</file>
