@@ -23,5 +23,8 @@ This tutorial shows how to update from vlc-shares 0.5 to vlc-shares 0.5.1
 
 ==Problems, errors, thunderbolts...==
 
+  * http://vlc-shares.googlecode.com/svn/wiki/images/update_err_writable.png Apache must have write access to the whole vlc-shares folder.
+  * http://vlc-shares.googlecode.com/svn/wiki/images/update_err_invalidversion.png Your version isn't valid for be used with this update. Double-check the download section and choose the right UPDATE for your version. If you can't find it... there will be valid reasons for a non-UPDATE. Check the issues or create a new one. I'll answer you.
+  * http://vlc-shares.googlecode.com/svn/wiki/images/update_err_filemissing.png You forgot to copy a file inside the {{{vlc-shares/public}}} directory. Try again :P
 
  
