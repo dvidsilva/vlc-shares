@@ -3,7 +3,7 @@
 	<metadata>
 		<label>p_youtube_plglabel</label>
 		<description>p_youtube_plgdesc</description>
-		<version>0.1_beta2</version>
+		<version>0.1</version>
 		<status>stable</status>
 		<key>youtube</key>
 		<file>X/VlcShares/Plugins/Youtube.php</file>

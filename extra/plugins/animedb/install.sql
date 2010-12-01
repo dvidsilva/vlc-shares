@@ -10,7 +10,7 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'animedb.login.url', 'http://animedb.tv/forum/login.php?do=login', 'http://animedb.tv/forum/login.php?do=login', 'plugins', 0, 'p_animedb_conf_loginurl_label', 'p_animedb_conf_loginurl_desc', '');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'animedb.request.timeout', '10', '10', 'plugins', 0, 'p_animedb_conf_requesttimeout_label', 'p_animedb_conf_requesttimeout_desc', '');
+	'animedb.request.timeout', '25', '25', 'plugins', 0, 'p_animedb_conf_requesttimeout_label', 'p_animedb_conf_requesttimeout_desc', '');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'animedb.request.maxredirects', '10', '10', 'plugins', 0, 'p_animedb_conf_requestredirects_label', 'p_animedb_conf_requestredirects_desc', '');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
