@@ -14,7 +14,9 @@ After you completed the installation procedure, open your browser (chrome or fir
 == Notes ==
 If you use the installer, every time you will start easyphp you will get an error about "Mysql start problem". Ignore this error (i removed mysql from the package to reduce file dimension).
 
-[http://blog.upyou.it/2010/10/18/vlc-shares-e-wiimc-accoppiata-vincente-per-lo-streaming-con-la-wii-1033.html Stefano Angaran wrote an article about vlc-shares installation procedure in italian.]
+[http://blog.upyou.it/2010/10/18/vlc-shares-e-wiimc-accoppiata-vincente-per-lo-streaming-con-la-wii-1033.html Stefano Angaran ha scritto un articolo in italiano su VLCShares con alcune informazioni sull'installazione.]
+
+[http://wiitaly.altervista.org/forum/viewtopic.php?f=23&t=478&p=2021 Un tutorial in lingua italiana potete trovarlo a questo indirizzo grazie alla community di Wiitaly]
 
 = Manual Installation =
 
