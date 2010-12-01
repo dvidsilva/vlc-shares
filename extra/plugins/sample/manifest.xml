@@ -48,8 +48,6 @@
 	 -->
 	<database>
 		<install>install.sql</install>
-		<!--
-			<uninstall>myuninstall.sql</uninstall> 
-		 -->
+		<uninstall>uninstall.sql</uninstall> 
 	</database>
 </vs-manifest>
