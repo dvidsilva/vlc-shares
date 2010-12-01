@@ -1,0 +1,9 @@
+<?php ob_start(); ?>
+<div id="widgetdevnews">
+	<a class="feed" href="https://code.google.com/feeds/p/vlc-shares/svnchanges/basic?path=/trunk/"><?php echo X_Env::_('p_widgetdevnews_feed_commits_trunk'); ?></a>
+	<a class="feed" href="https://code.google.com/feeds/p/vlc-shares/svnchanges/basic?path=/wiki/"><?php echo X_Env::_('p_widgetdevnews_feed_commits_wiki'); ?></a> 
+	<a class="feed" href="https://code.google.com/feeds/p/vlc-shares/issueupdates/basic"><?php echo X_Env::_('p_widgetdevnews_feed_issues'); ?></a>
+</div>
+<?php 
+$output = ob_get_clean();
+return $output;  

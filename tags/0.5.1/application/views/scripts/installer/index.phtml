@@ -1,0 +1,36 @@
+<!-- application/views/scripts/installer/index.phtml -->
+<?php //$this->headLink()->appendStylesheet($this->baseUrl('/css/installer/style.css')); ?>
+<?php //$this->headScript()->appendFile($this->baseUrl("/js/installer/index.js")); ?>
+<?php $this->headTitle()->prepend(X_Env::_('installer_title')); ?>
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<h2><?php echo X_Env::_('installer_title'); ?></h2>
+<div class="box">
+	
+	<h3><?php echo X_Env::_('installer_subtitle')?></h3>
+	<p><?php echo X_Env::_('installer_greetings')?></p>
+
+</div>
+
+<div class="box">
+	<form action="<?php echo $this->url(array('action' => 'save', 'controller' => 'installer'), 'default', true); ?>" method="post">
+		<dl>
+			<dt><?php echo X_Env::_('installer_selectlanguage'); ?></dt>
+			<dd><?php echo $this->formSelect('lang', 'en_GB.ini', null, $this->languages); ?></dd>
+		</dl>
+		<?php echo $this->formSubmit('submit', X_Env::_('submit')); ?>
+	</form>
+</div>

@@ -1,0 +1,88 @@
+<!-- application/views/scripts/plugin/index.phtml -->
+
+<?php //$this->headScript()->appendFile($this->baseUrl("/js/plugin/index.js")); ?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
+<?php $this->headScript()->captureEnd(); ?>
+<?php $this->headTitle()->prepend(X_Env::_('plugin_title')); ?>
+
+<div class="span-24 last" id="back-to-home">
+	<div class="span-4 box back">
+		<a href="<?php echo $this->url(array('controller' => 'manage', 'action' => 'index'), 'default', true); ?>"><?php echo X_Env::_('back_to_home'); ?></a>
+	</div>
+	<div class="span-18 box title last">
+		<h4><?php echo X_Env::_('plugin_title'); ?></h4>
+	</div>
+</div>
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+
+<div class="span-24 last">
+	<h2><?php echo X_Env::_('plugin_index_maintitle'); ?></h2>
+	<p><?php echo X_Env::_('plugin_index_maindesc'); ?></p>
+</div>
+
+<div class="span-14 box">
+	<h3><?php echo X_Env::_('plugin_index_uninstalllisttitle'); ?></h3>
+	<table id="plugins-table" width="100%">
+		<thead>
+			<tr>
+				<th width="50%"><?php echo X_Env::_('plugin_index_uninstalllist_name'); ?></th>
+				<th width="25%"><?php echo X_Env::_('plugin_index_uninstalllist_key'); ?></th>
+				<th width="auto"><?php echo X_Env::_('plugin_index_uninstalllist_version'); ?></th>
+				<th width="100px">&nbsp;</th>
+			</tr>
+		</thead>
+		<!-- 
+		<tfoot>
+			<tr>
+				<td colspan="4"><center>Paginazione?</center></td>
+			</tr>
+		</tfoot>
+		 -->
+		<tbody>
+			<?php if ( count($this->plugins) ) : ?>
+				<?php foreach ($this->plugins as $plugin): ?>
+				<?php /* @var $plugin Application_Model_Plugin */ ?>
+					<tr>
+						<td class="plugin-name"><?php echo X_Env::_($plugin->getLabel()); ?></td>
+						<td class="plugin-key"><?php echo $plugin->getKey(); ?></td>
+						<td class="plugin-version"><?php echo $plugin->getVersion() != null ? $plugin->getVersion() : X_VlcShares::VERSION; ?></td>
+						<td class="plugin-actions">
+							<a href="<?php echo $this->url(
+								array(
+									'controller' => 'plugin',
+									'action'	 => 'uconfirm',
+									'key'		 => $plugin->getKey()
+								), 'default', true
+							); ?>">
+								<?php echo X_Env::_('plugin_action_uninstall')?>
+							</a>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			<?php else: ?>
+				<tr>
+					<td colspan="4"><center><i><?php echo X_Env::_('plugin_index_uninstalllist_noplugin'); ?></i></center>
+				</tr>
+			<?php endif; ?>
+		</tbody>
+	</table>
+</div>
+
+<div class="span-8 box last">
+	<h3><?php echo X_Env::_('plugin_index_installformtitle'); ?></h3>
+	<?php echo $this->form; ?>
+</div>
