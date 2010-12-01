@@ -1,4 +1,5 @@
 #summary How to create a plugin for VLCShares
+#labels Phase-Implementation,Featured
 
 =Introduction=
 
@@ -133,5 +134,17 @@ You can place your files everywhere inside the {{{vlc-shares/}}} folder. I don't
    * 3rd party libraries are better if placed in the {{{/library/}}} folder
    * Plugins datas are better if placed in the {{{/data/}}} folder
 
-I'm near to forgot a thing: if you try to overwrite any existent file, the plugin installer will thrown an error and nothing will be done. If you really have the needs of patch or replace a file you have to write you own logic and execute it after the installation. Anyway, it's better to avoid.
+I'm near to forgot a thing: if you try to overwrite any existent file, the plugin installer will raise an error and nothing will be done. If you really have the needs of patch or replace a file you have to write you own logic and execute it after the installation. Anyway, it's better to avoid.
 
+===Database===
+
+The database tag contains only two things: the name of in install sql script (in the {{{install}}} tag) and the name of the uninstall sql script (in the {{{uninstall}}} tag). 
+
+{{{
+	<database>
+		<install>install.sql</install>
+		<uninstall>uninstall.sql</uninstall> 
+	</database>
+}}}
+
+Those files have to be placed inside the root of the archive, just like the {{{manifest.xml}}} file.
