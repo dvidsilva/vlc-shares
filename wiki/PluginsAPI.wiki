@@ -147,4 +147,6 @@ Some plugins add new helpers:
 || Megavideo || megavideo || allow to fetch information about a megavideo video by video ID or video URL ||
 
 
-== How to create a new Plugin ==
+= How to create a new Plugin =
+
+[HowToNewPlugin#Version_0.5.1 This short tutorial show how to create a new plugin for VLCShares 0.5.1 and later]
