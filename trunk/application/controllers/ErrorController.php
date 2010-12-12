@@ -1,6 +1,6 @@
 <?php
 
-class ErrorController extends Zend_Controller_Action
+class ErrorController extends X_Controller_Action
 {
 
     public function errorAction()
@@ -23,10 +23,14 @@ class ErrorController extends Zend_Controller_Action
                 break;
         }
         
+        /*
         // Log exception, if logger available
         if ($log = $this->getLog()) {
             $log->crit($this->view->message, $errors->exception);
         }
+        */
+        X_Debug::f($this->view->message);
+        X_Debug::f($errors->exception->getTraceAsString());
         
         // conditionally display exceptions
         if ($this->getInvokeArg('displayExceptions') == true) {
