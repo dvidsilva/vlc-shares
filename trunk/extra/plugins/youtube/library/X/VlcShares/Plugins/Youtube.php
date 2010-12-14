@@ -158,6 +158,11 @@ class X_VlcShares_Plugins_Youtube extends X_VlcShares_Plugins_Abstract implement
 		$url = $this->resolveLocation($location);
 		
 		if ( $url ) {
+			// i have to check for rtsp videos, wiimc can't handle them
+			if ( X_Env::startWith($url, 'rtsp') && $this->helpers()->devices()->isWiimc() ) {
+				return;
+			}
+
 			$link = new X_Page_Item_PItem('core-directwatch', X_Env::_('p_youtube_watchdirectly'));
 			$link->setIcon('/images/icons/play.png')
 				->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
@@ -438,7 +443,22 @@ class X_VlcShares_Plugins_Youtube extends X_VlcShares_Plugins_Abstract implement
 					}
 				}
 				if ( $returned === null ) {
-					$returned = false;
+					// for valid video id but video with restrictions
+					// alternatives formats can't be fetched by youtube page.
+					// i have to fallback to standard api url
+					$apiVideo = $helper->getVideo($foundVideo);
+					
+					foreach ($apiVideo->mediaGroup->content as $content) {
+						if ($content->type === "video/3gpp") {
+							$returned = $content->url;
+							X_Debug::w('Content restricted video, fallback to api url:'.$returned);
+							break;
+						}
+					}
+
+					if ( $returned === null ) {
+						$returned = false;
+					}
 				}
 				$toBeCached['url'] = $returned;
 				$this->cachedLocation[$location] = $toBeCached;
