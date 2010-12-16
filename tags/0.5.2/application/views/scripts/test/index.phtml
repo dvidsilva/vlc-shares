@@ -1,0 +1,33 @@
+<!-- application/views/scripts/test/index.phtml -->
+<?php $this->headTitle()->prepend('System tests'); ?>
+
+<div class="span-24 last" id="back-to-home">
+	<div class="span-4 box back">
+		<a href="<?php echo $this->url(array('controller' => 'manage', 'action' => 'index'), 'default', true); ?>">Back to Home</a>
+	</div>
+	<div class="span-18 box title last">
+		<h4>System tests</h4>
+	</div>
+</div>
+
+<h2>Results:</h2>
+<div class="span-24 last" id="manage-messages" style="margin-bottom: 2em;">
+	<ul>
+		<?php foreach ($this->tests->getItems() as $i => $test ): ?>
+			<?php /* @var $test X_Page_Item_Test */ ?>
+			<li class="<?php echo $test->getType(); ?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$test->getType()}.png");?>" alt="<?php echo $test->getType(); ?>" />
+				<?php echo $test->getLabel()?>
+				<?php if ( $test->getReason() != null ): ?>
+					-> <?php echo $test->getReason(); ?> 
+				<?php endif; ?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+
+<h2>Debug log:</h2>
+<div class="span-24 last">
+	<textarea rows="10" style="width: 100%;"><?php echo $this->log;?></textarea>
+</div>
+

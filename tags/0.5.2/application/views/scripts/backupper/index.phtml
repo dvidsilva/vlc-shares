@@ -1,0 +1,68 @@
+<!-- application/views/scripts/backupper/index.phtml -->
+
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/backupper/style.css')); ?>
+<?php $this->headScript()->appendFile($this->baseUrl("/js/backupper/index.js")); ?>
+<?php $this->headTitle()->prepend(X_Env::_('p_backupper_title')); ?>
+
+<div class="span-24 last" id="back-to-home">
+	<div class="span-4 box back">
+		<a href="<?php echo $this->url(array('controller' => 'manage', 'action' => 'index'), 'default', true); ?>"><?php echo X_Env::_('back_to_home'); ?></a>
+	</div>
+	<div class="span-18 box title last">
+		<h4><?php echo X_Env::_('p_backupper_title'); ?></h4>
+	</div>
+</div>
+
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<div class="span-11 box">
+	<h2><?php echo X_Env::_('p_backupper_backuppablelist_title'); ?></h2>
+	<p><?php echo X_Env::_('p_backupper_backuppablelist_desc'); ?></p>
+	<p><a href="javascript:void();" id="select-all"><?php echo X_Env::_('p_backupper_backuppablelist_selectall'); ?></a></p>
+	<form method="post" action="<?php echo $this->url(array('controller' => 'backupper', 'action' => 'backup'), 'default', true); ?>">
+		<?php foreach ( $this->backuppables as $i => $label): ?>
+			<div>
+				<?php echo $this->formCheckbox("components[$i]", true); ?> <label for="components-<?php echo $i?>"><?php echo $label ?></label>
+			</div>
+		<?php endforeach; ?>
+		<div>
+			<?php echo $this->formSubmit('submit', X_Env::_('p_backupper_dobackup') );?>
+		</div>
+	</form>
+</div>
+
+<div class="span-11 box last">
+	<h2><?php echo X_Env::_('p_backupper_restorablelist_title'); ?></h2>
+	<p><?php echo X_Env::_('p_backupper_restorablelist_desc'); ?></p>
+	<?php if ( count( $this->restorables) ) :?>
+		<form method="post" action="<?php echo $this->url(array('controller' => 'backupper', 'action' => 'rinfo'), 'default', true); ?>">
+			<div>
+				<?php echo $this->formRadio('file', null, null, $this->restorables, "</div>\n<div>"); ?>
+			</div>
+			<div>
+				<?php echo $this->formSubmit('submit', X_Env::_('p_backupper_dorestore') );?>
+			</div>
+		</form>
+	<?php else: ?>
+		<center>
+		<p><i><?php echo X_Env::_('p_backupper_restoreablelist_noitem'); ?></i></p>
+		<?php if ($this->showActiveAlert): ?>
+			<p><a href="<?php echo $this->url(array('controller'=>'backupper', 'action' => 'alert', 'status' => 'on'));?>"><?php echo X_Env::_('p_backupper_warningmessage_nobackupadd') ?></a></p>
+		<?php endif; ?>
+		</center>
+	<?php endif; ?>
+</div>
+
