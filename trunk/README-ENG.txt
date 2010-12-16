@@ -8,7 +8,7 @@
 #     															#
 #################################################################
 
-VLC-SHARES v0.5.1 - 01/12/2010
+VLC-SHARES v0.5.2 - 16/12/2010
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -24,6 +24,11 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.5.2 (16/12/2010) ***
+ - Support for WiiMC 1.1.1 and WiiMC 1.1.1+
+ - Fix a regression in configs label and description
+ - Added more infos in debug log
 
 *** 0.5.1 (01/12/2010) ***
  - new MobileRenderer plugin for better navigation with android devices
