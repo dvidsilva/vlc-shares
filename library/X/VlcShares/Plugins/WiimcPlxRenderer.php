@@ -37,6 +37,15 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 			if ( $request->getControllerName() == 'index' && $request->getActionName() == 'collections' ) {
 				$plx->setWiimcplus_assert_mainmenu('true'); // uses the __call api
 			}
+			// show the current time as custom playlist header tag if the page is controls/control
+			if ( $request->getControllerName() == 'controls' && $request->getActionName() == 'control' ) {
+				$vlc = X_Vlc::getLastInstance();
+				if ( $vlc ) { // check to be sure that vlc is running right now
+					$currentTime = X_Env::formatTime($vlc->getCurrentTime());
+					$totalTime = X_Env::formatTime($vlc->getTotalTime());
+					$plx->setWiimcplus_current_time("$currentTime/$totalTime"); // uses the __call api
+				}
+			}
 		}
 		
 		foreach ( $list->getItems() as $i => $item ) {
