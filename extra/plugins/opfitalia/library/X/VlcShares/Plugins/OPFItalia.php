@@ -239,7 +239,7 @@ class X_VlcShares_Plugins_OPFItalia extends X_VlcShares_Plugins_Abstract impleme
 	 * @param $location
 	 */
 	function getParentLocation($location = null) {
-		if ( $location == '' || $location = null ) return false;
+		if ( $location == '' || $location == null ) return false;
 		
 		@list($path, $type, $href) = explode('/', $location, 3);
 		

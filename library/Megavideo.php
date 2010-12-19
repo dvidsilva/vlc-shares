@@ -44,7 +44,9 @@ class Megavideo
                // so megaupload -> megavideo links work
                $this->id = substr($this->id, 0, 8);
                 
-                  $this->getxml(); 
+                  $this->getxml();
+
+                  //X_Debug::i(print_r($this->xml, true));
                    
                      $parse = array   (   'runtimehms'   =>   'duration', 
                                     'size'         =>   'size', 
@@ -96,6 +98,7 @@ class Megavideo
          function getxml() 
          { 
                $this->xml = file_get_contents("http://www.megavideo.com/xml/videolink.php?v=".$this->id."&id=".time()); // or
+               //X_Debug::i("http://www.megavideo.com/xml/videolink.php?v=".$this->id."&id=".time());
                				//die("Error!\n"); 
                if ( $this->xml === false ) {
 					throw new Exception('Megavideo wrapper error: file_get_contents');
