@@ -33,7 +33,7 @@ This kind of plugins adds new collections inside VLCShares
 || *[PluginsList#Anime_Db Anime Db]* || animedb || 0.1 || 0.5.1 or later || Adds the site animedb.tv inside VLCShares_ ||
 || *[PluginYoutube Youtube]* || youtube || 0.1 || 0.5.1 or later || Adds Youtube inside VLCShares_, with support for closed caption ||
 || *[PluginsList#OPFItalia OPFItalia]* || opfitalia || 0.2 || 0.5.1 or later || Adds the site opfitalia.net inside VLCShares_ ||
-|| *Jigoku* || jigoku || 0.1beta || 0.5.1 or later || Adds the site www.jigoku.it inside VLCShares_ ||
+|| *Jigoku* || jigoku || 0.1beta || 0.5.1 or later || Adds the site http://www.jigoku.it inside VLCShares_ ||
 
 =Plugins Guide=
 
