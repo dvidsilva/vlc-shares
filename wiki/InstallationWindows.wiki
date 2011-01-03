@@ -9,7 +9,8 @@ This short tutorial give an example on how to install and do basic configuration
 
 The version 0.5 comes with a EasyPHP 5.3.3 + VLCShares 0.5 installer. You can download it from the downloads section
 
-After you completed the installation procedure, open your browser (chrome or firefox) to http://localhost/vlc-shares/public and complete the configuration
+After you completed the installation procedure, open your browser (chrome or firefox) to http://localhost/vlc-shares/public and complete the configuration (steps 14-15-16-17-18-19 of manual installation).
+
 
 == Notes ==
 If you use the installer, every time you will start easyphp you will get an error about "Mysql start problem". Ignore this error (i removed mysql from the package to reduce file dimension).
@@ -55,9 +56,7 @@ In this tutorial will be used as placeholder the following strings:
   # Check on _php_pdo_sqlite_, then click on Apply and restart Apache server again
   # *`[`optional`]`* Install/Unpack MediaInfo package
   # *`[`optional`]`* Install/Unpack FFMpeg package
-  # Open your browser (Google Chrome or Firefox is better :P) at [http://localhost/vlc-shares/public]. You should be redirected to the new vlc-shares dashboard 
-
-http://img827.imageshack.us/img827/4993/alpha5.png
+  # Open your browser (Google Chrome or Firefox is better :P) at [http://localhost/vlc-shares/public]. You should be redirected to the new vlc-shares dashboard http://img827.imageshack.us/img827/4993/alpha5.png
   # Click on *VLCShares - configure*
   # Select your language, insert the VLC_PATH, MEDIAINFO_PATH (optional) and FFMPEG_PATH (optional)
   # Save changes
