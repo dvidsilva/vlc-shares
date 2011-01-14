@@ -23,8 +23,11 @@ class X_VlcShares_Plugins_FirstRunSetup extends X_VlcShares_Plugins_Abstract {
 		
 		X_Debug::i("Plugin triggered: redirect to installer");
 		
-		$controller->getRequest()->setControllerName('installer')->setActionName('index')->setDispatched(false);
+		$controllerName = $controller->getRequest()->getControllerName();
 		
+		if ( $controllerName != 'installer' ) {
+			$controller->getRequest()->setControllerName('installer')->setActionName('index')->setDispatched(false);
+		}
 	}
 }	
 
