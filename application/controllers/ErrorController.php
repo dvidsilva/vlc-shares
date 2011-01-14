@@ -33,9 +33,9 @@ class ErrorController extends X_Controller_Action
         X_Debug::f($errors->exception->getTraceAsString());
         
         // conditionally display exceptions
-        if ($this->getInvokeArg('displayExceptions') == true) {
+        //if ($this->getInvokeArg('displayExceptions') == true ) {
             $this->view->exception = $errors->exception;
-        }
+        //}
         
         $this->view->request   = $errors->request;
     }

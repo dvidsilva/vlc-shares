@@ -1,7 +1,7 @@
 <?php
 
 
-class InstallerController extends Zend_Controller_Action
+class InstallerController extends X_Controller_Action
 {
 	
 	function init() {
@@ -9,7 +9,6 @@ class InstallerController extends Zend_Controller_Action
 		if ( !X_VlcShares_Plugins::broker()->isRegistered('firstrunsetup') ) {
 			$this->_helper->redirector('index', 'manage');
 		}
-		
 	}
 	
     public function indexAction() {
