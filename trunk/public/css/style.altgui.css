@@ -32,7 +32,8 @@ body {
 	border-bottom: 1px solid /*#FF6500;*/ #444;
 }
 
-#header ul {
+#header #applications-links, #header #logo {
+	margin: 1em;
 	margin-bottom: 0px;
 }
 

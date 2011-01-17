@@ -22,6 +22,8 @@ abstract class X_VlcShares_View_Helper_Abstract extends Zend_View_Helper_Abstrac
 	public function setDecorator(X_VlcShares_Skins_DecoratorInterface $decorator) {
 
 		$this->_decorator = $decorator;
+		$this->_decorator->setView($this->view);
+		
 		return $this;
 	}
 	
@@ -115,6 +117,20 @@ abstract class X_VlcShares_View_Helper_Abstract extends Zend_View_Helper_Abstrac
     	// get content inside the capture
         $content = ob_get_clean();
         
+        // send content and options to decorator
+        $content = $this->decorate($content);
+        
+        // reset option to previous instance
+        $this->freeInstance();
+        
+        if ( $echo ) {
+        	echo $content;
+        }
+        // return content
+        return $content;
+    }
+    
+    protected function decorate($content) {
         // get the decorator instance
         $decorator = $this->getDecorator();
         
@@ -124,12 +140,6 @@ abstract class X_VlcShares_View_Helper_Abstract extends Zend_View_Helper_Abstrac
         // send content and options to decorator
         $content = $decorator->decorate($content, $options);
         
-        // reset option to previous instance
-        $this->freeInstance();
-        
-        if ( $echo ) {
-        	echo $content;
-        }
         // return content
         return $content;
     }

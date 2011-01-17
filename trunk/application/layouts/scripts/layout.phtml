@@ -23,23 +23,14 @@
 	<div class="unit" style="min-width: 960px;">
 		<div class="container columns" id="header">
 			<div class="elastic column">
-				<?php if ($this->layout()->topNavigator != null ) : ?>
-					<?php echo $this->layout()->topNavigator; ?>
-				<?php else: ?>
-					<ul class="columns same-height">
-						<li class="fixed column topnav-button">
-							<a href="<?php echo $this->url(array('controller' => 'manage'), 'default', true); ?>">
-								<img alt="<?php echo X_Env::_('p_altgui_topnav_dashboard'); ?>" src="<?php echo $this->baseUrl('/images/altgui/dashboard.png');?>" />
-								<span><?php echo X_Env::_('p_altgui_topnav_dashboard'); ?></span>
-							</a>
-						</li>
-						<li class="elastic column"></li>
-					</ul>
-					
-				<?php endif;?>
+				<div class="container" id="applications-links">
+					<?php echo $this->action('applications', 'manage'); ?>
+				</div>
 			</div>
-			<div class="fixed column" style="min-width: 200px;" id="logo">
-				RIGHT LOGO
+			<div class="fixed column" style="min-width: 160px;">
+				<div class="container" id="logo">
+					RIGHT LOGO
+				</div>
 			</div>
 		</div>
 		<div class="container columns" id="subheader">
@@ -57,11 +48,7 @@
 			</div>
 			<div class="fixed column" style="min-width: 200px;" id="status">
 				<div class="container">
-					<?php if ($this->layout()->status != null ) : ?>
-						<?php echo $this->layout()->status; ?>
-					<?php else: ?>
-						&nbsp;
-					<?php endif;?>
+					<?php echo $this->action('status', 'manage'); ?>
 				</div>
 			</div>
 		</div>

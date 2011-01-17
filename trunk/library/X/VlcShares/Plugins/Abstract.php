@@ -9,6 +9,7 @@ require_once 'X/VlcShares/Plugins/Helper/Abstract.php';
 require_once 'X/Page/Item.php';
 require_once 'X/Page/Item/Link.php';
 require_once 'X/Page/Item/PItem.php';
+require_once 'X/Page/Item/StatusLink.php';
 require_once 'X/Page/Item/ActionLink.php';
 require_once 'X/Page/Item/ManageLink.php';
 require_once 'X/Page/Item/Statistic.php';
@@ -18,6 +19,7 @@ require_once 'X/Page/Item/Test.php';
 
 require_once 'X/Page/ItemList.php';
 require_once 'X/Page/ItemList/PItem.php';
+require_once 'X/Page/ItemList/StatusLink.php';
 require_once 'X/Page/ItemList/ActionLink.php';
 require_once 'X/Page/ItemList/ManageLink.php';
 require_once 'X/Page/ItemList/Statistic.php';
@@ -581,6 +583,47 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * LEVEL 2 API
 	 --------------------------------------------------------*/
 	
+	//=== Triggered in layout ===//
+	
+	/**
+	 * Retrieve second class action links and applications links
+	 * This link will be inserted in a box and shown as a list
+	 * for shortcuts. First link will be used for box, other links
+	 * will be added in a list below
+	 * @param Zend_Controller_Action $this
+	 * @return X_Page_ItemList_ManageLink
+	 */
+	public function getIndexManageLinks(Zend_Controller_Action $controller) {}
+
+	/**
+	 * Retrieve first class action links
+	 * This link will be inserted in a box and shown as a list
+	 * for shortcuts
+	 * @param Zend_Controller_Action $this
+	 * @return X_Page_ItemList_StatusLink
+	 */
+	public function preGetStatusLinks(Zend_Controller_Action $controller) {}
+	
+	
+	/**
+	 * Retrieve first class action links
+	 * This link will be inserted in a box and shown as a list
+	 * for shortcuts
+	 * @param Zend_Controller_Action $this
+	 * @return X_Page_ItemList_StatusLink
+	 */
+	public function getStatusLinks(Zend_Controller_Action $controller) {}
+
+	/**
+	 * Retrieve first class action links
+	 * This link will be inserted in a box and shown as a list
+	 * for shortcuts
+	 * @param Zend_Controller_Action $this
+	 * @return X_Page_ItemList_StatusLink
+	 */
+	public function postGetStatusLinks(Zend_Controller_Action $controller) {}
+	
+	
 	//=== Triggered in Manage:index ===//
 	
 	/**
@@ -591,16 +634,6 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @return X_Page_ItemList_ActionLink
 	 */
 	public function getIndexActionLinks(Zend_Controller_Action $controller) {}
-	
-	/**
-	 * Retrieve second class action links
-	 * This link will be inserted in a box and shown as a list
-	 * for shortcuts. First link will be used for box, other links
-	 * will be added in a list below
-	 * @param Zend_Controller_Action $this
-	 * @return X_Page_ItemList_ManageLink
-	 */
-	public function getIndexManageLinks(Zend_Controller_Action $controller) {}
 	
 	/**
 	 * Retrieve statistic from plugins

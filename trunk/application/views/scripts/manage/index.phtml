@@ -16,102 +16,36 @@ $v_manageLinks = $this->manageLinks;
 /* @var $v_statistics X_Page_ItemList_Statistics */
 $v_statistics = $this->statistics;
 
-$pluginTopNav = array();
 $pluginApplications = array();
 $pluginConfigs = array();
 
 foreach ($v_manageLinks->getItems() as $manageLink) {
 	/* @var $manageLink X_Page_Item_ManageLink */
 	// only plugin with custom controller goes in topnav
-		
 	if ( $manageLink->isUrl() || $manageLink->getLinkController() == 'config' ) {
 		$pluginConfigs[] = $manageLink;
 	} else {
-		$item = array(
-			'label'		=>	$manageLink->getTitle(),
-			'link'		=>	$manageLink->isUrl() ? $manageLink->getLink() : $this->url($manageLink->getLink(), $manageLink->getRoute(), $manageLink->isReset()),
-			'icon'		=>	$manageLink->getIcon(),
-			'title'		=>	$manageLink->getLabel(),
-		);
-		$pluginTopNav[] = $item;
 		$pluginApplications[] = $manageLink;
 	}
 }
 
-$topNav = array_merge($this->coreLinks, $pluginTopNav);
+$this->headTitle()->prepend('Home');
+$links = array();
+foreach ( $v_actionLinks->getItems() as $link ) {
+	$links[] = ((object) array(
+		'label' => $link->getLabel(),
+		'url'	=> $link->isUrl() ? $link->getLink() : $this->url($link->getLink(), $link->getRoute(), $link->isReset())
+	));
+}
+$this->layout()->subNavigator = $this->xContextualMenu($links);
 
+$breadcrumb = array(
+	//array('label' => X_Env::_('Home'), 'url' => $this->url()  ),
+	array('label' => X_Env::_('Dashboard'), /* 'url' => $this->url() */ ),
+);
+$this->layout()->breadcrumb = $this->xBreadcrumb($breadcrumb);
 ?>
-<?php $this->headTitle()->prepend('Home'); ?>
 
-<?php $this->placeholder('topNavigator')->captureStart(); ?>
-	<ul class="columns same-height">
-		<li class="fixed column topnav-button selected">
-			<a href="<?php echo $this->url(); ?>">
-				<img alt="<?php echo X_Env::_('p_altgui_topnav_dashboard'); ?>" src="<?php echo $this->baseUrl('/images/altgui/dashboard.png');?>" />
-				<span><?php echo X_Env::_('p_altgui_topnav_dashboard'); ?></span>
-			</a>
-		</li>
-		<?php foreach ($topNav as $topNavLink): ?>
-			<li class="fixed column topnav-button">
-				<a href="<?php echo $topNavLink['link'];?>">
-					<?php if ( $topNavLink['icon'] == null ): ?>
-						<img alt="<?php echo $topNavLink['title'] . ' - ' . $topNavLink['label']; ?>" src="<?php echo $this->baseUrl('/images/manage/plugin.png');?>" />
-					<?php else: ?>
-						<img alt="<?php echo $topNavLink['title'] . ' - ' . $topNavLink['label']; ?>" src="<?php echo $this->baseUrl($topNavLink['icon']);?>" />
-					<?php endif; ?>
-					<span><?php echo $topNavLink['label']; ?></span>
-				</a>
-			</li>
-		<?php endforeach; ?>
-		<li class="elastic column"></li>
-	</ul>
-<?php $this->placeholder('topNavigator')->captureEnd(); ?>
-<?php $this->layout()->topNavigator = $this->placeholder('topNavigator'); ?>
-
-<?php $this->placeholder('subNavigator')->captureStart(); ?>
-	<ul class="columns same-height">
-		<?php foreach ( $v_actionLinks->getItems() as $i => $link) :?>
-			<?php /* @var $link X_Page_Item_ActionLink */ ?>
-			<?php
-				$_link = '';
-				if ( $link->isUrl() ) {
-					$_link = $link->getLink();
-				} else {
-					$_link = $this->url($link->getLink(), $link->getRoute(), $link->isReset());
-				}
-			?>
-			<li class="fixed column subnav-button">
-				<a href="<?php echo $_link; ?>">
-					<!-- 
-					<?php if ( $link->getIcon() != null ) : ?>
-						<img class="icon" src="<?php echo $this->baseUrl($link->getIcon()); ?>" />
-					<?php else: ?>
-						<img class="icon" src="<?php echo $this->baseUrl('/images/right_arrow.png'); ?>" />								
-					<?php endif; ?>
-					-->
-					<span><?php echo $link->getLabel(); ?></span>
-				</a>
-			</li>
-		<?php endforeach; ?>
-	</ul>
-<?php $this->placeholder('subNavigator')->captureEnd(); ?>
-<?php $this->layout()->subNavigator = $this->placeholder('subNavigator'); ?>
-
-<?php $this->placeholder('breadcrumb')->captureStart(); ?>
-	<ul>
-		<li class="breadcrumb-button">
-			<a href="<?php echo $this->url(); ?>">
-				<span><?php echo X_Env::_('Home'); ?></span>
-			</a>
-		</li>
-		<li class="breadcrumb-button">
-			<a href="<?php echo $this->url(); ?>">
-				<span><?php echo X_Env::_('p_altgui_topnav_dashboard'); ?></span>
-			</a>
-		</li>
-	</ul>
-<?php $this->placeholder('breadcrumb')->captureEnd(); ?>
-<?php $this->layout()->breadcrumb = $this->placeholder('breadcrumb'); ?>
 
 <?php $this->placeholder('status')->captureStart(); ?>
 	<ul>
@@ -119,27 +53,17 @@ $topNav = array_merge($this->coreLinks, $pluginTopNav);
 			Logged in as <strong>THE ONE</strong>
 		</li>
 		<li>
-			<a href="<?php echo $this->url(); ?>" class="button">
-				<span><?php echo X_Env::_('p_altgui_profile'); ?></span>
-			</a>
+			<?php echo $this->xButton(
+				X_Env::_('p_altgui_profile'), $this->url()
+			)->setDimension(X_VlcShares_View_Helper_XButton::DIMENSION_SMALL); ?>
 		</li>
 		<li>
-			<a href="<?php echo $this->url(); ?>" class="button red">
-				<span><?php echo X_Env::_('p_altgui_logout'); ?></span>
-			</a>
+			<?php echo $this->xButton(
+				X_Env::_('p_altgui_logout'),
+				$this->url()
+			)->setDimension(X_VlcShares_View_Helper_XButton::DIMENSION_SMALL)
+			->setVariant(X_VlcShares_View_Helper_XButton::VARIANT_HIGHLIGHT); ?>
 		</li>
-		<!-- 
-		<li>
-			<a href="<?php echo $this->url(); ?>" class="button green">
-				<span><?php echo X_Env::_('p_altgui_logout'); ?></span>
-			</a>
-		</li>
-		<li>
-			<a href="<?php echo $this->url(); ?>" class="button blue">
-				<span><?php echo X_Env::_('p_altgui_logout'); ?></span>
-			</a>
-		</li>
-		-->
 	</ul>
 <?php $this->placeholder('status')->captureEnd(); ?>
 <?php $this->layout()->status = $this->placeholder('status'); ?>
