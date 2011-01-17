@@ -114,5 +114,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			}
 		}
 	}
+	
+	protected function _initViewHelper() {
+		/* @var $view Zend_View */
+		$view = $this->getResource('view');
+		
+		$view->addHelperPath(APPLICATION_PATH.'/views/helpers/', 'X_VlcShares_View_Helper_');
+		
+	}
+	
 }
 

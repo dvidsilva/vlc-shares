@@ -1,46 +1,73 @@
-<!-- application/layouts/scripts/layout.phtml -->
+<!-- application/layouts/scripts/altgui.phtml -->
 <?php echo $this->doctype(); ?> 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<?php // Items added in reverse order ?>
+	<?php $this->headScript()->prependFile($this->baseUrl("/js/elastic/elastic.js")); ?>	
 	<?php $this->headScript()->prependFile($this->baseUrl("/js/jquery-ui-1.8.4.custom.min.js")); ?>
 	<?php $this->headScript()->prependFile($this->baseUrl("/js/jquery-1.4.2.min.js")); ?>
 	<?php $this->headScript()->prependFile($this->baseUrl('/js/console.js')); ?>
 	<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
 		var baseUrl = "<?php echo $this->baseUrl(); ?>";
 	<?php $this->headScript()->captureEnd(); ?>
-	<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/blueprint/screen.css'), 'screen, projection'); ?>
-	<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/blueprint/ie.css'), 'screen, projection', 'IE'); ?>
-	<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/blueprint/print.css'), 'print'); ?>
-	<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/smoothness/jquery-ui-1.8.4.custom.css')); ?>
-	<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/style.css')); ?>
+	<?php $this->headLink()->prependStylesheet($this->baseUrl('/css/style.altgui.css'), 'all'); ?>	
+	<?php $this->headLink()->prependStylesheet($this->baseUrl('/css/elastic/elastic.print.css'), 'print'); ?>
+	<?php $this->headLink()->prependStylesheet($this->baseUrl('/css/elastic/elastic.css'), 'all'); ?>
 	<?php echo $this->headTitle(); ?> 
-	<?php echo $this->headScript(); ?> 
-	<?php echo $this->headLink(); ?>	
 	<?php echo $this->headStyle(); ?>
+	<?php echo $this->headLink(); ?>	
+	<?php echo $this->headScript(); ?> 
 </head>
 <body>
-
-<div class="container">
-
-	<div class="span-24 last">
-		<!-- Header: -->
-		<?php echo $this->partial('_header.phtml'); ?>
-		<!-- :Header -->
+	<div class="unit" style="min-width: 960px;">
+		<div class="container columns" id="header">
+			<div class="elastic column">
+				<?php if ($this->layout()->topNavigator != null ) : ?>
+					<?php echo $this->layout()->topNavigator; ?>
+				<?php else: ?>
+					<ul class="columns same-height">
+						<li class="fixed column topnav-button">
+							<a href="<?php echo $this->url(array('controller' => 'manage'), 'default', true); ?>">
+								<img alt="<?php echo X_Env::_('p_altgui_topnav_dashboard'); ?>" src="<?php echo $this->baseUrl('/images/altgui/dashboard.png');?>" />
+								<span><?php echo X_Env::_('p_altgui_topnav_dashboard'); ?></span>
+							</a>
+						</li>
+						<li class="elastic column"></li>
+					</ul>
+					
+				<?php endif;?>
+			</div>
+			<div class="fixed column" style="min-width: 200px;" id="logo">
+				RIGHT LOGO
+			</div>
+		</div>
+		<div class="container columns" id="subheader">
+			<div class="elastic column">
+				<?php echo $this->layout()->subNavigator; ?>
+			</div>
+		</div>
+		<div class="container columns" id="status-bar">
+			<div class="elastic column" id="breadcrumb">
+				<?php if ($this->layout()->breadcrumb != null ) : ?>
+					<?php echo $this->layout()->breadcrumb; ?>
+				<?php else: ?>
+				&nbsp;
+				<?php endif;?>
+			</div>
+			<div class="fixed column" style="min-width: 200px;" id="status">
+				<div class="container">
+					<?php if ($this->layout()->status != null ) : ?>
+						<?php echo $this->layout()->status; ?>
+					<?php else: ?>
+						&nbsp;
+					<?php endif;?>
+				</div>
+			</div>
+		</div>
+		<div id="content" class="container">
+			<?php echo $this->layout()->content; ?>
+		</div>
 	</div>
-	
-	<!-- Content: -->
-	<?php echo $this->layout()->content; ?>
-
-	<!-- :Content -->
-	
-	<div class="span-24 last">
-		<!-- Footer: -->
-		<?php echo $this->partial('_footer.phtml'); ?>
-		<!-- :Footer -->
-	</div>
-	
-</div>
-
 </body>
 </html>

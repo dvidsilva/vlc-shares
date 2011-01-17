@@ -596,7 +596,7 @@ body {
 /**
  * BLOCK HEADER
  */
-.block.with-header .header {
+.block.with-header .inner > .header {
 	min-height: 70px;
 	/*
 	background: #790000;
@@ -624,7 +624,7 @@ body {
 	margin: -1em -0.833em 0.833em -0.833em;	
 }
 
-.block.red.with-header .header {
+.block.red.with-header .inner > .header {
 	/*border-top-color: #e46f6f;*/
 	border-top-color: transparent;
 	background: #790000;
@@ -671,7 +671,6 @@ body {
  * page: ERROR-ERROR
  */
 #error {
-	margin: 0 auto;
 	min-width: 500px;
 	max-width: 960px;
 }
