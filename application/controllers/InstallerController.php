@@ -97,7 +97,7 @@ class InstallerController extends X_Controller_Action
 	    	$this->_helper->flashMessenger(X_Env::_('installer_op_completed'));
 	    	
 	    	// all done, redirect to config page
-	    	$this->_helper->redirector('configs', 'manage');
+	    	$this->_helper->redirector('index', 'configs');
 	    	
     	} catch ( Exception $e) {
     		$this->_helper->flashMessenger(X_Env::_('installer_err_db').": {$e->getMessage()}");

@@ -1,9 +1,19 @@
 <?php 
 
 require_once 'X/VlcShares/Skins/DecoratorInterface.php';
+require_once 'Zend/View.php';
 
 abstract class X_VlcShares_Skins_Default_Abstract implements X_VlcShares_Skins_DecoratorInterface {
 
+	/**
+	 * @var Zend_View
+	 */
+	protected $view = null;
+	
+	public function setView($view) {
+		$this->view = $view;
+	}
+	
 	/**
 	 * @param string $content
 	 * @param string|array $params if string, it will be appended to tag definition.
@@ -26,6 +36,7 @@ abstract class X_VlcShares_Skins_Default_Abstract implements X_VlcShares_Skins_D
 	protected function recursiveWrap($content, $array) {
 		$array = array_reverse($array);
 		foreach ($array as $single) {
+			if ( !is_array($single) ) continue;
 			@list($tag, $params) = $single;
 			$content = $this->wrap($content, $tag, $params);
 		}
