@@ -1,28 +1,61 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Zend Framework Default Application</title>
-</head>
-<body>
-  <h1>An error occurred</h1>
-  <h2><?php echo $this->message ?></h2>
 
-  <?php if (isset($this->exception)): ?>
-
-  <h3>Exception information:</h3>
-  <p>
-      <b>Message:</b> <?php echo $this->exception->getMessage() ?>
-  </p>
-
-  <h3>Stack trace:</h3>
-  <pre><?php echo $this->exception->getTraceAsString() ?>
-  </pre>
-
-  <h3>Request Parameters:</h3>
-  <pre><?php echo var_export($this->request->getParams(), true) ?>
-  </pre>
-  <?php endif ?>
-
-</body>
-</html>
+<div class="columns full-height">
+	<div class="column">
+		<div class="container vertical-center horizontal-center" id="error">
+			<?php /* @var $xBlock X_VlcShares_View_Helper_XBlock */ ?>
+			<?php $xBlock = $this->xBlock(); ?>
+			<?php $xBlock
+				->setTitle('An error occurred')
+				->setHeader(true)
+				->setVariant(X_VlcShares_View_Helper_XBlock::VARIANT_HIGHLIGHT)
+				->captureStart(); ?>
+				
+				<?php $xHeader = $this->xHeader(); ?>
+				<?php $xHeader->captureStart(); ?>
+					<h3><?php echo $this->message; ?></h3>
+				<?php $xHeader->captureEnd(true);?>
+				
+				<?php if (isset ($this->exception) ): ?>
+				<h2>Error description</h2>
+				<?php echo $this->exception->getMessage(); ?>
+				<?php endif;?>
+				
+				<?php $this->xInnerBlock(false)->setTitle('Request parameters')->captureStart(); ?>
+					<pre style="overflow: auto;"><?php echo var_export($this->request->getParams(), true) ?></pre>
+				<?php $this->xInnerBlock(false)->captureEnd(true); ?>
+				
+				<?php $this->xInnerBlock(false)->setTitle('Stack trace')->captureStart(); ?>
+					<pre style="overflow: auto;"><?php echo $this->exception->getTraceAsString() ?></pre>
+				<?php $this->xInnerBlock(false)->captureEnd(true); ?>
+				
+			 <?php $xBlock->captureEnd(true); ?>
+		
+			<!-- 
+			<div class="block titled with-header red" >
+				<div class="inner">
+					<h1>An error occurred</h1>
+					<div class="header">
+						<h3><?php echo $this->message; ?></h3>
+					</div>
+					<?php if (isset ($this->exception) ): ?>
+					<h2>Error description</h2>
+					<?php echo $this->exception->getMessage(); ?>
+					<?php endif;?>
+					<div class="inner-block titled">
+						<div class="inner">
+							<h1>Request parameters</h1>
+							<pre style="overflow: auto;"><?php echo var_export($this->request->getParams(), true) ?></pre>
+						</div>
+					</div>
+					<div class="inner-block titled">
+						<div class="inner">
+							<h1>Stack trace</h1>
+							<pre style="overflow: auto;"><?php echo $this->exception->getTraceAsString() ?></pre>
+						</div>
+					</div>
+				</div>
+			</div>
+			-->
+		</div>
+	</div>
+</div>
