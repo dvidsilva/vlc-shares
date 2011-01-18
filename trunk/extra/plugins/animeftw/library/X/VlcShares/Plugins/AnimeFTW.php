@@ -230,7 +230,7 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 			$test->setReason('Credentials configurated');
 		} else {
 			$test->setType(X_Page_Item_Message::TYPE_FATAL);
-			$test->setReason("Credentials not configurated. Content cannot be viewed");
+			$test->setReason("Credentials not configurated. Contents cannot be viewed");
 		}
 		$tests->append($test);
 		
@@ -287,6 +287,8 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 		$baseUrl = $this->config('base.url', self::BASE_URL);
 		$baseUrl .= "$type/$thread/$href";
 		$htmlString = $this->_loadPage($baseUrl, true);
+		
+		$return = false;
 		
 		// <param name=\"src\" value=\"([^\"]*)\" \/>
 		
@@ -466,7 +468,7 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 				break;
 		}
 		
-		$htmlString = $this->_loadPage($indexUrl, true);
+		$htmlString = $this->_loadPage($indexUrl, false);
 		$dom = new Zend_Dom_Query($htmlString);
 		
 		// fetch all threads inside the table
