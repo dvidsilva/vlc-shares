@@ -14,6 +14,11 @@
 		</compatibility>
 	</metadata>
 	<files>
+		<application>
+			<controllers>
+				<file>AnimeftwController.php</file>
+			</controllers>
+		</application>
 		<library>
 			<X>
 				<VlcShares>

@@ -316,6 +316,17 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 				}
 				
 			} else {
+				// files in videos2.animeftw.tv require a valid referer page to be watched
+				// and animeftw controller does the magic trick
+				if ( strpos($linkUrl, 'videos2.animeftw.tv') !== false && $this->config('proxy.enabled', true) ) {
+					
+					// X_Env::routeLink should be deprecated, but now is the best option
+					$linkUrl = X_Env::routeLink('animeftw','proxy', array(
+						'v' => X_Env::encode($linkUrl),
+						'r' => X_Env::encode($baseUrl) // baseUrl is the page containing the link
+					));
+				}
+				
 				$return = $linkUrl;
 			}
 		}
