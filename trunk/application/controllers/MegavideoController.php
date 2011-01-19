@@ -3,13 +3,34 @@
 require_once 'X/Controller/Action.php';
 require_once 'X/VlcShares.php';
 require_once 'X/Env.php';
+require_once 'Zend/Http/CookieJar.php';
+require_once 'Zend/Http/Cookie.php';
+
 
 class MegavideoController extends X_Controller_Action
 {
-
+	/**
+	 * @var X_VlcShares_Plugins_Megavideo
+	 */
+	private $plugin;
+	
+	/**
+	 * @var Zend_Http_CookieJar
+	 */
+	private $jar = null;
+	
     public function init()
     {
         parent::init();
+		if ( !X_VlcShares_Plugins::broker()->isRegistered('megavideo') ) {
+			/*
+			$this->_helper->flashMessenger(X_Env::_('err_pluginnotregistered') . ": youtube");
+			$this->_helper->redirector('index', 'manage');
+			*/
+			throw new Exception(X_Env::_('err_pluginnotregistered') . ": megavideo");
+		} else {
+			$this->plugin = X_VlcShares_Plugins::broker()->getPlugins('megavideo');
+		}
     }
 
     public function indexAction()
@@ -251,6 +272,234 @@ INLINE;
 	public function statusAction() {
 		$this->_helper->layout->disableLayout();
 	}
+	
+	public function premiumAction() {
+		
+		// time to get params from get
+		/* @var $request Zend_Controller_Request_Http */
+		$request = $this->getRequest();
+		
+		if ( !$this->plugin->config('premium.enabled', true) || $this->plugin->config('premium.username', '') == '' || $this->plugin->config('premium.password', '') == '' ) {
+			throw new Exception(X_Env::_('p_megavideo_err_premiumdisabled'));
+		}
+		
+		X_Debug::i('Premium account support enabled');
+		
+		$videoId = $request->getParam('v', false); // video file url
+		
+		if ( $videoId === false ) {
+			// invalid request
+			throw new Exception(X_Env::_('p_megavideo_err_invalidrequest'));
+			return;
+		}
+		
+		X_Debug::i("Video: $videoId");
+		
+		$http = new Zend_Http_Client('http://localhost/', array(
+			'maxredirects'	=>  10,
+			'timeout'		=>  10,
+			'keepalive' 	=> true
+		));
+		
+		
+		$http->setHeaders(array(
+			'User-Agent: Mozilla/5.0 (X11; Linux i686; rv:2.0.1) Gecko/20101019 Firefox/4.0.1',
+			'Accept-Language:it-IT,it;q=0.8,en-US;q=0.6,en;q=0.4'
+		));
+		
+		
+		$jarFile = APPLICATION_PATH . '/../data/megavideo/cookie.jar';
+		$ns = new Zend_Session_Namespace(__CLASS__);
+		
+		if ( $this->jar == null ) {
+			if ( false && isset($ns->jar) && $ns->jar instanceof Zend_Http_CookieJar ) {
+				$this->jar = $ns->jar;
+				X_Debug::i('Loading stored authentication in Session');
+			} elseif ( file_exists($jarFile) ) {
+				$this->jar = new Zend_Http_CookieJar();
+				$cookies = unserialize(file_get_contents($jarFile));
+				foreach ($cookies as $c) {
+					$_c = new Zend_Http_Cookie($c['name'], $c['value'], $c['domain'], $c['exp'], $c['path']);
+					$this->jar->addCookie($_c);
+				}
+				X_Debug::i('Loading stored authentication in File');
+			} else {
+				$this->jar = new Zend_Http_CookieJar();
+				//$this->jar->addCookie(new Zend_Http_Cookie('l', 'it', 'http://www.megavideo.com'));
+			}
+		}
+		$http->setCookieJar($this->jar);
+		
+		$userId = false;
+		
+		if ( $http->getCookieJar() != null ) {
+			//X_Debug::i(var_export($http->getCookieJar()->getAllCookies(Zend_Http_CookieJar::COOKIE_STRING_ARRAY), true));
+			//$userId = $http->getCookieJar()->getCookie($cookieUri, 'user', Zend_Http_CookieJar::COOKIE_STRING_ARRAY);
+			$userId = $this->_getMatchCookieValue('user', 'http://www.megavideo.com/', $http->getCookieJar());
+			X_Debug::i("First check for userId: $userId");
+		}
+		
+		if ( $userId == false ) {
+			
+			X_Debug::i("No valid userId found in Cookies");
+			
+			$this->_authenticateHttp($http, $this->plugin->config('premium.username', ''), $this->plugin->config('premium.password', ''));
 
+			//X_Debug::i(var_export($http->getCookieJar()->getAllCookies(Zend_Http_CookieJar::COOKIE_STRING_ARRAY), true));
+			
+			//$userId = $http->getCookieJar()->getCookie($cookieUri, 'user', Zend_Http_CookieJar::COOKIE_STRING_ARRAY);
+			$userId = $this->_getMatchCookieValue('user', 'http://www.megavideo.com/', $http->getCookieJar());
+			
+			if ( $userId == false ) {
+				X_Debug::f("Invalid account given");
+				throw new Exception(X_Env::_('p_megavideo_invalidaccount'));
+			}
+	
+		}
+		
+		X_Debug::i("UserId in cookies: $userId");
+		
+		$uri = "http://www.megavideo.com/xml/player_login.php?u=$userId&v=$videoId";
+		
+		$http->setUri($uri);
+		
+		$response = $http->request();
+		$htmlString = $response->getBody();
+		
+		if ( strpos($htmlString, 'type="premium"' ) === false ) {
+			
+			X_Debug::w("Account isn't premium or not authenticated");
+			X_Debug::i(var_export($htmlString));
+			
+			// invalid cookies
+			// need to re-authenticate
+			$this->_authenticateHttp($http, $this->plugin->config('premium.username', ''), $this->plugin->config('premium.password', ''));
+			
+			$response = $http->request();
+			
+			$htmlString = $response->getBody();
+			
+			if ( strpos($htmlString, 'type="premium"' ) === false ) {
+				X_Debug::f("Invalid premium account");
+				X_Debug::i(var_export($htmlString));
+				throw new Exception(X_Env::_('p_megavideo_invalidpremiumaccount'));
+			}
+		}
+		
+		// time to store the cookie
+		
+		$this->jar = $http->getCookieJar();
+		// store the cookiejar
+		
+		$cks = $this->jar->getAllCookies(Zend_Http_CookieJar::COOKIE_OBJECT);
+		foreach ($cks as $i => $c) {
+			/* @var $c Zend_Http_Cookie */
+			$cks[$i] = array(
+				'domain' => $c->getDomain(),
+				'exp' => $c->getExpiryTime(),
+				'name' => $c->getName(),
+				'path' => $c->getPath(),
+				'value' => $c->getValue()
+			);
+		}
+		
+		if ( @file_put_contents($jarFile, serialize($cks), LOCK_EX) === false ) {
+			X_Debug::e('Error while writing jar file. Check permissions. Everything will work, but much more slower');
+		}
+		
+		
+		// in htmlString we should have an xml like this one:
+		/*
+			<?xml version="1.0" encoding="UTF-8"?> 
+			<user type="premium" user="XXXXX" downloadurl="http%3A%2F%2Fwww444.megavideo.com%2Ffiles%2Fd9ab7ef6313e55ab26240f2aac9dd74f%2FAmerican.Dad.-.1AJN08.-.Tutto.su.Steve.%28All.About.Steve%29.-.DVDMuX.BY.Pi3TRo.%26amp%3B.yodonvito.avi" />		
+		*/
+		
+		if ( !preg_match('/ downloadurl=\"([^\"]*)\" /', $htmlString, $match) ) {
+			X_Debug::e('No download url');
+			X_Debug::i($htmlString);
+			throw new Exception(X_Env::_('p_megavideo_invalidserverresponse'));
+		}
+		
+		// match[1] is the video link
+		
+		$videoUrl = urldecode($match[1]);
+		
+		X_Debug::i("VideoURL: $videoUrl");
+		
+		// this action is so special.... no layout or viewRenderer
+		$this->_helper->viewRenderer->setNoRender();
+		$this->_helper->layout->disableLayout();
+		
+		
+		// if user abort request (vlc/wii stop playing), this process ends
+		ignore_user_abort(false);
+		
+		// close and clean the output buffer, everything will be read and send to device
+		ob_end_clean();
+		
+		//$userAgent = $this->plugin->config('hide.useragent', true) ? 'User-Agent: vlc-shares/'.X_VlcShares::VERSION : 'User-Agent: Mozilla/5.0 (X11; Linux i686; rv:2.0.1) Gecko/20101019 Firefox/4.0.1'; 
+		
+		$cookies = $http->getCookieJar()->getAllCookies(Zend_Http_CookieJar::COOKIE_STRING_CONCAT);
+		
+		$opts = array('http' =>
+			array(
+				'header'  => array(
+					//"Referer: $refererUrl",
+					"Cookie: $cookies"
+				)
+			)
+		);
+
+		$context  = stream_context_create($opts);
+		// readfile open a file and send it directly to output buffer
+		readfile($videoUrl, false, $context);
+		
+	}
+
+	private function _authenticateHttp(Zend_Http_Client $http, $username, $password) {
+
+		X_Debug::i("Authenticating HTTP Client");
+		
+		$oldUri = $http->getUri(true);
+		
+		$loginUri = "http://www.megavideo.com/?s=account";
+		$http->setUri($loginUri);
+		
+		$response = $http->request();
+		
+		//X_Debug::i("Login response1: {$response->getHeadersAsString(true)}");
+		
+		$http->setMethod(Zend_Http_Client::POST)
+			->setParameterPost(array(
+				'username' => urlencode($username),
+				'password' => urlencode($password),
+				'login' => '1',
+			));
+			
+		$response = $http->request(Zend_Http_Client::POST);
+		
+		//X_Debug::i("Login response2: {$response->getHeadersAsString(true)}");
+		
+		$http->setUri($oldUri)->setMethod(Zend_Http_Client::GET);
+		
+		return $response;
+		
+	}
+	
+	private function _getMatchCookieValue($name, $domain, Zend_Http_CookieJar $jar) {
+		
+		$cookies = $jar->getMatchingCookies($domain);
+		
+		foreach ($cookies as $cookie) {
+			/* @var $cookie Zend_Http_Cookie */
+			if ( $cookie->getName() == $name ) {
+				return $cookie->getValue();
+			}
+		}
+		
+		return false;
+		
+	}
+	
 }
 

@@ -32,7 +32,9 @@ greetz evilsocket 4 the idea.
 */ 
 
 class Megavideo 
-{ 
+{
+
+	public $id = null;
 
          function __construct($url) 
          { 

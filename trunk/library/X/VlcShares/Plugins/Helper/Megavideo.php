@@ -13,6 +13,17 @@ class X_VlcShares_Plugins_Helper_Megavideo extends X_VlcShares_Plugins_Helper_Ab
 	 */
 	private $_fetched = false;
 	
+	private $options;
+	
+	function __construct(Zend_Config $options = null) {
+		
+		if ( $options == null ) {
+			$options = new Zend_Config(array('username' => '', 'password' => '', 'premium' => false));
+		}
+		$this->options = $options;
+	}
+	
+	
 	/**
 	 * Set source location
 	 * 
@@ -49,7 +60,11 @@ class X_VlcShares_Plugins_Helper_Megavideo extends X_VlcShares_Plugins_Helper_Ab
 	
 	public function getUrl() {
 		$this->_fetch();
-		return $this->_fetched->get('URL');
+		if ( $this->options->premium && $this->options->username != '' && $this->options->password != '' ) {
+			return X_Env::routeLink('megavideo', 'premium', array('v' => $this->_fetched->id ));
+		} else {
+			return $this->_fetched->get('URL');
+		}
 	}
 	public function getSize() {
 		$this->_fetch();

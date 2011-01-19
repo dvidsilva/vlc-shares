@@ -29,7 +29,7 @@ class ErrorController extends X_Controller_Action
             $log->crit($this->view->message, $errors->exception);
         }
         */
-        X_Debug::f($this->view->message);
+        X_Debug::f($this->view->message . ": " . $errors->exception->getMessage());
         X_Debug::f($errors->exception->getTraceAsString());
         
         // conditionally display exceptions
