@@ -61,7 +61,13 @@ class X_VlcShares_Plugins_Helper_Megavideo extends X_VlcShares_Plugins_Helper_Ab
 	public function getUrl() {
 		$this->_fetch();
 		if ( $this->options->premium && $this->options->username != '' && $this->options->password != '' ) {
-			return X_Env::routeLink('megavideo', 'premium', array('v' => $this->_fetched->id ));
+			// i have to check here for quality mode
+			$quality = Zend_Controller_Front::getInstance()->getRequest()->getParam('megavideo:quality', 'normal');
+			if ( $quality == 'normal' || $quality == '' || $quality == null) {
+				return X_Env::routeLink('megavideo', 'premium', array('v' => $this->_fetched->id ));
+			} else {
+				return X_Env::routeLink('megavideo', 'premium', array('v' => $this->_fetched->id, 'q' => $quality ));
+			}
 		} else {
 			return $this->_fetched->get('URL');
 		}

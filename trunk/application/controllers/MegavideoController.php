@@ -9,6 +9,10 @@ require_once 'Zend/Http/Cookie.php';
 
 class MegavideoController extends X_Controller_Action
 {
+	
+	const QUALITY_FULL = 'full';
+	const QUALITY_NORMAL = 'normal';
+	
 	/**
 	 * @var X_VlcShares_Plugins_Megavideo
 	 */
@@ -286,6 +290,7 @@ INLINE;
 		X_Debug::i('Premium account support enabled');
 		
 		$videoId = $request->getParam('v', false); // video file url
+		$qualityType = $request->getParam('q', self::QUALITY_NORMAL); // video file url
 		
 		if ( $videoId === false ) {
 			// invalid request
@@ -413,16 +418,45 @@ INLINE;
 			<?xml version="1.0" encoding="UTF-8"?> 
 			<user type="premium" user="XXXXX" downloadurl="http%3A%2F%2Fwww444.megavideo.com%2Ffiles%2Fd9ab7ef6313e55ab26240f2aac9dd74f%2FAmerican.Dad.-.1AJN08.-.Tutto.su.Steve.%28All.About.Steve%29.-.DVDMuX.BY.Pi3TRo.%26amp%3B.yodonvito.avi" />		
 		*/
+
 		
-		if ( !preg_match('/ downloadurl=\"([^\"]*)\" /', $htmlString, $match) ) {
-			X_Debug::e('No download url');
-			X_Debug::i($htmlString);
-			throw new Exception(X_Env::_('p_megavideo_invalidserverresponse'));
+		// i create context here so i can use the same context 
+		// for normal link quality video
+		$cookies = $http->getCookieJar()->getAllCookies(Zend_Http_CookieJar::COOKIE_STRING_CONCAT);
+		$opts = array('http' =>
+			array(
+				'header'  => array(
+					//"Referer: $refererUrl",
+					"Cookie: $cookies"
+				)
+			)
+		);
+		$context  = stream_context_create($opts);
+		
+		$videoUrl = null;
+	
+		if ( $qualityType == self::QUALITY_FULL ) {
+		
+			if ( !preg_match('/ downloadurl=\"([^\"]*)\" /', $htmlString, $match) ) {
+				X_Debug::e('No download url');
+				X_Debug::i($htmlString);
+				//throw new Exception(X_Env::_('p_megavideo_invalidserverresponse'));
+			}
+		
+			// match[1] is the video link
+			
+			$videoUrl = urldecode($match[1]);
+			
 		}
-		
-		// match[1] is the video link
-		
-		$videoUrl = urldecode($match[1]);
+
+		// i don't check for $qualityType = normal because normal must be a fallback for all other $qualitytype
+		if ( $videoUrl == null /*|| $qualityType == self::QUALITY_NORMAL*/ ) {
+			
+			//$megavideo = $videoId
+			$megavideo = new Megavideo($videoId, $context);
+			
+			$videoUrl = $megavideo->get('URL');
+		}
 		
 		X_Debug::i("VideoURL: $videoUrl");
 		
@@ -437,20 +471,6 @@ INLINE;
 		// close and clean the output buffer, everything will be read and send to device
 		ob_end_clean();
 		
-		//$userAgent = $this->plugin->config('hide.useragent', true) ? 'User-Agent: vlc-shares/'.X_VlcShares::VERSION : 'User-Agent: Mozilla/5.0 (X11; Linux i686; rv:2.0.1) Gecko/20101019 Firefox/4.0.1'; 
-		
-		$cookies = $http->getCookieJar()->getAllCookies(Zend_Http_CookieJar::COOKIE_STRING_CONCAT);
-		
-		$opts = array('http' =>
-			array(
-				'header'  => array(
-					//"Referer: $refererUrl",
-					"Cookie: $cookies"
-				)
-			)
-		);
-
-		$context  = stream_context_create($opts);
 		// readfile open a file and send it directly to output buffer
 		readfile($videoUrl, false, $context);
 		

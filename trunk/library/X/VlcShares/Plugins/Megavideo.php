@@ -38,6 +38,14 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 		)); 
 		
 		$this->helpers()->registerHelper('megavideo', new X_VlcShares_Plugins_Helper_Megavideo($helper_conf));
+		
+		if ( $this->config('premium.enabled', true) && $this->config('premium.username', false) && $this->config('premium.password', false) ) {
+			// allow to choose quality for videos if premium user
+			$this
+				->setPriority('getModeItems')
+				->setPriority('preGetSelectionItems')
+				->setPriority('getSelectionItems');
+		}
 	}
 	
 	/**
@@ -175,6 +183,125 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 		}
 		
 	}
+	
+
+	/**
+	 * Add the link for megavideo quality change
+	 * 
+	 * @param string $provider
+	 * @param string $location
+	 * @param Zend_Controller_Action $controller
+	 * @return X_Page_ItemList_PItem
+	 */
+	public function getModeItems($provider, $location, Zend_Controller_Action $controller) {
+
+		try {
+		
+			/* @var $megavideoHelper X_VlcShares_Plugins_Helper_Megavideo */
+			$megavideoHelper = $this->helpers('megavideo');
+			// check megavideo helper to be sure that location has been setted for check
+			
+			// if location is not setted, helper throwns an exception.
+			// i don't care for the returned value
+			$megavideoHelper->getServer();
+			
+			X_Debug::i('Plugin triggered. Location could be provided by Megavideo');
+			
+			$urlHelper = $controller->getHelper('url');
+	
+			$subLabel = X_Env::_('p_megavideo_qualityselection_normal');
+	
+			$subParam = $controller->getRequest()->getParam($this->getId().':quality', false);
+			
+			if ( $subParam !== false ) {
+				//$subParam = X_Env::decode($subParam);
+				//list($type, $source) = explode(':', $subParam, 2);
+				$subLabel = X_Env::_("p_megavideo_qualitycode_$subParam");
+				if ( $subLabel == "p_megavideo_qualitycode_$subParam" ) {
+					$subLabel = $subParam;
+				}
+			}
+			
+			$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_megavideo_qualityselected').": $subLabel");
+			$link->setIcon('/images/megavideo/logo.png')
+				->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+				->setLink(array(
+						'action'	=>	'selection',
+						'pid'		=>	$this->getId()
+					), 'default', false);
+	
+			return new X_Page_ItemList_PItem(array($link));
+				
+		} catch (Exception $e) {
+			X_Debug::i("Location is not provided by Megavideo Helper");
+		}
+	}
+	
+	/**
+	 * Set the header of selection page if needed
+	 * @param string $provider
+	 * @param string $location
+	 * @param string $pid
+	 * @param Zend_Controller_Action $controller
+	 * @return X_Page_ItemList_PItem
+	 */
+	public function preGetSelectionItems($provider, $location, $pid, Zend_Controller_Action $controller) {
+		// we want to expose items only if pid is this plugin
+		if ( $this->getId() != $pid ) return;
+		
+		X_Debug::i('Plugin triggered');		
+		
+		$urlHelper = $controller->getHelper('url');
+		$link = new X_Page_Item_PItem($this->getId().'-header', X_Env::_('p_megavideo_qualityselection_title'));
+		$link->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+			->setLink(X_Env::completeUrl($urlHelper->url()));
+		return new X_Page_ItemList_PItem();
+		
+	}
+	
+	/**
+	 * Show a list of valid subs for the selected location
+	 * @param string $provider
+	 * @param string $location
+	 * @param string $pid
+	 * @param Zend_Controller_Action $controller
+	 * @return X_Page_ItemList_PItem
+	 */
+	public function getSelectionItems($provider, $location, $pid, Zend_Controller_Action $controller) {
+		// we want to expose items only if pid is this plugin
+		if ( $this->getId() != $pid ) return;
+		
+		X_Debug::i('Plugin triggered');
+		
+		$urlHelper = $controller->getHelper('url');
+		
+		// i try to mark current selected sub based on $this->getId() param
+		// in $currentSub i get the name of the current profile
+		$currentSub = $controller->getRequest()->getParam($this->getId().':quality', false);
+
+		$return = new X_Page_ItemList_PItem();
+		$item = new X_Page_Item_PItem($this->getId().'-normal', X_Env::_('p_megavideo_qualityselection_normal'));
+		$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+			->setLink(array(
+					'action'				=> 'mode',
+					$this->getId().':quality'	=> null, // unset this plugin selection
+					'pid'					=> null
+				), 'default', false)
+			->setHighlight($currentSub === false || $currentSub == 'normal');
+		$return->append($item);
+
+		$item = new X_Page_Item_PItem($this->getId().'-full', X_Env::_('p_megavideo_qualityselection_full'));
+		$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+			->setLink(array(
+					'action'				=> 'mode',
+					$this->getId().':quality'	=> 'full', // unset this plugin selection
+					'pid'					=> null
+				), 'default', false)
+			->setHighlight($currentSub == 'full');
+		$return->append($item);
+		
+		return $return;
+	}	
 	
 	
 	/**
