@@ -33,4 +33,11 @@ class X_VlcShares_Skins_Default_Dummy implements X_VlcShares_Skins_DecoratorInte
 		return $this;
 	}
 	
+	/**
+	 * Does nothing
+	 */
+	function setView($view) {
+		return;
+	}
+	
 }

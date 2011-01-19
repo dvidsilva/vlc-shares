@@ -57,6 +57,13 @@ class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 		X_Debug::i("Unregistered all plugins");
 	}
 	
+	/**
+	 * Get all registered plugin id $pluginId is null
+	 * or a single plugin by $pluginId if registered
+	 * @param string|null $pluginId
+	 * @return X_VlcShares_Plugins_Abstract|array of X_VlcShares_Plugins_Abstract
+	 * @throws Exception if invalid $pluginId submitted
+	 */
 	public function getPlugins($pluginId = null) {
 		if ( $pluginId !== null ) {
 			if (!$this->isRegistered($pluginId)) {
