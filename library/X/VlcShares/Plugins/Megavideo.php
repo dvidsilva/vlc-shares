@@ -30,7 +30,14 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 	 * Registers a megavideo helper inside the helper broker
 	 */
 	public function gen_beforeInit(Zend_Controller_Action $controller) {
-		$this->helpers()->registerHelper('megavideo', new X_VlcShares_Plugins_Helper_Megavideo());
+		
+		$helper_conf = new Zend_Config(array(
+			'premium' => $this->config('premium.enabled', false),
+			'username' => $this->config('premium.username', ''),
+			'password' => $this->config('premium.password', '')
+		)); 
+		
+		$this->helpers()->registerHelper('megavideo', new X_VlcShares_Plugins_Helper_Megavideo($helper_conf));
 	}
 	
 	/**
@@ -156,16 +163,14 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 		
 		X_Debug::i("Plugin triggered");
 		
-		$video = new Application_Model_Megavideo();
-		Application_Model_MegavideoMapper::i()->find($location, $video);
+		$url = $this->resolveLocation($location);
 		
-		if ( $video->getId() != null ) {
-			$megavideo = new Megavideo($video->getIdVideo());
+		if ( $url != false ) {
 			
 			$link = new X_Page_Item_PItem('core-directwatch', X_Env::_('p_megavideo_watchdirectly'));
 			$link->setIcon('/images/icons/play.png')
 				->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
-				->setLink($megavideo->get('URL'));
+				->setLink($url);
 			return new X_Page_ItemList_PItem(array($link));
 		}
 		
@@ -188,10 +193,15 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 		
 		// TODO prevent ../
 		if ( $video->getId() == null ) return false;
-		
+		/*
 		$megavideo = new Megavideo($video->getIdVideo());
 		
 		return $megavideo->get('URL');
+		*/
+		/* @var $helper X_VlcShares_Plugins_Helper_Megavideo */
+		$helper = $this->helpers('megavideo');
+		return $helper->setLocation($video->getIdVideo())->getUrl();
+		
 	}
 	
 	/**
