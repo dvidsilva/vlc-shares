@@ -112,7 +112,7 @@ class ConfigController extends X_Controller_Action {
     }
 	
 	
-    private function _initConfigsForm($section, $namespace, $configs, $posts = null) {
+    private function _initConfigsForm($section, $namespace, $configs = array(), $posts = null) {
     	
     	if ( $this->configForm === null ) {
 	    	$this->configForm = new Application_Form_AutoConfigs($configs);
