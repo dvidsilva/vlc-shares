@@ -10,9 +10,6 @@ require_once 'Zend/Http/Cookie.php';
 class MegavideoController extends X_Controller_Action
 {
 	
-	const QUALITY_FULL = 'full';
-	const QUALITY_NORMAL = 'normal';
-	
 	/**
 	 * @var X_VlcShares_Plugins_Megavideo
 	 */
@@ -290,7 +287,7 @@ INLINE;
 		X_Debug::i('Premium account support enabled');
 		
 		$videoId = $request->getParam('v', false); // video file url
-		$qualityType = $request->getParam('q', self::QUALITY_NORMAL); // video file url
+		$qualityType = $request->getParam('q', X_VlcShares_Plugins_Helper_Megavideo::QUALITY_NORMAL); // video file url
 		
 		if ( $videoId === false ) {
 			// invalid request
@@ -300,162 +297,186 @@ INLINE;
 		
 		X_Debug::i("Video: $videoId");
 		
-		$http = new Zend_Http_Client('http://localhost/', array(
-			'maxredirects'	=>  10,
-			'timeout'		=>  10,
-			'keepalive' 	=> true
-		));
+		// i check for NOPREMIUM quality: i don't need authentication in NOPREMIUM mode 
+		if ( $qualityType != X_VlcShares_Plugins_Helper_Megavideo::QUALITY_NOPREMIUM ) {
 		
-		
-		$http->setHeaders(array(
-			'User-Agent: Mozilla/5.0 (X11; Linux i686; rv:2.0.1) Gecko/20101019 Firefox/4.0.1',
-			'Accept-Language:it-IT,it;q=0.8,en-US;q=0.6,en;q=0.4'
-		));
-		
-		
-		$jarFile = APPLICATION_PATH . '/../data/megavideo/cookie.jar';
-		$ns = new Zend_Session_Namespace(__CLASS__);
-		
-		if ( $this->jar == null ) {
-			if ( false && isset($ns->jar) && $ns->jar instanceof Zend_Http_CookieJar ) {
-				$this->jar = $ns->jar;
-				X_Debug::i('Loading stored authentication in Session');
-			} elseif ( file_exists($jarFile) ) {
-				$this->jar = new Zend_Http_CookieJar();
-				$cookies = unserialize(file_get_contents($jarFile));
-				foreach ($cookies as $c) {
-					$_c = new Zend_Http_Cookie($c['name'], $c['value'], $c['domain'], $c['exp'], $c['path']);
-					$this->jar->addCookie($_c);
+			X_Debug::i('Premium features enabled');
+			
+			$http = new Zend_Http_Client('http://localhost/', array(
+				'maxredirects'	=>  10,
+				'timeout'		=>  10,
+				'keepalive' 	=> true
+			));
+			
+			
+			$http->setHeaders(array(
+				'User-Agent: Mozilla/5.0 (X11; Linux i686; rv:2.0.1) Gecko/20101019 Firefox/4.0.1',
+				'Accept-Language:it-IT,it;q=0.8,en-US;q=0.6,en;q=0.4'
+			));
+			
+			
+			$jarFile = APPLICATION_PATH . '/../data/megavideo/cookie.jar';
+			$ns = new Zend_Session_Namespace(__CLASS__);
+			
+			if ( $this->jar == null ) {
+				if ( false && isset($ns->jar) && $ns->jar instanceof Zend_Http_CookieJar ) {
+					$this->jar = $ns->jar;
+					X_Debug::i('Loading stored authentication in Session');
+				} elseif ( file_exists($jarFile) ) {
+					$this->jar = new Zend_Http_CookieJar();
+					$cookies = unserialize(file_get_contents($jarFile));
+					foreach ($cookies as $c) {
+						$_c = new Zend_Http_Cookie($c['name'], $c['value'], $c['domain'], $c['exp'], $c['path']);
+						$this->jar->addCookie($_c);
+					}
+					X_Debug::i('Loading stored authentication in File');
+				} else {
+					$this->jar = new Zend_Http_CookieJar();
+					//$this->jar->addCookie(new Zend_Http_Cookie('l', 'it', 'http://www.megavideo.com'));
 				}
-				X_Debug::i('Loading stored authentication in File');
-			} else {
-				$this->jar = new Zend_Http_CookieJar();
-				//$this->jar->addCookie(new Zend_Http_Cookie('l', 'it', 'http://www.megavideo.com'));
 			}
-		}
-		$http->setCookieJar($this->jar);
-		
-		$userId = false;
-		
-		if ( $http->getCookieJar() != null ) {
-			//X_Debug::i(var_export($http->getCookieJar()->getAllCookies(Zend_Http_CookieJar::COOKIE_STRING_ARRAY), true));
-			//$userId = $http->getCookieJar()->getCookie($cookieUri, 'user', Zend_Http_CookieJar::COOKIE_STRING_ARRAY);
-			$userId = $this->_getMatchCookieValue('user', 'http://www.megavideo.com/', $http->getCookieJar());
-			X_Debug::i("First check for userId: $userId");
-		}
-		
-		if ( $userId == false ) {
+			$http->setCookieJar($this->jar);
 			
-			X_Debug::i("No valid userId found in Cookies");
+			$userId = false;
 			
-			$this->_authenticateHttp($http, $this->plugin->config('premium.username', ''), $this->plugin->config('premium.password', ''));
-
-			//X_Debug::i(var_export($http->getCookieJar()->getAllCookies(Zend_Http_CookieJar::COOKIE_STRING_ARRAY), true));
-			
-			//$userId = $http->getCookieJar()->getCookie($cookieUri, 'user', Zend_Http_CookieJar::COOKIE_STRING_ARRAY);
-			$userId = $this->_getMatchCookieValue('user', 'http://www.megavideo.com/', $http->getCookieJar());
+			if ( $http->getCookieJar() != null ) {
+				//X_Debug::i(var_export($http->getCookieJar()->getAllCookies(Zend_Http_CookieJar::COOKIE_STRING_ARRAY), true));
+				//$userId = $http->getCookieJar()->getCookie($cookieUri, 'user', Zend_Http_CookieJar::COOKIE_STRING_ARRAY);
+				$userId = $this->_getMatchCookieValue('user', 'http://www.megavideo.com/', $http->getCookieJar());
+				X_Debug::i("First check for userId: $userId");
+			}
 			
 			if ( $userId == false ) {
-				X_Debug::f("Invalid account given");
-				throw new Exception(X_Env::_('p_megavideo_invalidaccount'));
-			}
+				
+				X_Debug::i("No valid userId found in Cookies");
+				
+				$this->_authenticateHttp($http, $this->plugin->config('premium.username', ''), $this->plugin->config('premium.password', ''));
 	
-		}
+				//X_Debug::i(var_export($http->getCookieJar()->getAllCookies(Zend_Http_CookieJar::COOKIE_STRING_ARRAY), true));
+				
+				//$userId = $http->getCookieJar()->getCookie($cookieUri, 'user', Zend_Http_CookieJar::COOKIE_STRING_ARRAY);
+				$userId = $this->_getMatchCookieValue('user', 'http://www.megavideo.com/', $http->getCookieJar());
+				
+				if ( $userId == false ) {
+					X_Debug::f("Invalid account given");
+					throw new Exception(X_Env::_('p_megavideo_invalidaccount'));
+				}
 		
-		X_Debug::i("UserId in cookies: $userId");
-		
-		$uri = "http://www.megavideo.com/xml/player_login.php?u=$userId&v=$videoId";
-		
-		$http->setUri($uri);
-		
-		$response = $http->request();
-		$htmlString = $response->getBody();
-		
-		if ( strpos($htmlString, 'type="premium"' ) === false ) {
+			}
 			
-			X_Debug::w("Account isn't premium or not authenticated");
-			X_Debug::i(var_export($htmlString));
+			X_Debug::i("UserId in cookies: $userId");
 			
-			// invalid cookies
-			// need to re-authenticate
-			$this->_authenticateHttp($http, $this->plugin->config('premium.username', ''), $this->plugin->config('premium.password', ''));
+			$uri = "http://www.megavideo.com/xml/player_login.php?u=$userId&v=$videoId";
+			
+			$http->setUri($uri);
 			
 			$response = $http->request();
-			
 			$htmlString = $response->getBody();
 			
 			if ( strpos($htmlString, 'type="premium"' ) === false ) {
-				X_Debug::f("Invalid premium account");
+				
+				X_Debug::w("Account isn't premium or not authenticated");
 				X_Debug::i(var_export($htmlString));
-				throw new Exception(X_Env::_('p_megavideo_invalidpremiumaccount'));
+				
+				// invalid cookies
+				// need to re-authenticate
+				$this->_authenticateHttp($http, $this->plugin->config('premium.username', ''), $this->plugin->config('premium.password', ''));
+				
+				$response = $http->request();
+				
+				$htmlString = $response->getBody();
+				
+				if ( strpos($htmlString, 'type="premium"' ) === false ) {
+					X_Debug::f("Invalid premium account");
+					X_Debug::i(var_export($htmlString));
+					throw new Exception(X_Env::_('p_megavideo_invalidpremiumaccount'));
+				}
 			}
-		}
-		
-		// time to store the cookie
-		
-		$this->jar = $http->getCookieJar();
-		// store the cookiejar
-		
-		$cks = $this->jar->getAllCookies(Zend_Http_CookieJar::COOKIE_OBJECT);
-		foreach ($cks as $i => $c) {
-			/* @var $c Zend_Http_Cookie */
-			$cks[$i] = array(
-				'domain' => $c->getDomain(),
-				'exp' => $c->getExpiryTime(),
-				'name' => $c->getName(),
-				'path' => $c->getPath(),
-				'value' => $c->getValue()
-			);
-		}
-		
-		if ( @file_put_contents($jarFile, serialize($cks), LOCK_EX) === false ) {
-			X_Debug::e('Error while writing jar file. Check permissions. Everything will work, but much more slower');
-		}
-		
-		
-		// in htmlString we should have an xml like this one:
-		/*
-			<?xml version="1.0" encoding="UTF-8"?> 
-			<user type="premium" user="XXXXX" downloadurl="http%3A%2F%2Fwww444.megavideo.com%2Ffiles%2Fd9ab7ef6313e55ab26240f2aac9dd74f%2FAmerican.Dad.-.1AJN08.-.Tutto.su.Steve.%28All.About.Steve%29.-.DVDMuX.BY.Pi3TRo.%26amp%3B.yodonvito.avi" />		
-		*/
-
-		
-		// i create context here so i can use the same context 
-		// for normal link quality video
-		$cookies = $http->getCookieJar()->getAllCookies(Zend_Http_CookieJar::COOKIE_STRING_CONCAT);
-		$opts = array('http' =>
-			array(
-				'header'  => array(
-					//"Referer: $refererUrl",
-					"Cookie: $cookies"
+			
+			// time to store the cookie
+			
+			$this->jar = $http->getCookieJar();
+			// store the cookiejar
+			
+			$cks = $this->jar->getAllCookies(Zend_Http_CookieJar::COOKIE_OBJECT);
+			foreach ($cks as $i => $c) {
+				/* @var $c Zend_Http_Cookie */
+				$cks[$i] = array(
+					'domain' => $c->getDomain(),
+					'exp' => $c->getExpiryTime(),
+					'name' => $c->getName(),
+					'path' => $c->getPath(),
+					'value' => $c->getValue()
+				);
+			}
+			
+			if ( @file_put_contents($jarFile, serialize($cks), LOCK_EX) === false ) {
+				X_Debug::e('Error while writing jar file. Check permissions. Everything will work, but much more slower');
+			}
+			
+			
+			// in htmlString we should have an xml like this one:
+			/*
+				<?xml version="1.0" encoding="UTF-8"?> 
+				<user type="premium" user="XXXXX" downloadurl="http%3A%2F%2Fwww444.megavideo.com%2Ffiles%2Fd9ab7ef6313e55ab26240f2aac9dd74f%2FAmerican.Dad.-.1AJN08.-.Tutto.su.Steve.%28All.About.Steve%29.-.DVDMuX.BY.Pi3TRo.%26amp%3B.yodonvito.avi" />		
+			*/
+	
+			
+			// i create context here so i can use the same context 
+			// for normal link quality video
+			$cookies = $http->getCookieJar()->getAllCookies(Zend_Http_CookieJar::COOKIE_STRING_CONCAT);
+			$opts = array('http' =>
+				array(
+					'header'  => array(
+						//"Referer: $refererUrl",
+						"Cookie: $cookies"
+					)
 				)
-			)
-		);
+			);
+		} else {
+
+			X_Debug::i('Premium features NOT enabled');
+			// if quality == NOPREMIUM i don't need authentication or context
+			
+			// no context needed
+			$opts = array('http' =>
+				array(
+				)
+			);
+			
+		}
+		
+		
 		$context  = stream_context_create($opts);
 		
 		$videoUrl = null;
 	
-		if ( $qualityType == self::QUALITY_FULL ) {
-		
-			if ( !preg_match('/ downloadurl=\"([^\"]*)\" /', $htmlString, $match) ) {
-				X_Debug::e('No download url');
-				X_Debug::i($htmlString);
-				//throw new Exception(X_Env::_('p_megavideo_invalidserverresponse'));
-			}
-		
-			// match[1] is the video link
+		switch ($qualityType) {
 			
-			$videoUrl = urldecode($match[1]);
-			
-		}
-
-		// i don't check for $qualityType = normal because normal must be a fallback for all other $qualitytype
-		if ( $videoUrl == null /*|| $qualityType == self::QUALITY_NORMAL*/ ) {
-			
-			//$megavideo = $videoId
-			$megavideo = new Megavideo($videoId, $context);
-			
-			$videoUrl = $megavideo->get('URL');
+			case X_VlcShares_Plugins_Helper_Megavideo::QUALITY_NOPREMIUM:
+				X_Debug::w("Premium proxy feature, but NOPREMIUM quality? O_o");
+				$megavideo = new Megavideo($videoId);
+				$videoUrl = $megavideo->get('URL');
+				break;
+				
+			case X_VlcShares_Plugins_Helper_Megavideo::QUALITY_FULL:
+				X_Debug::i("FULL quality selected");
+				if ( preg_match('/ downloadurl=\"([^\"]*)\" /', $htmlString, $match) ) {
+					// match[1] is the video link
+					$videoUrl = urldecode(@$match[1]);
+					// i break the case because 1 have a match
+					break;
+				} else {
+					// no videoURL, fallback to normal
+					X_Debug::e('No download url, fallback to NORMAL quality');
+					//X_Debug::i($htmlString);
+				}
+				
+			case X_VlcShares_Plugins_Helper_Megavideo::QUALITY_NORMAL:
+			default:
+				$megavideo = new Megavideo($videoId, $context, $userId);
+				$videoUrl = $megavideo->get('URL');
+				
 		}
 		
 		X_Debug::i("VideoURL: $videoUrl");

@@ -287,18 +287,29 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 					$this->getId().':quality'	=> null, // unset this plugin selection
 					'pid'					=> null
 				), 'default', false)
-			->setHighlight($currentSub === false || $currentSub == 'normal');
+			->setHighlight($currentSub === false || $currentSub == X_VlcShares_Plugins_Helper_Megavideo::QUALITY_NORMAL);
 		$return->append($item);
 
 		$item = new X_Page_Item_PItem($this->getId().'-full', X_Env::_('p_megavideo_qualityselection_full'));
 		$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
 			->setLink(array(
 					'action'				=> 'mode',
-					$this->getId().':quality'	=> 'full', // unset this plugin selection
+					$this->getId().':quality'	=> X_VlcShares_Plugins_Helper_Megavideo::QUALITY_FULL, // unset this plugin selection
 					'pid'					=> null
 				), 'default', false)
-			->setHighlight($currentSub == 'full');
+			->setHighlight($currentSub == X_VlcShares_Plugins_Helper_Megavideo::QUALITY_FULL);
 		$return->append($item);
+
+		$item = new X_Page_Item_PItem($this->getId().'-full', X_Env::_('p_megavideo_qualityselection_nopremium'));
+		$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+			->setLink(array(
+					'action'				=> 'mode',
+					$this->getId().':quality'	=> X_VlcShares_Plugins_Helper_Megavideo::QUALITY_NOPREMIUM, // unset this plugin selection
+					'pid'					=> null
+				), 'default', false)
+			->setHighlight($currentSub == X_VlcShares_Plugins_Helper_Megavideo::QUALITY_NOPREMIUM);
+		$return->append($item);
+		
 		
 		return $return;
 	}	
