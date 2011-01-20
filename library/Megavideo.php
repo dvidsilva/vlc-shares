@@ -36,10 +36,12 @@ class Megavideo
 
 	public $id = null;
 	public $context = null;
+	public $userId = null;
 
-         function __construct($url, $context = null) 
+         function __construct($url, $context = null, $userId = null) 
          { 
          	$this->context = $context;
+         	$this->userId = $userId;
          	
                preg_match('#\?v=(.+?)$#', $url, $id); 
                 
@@ -102,8 +104,8 @@ class Megavideo
           
          function getxml() 
          { 
-         	if ( $this->context != null ) {
-               $this->xml = file_get_contents("http://www.megavideo.com/xml/videolink.php?v=".$this->id."&id=".time(), false, $this->context); // or
+         	if ( $this->context != null && $this->userId != null ) {
+               $this->xml = file_get_contents("http://www.megavideo.com/xml/videolink.php?v=".$this->id."&u=".$this->userId."&id=".time(), false, $this->context); // or
          	} else {
          		$this->xml = file_get_contents("http://www.megavideo.com/xml/videolink.php?v=".$this->id."&id=".time()); // or
          	}

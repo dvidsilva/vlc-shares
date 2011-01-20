@@ -5,6 +5,10 @@ require_once ('X/VlcShares/Plugins/Helper/Abstract.php');
 
 class X_VlcShares_Plugins_Helper_Megavideo extends X_VlcShares_Plugins_Helper_Abstract {
 
+	const QUALITY_FULL = 'full';
+	const QUALITY_NORMAL = 'normal';
+	const QUALITY_NOPREMIUM = 'disabled';
+	
 	
 	private $_cachedSearch = array();
 	private $_location = null;
@@ -63,11 +67,17 @@ class X_VlcShares_Plugins_Helper_Megavideo extends X_VlcShares_Plugins_Helper_Ab
 		if ( $this->options->premium && $this->options->username != '' && $this->options->password != '' ) {
 			// i have to check here for quality mode
 			$quality = Zend_Controller_Front::getInstance()->getRequest()->getParam('megavideo:quality', 'normal');
-			if ( $quality == 'normal' || $quality == '' || $quality == null) {
-				return X_Env::routeLink('megavideo', 'premium', array('v' => $this->_fetched->id ));
-			} else {
-				return X_Env::routeLink('megavideo', 'premium', array('v' => $this->_fetched->id, 'q' => $quality ));
+			
+			switch ($quality) {
+				case self::QUALITY_NOPREMIUM :
+					return $this->_fetched->get('URL');
+				case self::QUALITY_NORMAL:
+					return X_Env::routeLink('megavideo', 'premium', array('v' => $this->_fetched->id ));
+				case self::QUALITY_FULL:
+				default: 
+					return X_Env::routeLink('megavideo', 'premium', array('v' => $this->_fetched->id, 'q' => $quality ));
 			}
+			
 		} else {
 			return $this->_fetched->get('URL');
 		}
