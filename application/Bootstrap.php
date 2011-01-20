@@ -3,6 +3,64 @@
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 
+	// load plugins from extra/plugins/ folder in this is a dev mode
+	protected function _initExtraPlugins() {
+		$this->bootstrap('debug');
+		$this->bootstrap('db');
+		$this->bootstrap('plugins');
+		$this->bootstrap('frontController');
+		$this->bootstrap('view');
+		
+		// only add them if in development env
+		if ( APPLICATION_ENV != 'development' ) {
+			return;
+		}
+
+		X_Debug::i("Development mode: extra plugins mode enabled");
+		
+		// check for extra plugins path
+		$extraPluginsPath = APPLICATION_PATH . '/../extra/plugins';
+		if ( !file_exists($extraPluginsPath) ) {
+			X_Debug::w("Extra plugins path not found");
+			return;
+		}
+
+		$displayError = ini_get('display_errors');
+		$displayStartup = ini_get('display_startup_errors');
+		$errorReporting = ini_get('error_reporting');
+		
+		ini_set('display_errors', '1');
+		ini_set('display_startup_errors', '1');
+		ini_set('error_reporting', 'E_ALL');
+		
+		// scan /extra/plugins/$directory/ for dev_bootstrap.php file
+		// and execute it.
+		$directory = new DirectoryIterator($extraPluginsPath);
+		foreach ($directory as $entry) {
+			/* @var $entry DirectoryIterator */
+			// it doesn't allow dotted directories (. and ..) and file/symlink
+			if ( $entry->isDot() || !$entry->isDir() ) {
+				continue;
+			}
+			
+			$bootstrapFile = $entry->getRealPath() . '/dev_bootstrap.php';
+			
+			if ( file_exists($bootstrapFile) ) {
+				X_Debug::i("Dev bootstrap file found: $bootstrapFile");
+				{
+					// delegate everything to dev_bootstrap.php
+					include_once $bootstrapFile;
+					include $extraPluginsPath.'/bootstrap.php';
+				}
+			} 
+		}
+		
+		ini_set('display_errors', $displayError);
+		ini_set('display_startup_errors', $displayStartup);
+		ini_set('error_reporting', $errorReporting);
+		
+	}
+	
 	protected function _initApacheAltPort() {
 		$this->bootstrap('configs');
 		$this->bootstrap('debug');

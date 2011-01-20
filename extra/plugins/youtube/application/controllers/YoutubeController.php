@@ -45,10 +45,11 @@ class YoutubeController extends X_Controller_Action
 			$form->setAction($this->_helper->url('scategory', 'youtube'));
 			$form->setEnctype(Zend_Form::ENCTYPE_MULTIPART);
 		} catch (Exception $e) {
+			//X_Debug::w($e->getMessage());
 			$form = '<p>'.X_Env::_('p_youtube_form_err_noupload').': ' . $e->getMessage() . '</p>';
 		}
 		
-		if ( $idCategory != false && $idCategory != '') {
+		if ( /*$form instanceof Application_Form_YoutubeCategory &&*/ $idCategory != false && $idCategory != '') {
 			Application_Model_YoutubeCategoriesMapper::i()->find($idCategory, $category);
 			
 			if ( $idCategory == $category->getId() ) {

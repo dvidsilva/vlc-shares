@@ -1,7 +1,6 @@
 <?php
 
 require_once 'X/Controller/Action.php';
-require_once 'X/VlcShares/Plugins/AnimeFTW.php';
 
 class AnimeftwController extends X_Controller_Action
 {
