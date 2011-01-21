@@ -217,7 +217,7 @@ INLINE;
 		$links = explode('|', substr($links,-1) == '|' ? substr($links,0,-1) : $links );
 		
 		if ($type == 'video' && $link != '' ) {
-			$video = new Megavideo($link);
+			$video = new X_Megavideo($link);
 			if ( $video->get('SERVER') ) {
 				$this->view->confirm = true;
 				$this->view->videoTitle = urldecode($video->get('TITLE'));
@@ -248,7 +248,7 @@ INLINE;
 		$request = $this->getRequest();
 		$id = $request->getParam('idVideo');
 		
-		$megavideo = new Megavideo($id);
+		$megavideo = new X_Megavideo($id);
 		if ( $megavideo->get('SERVER') ) {
 			$title = urldecode($megavideo->get('TITLE'));
 			$description = urldecode($megavideo->get('DESCRIPTION'));
@@ -448,7 +448,7 @@ INLINE;
 			
 			case X_VlcShares_Plugins_Helper_Megavideo::QUALITY_NOPREMIUM:
 				X_Debug::w("Premium proxy feature, but NOPREMIUM quality? O_o");
-				$megavideo = new Megavideo($videoId);
+				$megavideo = new X_Megavideo($videoId);
 				$videoUrl = $megavideo->get('URL');
 				break;
 				
@@ -467,7 +467,7 @@ INLINE;
 				
 			case X_VlcShares_Plugins_Helper_Megavideo::QUALITY_NORMAL:
 			default:
-				$megavideo = new Megavideo($videoId, $context, $userId);
+				$megavideo = new X_Megavideo($videoId, $context, $userId);
 				$videoUrl = $megavideo->get('URL');
 				
 		}

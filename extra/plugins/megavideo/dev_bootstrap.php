@@ -27,7 +27,7 @@ $neededLinks = array(
 
 // Include files
 $includeFiles = array(
-	$basePath.'/library/Megavideo.php',
+	$basePath.'/library/X/Megavideo.php',
 	// dbtables
 	$basePath.'/application/models/DbTable/Megavideo.php',
 

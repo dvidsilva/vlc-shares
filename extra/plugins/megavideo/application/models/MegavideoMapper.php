@@ -58,7 +58,7 @@ class Application_Model_MegavideoMapper
     
     public function save(Application_Model_Megavideo $megavideo)
     {
-        $wrapper = new Megavideo($megavideo->getIdVideo());
+        $wrapper = new X_Megavideo($megavideo->getIdVideo());
         
 		preg_match('#\?v=(.+?)$#', $megavideo->getIdVideo(), $id); 
 		$megavideo->setIdVideo(@$id[1]?$id[1]:$megavideo->getIdVideo()); 
