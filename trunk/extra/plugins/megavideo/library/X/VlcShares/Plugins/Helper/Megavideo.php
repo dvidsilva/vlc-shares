@@ -1,8 +1,5 @@
 <?php 
 
-require_once 'Megavideo.php';
-require_once ('X/VlcShares/Plugins/Helper/Abstract.php');
-
 class X_VlcShares_Plugins_Helper_Megavideo extends X_VlcShares_Plugins_Helper_Abstract {
 
 	const QUALITY_FULL = 'full';

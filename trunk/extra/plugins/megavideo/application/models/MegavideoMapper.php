@@ -1,8 +1,5 @@
 <?php
 
-require_once 'Megavideo.php';
-require_once 'X/Env.php';
-
 class Application_Model_MegavideoMapper
 {
 	

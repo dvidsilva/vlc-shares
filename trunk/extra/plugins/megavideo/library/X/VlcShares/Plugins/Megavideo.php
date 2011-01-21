@@ -1,11 +1,5 @@
 <?php
 
-require_once 'X/VlcShares/Plugins/Abstract.php';
-require_once 'Megavideo.php'; // megavideo wrapper
-require_once 'X/VlcShares/Plugins/BackuppableInterface.php';
-require_once 'X/VlcShares/Plugins/Helper/Megavideo.php';
-
-
 /**
  * Megavideo plugin
  * @author ximarx

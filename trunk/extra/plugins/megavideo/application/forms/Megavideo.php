@@ -1,7 +1,5 @@
 <?php
 
-require_once 'X/Env.php';
-
 class Application_Form_Megavideo extends Zend_Form
 {
     public function init()
