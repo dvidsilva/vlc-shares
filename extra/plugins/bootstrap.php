@@ -53,7 +53,7 @@ foreach ($pluginsInstances as $pluginKey => $pluginInstance) {
 	}
 	$pluginClass = $pluginInstance['class'];
 
-	$configA = array('id' => $pluginKey, 'class' => $pluginClass);
+	$configA = array($pluginKey => array('id' => $pluginKey, 'class' => $pluginClass));
 	if ( array_key_exists('configs', $pluginInstance ) ) {
 		foreach ($pluginInstance['configs'] as $configKey => $configValue) {
 			// uses the same code of normal bootstrap code 
@@ -64,7 +64,7 @@ foreach ($pluginsInstances as $pluginKey => $pluginInstance) {
 			for ( $i = count($exploded) - 1; $i >= 0; $i--) {
 				$_array = array($exploded[$i] => $_array);
 			}
-			$_array = array('plugins' => $_array);
+			$_array = array($pluginKey => $_array);
 			$configA = array_merge_recursive($configA, $_array);
 		}
 	}
@@ -73,8 +73,7 @@ foreach ($pluginsInstances as $pluginKey => $pluginInstance) {
 	$pluginObj = new $pluginClass();
 	
 	$pluginObj->setConfigs(
-		$configs->get('plugins', new Zend_Config(array()))
-			->get($pluginKey, array())
+		$configs->get($pluginKey, new Zend_Config(array()))
 	);
 	
 	X_VlcShares_Plugins::broker()->registerPlugin($pluginKey, $pluginObj);
