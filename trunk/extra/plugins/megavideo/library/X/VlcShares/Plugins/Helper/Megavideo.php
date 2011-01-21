@@ -134,7 +134,7 @@ class X_VlcShares_Plugins_Helper_Megavideo extends X_VlcShares_Plugins_Helper_Ab
 			throw new Exception('Trying to fetch a megavideo location without a location');
 		}
 		if ( $this->_fetched === false ) {
-			$this->_fetched = new Megavideo($this->_location);
+			$this->_fetched = new X_Megavideo($this->_location);
 			$this->_cachedSearch[$this->_location] = $this->_fetched;
 		}
 	}

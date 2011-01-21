@@ -44,3 +44,5 @@ INSERT INTO plg_megavideo (idVideo, category, label, description) VALUES
     'American Dad',
     'puntata X',
     '');
+
+UPDATE plugins SET enabled=1 WHERE key = "megavideo";
