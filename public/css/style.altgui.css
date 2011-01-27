@@ -439,6 +439,7 @@ body {
 /**
  * BLOCKS
  */
+.box, /* Backward compatibility */
 .block {
 	padding: 0.833em;
 	border: 1px solid white;
@@ -597,17 +598,19 @@ body {
 /**
  * BLOCK HEADER
  */
-.block.with-header .inner > .header {
-	min-height: 70px;
+.block.with-header > .inner > .header {
 	/*
-	background: #790000;
-	background: -moz-linear-gradient(top,#ca3535,#790000);
-	background: -webkit-gradient(linear,left top, left bottom,from(#ca3535),to(#790000));
+	-moz-border-radius: 0.25em 0.25em 0 0;
+	-webkit-border-radius: 0.25em 0.25em 0 0;
+	-webkit-background-clip: padding-box;
+	border-radius: 0.25em 0.25em 0 0;
 	*/
+	min-height: 70px;
 	font-size: 2em;
 	font-weight: bold;
 	height: 3em;
 	border-top: 1px solid #9bd2ee;
+	border-top-color: transparent;
 	border-bottom: 1px solid #b5b3b4;
 	background: #0c5fa3;
 	-webkit-background-size: 100% 100%;
@@ -625,7 +628,7 @@ body {
 	margin: -1em -0.833em 0.833em -0.833em;	
 }
 
-.block.red.with-header .inner > .header {
+.block.red.with-header > .inner > .header {
 	/*border-top-color: #e46f6f;*/
 	border-top-color: transparent;
 	background: #790000;

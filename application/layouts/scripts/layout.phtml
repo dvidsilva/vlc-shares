@@ -40,7 +40,7 @@
 		</div>
 		<div class="container columns" id="status-bar">
 			<div class="elastic column" id="breadcrumb">
-				<?php if ($this->layout()->breadcrumb != null ) : ?>
+				<?php if ( !empty($this->layout()->breadcrumb) ) : ?>
 					<?php echo $this->layout()->breadcrumb; ?>
 				<?php else: ?>
 				&nbsp;

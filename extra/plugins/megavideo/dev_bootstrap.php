@@ -57,14 +57,32 @@ $helpersIncludes = array(
 	$basePath.'/library/X/VlcShares/Plugins/Helper/Megavideo.php'
 );
 
-$pluginsInstances = array(
-	'megavideo' => array(
-		'class' => 'X_VlcShares_Plugins_Megavideo',
-		'configs' => array(
-			// special configs aren't required, so i use defaults hardcoded
+// check here for configs from runtime
+if ( (array_search('plg_megavideo', $dbAdapter->listTables()) !== false) ) {
+	/* @var $runtimeConfigs Zend_Config */
+	$runtimeConfigs = $this->getResource('configs');
+	
+	$pluginsInstances = array(
+		'megavideo' => array(
+			'class' => 'X_VlcShares_Plugins_Megavideo',
+			'configs' => array(
+				'premium.enabled' => $runtimeConfigs->plugins->megavideo->premium->enabled,
+				'premium.username' => $runtimeConfigs->plugins->megavideo->premium->username,
+				'premium.password' => $runtimeConfigs->plugins->megavideo->premium->password, 
+			)
 		)
-	)
-);
+	);
+	unset($runtimeConfigs);
+} else {
+	$pluginsInstances = array(
+		'megavideo' => array(
+			'class' => 'X_VlcShares_Plugins_Megavideo',
+			'configs' => array(
+				// special configs aren't required, so i use defaults hardcoded
+			)
+		)
+	);
+}
 
 $dbInits = array(
 	$basePath.'/install.sql' => (array_search('plg_megavideo', $dbAdapter->listTables()) === false),
