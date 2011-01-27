@@ -2,60 +2,29 @@
 <div class="columns full-height">
 	<div class="column">
 		<div class="container vertical-center horizontal-center" id="error">
-			<?php /* @var $xBlock X_VlcShares_View_Helper_XBlock */ ?>
-			<?php $xBlock = $this->xBlock(); ?>
-			<?php $xBlock
-				->setTitle('An error occurred')
-				->setHeader(true)
-				->setVariant(X_VlcShares_View_Helper_XBlock::VARIANT_HIGHLIGHT)
-				->captureStart(); ?>
-				
-				<?php $xHeader = $this->xHeader(); ?>
-				<?php $xHeader->captureStart(); ?>
-					<h3><?php echo $this->message; ?></h3>
-				<?php $xHeader->captureEnd(true);?>
-				
+			<?php /* @var $block X_VlcShares_Elements_Block */ ?>
+			<?php $block = $this->guiElements()->block()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::BLOCK_HIGHLIGHT)); ?>
+			<?php $block->title->set('An error occurred')->start(); ?>
+			<?php $block->header->start(); ?>
+				<h3><?php echo $this->message; ?></h3>
+			<?php $block->header->end(); ?>
+			<?php $block->start(); ?>
 				<?php if (isset ($this->exception) ): ?>
-				<h2>Error description</h2>
-				<?php echo $this->exception->getMessage(); ?>
-				<?php endif;?>
-				
-				<?php $this->xInnerBlock(false)->setTitle('Request parameters')->captureStart(); ?>
-					<pre style="overflow: auto;"><?php echo var_export($this->request->getParams(), true) ?></pre>
-				<?php $this->xInnerBlock(false)->captureEnd(true); ?>
-				
-				<?php $this->xInnerBlock(false)->setTitle('Stack trace')->captureStart(); ?>
-					<pre style="overflow: auto;"><?php echo $this->exception->getTraceAsString() ?></pre>
-				<?php $this->xInnerBlock(false)->captureEnd(true); ?>
-				
-			 <?php $xBlock->captureEnd(true); ?>
-		
-			<!-- 
-			<div class="block titled with-header red" >
-				<div class="inner">
-					<h1>An error occurred</h1>
-					<div class="header">
-						<h3><?php echo $this->message; ?></h3>
-					</div>
-					<?php if (isset ($this->exception) ): ?>
 					<h2>Error description</h2>
 					<?php echo $this->exception->getMessage(); ?>
-					<?php endif;?>
-					<div class="inner-block titled">
-						<div class="inner">
-							<h1>Request parameters</h1>
-							<pre style="overflow: auto;"><?php echo var_export($this->request->getParams(), true) ?></pre>
-						</div>
-					</div>
-					<div class="inner-block titled">
-						<div class="inner">
-							<h1>Stack trace</h1>
-							<pre style="overflow: auto;"><?php echo $this->exception->getTraceAsString() ?></pre>
-						</div>
-					</div>
-				</div>
-			</div>
-			-->
+				<?php endif;?>
+				<?php $innerBlock = $this->guiElements()->innerBlock(); ?>
+				<?php $innerBlock->title->set('Request parameters'); ?>
+				<?php $innerBlock->start(); ?>
+					<pre style="overflow: auto;"><?php echo var_export($this->request->getParams(), true) ?></pre>
+				<?php echo $innerBlock->end(); ?>
+				
+				<?php $innerBlock = $this->guiElements()->innerBlock(); ?>
+				<?php $innerBlock->title->set('Stack trace'); ?>
+				<?php $innerBlock->start(); ?>
+					<pre style="overflow: auto;"><?php echo $this->exception->getTraceAsString() ?></pre>
+				<?php echo $innerBlock->end(); ?>
+			<?php echo $block->end(); ?>
 		</div>
 	</div>
 </div>

@@ -85,7 +85,7 @@ class ConfigsController extends X_Controller_Action
     			}
     			
     		} else {
-    			$this->_forward('configs');
+    			$this->_forward('index');
     		}
     	} else {
     		$this->_helper->flashMessenger(X_Env::_('configs_save_nodata'));

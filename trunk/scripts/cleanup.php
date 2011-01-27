@@ -9,6 +9,7 @@
  * Remove a directory (even if not empty)
  */
 function rm_recursive($dir) {
+	$dir = rtrim($dir, '\\/');
 	if (is_dir($dir)) { 
 		$objects = scandir($dir); 
 		foreach ($objects as $object) { 

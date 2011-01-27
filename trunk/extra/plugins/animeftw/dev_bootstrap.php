@@ -41,14 +41,31 @@ $pluginsIncludes = array(
 $helpersIncludes = array(
 );
 
-$pluginsInstances = array(
-	'animeftw' => array(
-		'class' => 'X_VlcShares_Plugins_AnimeFTW',
-		'configs' => array(
-			// special configs aren't required, so i use defaults hardcoded
+/* @var $runtimeConfigs Zend_Config */
+$runtimeConfigs = $this->getResource('configs');
+// check here for configs from runtime
+if ( isset($runtimeConfigs->plugins->animeftw ) ) {
+	$pluginsInstances = array(
+		'animeftw' => array(
+			'class' => 'X_VlcShares_Plugins_AnimeFTW',
+			'configs' => array(
+				'auth.username' => $runtimeConfigs->plugins->animeftw->auth->username,
+				'auth.password' => $runtimeConfigs->plugins->animeftw->auth->password,
+			)
 		)
-	)
-);
+	);
+	unset($runtimeConfigs);
+} else {
+	$pluginsInstances = array(
+		'animeftw' => array(
+			'class' => 'X_VlcShares_Plugins_AnimeFTW',
+			'configs' => array(
+				// special configs aren't required, so i use defaults hardcoded
+			)
+		)
+	);
+}
+
 
 $dbInits = array(
 	$basePath.'/install.sql' => (file_exists(APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_AnimeFTW.en_GB.ini') == false),
