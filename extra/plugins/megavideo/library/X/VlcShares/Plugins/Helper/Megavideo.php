@@ -130,7 +130,7 @@ class X_VlcShares_Plugins_Helper_Megavideo extends X_VlcShares_Plugins_Helper_Ab
 	
 	protected function _fetch() {
 		if ( $this->_location == null ) {
-			X_Debug::e('Trying to fetch a megavideo location without a location');
+			X_Debug::w('Trying to fetch a megavideo location without a location');
 			throw new Exception('Trying to fetch a megavideo location without a location');
 		}
 		if ( $this->_fetched === false ) {

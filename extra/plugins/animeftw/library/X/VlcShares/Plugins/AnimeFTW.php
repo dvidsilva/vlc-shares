@@ -479,7 +479,7 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 				break;
 		}
 		
-		$htmlString = $this->_loadPage($indexUrl, false);
+		$htmlString = $this->_loadPage($indexUrl, true);
 		$dom = new Zend_Dom_Query($htmlString);
 		
 		// fetch all threads inside the table
@@ -622,13 +622,18 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 				$this->jar = $ns->jar;
 				X_Debug::i('Loading stored authentication in Session');
 			} elseif ( file_exists($jarFile) ) {
-				$this->jar = new Zend_Http_CookieJar();
-				$cookies = unserialize(file_get_contents($jarFile));
-				foreach ($cookies as $c) {
-					$_c = new Zend_Http_Cookie($c['name'], $c['value'], $c['domain'], $c['exp'], $c['path']);
-					$this->jar->addCookie($_c);
+				if ( filectime($jarFile) < (time() -  24 * 60 * 60) ) {
+					X_Debug::i('Jarfile is old. Refreshing it');
+					@unlink($jarFile);
+				} else {
+					$this->jar = new Zend_Http_CookieJar();
+					$cookies = unserialize(file_get_contents($jarFile));
+					foreach ($cookies as $c) {
+						$_c = new Zend_Http_Cookie($c['name'], $c['value'], $c['domain'], $c['exp'], $c['path']);
+						$this->jar->addCookie($_c);
+					}
+					X_Debug::i('Loading stored authentication in File');
 				}
-				X_Debug::i('Loading stored authentication in File');
 			}
 		}
 		
