@@ -9,9 +9,34 @@ abstract class X_VlcShares_Skins_Default_Abstract implements X_VlcShares_Skins_D
 	 * @var Zend_View
 	 */
 	protected $view = null;
+
+	protected $decoratorOptions = array();
+
+	public function __construct($options = array()) {
+		if ( is_array($options)) {
+			$this->decoratorOptions = $options;
+		}
+	}
 	
 	public function setView($view) {
 		$this->view = $view;
+	}
+	
+	public function normalizeOptions($options) {
+		if ( is_array($options) ) {
+			$options = array_merge($this->getDefaultOptions(), $options);
+		} else {
+			$options = $this->getDefaultOptions();
+		}
+		return $options;
+	}
+	
+	/**
+	 * Called by normalizeOptions to sanitarize options array
+	 * @return array
+	 */
+	/* abstract */protected function getDefaultOptions() {
+		return array();
 	}
 	
 	/**

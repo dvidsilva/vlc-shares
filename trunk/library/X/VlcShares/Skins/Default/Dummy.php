@@ -4,6 +4,8 @@ require_once 'X/VlcShares/Skins/DecoratorInterface.php';
 
 class X_VlcShares_Skins_Default_Dummy implements X_VlcShares_Skins_DecoratorInterface {
 
+	private $view = null;
+	
 	static protected $instance = null;
 	/**
 	 * @return X_VlcShares_Skins_Default_Dummy
@@ -21,6 +23,7 @@ class X_VlcShares_Skins_Default_Dummy implements X_VlcShares_Skins_DecoratorInte
 	 * @param stdClass $options decorator options
 	 */
 	public function decorate($content, $options) {
+		//if ( $content == null ) $content = '';
 		return $content;
 	}
 	
@@ -34,10 +37,11 @@ class X_VlcShares_Skins_Default_Dummy implements X_VlcShares_Skins_DecoratorInte
 	}
 	
 	/**
-	 * Does nothing
+	 * Set the internal view reference
 	 */
 	function setView($view) {
-		return;
+		$this->view = $view;
+		return $this;
 	}
 	
 }

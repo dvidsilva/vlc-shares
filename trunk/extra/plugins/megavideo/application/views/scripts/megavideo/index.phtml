@@ -1,9 +1,61 @@
+<!--
+<?php /* @var $block X_VlcShares_Elements_Block */ ?>
+<?php $block = $this->guiElements()->block(); ?>
+<?php $block->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::BLOCK_HIGHLIGHT)); ?>
+<?php $block->start(); ?>
+	<?php $block->title->set('Titolo'); ?>
+	<?php $block->header->start(); ?>
+		<h2>this is a wonderfull header text</h2>
+	<?php $block->header->end(); ?>
+	<div class="fafuffa">
+		This is the block body
+	</div>
+	
+	<?php /* @var $innerblock X_VlcShares_Elements_InnerBlock */ ?>
+	<?php $innerblock = $this->guiElements()->innerBlock(); ?>
+	<?php $innerblock->start(); ?>
+		<?php $innerblock->title->set('Titolo interno'); ?>
+		Contenuto
+	<?php echo $innerblock->end(); ?>
+	
+	<?php $block->footer->start(); ?>
+		<h4>This is the footer</h4>
+	<?php $block->footer->end()?>
+<?php echo $block->end(); ?>
+
+<?php /* @var $sections X_VlcShares_Elements_SectionContainer */ ?>
+<?php $sections = $this->guiElements()->sectionContainer(); ?>
+<?php $sections->setSectionsPerRow(3)->setSectionsSameHeight(true); // container options ?>
+	<?php for( $i = 0; $i < 10; $i++ ): ?>
+		<?php $sections->{"column-$i"}->setSpan($i % 2 ? '2' : '')->start(); ?>
+			<?php $block = $this->guiElements()->block()->start(); ?>
+				contenuto colonna <?php echo "column-$i"; ?>
+			<?php echo $block->end(); ?>
+		<?php $sections->{"column-$i"}->end(); ?>
+	<?php endfor; ?>
+<?php echo $sections; ?>
+-->
+
+<?php 
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('megavideo_manage_add_new_entry'), "megavideo", "add")
+	->addButton(X_Env::_('megavideo_bookmarklets_title'), "javascript:showModal('bookmarklets'); return false;" )
+	->addLinkRoute(X_Env::_('megavideo_manage_options'), "config", "index", array('key' => 'megavideo', 'r' => X_Env::encode('megavideo:index')));
+	
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLabel(X_Env::_('megavideo_manage_title'));
+?>
+
 <style>
 .field {
  margin: 15px;
  padding: 0.5em;
  border: 1px solid #666;
-// width: 500px;
+/* width: 500px;*/
  position: relative;
 }
 .h2 {
@@ -16,6 +68,7 @@
  background: white;
  color: #008;
  margin: 0 3px;
+
  padding:2px;
  font:  bold 100% Georgia, serif;
 }
