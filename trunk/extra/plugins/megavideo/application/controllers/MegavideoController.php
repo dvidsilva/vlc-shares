@@ -38,73 +38,13 @@ class MegavideoController extends X_Controller_Action
         	$category['entries'] = $categoryEntries;
         }
         
-        $linkAll = X_Env::routeLink('megavideo', 'bookmarklets',array('type' => 'list'));
-        $linkSingle = X_Env::routeLink('megavideo', 'bookmarklets',array('type' => 'video'));
-        $linkSingleCategoryRequest = X_Env::_('megavideo_bookmarklets_category_selection');
-        $paginationRequest = X_Env::_('megavideo_bookmarklets_lotoflinks');
-        $allpagesearchRequest = X_Env::_('megavideo_bookmarklets_nolinksinselectioncontinue');
-        $statusWindowLink = X_Env::routeLink('megavideo', 'status');
-		$inlineJs = <<<INLINE
-javascript:(function() {
-	var url = location.toString();
-	var reg = /(http:\/\/){0,1}(www\.){0,1}(megavideo\.com(.*)\/\?(v|d)=(.){8,8})/;
-	var z,i,j;
-	var collector = '';
-	var oldTitle;
-	var noLinksContinue = true;
-	var direct = true;
-	function urlencode(str) {
-		return escape(str).replace(/\+/g,'%2B').replace(/%20/g, '+').replace(/\*/g, '%2A').replace(/\//g, '%2F').replace(/@/g, '%40');
-	}
-	function linkIsSafe(u) { 
-		return (u.search(reg) != -1);
-    }
-	if (url.search(reg) != -1) {
-		category = prompt(&quot;{$linkSingleCategoryRequest}&quot;,&quot;Default&quot;);
-		if (category.trim() != &quot;&quot; ) {
-			var code = url.match(/(v|d)=(.){8,8}$/)[0].substr(2,8);
-			window.open().location = '{$linkSingle}' + '/category/'+urlencode(category)+'/link/'+code;
-		}
-	} else {
-    	z = document.links;
-		oldTitle = this.window.document.title;
-		/* cerco solo nella selezione */ 
-		if (window.getSelection &amp;&amp; window.getSelection().containsNode &amp;&amp; window.getSelection().toString() != &quot;&quot; ) {
-			direct = false;
-			for(i = 0; i &lt; z.length; ++i ) { 
-				this.window.document.title = &quot;Scanning: &quot;+(((i/z.length*100) + '').substr(0,4)) + &quot;%&quot;;
-				if (window.getSelection().containsNode(z[i], true) &amp;&amp; linkIsSafe(z[i].href)) {
-					collector += z[i].href.match(/(v|d)=(.){8,8}$/)[0].substr(2,8) + &quot;|&quot;;
-					noLinksContinue = false;
-				}
-			}
-		}
-		if ( direct || (noLinksContinue &amp;&amp; confirm(&quot;{$allpagesearchRequest}&quot;) )) {
-			/* scansione normale */
-			for (i = 0, j = 0; i &lt; z.length; ++i) {
-				this.window.document.title = &quot;Scanning: &quot;+(((i/z.length*100) + '').substr(0,4)) + &quot;%&quot;;
-				try {
-					if ( z[i].href.search(reg) != -1 ) {
-						collector += z[i].href.match(/(v|d)=(.){8,8}$/)[0].substr(2,8) + &quot;|&quot;;
-						j++;
-					}
-				} catch (e) {}
-				if ( j == 50 ) {
-					if ( confirm(&quot;{$paginationRequest}&quot;.replace('{%percent%}', (((i/z.length*100) + '').substr(0,4)) + &quot;%&quot; ))) {
-						window.open().location = '{$linkAll}' + '/links/'+urlencode(collector);
-						collector = &quot;&quot;;
-						j = 0;
-					}
-				}
-			}
-		}
-		this.window.document.title = oldTitle;
-		if ( collector != &quot;&quot; ) {
-			window.open().location = '{$linkAll}' + '/links/'+urlencode(collector);
-		}
-	}
-})();
-INLINE;
+
+		
+		$newBookmarkletLink = X_Env::routeLink('megavideo', 'bmscript'); 
+		// nuova versione
+		$inlineJs = <<<NEWINLINE
+		javascript:var%20b=document.body;if(b&&!document.xmlVersion){void(z=document.createElement('script'));void(z.src='{$newBookmarkletLink}');void(b.appendChild(z));}else{}";
+NEWINLINE;
 		
 		// rimuovo tabulazioni e ritorni a capo
 		// in questo modo e' piu leggibile il codice
@@ -113,8 +53,32 @@ INLINE;
         $this->view->categories = $categories;
         $this->view->bookmarkletsEnabled = true; 
         $this->view->inlineJs = $inlineJs;
+        
+        $this->view->messages = $this->_helper->flashMessenger->getMessages();
     }
 
+    public function bmscriptAction() {
+    	
+        $linkAll = X_Env::routeLink('megavideo', 'bookmarklets',array('type' => 'list'));
+        $linkSingle = X_Env::routeLink('megavideo', 'bookmarklets',array('type' => 'video'));
+        $linkSingleCategoryRequest = X_Env::_('megavideo_bookmarklets_category_selection');
+        $paginationRequest = X_Env::_('megavideo_bookmarklets_lotoflinks');
+        $allpagesearchRequest = X_Env::_('megavideo_bookmarklets_nolinksinselectioncontinue');
+        $statusWindowLink = X_Env::routeLink('megavideo', 'status');
+    	
+    	
+    	$this->getResponse()->setHeader('Content-Type', 'text/javascript');
+    	$this->_helper->layout()->disableLayout();
+    	
+    	$this->view->linkAll = $linkAll;
+    	$this->view->linkSingle = $linkSingle;
+    	$this->view->linkSingleCategoryRequest = $linkSingleCategoryRequest;
+    	$this->view->paginationRequest = $paginationRequest;
+    	$this->view->allpagesearchRequest = $allpagesearchRequest;
+    	$this->view->statusWindowLink = $statusWindowLink;
+    	
+    }
+    
     public function addAction() {
         $request = $this->getRequest();
         $form    = new Application_Form_Megavideo();
@@ -123,7 +87,16 @@ INLINE;
         
         if ($this->getRequest()->isPost()) {
             if ($form->isValid($request->getPost())) {
+
+            	$idVideo = $form->getValue('idVideo');
+				@list($idVideo, $type) = explode('_', $idVideo);
+				if ( $type == 'd' ) {
+					// this is a megaupload->megavideo file. I need to find the real id
+					$idVideo = $this->_getRealMegavideoId($idVideo);
+				}
+            	
                 $video = new Application_Model_Megavideo($form->getValues());
+                $video->setIdVideo($idVideo);
                 // Nel caso in cui sia un edit request
                 if ( !is_null($request->getParam('id', null)) ) {
                 	$video->setId($request->getParam('id', null));
@@ -137,7 +110,10 @@ INLINE;
                 	$this->_helper->layout->disableLayout();
                 	return;
                 } else {
-                	return $this->_helper->redirector('index');
+                	//return $this->_helper->redirector('index');
+                	$this->_helper->redirector('category', 'megavideo', 'default', array(
+                		'id' => urlencode($video->getCategory())
+                	));
                 }
             }
         }
@@ -182,6 +158,31 @@ INLINE;
         }
     }
     
+    public function categoryAction() {
+    	
+    	/* @var $request Zend_Controller_Request_Http */
+    	$request = $this->getRequest();
+    	$categoryName = $request->getParam('id', '');
+    	$categoryName = urldecode($categoryName);
+    	$videos = array();
+    	if ( $categoryName != '') {
+    		$mapper  = Application_Model_MegavideoMapper::i();
+    		$videos = $mapper->fetchByCategory($categoryName);
+    		if ( count($videos) == 0 ) {
+    			$this->_helper->flashMessenger(array('type' => 'error', 'text' => X_Env::_('p_megavideo_invalidcategory')));
+    			$this->_helper->redirector('index');
+    		}
+    	}
+    	$this->view->category = $categoryName;
+    	$this->view->videos = $videos;
+    	
+    	// if it's an ajax request, no layout is needed
+    	if ( $request->isXmlHttpRequest() ) {
+    		$this->_helper->layout()->disableLayout();
+    	}
+    	
+    }
+    
     public function renameAction() {
     	$request = $this->getRequest();
     	$categoryName = $request->getParam('id', '');
@@ -200,7 +201,18 @@ INLINE;
 		if ( !is_null($id) ) {
 			$mapper  = Application_Model_MegavideoMapper::i();
 			if ( $type == 'video' ) {
-				$mapper->delete($id);
+				
+				$video = new Application_Model_Megavideo();
+				$mapper->find($id, $video);
+				
+				if ( $video->getId() ) {
+					$category = $video->getCategory();
+					$mapper->delete($id);
+                	$this->_helper->redirector('category', 'megavideo', 'default', array(
+                		'id' => urlencode($category)
+                	));
+				}
+				
 			} elseif ($type == 'category' ) {
 				$mapper->deleteCategory($id);
 			}
@@ -217,6 +229,11 @@ INLINE;
 		$links = explode('|', substr($links,-1) == '|' ? substr($links,0,-1) : $links );
 		
 		if ($type == 'video' && $link != '' ) {
+			@list($link, $type) = explode('_', $link);
+			if ( $type == 'd' ) {
+				// this is a megaupload->megavideo file. I need to find the real id
+				$link = $this->_getRealMegavideoId($link);
+			}
 			$video = new X_Megavideo($link);
 			if ( $video->get('SERVER') ) {
 				$this->view->confirm = true;
@@ -246,17 +263,25 @@ INLINE;
 	
 	public function infoAction() {
 		$request = $this->getRequest();
-		$id = $request->getParam('idVideo');
+		$oldId = $id = $request->getParam('idVideo');
 		
-		$megavideo = new X_Megavideo($id);
-		if ( $megavideo->get('SERVER') ) {
+		@list($id, $type) = @explode('_', $id);
+		if ( $type == 'd' ) {
+			// this is a megaupload->megavideo file. I need to find the real id
+			$id = $this->_getRealMegavideoId($id);
+		}
+		
+		if ( $id != null ) {
+			$megavideo = new X_Megavideo($id);
+		}
+		if ( $id != null && $megavideo->get('SERVER') ) {
 			$title = urldecode($megavideo->get('TITLE'));
 			$description = urldecode($megavideo->get('DESCRIPTION'));
 			header('Content-Type:application/json');
-			echo Zend_Json::encode(array('id' => $id,'title' => $title, 'description' => $description, 'isError' => false));
+			echo Zend_Json::encode(array('id' => $id, 'oldId' => $oldId, 'title' => $title, 'description' => $description, 'isError' => false));
 		} else {
 			header('Content-Type:application/json');
-			echo Zend_Json::encode(array('id' => $id, 'title' => X_Env::_('megavideo_manage_title_error'), 'description' => X_Env::_('megavideo_manager_bookmarklets_error_novalidvideo'), 'isError' => true));
+			echo Zend_Json::encode(array('id' => $id, 'oldId' => $oldId, 'title' => X_Env::_('megavideo_manage_title_error'), 'description' => X_Env::_('megavideo_manager_bookmarklets_error_novalidvideo'), 'isError' => true));
 		}
 		$this->_helper->layout->disableLayout();
 		$this->_helper->viewRenderer->setNoRender(true);
@@ -265,6 +290,20 @@ INLINE;
 	// solo per caricare la pagina di stato
 	public function statusAction() {
 		$this->_helper->layout->disableLayout();
+	}
+	
+	private function _getRealMegavideoId($megauploadId) {
+		
+		$http = new Zend_Http_Client("http://www.megavideo.com/?d=$megauploadId");
+		$response = $http->request();
+		
+		$body = $response->getBody();
+		$matches = array();
+		if ( preg_match('/flashvars\.v \= \"([^\"]*)\";/', $body, $matches) ) {
+			return $matches[1];
+		} else {
+			return null;	
+		}
 	}
 	
 	public function premiumAction() {

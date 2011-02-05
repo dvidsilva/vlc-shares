@@ -1,0 +1,76 @@
+<!-- application/views/scripts/megavideo/category.phtml -->
+<?php $this->headScript()->appendFile($this->baseUrl("/js/megavideo/script.js")); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/megavideo/style.css')); ?>
+<?php 
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+/*
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('megavideo_manage_add_new_entry'), "megavideo", "add")
+	//->addButton(X_Env::_('megavideo_bookmarklets_title'), "javascript:showModal('bookmarklets'); return false;" )
+	->addLinkRoute(X_Env::_('megavideo_manage_options'), "config", "index", array('key' => 'megavideo', 'r' => X_Env::encode('megavideo:index')));
+*/
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLinkRoute(X_Env::_('megavideo_manage_title'), 'megavideo', 'index')
+	->addLabel(X_Env::_('megavideo_manage_categorytitle').": ".$this->category);
+	
+	
+$this->headTitle()->prepend($this->category);
+$this->headTitle()->prepend(X_Env::_('megavideo_manage_title'));
+?>
+
+<div class="unit">
+	<div class="container">
+		<div class="box" id="megavideo-videos">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('megavideo_manage_categorytitle').": ".$this->category; ?></span>
+			</div>
+			<div class="content">
+				<table class="table">
+					<tr class="header">
+						<th>ID</th>
+						<th>Nome e Descrizione</th>
+						<th>Opzioni</th>
+					</tr>
+					<?php foreach ($this->videos as $i => $video): ?>
+						<?php /* @var $video Application_Model_Megavideo */ ?>
+						<tr class="<?php echo $i % 2 ? 'alt' : ''; ?>">
+							<td width="100px;">
+								<a rel="external" href="http://www.megavideo.com/?v=<?php echo $video->getIdVideo(); ?>">
+									<?php echo $video->getIdVideo(); ?>
+								</a>
+							</td>
+							<td>
+								<b><?php echo $video->getLabel(); ?></b>
+								<?php if ( $video->getDescription() ): ?>
+									<p><?php echo $video->getDescription(); ?></p>
+								<?php endif; ?>
+							</td>
+							<td width="100px">
+								<ul class="inline-menu">
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-pencil" href="<?php echo $this->url(array(
+											'controller' => 'megavideo',
+											'action' => 'modify',
+											'id' => $video->getId(),
+										), 'default', true); ?>">R</a>
+									</li>
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-trash" href="<?php echo $this->url(array(
+											'controller' => 'megavideo',
+											'action' => 'delete',
+											'type' => 'video',
+											'id' => $video->getId(),
+										), 'default', true); ?>">E</a>
+									</li>
+								</ul>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

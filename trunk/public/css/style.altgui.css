@@ -15,6 +15,11 @@ body {
  HEADER
  ***************************/
 
+.container {
+	display: block;
+	position: relative;
+}
+
 #header {
 
 	background: #3399cc /* url(../images/old-browsers-bg/main-nav-bg.png)

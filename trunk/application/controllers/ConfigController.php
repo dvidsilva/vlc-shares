@@ -21,19 +21,27 @@ class ConfigController extends X_Controller_Action {
     			$this->_helper->layout->disableLayout();
     		}
     	}
-    	
-    	//$section = $this->getRequest()->getParam('section', false);
+
     	$section = 'plugins';
     	$key = $this->getRequest()->getParam('key', false);
-    	$redirect = X_Env::decode($this->getRequest()->getParam('r', ''));
-    	if ( $redirect == '') {
-    		$redirect = 'config:index';
+    	
+    	if ( $key === false ) {
+    		$this->_helper->flashMessenger(array('type' => 'error', 'text' => X_Env::_('config_invalidkey')));
+    		$this->_helper->redirector('index','manage');
     	}
     	
     	$configs = Application_Model_ConfigsMapper::i()->fetchBySectionNamespace($section, $key);
-    	
     	$form = $this->_initConfigsForm($section, $key, $configs);
-    	$form->addElement('hidden', 'redirect', array('value' => $redirect, 'ignore' => true, 'decorators' => array('ViewHelper')));
+    	
+    	//$section = $this->getRequest()->getParam('section', false);
+    	
+    	$redirect = X_Env::decode($this->getRequest()->getParam('r', ''));
+    	if ( $redirect == '') {
+    		$redirect = 'config:index';
+    		if ( !is_null($form->getElement('redirect') ) ) {
+    			$form->redirect->setValue($redirect);
+    		}
+    	}
 
     	$defaultValues = array();
     	foreach($configs as $config) {

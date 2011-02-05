@@ -2,7 +2,7 @@
 
 require_once 'X/Env.php';
 
-class Application_Form_Configs extends Zend_Form
+class Application_Form_Configs extends X_Form
 {
 	private $configs = array();
 	
@@ -31,22 +31,35 @@ class Application_Form_Configs extends Zend_Form
         	if ( $config->getSection() == 'plugins') continue;
         	
         	$elementType = ''; 
-        	
+        	$defaultStr = null;
         	switch ($config->getType()) {
         		
-        		case Application_Model_Config::TYPE_BOOLEAN: $elementType = 'radio'; break;
-        		case Application_Model_Config::TYPE_TEXTAREA: $elementType = 'textarea'; break;
-        		case Application_Model_Config::TYPE_SELECT: $elementType = 'select'; break;
+        		case Application_Model_Config::TYPE_RADIO: $elementType = 'radio';
+        			$defaultStr = $config->getDefault();
+        			break;
+        			
+        		case Application_Model_Config::TYPE_BOOLEAN: $elementType = 'radio';
+        			$opt = array(1 => X_Env::_('configs_options_yes'), 0 => X_Env::_('configs_options_no') );
+        			$defaultStr = $opt[$config->getDefault()];
+        			break;
+        		
+        		case Application_Model_Config::TYPE_TEXTAREA: $elementType = 'textarea';
+        			$defaultStr = $config->getDefault(); 
+        			break;
+        		case Application_Model_Config::TYPE_SELECT: $elementType = 'select';
+        			$defaultStr = $config->getDefault(); 
+        			break;
 				// case Application_Model_Config::TYPE_FILE: $elementType = 'file'; break; // TODO check for it        		
         		case Application_Model_Config::TYPE_TEXT:
         		default: $elementType = 'text';
+        			$defaultStr = $config->getDefault();
         			break;
         	}
         	
         	$elementName = $config->getSection().'_'.str_replace('.', '_', $config->getKey());
         	
         	$elementLabel = ($config->getLabel() != null && $config->getLabel() != '' ? X_Env::_($config->getLabel()) : $config->getKey() );
-        	$elementDescription = ($config->getDescription() ? X_Env::_($config->getDescription()) . '<br/>' : '' ) . ($config->getDefault() != null ?  "<br/><i>Default:</i> ".$config->getDefault() : ''); 
+        	$elementDescription = ($config->getDescription() ? X_Env::_($config->getDescription()) . '<br/>' : '' ) . ($config->getDefault() != null ?  "<br/><i>Default:</i> ".$defaultStr : '<br/><i>Default:</i> *Nessun valore*'); 
         	
         	$element = $this->createElement($elementType, $elementName, array(
         		'label'			=> $elementLabel,
@@ -56,11 +69,13 @@ class Application_Form_Configs extends Zend_Form
         			'class'			=> $config->getClass()
         		)
         		*/
-        	));
-        	
+        	));       	
+        	$element->getDecorator('composite')->setOption('class', $config->getClass());
+        	/*
         	$element->getDecorator('description')->setEscape(false);
         	$element->getDecorator('htmlTag')->setOption('class', $config->getClass());
         	$element->getDecorator('label')->setOption('class', $element->getDecorator('label')->getOption('class') . ' ' . $config->getClass());
+        	*/
         	
         	if ( $config->getType() == Application_Model_Config::TYPE_BOOLEAN) {
         		$element->setMultiOptions(array(1 => X_Env::_('configs_options_yes'), 0 => X_Env::_('configs_options_no') ));
@@ -73,18 +88,22 @@ class Application_Form_Configs extends Zend_Form
         	} else {
         		$displayGroup[$config->getSection()] = array($elementName);
         	}
+        	
         }
         
         foreach ($displayGroup as $section => $group) {
-        	$this->addDisplayGroup($group, $section, array('legend' => "[".X_Env::_("config_sections_$section")."]"));
+        	$this->addDisplayGroup($group, $section, array(
+        		'legend' => X_Env::_("config_sections_$section")
+        	));
         }
+        
         
         
         // Add the submit button
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
             'label'    => X_Env::_('configs_form_submit'),
-        	'decorators' => array('ViewHelper')
+        	//'decorators' => array('ViewHelper')
         ));
 
         // Add the submit button
@@ -96,21 +115,27 @@ class Application_Form_Configs extends Zend_Form
         
         
         // Add the submit button
-        $this->addElement('button', 'abort', array(
-        	'onClick'	=> 'javascript:history.back();',
+        $this->addElement('reset', 'abort', array(
+        	//'onClick'	=> 'javascript:history.back()',
             'ignore'   => true,
             'label'    => X_Env::_('configs_form_abort'),
-        	'decorators' => array('ViewHelper')
+        	//'decorators' => array('ViewHelper')
         ));
  
         // And finally add some CSRF protection
         $this->addElement('hash', 'csrf', array(
         	'salt'	=> 'configs',
             'ignore' => true,
-        	'decorators' => array('ViewHelper')
+        	//'decorators' => array('ViewHelper')
         ));
         
-        $this->addDisplayGroup(array('submit', 'abort', 'csrf', 'isapply'), 'buttons');
+		$this->addElement('hidden', 'redirect', array(
+			'value' => '',
+			'ignore' => true,
+			'decorators' => array('ViewHelper')
+		));        
+        
+        $this->addDisplayGroup(array('submit', 'abort', 'csrf', 'isapply', 'redirect'), 'buttons', array('decorators' => $this->getDefaultButtonsDisplayGroupDecorators())); 
         
     }
 }

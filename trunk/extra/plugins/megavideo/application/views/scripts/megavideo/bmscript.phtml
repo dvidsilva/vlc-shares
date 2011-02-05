@@ -1,0 +1,68 @@
+/*
+ * Megavideo url scraper
+ */
+
+var url = location.toString();
+var reg = /(http:\/\/){0,1}(www\.){0,1}(megavideo\.com(.*)\/\?(v|d)=(.){8,8})/;
+var z,i,j;
+var collector = '';
+var oldTitle;
+var noLinksContinue = true;
+var direct = true;
+function urlencode(str) {
+	return escape(str).replace(/\+/g,'%2B').replace(/%20/g, '+').replace(/\*/g, '%2A').replace(/\//g, '%2F').replace(/@/g, '%40');
+}
+function linkIsSafe(u) { 
+	return (u.search(reg) != -1);
+}
+
+if (url.search(reg) != -1) {
+	category = prompt("<?php echo $this->linkSingleCategoryRequest; ?>", "Default");
+	if (category.trim() != "" ) {
+		var matched = url.match(/(v|d)=(.){8,8}$/)[0]; //.substr(2,8);
+		var code = matched.substr(2,8);
+		var lType = matched.substr(0,1);
+		// devo controllare che nn sia un video tipo D
+		code = code + "_" + lType;
+		window.open().location = '<?php echo $this->linkSingle ?>' + '/category/'+urlencode(category)+'/link/'+code;
+	}
+} else {
+	z = document.links;
+	oldTitle = this.window.document.title;
+	/* cerco solo nella selezione */ 
+	if (window.getSelection && window.getSelection().containsNode && window.getSelection().toString() != "" ) {
+		direct = false;
+		for(i = 0; i < z.length; ++i ) { 
+			this.window.document.title = "Scanning: "+(((i/z.length*100) + '').substr(0,4)) + "%";
+			if (window.getSelection().containsNode(z[i], true) && linkIsSafe(z[i].href)) {
+				var matched = z[i].href.match(/(v|d)=(.){8,8}$/)[0];
+				collector += matched.substr(2,8) + '_' + matched.substr(0,1) + "|";
+				noLinksContinue = false;
+			}
+		}
+	}
+	if ( direct || (noLinksContinue && confirm("<?php echo $this->allpagesearchRequest ?>" ))) {
+		/* scansione normale */
+		for (i = 0, j = 0; i < z.length; ++i) {
+			this.window.document.title = "Scanning: " + (((i/z.length*100) + '').substr(0,4)) + "%";
+			try {
+				if ( z[i].href.search(reg) != -1 ) {
+					var matched = z[i].href.match(/(v|d)=(.){8,8}$/)[0];
+					collector += matched.substr(2,8) + '_' + matched.substr(0,1) + "|";
+					j++;
+				}
+			} catch (e) {}
+			if ( j == 50 ) {
+				if ( confirm("<?php echo $this->paginationRequest ?>".replace('{%percent%}', (((i/z.length*100) + '').substr(0,4)) + "%" ))) {
+					window.open().location = '<?php echo $this->linkAll ?>' + '/links/'+urlencode(collector);
+					collector = "";
+					j = 0;
+				}
+			}
+		}
+	}
+	this.window.document.title = oldTitle;
+	if ( collector != "" ) {
+		window.open().location = '<?php echo $this->linkAll ?>' + '/links/'+urlencode(collector);
+	}
+}

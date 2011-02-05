@@ -1,5 +1,4 @@
 <!-- application/views/scripts/plugin/index.phtml -->
-
 <?php //$this->headScript()->appendFile($this->baseUrl("/js/plugin/index.js")); ?>
 <?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
 <?php $this->headScript()->captureEnd(); ?>
@@ -36,13 +35,13 @@
 
 <div class="span-14 box">
 	<h3><?php echo X_Env::_('plugin_index_uninstalllisttitle'); ?></h3>
-	<table id="plugins-table" width="100%">
+	<table id="plugins-table" class="table">
 		<thead>
-			<tr>
+			<tr class="header">
 				<th width="50%"><?php echo X_Env::_('plugin_index_uninstalllist_name'); ?></th>
 				<th width="25%"><?php echo X_Env::_('plugin_index_uninstalllist_key'); ?></th>
 				<th width="auto"><?php echo X_Env::_('plugin_index_uninstalllist_version'); ?></th>
-				<th width="100px">&nbsp;</th>
+				<th width="100px"><?php echo X_Env::_('plugin_index_uninstalllist_option'); ?></th>
 			</tr>
 		</thead>
 		<!-- 

@@ -194,7 +194,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$view->guiElements()->registerElement('section', 'X_VlcShares_Elements_Section');
 		$view->guiElements()->registerElement('menu', 'X_VlcShares_Elements_Menu');
 		$view->guiElements()->registerElement('menuEntry', 'X_VlcShares_Elements_MenuEntry');
-		
+		$view->guiElements()->registerElement('table', 'X_VlcShares_Elements_Table');
+		$view->guiElements()->registerElement('tableRow', 'X_VlcShares_Elements_TableRow');
+		$view->guiElements()->registerElement('tableCell', 'X_VlcShares_Elements_TableCell');
 	}
 	
 }

@@ -1,36 +1,19 @@
 <!-- application/views/scripts/config/index.phtml -->
 <?php
-// prepare decoration
-$this->form->getDisplayGroup ('buttons')->setDecorators ( array (
-	'FormElements', 
-	array ('HtmlTag', array ('tag' => 'div', 'class' => 'span-22 last', 'align' => 'center')
-)));
-$i = 0;
-foreach ( $this->form->getElements() as $element ) {
-	/* @var $element Zend_Form_Element */
-	if ( $element->getName() == 'submit' || $element->getName() == 'abort' || $element->getName() == 'csrf' || $element->getName() == 'redirect' ) continue;
-	$element->addDecorator('HtmlTag', array ('tag' => 'div', 'class' => 'span-11'));
-	//$element->getDecorator('row')->setOptions(array ('decorator'))
-	if ( $i % 2 == 0 ) {
-		$element->addDecorator(array('row' => 'HtmlTag'), array('tag' => 'div', 'class' => 'span-23 last', 'openOnly' => true));
-	} else {
-		$element->addDecorator(array('row' => 'HtmlTag'), array('tag' => 'div', 'closeOnly' => true));
-	}
-	$i++;
-}
 
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLabel(X_Env::_('configs_title').": ".X_Env::_("p_{$this->key}_conf_title"));
+
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLink(X_Env::_('back'), "javascript:window.history.back(-1);");
+	
 ?>
 <?php $this->headScript()->appendFile($this->baseUrl("/js/config/index.js")); ?>
 <?php $this->headTitle()->prepend(X_Env::_('configs_title').": ".X_Env::_("p_{$this->key}_conf_title")); ?>
-
-<div class="span-24 last" id="back-to-home">
-	<div class="span-4 box back">
-		<a href="<?php echo $this->url(array('controller' => 'manage', 'action' => 'index'), 'default', true); ?>"><?php echo X_Env::_('back_to_home'); ?></a>
-	</div>
-	<div class="span-18 box title last">
-		<h4><?php echo X_Env::_('configs_title').": ".X_Env::_("p_{$this->key}_conf_title"); ?></h4>
-	</div>
-</div>
 
 <?php if ( count($this->messages) ) :?>
 <div class="span-24 last" id="manage-messages">
@@ -46,10 +29,14 @@ foreach ( $this->form->getElements() as $element ) {
 </div>
 <?php endif; ?>
 
-<div class="span-24 last manage-container">
-	<div class="box" id="configs-container">
-		<h2><?php echo X_Env::_('configs_general_title').": ".X_Env::_("p_{$this->key}_conf_title"); ?></h2>
-		<?php echo $this->form; ?>
-		<div class="clear"></div>
+<div class="unit" id="configs-container">
+	<div class="box">
+		<div class="header">
+			<span class="title"><?php echo X_Env::_('configs_title'); ?></span>
+		</div>
+		<div class="content">
+			<h2 class="fieldset-header"><?php echo X_Env::_("p_{$this->key}_conf_title"); ?></h2>
+			<?php echo $this->form; ?>
+		</div>
 	</div>
 </div>
