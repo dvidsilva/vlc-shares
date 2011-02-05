@@ -24,7 +24,7 @@ class X_VlcShares_Skins_Default_Dummy implements X_VlcShares_Skins_DecoratorInte
 	 */
 	public function decorate($content, $options) {
 		//if ( $content == null ) $content = '';
-		return $content;
+		return (string) $content;
 	}
 	
 	/**

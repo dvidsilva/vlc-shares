@@ -1,4 +1,19 @@
 
+function youtube_newvideo() {
+	$('#p_youtube_framecontainer').empty().load(baseUrl + '/youtube/video #p_youtube_videoform', function() {
+		idCategory = $('#p_youtube_categoryform form #id').val();
+		$('#p_youtube_framecontainer form #idCategory').parents('.row').hide();
+		$('#p_youtube_framecontainer form #idCategory option[value="' + idCategory + '"]').attr('selected', 'selected');
+		
+		$('#p_youtube_framecontainer input[type="reset"]').click(function() {
+			$('#p_youtube_framecontainer').empty();
+		});
+		Elastic.reset();
+		Elastic.refresh();
+	});
+}
+
+
 $(document).ready(function() {
 	
 	debug.log('document.ready: /public/js/youtube/category.js');
@@ -13,9 +28,9 @@ $(document).ready(function() {
 			}
 		});
 		if ( value == 'upload' ) {
-			$('#thumbnail').parent().parent().fadeIn('slow');
+			$('#thumbnail').parents('.row').fadeIn('slow');
 		} else {
-			$('#thumbnail').parent().parent().fadeOut('slow');
+			$('#thumbnail').parents('.row').fadeOut('slow');
 		}
 	});
 	
@@ -43,9 +58,9 @@ $(document).ready(function() {
 	
 	$('.quickbox-add-video').click(function (event) {
 		$('#p_youtube_framecontainer').empty().load(baseUrl + '/youtube/video #p_youtube_videoform', function (){
-			idCategory = $('#p_youtube_categoryform form.zend_form #id').val();
-			$('#p_youtube_framecontainer form.zend_form #idCategory').parent().parent().hide();
-			$('#p_youtube_framecontainer form.zend_form #idCategory option[value="' + idCategory + '"]').attr('selected', 'selected');
+			idCategory = $('#p_youtube_categoryform form #id').val();
+			$('#p_youtube_framecontainer form #idCategory').parent().parent().hide();
+			$('#p_youtube_framecontainer form #idCategory option[value="' + idCategory + '"]').attr('selected', 'selected');
 		});
 	});
 	

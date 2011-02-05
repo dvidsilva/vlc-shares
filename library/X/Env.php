@@ -52,7 +52,7 @@ class X_Env {
 		if ( $spawnType == self::EXECUTE_PS_BACKGROUND ) {
 			if ( self::isWindows() ) {
 				// su windows leggo quanto tornato perche puo servire per il pid
-				$command = /*self::_psExec().*/$command;
+				//$command = /*self::_psExec().*/$command;
 				$WshShell = new COM("WScript.Shell"); 
 				X_Debug::i("Executing: $command");
 				$lastLine = $WshShell->Run($command, 0,false); 
@@ -205,7 +205,11 @@ class X_Env {
 	static public function _($message) {
 		//if ( !is_null(self::$_stringsWriter)) self::$_stringsWriter->_($message);
 		if ( !is_null(self::$_translator) ) {
-			return self::$_translator->_($message);
+			if ( false && APPLICATION_ENV == 'development') {
+				return "#(".self::$_translator->_($message).")";
+			} else {
+				return self::$_translator->_($message);
+			}
 		}
 	}
 	

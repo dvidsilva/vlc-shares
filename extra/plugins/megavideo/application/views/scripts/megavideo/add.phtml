@@ -1,8 +1,44 @@
 <!-- application/views/scripts/megavideo/add.phtml -->
-<h1><?php echo X_Env::_('megavideo_manage_title_add_edit');?></h1>
- 
-<?php
-//$this->form->setAction($this->url());
-echo $this->form;
-
+<?php $this->headScript()->appendFile($this->baseUrl("/js/megavideo/script.js")); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/megavideo/style.css')); ?>
+<?php 
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+/*
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('megavideo_manage_add_new_entry'), "megavideo", "add")
+	//->addButton(X_Env::_('megavideo_bookmarklets_title'), "javascript:showModal('bookmarklets'); return false;" )
+	->addLinkRoute(X_Env::_('megavideo_manage_options'), "config", "index", array('key' => 'megavideo', 'r' => X_Env::encode('megavideo:index')));
+*/
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLinkRoute(X_Env::_('megavideo_manage_title'), 'megavideo', 'index')
+	->addLabel(X_Env::_('megavideo_manage_title_add_edit'));
+	
+	
+$this->headTitle()->prepend(X_Env::_('megavideo_manage_title_add_edit'));
+$this->headTitle()->prepend(X_Env::_('megavideo_manage_title'));
 ?>
+
+<div class="unit">
+	<div class="box">
+		<div class="header">
+			<span class="title"><?php echo X_Env::_('megavideo_manage_title_add_edit'); ?></span>
+			<!--
+			<ul class="menu">
+				<li class="ui-state-default">
+					<a class="ui-icon ui-icon-arrowreturnthick-1-w" href="">Annulla</a>
+				</li>
+			</ul>
+			 -->
+		</div>
+		<div class="content">
+			<?php
+			//$this->form->setAction($this->url());
+			echo $this->form;
+			?>
+		</div>
+	</div>
+</div>
+

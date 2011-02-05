@@ -300,11 +300,11 @@ class ConfigsController extends X_Controller_Action
 	    	
 	    	try {
 	    		$this->configForm->general_debug_level->setMultiOptions(array(
-	    			'-1' => X_Env::_('config_debug_level_optforced'),
-	    			'0' => X_Env::_('config_debug_level_optfatal'),
-	    			'1' => X_Env::_('config_debug_level_opterror'),
-	    			'2' => X_Env::_('config_debug_level_optwarning'),
-	    			'3' => X_Env::_('config_debug_level_optinfo'),
+	    			'-1' => '-1: '. X_Env::_('config_debug_level_optforced'),
+	    			'0' => '0: '. X_Env::_('config_debug_level_optfatal'),
+	    			'1' => '1: '. X_Env::_('config_debug_level_opterror'),
+	    			'2' => '2: '. X_Env::_('config_debug_level_optwarning'),
+	    			'3' => '3: '. X_Env::_('config_debug_level_optinfo'),
 	    		));
 	    	} catch(Exception $e) { X_Debug::w("No debug level settings? O_o"); }
 	    	

@@ -52,7 +52,14 @@ class X_VlcShares_Skins_Manager {
 	const MENUENTRY_SUBMENU_DISABLED = 'menuentry_submenu_disabled';
 	const MENUENTRY_SUBMENU_HIGHLIGHT = 'menuentry_submenu_highlight';
 	
+	const TABLE = "table";
 	
+	const TABLEROW = "tablerow";
+	const TABLEROW_HEADER = "tablerow_header";
+	const TABLEROW_ALTERNATE = "tablerow_alternate";
+	
+	const TABLECELL = "tablecell";
+		
 	private $_flag_throws = false;
 
 	/**

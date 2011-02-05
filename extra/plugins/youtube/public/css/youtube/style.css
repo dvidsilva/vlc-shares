@@ -87,11 +87,10 @@
 	opacity: 0.8;
 	border: 1px solid #7d7d7d;
 }
-
+/*
 #p_youtube_framecontainer .zend_form .label, #p_youtube_categoryform .zend_form .label {
 	width: 250px;
 	display: inline-block;
-	/*margin-top: 200px;*/
 	padding-top: 8px;
 	vertical-align: top;
 	text-align: right;
@@ -107,9 +106,10 @@
 	display: block;
 	font-style: italic;
 }
+*/
 
 #p_youtube_thumbnailpreview, #p_youtube_thumbnailpreview_video {
-	float: right;
+	/*float: right;*/
 	width: 180px;
 	height: 180px;
 	padding: 5px;
@@ -176,5 +176,15 @@
 .p_youtube_video .description {
 	color: #e7e5e5;
 	max-height: 80px;
+	overflow: auto;
+}
+
+img.preview {
+	width: 100px;
+	vertical-align: top;
+}
+
+#content table tr td p {
+	max-height: 8em;
 	overflow: auto;
 }

@@ -89,6 +89,32 @@ class X_VlcShares_Elements_Menu extends X_VlcShares_Elements_MenuEntry {
 	}
 	
 	/**
+	 * This is a proxy method for addButton: 
+	 * call addButton after route is built 
+	 * @param string $label
+	 * @param string $controller
+	 * @param string $action
+	 * @param array $params
+	 * @param string $module
+	 * @param string $route
+	 * @param string $reset
+	 * @return X_VlcShares_Elements_Menu
+	 * @see self::addLink()
+	 */
+	public function addButtonRoute($label, $controller, $action, $params = array(), $module = 'default', $route = 'default', $reset = true) {
+		/* @var $urlHelper Zend_View_Helper_Url */
+		$urlHelper = $this->view->getHelper('url');
+		$href = $urlHelper->url(array_merge($params, array(
+				'controller' => $controller,
+				'action' => $action,
+				'module' => $module
+			)), $route, $reset
+		);
+		return $this->addButton($label, $href);
+	}
+	
+	
+	/**
 	 * Add a new button menuentry inside the menu
 	 * @param string $label
 	 * @param string $href

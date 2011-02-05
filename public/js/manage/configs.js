@@ -17,10 +17,21 @@ function setFFMpegPath(path) {
 	$('#browse_frm-helpers_ffmpeg_path').fadeIn();
 }
 
+var toggleAdvancedReady = false;
+function toggleAdvanced() {
+	if ( toggleAdvancedReady ) {
+		$('form#configs .advanced').slideToggle();
+	}
+	return false;
+} 
+
+
 
 $(document).ready(function() {
 	
 	debug.log('document.ready: /public/js/manage/configs.js');
+	
+	toggleAdvancedReady = true;
 	
 	$('.clickable').click(function (event){
 		var $this = $(this);
@@ -39,26 +50,29 @@ $(document).ready(function() {
 		$(location).attr('href', $this.find('a').attr('href'));
 	});
 	*/
-	
+	/*
 	$showAdv = $('<span style="float: right;"><label for="showAdvaced">'+showAdvLabel+'</label><input type="checkbox" id="showAdvanced" /></span>');
 	$('#configs-container h2').before($showAdv);
 	
 	$('#showAdvanced').change(function (event){
 		if ( $(this).is(':checked') ) {
-			$('form#configs dd.advanced').fadeIn();
-			$('form#configs label.advanced').parent().fadeIn();
+			$('form#configs .advanced').slideDown();
+			//$('form#configs label.advanced').parent().fadeIn();
 		} else {
-			$('form#configs dd.advanced').fadeOut();
-			$('form#configs label.advanced').parent().fadeOut();
+			$('form#configs .advanced').slideUp();
+			//$('form#configs label.advanced').parent().fadeOut();
 		}
 	});
+	*/
 	
-	$('form#configs dd.advanced').hide();
-	$('form#configs label.advanced').parent().hide();
+	$('form#configs .advanced').slideUp();
+	//$('form#configs label.advanced').parent().hide();
 	
+	/*
 	$('.ui-state-default').hover(function (event) {
 		$(this).toggleClass('ui-state-hover');
 	});
+	*/
 	
 	// uninstall
 	$('.plugin .ui-icon-trash').click(function (event) {
@@ -85,34 +99,65 @@ $(document).ready(function() {
 	});
 	
 	
-	$('form#configs #vlc_path').parent().append('<input id="autosearch_frm-vlc-path" type="button" value="Auto-search" />');
+	$('form#configs #vlc_path').css({'max-width': '75%'});/*.after('<input id="autosearch_frm-vlc-path" width="24%" type="button" value="Auto-search" />');
 	$('#autosearch_frm-vlc-path').click(function (event){
 		$.getJSON(baseUrl + '/manage/autosearch', function(data){
 			if ( !data.error ) {
 				$('form#configs #vlc_path').val(data.path);
 			}
 		});
-	});
+	});*/
 
-	$('form#configs #vlc_path').parent().append('<input id="browse_frm-vlc-path" type="button" value="Browse" />');
+	$('form#configs #vlc_path').after('<input id="browse_frm-vlc-path" width="24%" type="button" value="Browse" />');
 	$('#browse_frm-vlc-path').click(function (event){
-		$('#browse_frm-vlc-path').after('<iframe id="iframe_frm-vlc-path" style="display:none;" src="' + baseUrl + '/manage/browse/f/file/c/setVlcPath" width="100%" height="300px"></iframe>');
+		var $iframe = $('<iframe id="iframe_frm-vlc-path" class="iframe-browser" src="' + baseUrl + '/configs/browse/f/file/c/setVlcPath" width="100%" height="300px"></iframe>')
+		var $closeB = $('<input type="button" value="Close" />').click(function() {
+			$iframe.fadeOut(function() {
+				$(this).remove();
+			});
+			$closeB.fadeOut(function() {
+				$(this).remove();
+			});
+			$('#browse_frm-vlc-path, #autosearch_frm-vlc-path').fadeIn();
+		});
+		$('form#configs #vlc_path').after($iframe).after($closeB);
 		$('#browse_frm-vlc-path, #autosearch_frm-vlc-path').fadeOut();
-		$('#iframe_frm-vlc-path').fadeIn();
+		//Elastic.refresh($iframe);
+		//$('#iframe_frm-vlc-path').fadeIn();
 	});
 	
-	$('form#configs #helpers_mediainfo_path').parent().append('<input id="browse_frm-helpers_mediainfo_path" type="button" value="Browse" />');
+	$('form#configs #helpers_mediainfo_path').css({'max-width':'75%'}).after('<input id="browse_frm-helpers_mediainfo_path" width="24%" type="button" value="Browse" />');
 	$('#browse_frm-helpers_mediainfo_path').click(function (event){
-		$('#browse_frm-helpers_mediainfo_path').after('<iframe id="iframe_frm-helpers_mediainfo_path" style="display:none;" src="' + baseUrl + '/manage/browse/f/file/c/setMediainfoPath" width="100%" height="300px"></iframe>');
+		var $iframe = $('<iframe id="iframe_frm-helpers_mediainfo_path" class="iframe-browser" src="' + baseUrl + '/configs/browse/f/file/c/setMediainfoPath" width="100%" height="300px"></iframe>')
+		var $closeB = $('<input type="button" value="Close" />').click(function() {
+			$iframe.fadeOut(function() {
+				$(this).remove();
+			});
+			$closeB.fadeOut(function() {
+				$(this).remove();
+			});
+			$('#browse_frm-helpers_mediainfo_path').fadeIn();
+		});
+		$('form#configs #helpers_mediainfo_path').after($iframe).after($closeB);
 		$('#browse_frm-helpers_mediainfo_path').fadeOut();
-		$('#iframe_frm-helpers_mediainfo_path').fadeIn();
+		//$('#iframe_frm-helpers_mediainfo_path').fadeIn();
 	});
 	
-	$('form#configs #helpers_ffmpeg_path').parent().append('<input id="browse_frm-helpers_ffmpeg_path" type="button" value="Browse" />');
+	$('form#configs #helpers_ffmpeg_path').css({'max-width':'75%'}).after('<input id="browse_frm-helpers_ffmpeg_path" type="button" value="Browse" />');
 	$('#browse_frm-helpers_ffmpeg_path').click(function (event){
-		$('#browse_frm-helpers_ffmpeg_path').after('<iframe id="iframe_frm-helpers_ffmpeg_path" style="display:none;" src="' + baseUrl + '/manage/browse/f/file/c/setFFMpegPath" width="100%" height="300px"></iframe>');
+		var $iframe = $('<iframe id="iframe_frm-helpers_ffmpeg_path" class="iframe-browser" src="' + baseUrl + '/configs/browse/f/file/c/setFFMpegPath" width="100%" height="300px"></iframe>');
+		var $closeB = $('<input type="button" value="Close" />').click(function() {
+			$iframe.fadeOut(function() {
+				$(this).remove();
+			});
+			$closeB.fadeOut(function() {
+				$(this).remove();
+			});
+			$('#browse_frm-helpers_ffmpeg_path').fadeIn();
+		});
+		$('form#configs #helpers_ffmpeg_path').after($iframe).after($closeB);
 		$('#browse_frm-helpers_ffmpeg_path').fadeOut();
-		$('#iframe_frm-helpers_ffmpeg_path').fadeIn();
+		//$('#iframe_frm-helpers_ffmpeg_path').fadeIn();
 	});
 	
 	

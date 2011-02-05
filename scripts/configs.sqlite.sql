@@ -25,7 +25,7 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	'1',
 	'1',
 	'general',
-	3,
+	5,
 	'config_general_debug_level_label',
 	'config_general_debug_level_desc',
 	'advanced'

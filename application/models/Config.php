@@ -7,6 +7,7 @@ class Application_Model_Config extends Application_Model_Abstract {
 	const TYPE_TEXTAREA = 2;
 	const TYPE_BOOLEAN = 3;
 	const TYPE_FILE = 4;
+	const TYPE_RADIO = 5;
 	
 	/*
 	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,

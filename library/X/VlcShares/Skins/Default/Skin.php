@@ -25,7 +25,8 @@ class X_VlcShares_Skins_Default_Skin implements X_VlcShares_Skins_SkinInterface 
 
 		$this->decorators[X_VlcShares_Skins_Manager::MENU] = new X_VlcShares_Skins_Default_Menu();
 		$this->decorators[X_VlcShares_Skins_Manager::MENU_BREADCRUMB] = new X_VlcShares_Skins_Default_Breadcrumb();
-		$this->decorators[X_VlcShares_Skins_Manager::MENU_CONTEXTUAL] = new X_VlcShares_Skins_Default_MenuContextual();
+		$this->decorators[X_VlcShares_Skins_Manager::MENU_CONTEXTUAL] = new X_VlcShares_Skins_Default_Menu();
+		//$this->decorators[X_VlcShares_Skins_Manager::MENU_CONTEXTUAL] = new X_VlcShares_Skins_Default_MenuContextual();
 		//$this->decorators[X_VlcShares_Skins_Manager::MENU_STATUS] = new X_VlcShares_Skins_Default_StatusBar();
 		//$this->decorators[X_VlcShares_Skins_Manager::MENU_TOOLBAR] = new X_VlcShares_Skins_Default_ToolBar();
 		
@@ -44,6 +45,15 @@ class X_VlcShares_Skins_Default_Skin implements X_VlcShares_Skins_SkinInterface 
 		$this->decorators[X_VlcShares_Skins_Manager::MENUENTRY_SUBMENU] = new X_VlcShares_Skins_Default_Menu();
 		$this->decorators[X_VlcShares_Skins_Manager::MENUENTRY_SUBMENU_DISABLED] = new X_VlcShares_Skins_Default_Menu(array('variant' => 'disabled'));
 		$this->decorators[X_VlcShares_Skins_Manager::MENUENTRY_SUBMENU_HIGHLIGHT] = new X_VlcShares_Skins_Default_Menu(array('variant' => 'highlight'));
+		
+		
+		$this->decorators[X_VlcShares_Skins_Manager::TABLE] = new X_VlcShares_Skins_Default_Table();
+		
+		$this->decorators[X_VlcShares_Skins_Manager::TABLEROW] = new X_VlcShares_Skins_Default_TableRow();
+		$this->decorators[X_VlcShares_Skins_Manager::TABLEROW_ALTERNATE] = new X_VlcShares_Skins_Default_TableRow(array('variant' => 'alternate'));
+		$this->decorators[X_VlcShares_Skins_Manager::TABLEROW_HEADER] = new X_VlcShares_Skins_Default_TableRowHeader();
+		
+		$this->decorators[X_VlcShares_Skins_Manager::TABLECELL] = new X_VlcShares_Skins_Default_TableCell();
 		
 	}
 	

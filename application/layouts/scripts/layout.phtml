@@ -11,7 +11,17 @@
 	<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
 		var baseUrl = "<?php echo $this->baseUrl(); ?>";
 	<?php $this->headScript()->captureEnd(); ?>
-	<?php $this->headLink()->prependStylesheet($this->baseUrl('/css/style.altgui.css'), 'all'); ?>	
+	<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::APPEND); ?>
+		$(document).ready(function() {
+			$('.ui-state-default').hover(function() {
+				$(this).toggleClass('ui-state-hover');
+			});
+		});
+	<?php $this->headScript()->captureEnd(); ?>
+	<?php //$this->headLink()->prependStylesheet($this->baseUrl('/css/style.altgui.css'), 'all'); ?>
+	<?php $this->headLink()->prependStylesheet($this->baseUrl('/css/style.simply.css'), 'all'); ?>
+	<?php $this->headLink()->prependStylesheet($this->baseUrl('/css/smoothness/jquery-ui-1.8.4.custom.css')); ?>
+	<?php //$this->headLink()->prependStylesheet($this->baseUrl('/css/ui-darkness/jquery-ui-1.8.9.custom.css')); ?>	
 	<?php $this->headLink()->prependStylesheet($this->baseUrl('/css/elastic/elastic.print.css'), 'print'); ?>
 	<?php $this->headLink()->prependStylesheet($this->baseUrl('/css/elastic/elastic.css'), 'all'); ?>
 	<?php echo $this->headTitle(); ?> 
@@ -33,11 +43,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="container columns" id="subheader">
-			<div class="elastic column">
-				<?php echo $this->layout()->subNavigator; ?>
-			</div>
-		</div>
 		<div class="container columns" id="status-bar">
 			<div class="elastic column" id="breadcrumb">
 				<?php if ( !empty($this->layout()->breadcrumb) ) : ?>
@@ -50,6 +55,11 @@
 				<div class="container">
 					<?php echo $this->action('status', 'manage'); ?>
 				</div>
+			</div>
+		</div>
+		<div class="container columns" id="subheader">
+			<div class="elastic column">
+				<?php echo $this->layout()->subNavigator; ?>
 			</div>
 		</div>
 		<div id="content" class="container">

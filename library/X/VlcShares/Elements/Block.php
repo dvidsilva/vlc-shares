@@ -65,5 +65,4 @@ class X_VlcShares_Elements_Block extends X_VlcShares_Elements_Container {
 		}
 		return parent::render($content);
 	}
-	
 }

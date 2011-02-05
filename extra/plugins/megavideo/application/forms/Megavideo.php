@@ -1,17 +1,17 @@
 <?php
 
-class Application_Form_Megavideo extends Zend_Form
+class Application_Form_Megavideo extends X_Form
 {
     public function init()
     {
         // Set the method for the display form to POST
         $this->setMethod('post');
- 
+        
         $this->addElement('text', 'idVideo', array(
             'label'      => X_Env::_('megavideo_form_idvideo_name'),
         	'description'=> X_Env::_('megavideo_form_idvideo_description'),
             'required'   => true,
-            'filters'    => array('StringTrim')
+            'filters'    => array('StringTrim'),
         ));
  
         $this->addElement('text', 'category', array(
@@ -52,8 +52,11 @@ class Application_Form_Megavideo extends Zend_Form
             'ignore'   => true,
             'label'    => X_Env::_('megavideo_form_abort'),
         ));
+		
+        $this->addDisplayGroup(array('submit', 'abort'), 'buttons', 
+        	array('decorators' => $this->getDefaultButtonsDisplayGroupDecorators())
+		);
         
- 
         /*
         // And finally add some CSRF protection
         $this->addElement('hash', 'csrf', array(

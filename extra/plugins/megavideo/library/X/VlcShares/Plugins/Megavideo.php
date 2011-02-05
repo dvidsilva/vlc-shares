@@ -25,6 +25,8 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 	 */
 	public function gen_beforeInit(Zend_Controller_Action $controller) {
 		
+		$this->helpers()->language()->addTranslation(__CLASS__);
+		
 		$helper_conf = new Zend_Config(array(
 			'premium' => $this->config('premium.enabled', false),
 			'username' => $this->config('premium.username', ''),
