@@ -2,7 +2,7 @@
 
 require_once 'X/Env.php';
 
-class Application_Form_PluginInstall extends Zend_Form
+class Application_Form_PluginInstall extends X_Form
 {
     public function init()
     {
@@ -29,7 +29,8 @@ class Application_Form_PluginInstall extends Zend_Form
 					'validator' => 'Extension',
 					'options'       => array( false, 'zip,xegg')
 				),
-			)
+			),
+			'decorators'	=> array('CompositeFile')
         ));
  
  
@@ -37,15 +38,17 @@ class Application_Form_PluginInstall extends Zend_Form
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
             'label'    => X_Env::_('plugin_installsubmit'),
-        	'decorators' => array('ViewHelper')
+        	//'decorators' => array('ViewHelper')
         ));
         
         // And finally add some CSRF protection
         $this->addElement('hash', 'csrf', array(
             'ignore' => true,
         	'salt'	=> 'plugin_install_salt',
-        	'decorators' => array('ViewHelper')
+        	//'decorators' => array('ViewHelper')
         ));
+        
+        $this->addDisplayGroup(array('submit', 'csrf'), 'buttons', array('decorators' => $this->getDefaultButtonsDisplayGroupDecorators()));
         
     }
 }

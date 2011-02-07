@@ -1,17 +1,23 @@
 <!-- application/views/scripts/plugin/index.phtml -->
+<?php 
+/*
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('megavideo_manage_add_new_entry'), "megavideo", "add")
+	//->addButton(X_Env::_('megavideo_bookmarklets_title'), "javascript:showModal('bookmarklets'); return false;" )
+	->addLinkRoute(X_Env::_('megavideo_manage_options'), "config", "index", array('key' => 'megavideo', 'r' => X_Env::encode('megavideo:index')));
+*/
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLabel(X_Env::_('plugin_title'));
+
+?>
 <?php //$this->headScript()->appendFile($this->baseUrl("/js/plugin/index.js")); ?>
 <?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
 <?php $this->headScript()->captureEnd(); ?>
 <?php $this->headTitle()->prepend(X_Env::_('plugin_title')); ?>
-
-<div class="span-24 last" id="back-to-home">
-	<div class="span-4 box back">
-		<a href="<?php echo $this->url(array('controller' => 'manage', 'action' => 'index'), 'default', true); ?>"><?php echo X_Env::_('back_to_home'); ?></a>
-	</div>
-	<div class="span-18 box title last">
-		<h4><?php echo X_Env::_('plugin_title'); ?></h4>
-	</div>
-</div>
 
 <?php if ( count($this->messages) ) :?>
 <div class="span-24 last" id="manage-messages">
@@ -28,60 +34,69 @@
 <?php endif; ?>
 
 
-<div class="span-24 last">
-	<h2><?php echo X_Env::_('plugin_index_maintitle'); ?></h2>
-	<p><?php echo X_Env::_('plugin_index_maindesc'); ?></p>
+<div class="unit columns on-3">
+	<div class="column span-2">
+		<div class="container">
+			<div class="box">
+				<div class="header">
+					<span class="title"><?php echo X_Env::_('plugin_index_uninstalllisttitle'); ?></span>
+				</div>
+				<div class="content">
+					<table id="plugins-table" class="table">
+						<tr class="header">
+							<th width="50%"><?php echo X_Env::_('plugin_index_uninstalllist_name'); ?></th>
+							<th width="25%"><?php echo X_Env::_('plugin_index_uninstalllist_key'); ?></th>
+							<th width="auto"><?php echo X_Env::_('plugin_index_uninstalllist_version'); ?></th>
+							<th width="100px"><?php echo X_Env::_('plugin_index_uninstalllist_option'); ?></th>
+						</tr>
+						<?php if ( count($this->plugins) ) : ?>
+							<?php foreach ($this->plugins as $i => $plugin): ?>
+							<?php /* @var $plugin Application_Model_Plugin */ ?>
+								<tr class="<?php echo $i % 2 ? 'alt' : ''; ?>">
+									<td><?php echo X_Env::_($plugin->getLabel()); ?></td>
+									<td><?php echo $plugin->getKey(); ?></td>
+									<td><?php echo $plugin->getVersion() != null ? $plugin->getVersion() : X_VlcShares::VERSION; ?></td>
+									<td>
+										<ul class="inline-menu">
+											<li class="ui-state-default">
+												<a class="ui-icon ui-icon-trash" title="<?php echo X_Env::_('plugin_action_uninstall')?>"
+													href="<?php echo $this->url(
+														array(
+															'controller' => 'plugin',
+															'action'	 => 'uconfirm',
+															'key'		 => $plugin->getKey()
+														), 'default', true
+													); ?>">
+													<?php echo X_Env::_('plugin_action_uninstall')?>
+												</a>
+											</li>
+										</ul>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						<?php else: ?>
+							<tr>
+								<td colspan="4"><center><i><?php echo X_Env::_('plugin_index_uninstalllist_noplugin'); ?></i></center>
+							</tr>
+						<?php endif; ?>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="column">
+		<div class="container">
+			<div class="box">
+				<div class="header">
+					<span class="title"><?php echo X_Env::_('plugin_index_installformtitle'); ?></span>
+				</div>
+				<div class="content">
+					<p><?php echo X_Env::_('plugin_index_maindesc'); ?></p>
+					<h2 class="fieldset-header"><?php echo X_Env::_('plugin_index_installformtitle'); ?></h2>
+					<?php echo $this->form; ?>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
-<div class="span-14 box">
-	<h3><?php echo X_Env::_('plugin_index_uninstalllisttitle'); ?></h3>
-	<table id="plugins-table" class="table">
-		<thead>
-			<tr class="header">
-				<th width="50%"><?php echo X_Env::_('plugin_index_uninstalllist_name'); ?></th>
-				<th width="25%"><?php echo X_Env::_('plugin_index_uninstalllist_key'); ?></th>
-				<th width="auto"><?php echo X_Env::_('plugin_index_uninstalllist_version'); ?></th>
-				<th width="100px"><?php echo X_Env::_('plugin_index_uninstalllist_option'); ?></th>
-			</tr>
-		</thead>
-		<!-- 
-		<tfoot>
-			<tr>
-				<td colspan="4"><center>Paginazione?</center></td>
-			</tr>
-		</tfoot>
-		 -->
-		<tbody>
-			<?php if ( count($this->plugins) ) : ?>
-				<?php foreach ($this->plugins as $plugin): ?>
-				<?php /* @var $plugin Application_Model_Plugin */ ?>
-					<tr>
-						<td class="plugin-name"><?php echo X_Env::_($plugin->getLabel()); ?></td>
-						<td class="plugin-key"><?php echo $plugin->getKey(); ?></td>
-						<td class="plugin-version"><?php echo $plugin->getVersion() != null ? $plugin->getVersion() : X_VlcShares::VERSION; ?></td>
-						<td class="plugin-actions">
-							<a href="<?php echo $this->url(
-								array(
-									'controller' => 'plugin',
-									'action'	 => 'uconfirm',
-									'key'		 => $plugin->getKey()
-								), 'default', true
-							); ?>">
-								<?php echo X_Env::_('plugin_action_uninstall')?>
-							</a>
-						</td>
-					</tr>
-				<?php endforeach; ?>
-			<?php else: ?>
-				<tr>
-					<td colspan="4"><center><i><?php echo X_Env::_('plugin_index_uninstalllist_noplugin'); ?></i></center>
-				</tr>
-			<?php endif; ?>
-		</tbody>
-	</table>
-</div>
-
-<div class="span-8 box last">
-	<h3><?php echo X_Env::_('plugin_index_installformtitle'); ?></h3>
-	<?php echo $this->form; ?>
-</div>

@@ -17,6 +17,11 @@ class X_Page_Item_Message extends X_Page_Item {
 	/**
 	 * Marks the item as a container of other items (for example folder) 
 	 */
+	const TYPE_SUCCESS = 'success';
+	
+	/**
+	 * Marks the item as a container of other items (for example folder) 
+	 */
 	const TYPE_WARNING = 'warning';
 	
 	/**

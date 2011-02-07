@@ -263,6 +263,49 @@ body {
 	padding: 0.5em;
 }
 
+/*=========INNER BOX*/
+
+.box .content .box {
+	padding: 0.833em;
+	border: 1px solid #333;
+	border-color: rgba(255, 255, 255, 0.75);
+	background: #444;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-webkit-background-clip: padding-box;
+	border-radius: 4px;
+	-moz-box-shadow: 0 0 4px rgba(50, 50, 50, 0.5);
+	-webkit-box-shadow: 0 0 4px rgba(50, 50, 50, 0.5);
+	box-shadow: 0 0 4px rgba(200, 200, 200, 0.5);
+	margin-bottom: 2em;
+	margin-left: 1em;
+	position: relative;
+	color: white;
+}
+
+.box .content .box a {
+	color: white;
+}
+
+.box .content .box > .header {
+	background: #fefefe;
+	-moz-border-radius: 0;
+	-webkit-border-radius: 0;
+	border-radius:  0;
+	height: 1.5em;
+	line-height: 1.5em;
+}
+
+.box .content .box > .header .title {
+	color: #333;
+	font-size: 1em;
+}
+
+.box .content .box > .header + .content {
+	margin-top: 2em;
+}
+
+
 .inline-menu {
 	margin: 0;
 	padding: 0 0.5em;
@@ -529,4 +572,96 @@ a.button.light:hover {
 	background-color: #888;
 	z-index: 5;
 	border: 0;
+}
+
+
+#plugin-configs ul {
+	margin: 1em;
+}
+
+#plugin-configs .config-button a {
+	text-decoration: none;
+	color: #333;
+	padding: 1em;
+	-moz-border-radius: 0.4em;
+	-webkit-border-radius: 0.4em;
+	border-radius: 0.4em;
+	text-align: center;
+	font-weight: bold;
+}
+
+#plugin-configs .config-button a:hover {
+	/*background: #ccc;*/
+	background: -moz-linear-gradient(top, #ccc, #efefef);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ccc), to(#efefef));
+	background-size: 100% 100%;	
+}
+	
+#plugin-configs .config-button img {
+	display: block;
+	width: 64px;
+	height: 64px;
+	margin: 0 auto;
+	margin-bottom: 1em;
+}
+
+.scrollable {
+	overflow: auto;
+}
+
+
+/**
+ * MESSAGES
+ */
+
+.messages, #manage-messages {
+	margin-bottom: 2em;
+}
+
+.messages li, #manage-messages li {
+	list-style: none;
+	padding: 0.6em;
+	border: 1px solid;
+	-moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+	-webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+	position: relative;
+	background-color: #333;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	color: white !important;
+	font-size: 0.8em;
+	margin-bottom: 0.5em;
+}
+
+.messages li a, #manage-messages li a {
+	color: inherit;
+	font-weight: bold;
+}
+
+.messages li img, #manage-messages li img {
+	width: 16px;
+	height: 16px;
+	padding: 1px;
+	background-color: white;
+	border-radius: 16px;
+	vertical-align: middle;
+	opacity: 0.7;
+}
+
+.messages li.success, #manage-messages li.success {
+	background-color: #235522;
+}
+
+.messages li.info, #manage-messages li.info {
+	background-color: #222255;
+}
+
+.messages li.warning, #manage-messages li.warning {
+	background-color: #787215;
+}
+
+.messages li.error, .messages li.fatal, #manage-messages li.error, #manage-messages li.fatal {
+	background-color: #571D1B;
 }

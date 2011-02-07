@@ -17,10 +17,10 @@ foreach ($v_manageLinks->getItems() as $manageLink) {
 }
 
 ?>
-<!-- 
+
 <div class="columns same-height">
 	<?php foreach ($pluginTopNav as $manageLink): ?>
-		<div class="fixed column">
+		<div class="fixed column" style="width: 64px;">
 			<div class="container">
 				<?php echo $this->xApplicationButton($manageLink); ?>
 			</div>
@@ -28,14 +28,3 @@ foreach ($v_manageLinks->getItems() as $manageLink) {
 	<?php endforeach; ?>
 	<div class="elastic column"></div>
 </div>
--->
-<?php
-/* @var $sections X_VlcShares_Elements_SectionContainer */
-$sections = $this->guiElements()->sectionContainer();
-$sections->setSectionsSameHeight(true); ?>
-<?php foreach ($pluginTopNav as $i => $manageLink) : ?>
-	<?php $sections->{"app$i"}->setFixedWidth("64px")->start(); ?>
-		<?php echo $this->xApplicationButton($manageLink); ?>
-	<?php $sections->{"app$i"}->end(); ?>
-<?php endforeach; ?>
-<?php echo $sections; ?>
