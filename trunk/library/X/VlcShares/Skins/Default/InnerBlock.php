@@ -36,8 +36,9 @@ class X_VlcShares_Skins_Default_InnerBlock extends X_VlcShares_Skins_Default_Con
 		$header = empty($options['block.header']) ? false : $options['block.header'];
 		$footer = empty($options['block.footer']) ? false : $options['block.footer'];
 		
-		$content = parent::decorate($content, $options);
+		$content = $this->wrap($content, 'div', 'class="content"');
 		
+		/*
 		if ( $header !== false ) {
 			$header = $this->wrap($header, 'div', 'class="header"');
 			$content = $header.PHP_EOL
@@ -47,32 +48,25 @@ class X_VlcShares_Skins_Default_InnerBlock extends X_VlcShares_Skins_Default_Con
 		} else {
 			$header = '';
 		}
-		
+		*/
 		if ( $title !== false ) {
-			$content = "<h1>$title</h1>".PHP_EOL
+			$content = "<div class=\"header\"><span class=\"title\">$title</span></div>".PHP_EOL
 						.$content;
 			// i use $title var for css class
-			$title = 'titled';
-		} else {
-			$title = '';
 		}
-
 		if ( $footer !== false ) {
 			$footer = $this->wrap($footer, 'div', 'class="footer"');
 			// append footer to content
 			$content .= PHP_EOL.$footer;
 			// i use $header var for css class
-			$footer = 'with-footer';
-		} else {
-			$footer = '';
 		}
 		
 		$content = $this->recursiveWrap($content, array(
-			array('div', "class=\"inner-block $variant $title $header $footer\""),
-			array('div', "class=\"inner\"")
+			array('div', "class=\"box $variant\"")
 		));
 		
 		return $content;
+		
 	}
 	
 	protected function getDefaultOptions() {

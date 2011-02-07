@@ -2,7 +2,7 @@
 
 require_once 'X/Env.php';
 
-class Application_Form_PluginUConfirm extends Zend_Form
+class Application_Form_PluginUConfirm extends X_Form
 {
     public function init()
     {
@@ -29,6 +29,8 @@ class Application_Form_PluginUConfirm extends Zend_Form
         	'salt'	=> 'plugin_uconfirm_salt',
         	'decorators' => array('ViewHelper')
         ));
+        
+        $this->addDisplayGroup(array('submit', 'csrf', 'key'), 'buttons', array('decorators' => $this->getDefaultButtonsDisplayGroupDecorators()));
         
     }
 }

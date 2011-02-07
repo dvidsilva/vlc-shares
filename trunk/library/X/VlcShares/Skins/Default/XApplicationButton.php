@@ -39,6 +39,7 @@ class X_VlcShares_Skins_Default_XApplicationButton extends X_VlcShares_Skins_Def
 		));
 		
 		return $content;
+		
 	}
 	
 }

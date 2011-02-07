@@ -87,7 +87,7 @@ $this->layout()->breadcrumb = $breadcrumb
 		<?php $block->title->set(X_Env::_('p_altgui_plugins')); ?>
 		<?php $block->start(); ?>
 			<?php if ( count($pluginApplications) ): ?>
-				<h2><?php echo X_Env::_('p_altgui_pluginapplications'); ?></h2>
+				<h2 class="fieldset-header"><?php echo X_Env::_('p_altgui_pluginapplications'); ?></h2>
 				<?php /* @var $innerSections X_VlcShares_Elements_SectionContainer */ ?>
 				<?php $innerSections = $this->guiElements()->sectionContainer(); ?>
 				<?php $innerSections->setSectionsPerRow(4)->setSectionsSameHeight(true); // container options ?>
@@ -108,7 +108,7 @@ $this->layout()->breadcrumb = $breadcrumb
 			<?php endif; ?>
 			
 			<?php if ( count($pluginConfigs) ): ?>
-				<h2><?php echo X_Env::_('p_altgui_pluginconfigs'); ?></h2>
+				<h2 class="fieldset-header"><?php echo X_Env::_('p_altgui_pluginconfigs'); ?></h2>
 				<?php /* @var $innerSections X_VlcShares_Elements_SectionContainer */ ?>
 				<?php $innerSections = $this->guiElements()->sectionContainer(); ?>
 				<?php $innerSections->setSectionsPerRow(4)->setSectionsSameHeight(true); // container options ?>

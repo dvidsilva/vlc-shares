@@ -16,14 +16,28 @@ class X_VlcShares_Plugins_Sample extends X_VlcShares_Plugins_Abstract {
 	}
 	
 	/**
-	 * Return the HELLO WORLD message
+	 * Return the HELLO WORLD message, one for message type
 	 * @param Zend_Controller_Action $this
 	 * @return X_Page_ItemList_Message
 	 */
 	public function getIndexMessages(Zend_Controller_Action $controller) {
-		$message = new X_Page_Item_Message($this->getId(), 'HELLO WORLD');
+		$messages = array();
+		$message = new X_Page_Item_Message($this->getId(), 'HELLO WORLD (INFO)');
+		$message->setType(X_Page_Item_Message::TYPE_INFO);
+		$messages[] = $message;
+		$message = new X_Page_Item_Message($this->getId(), 'HELLO WORLD (SUCCESS)');
+		$message->setType(X_Page_Item_Message::TYPE_SUCCESS);
+		$messages[] = $message;
+		$message = new X_Page_Item_Message($this->getId(), 'HELLO WORLD (WARNING)');
 		$message->setType(X_Page_Item_Message::TYPE_WARNING);
-		return new X_Page_ItemList_Message(array($message));
+		$messages[] = $message;
+		$message = new X_Page_Item_Message($this->getId(), 'HELLO WORLD (ERROR)');
+		$message->setType(X_Page_Item_Message::TYPE_ERROR);
+		$messages[] = $message;
+		$message = new X_Page_Item_Message($this->getId(), 'HELLO WORLD (FATAL)');
+		$message->setType(X_Page_Item_Message::TYPE_FATAL);
+		$messages[] = $message;
+		return new X_Page_ItemList_Message($messages);
 	}
 	
 }
