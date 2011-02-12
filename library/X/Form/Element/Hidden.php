@@ -1,6 +1,6 @@
 <?php
 
-class X_Form_Element_Hidden extends Zend_Form_Element_Hash {
+class X_Form_Element_Hidden extends Zend_Form_Element_Hidden {
 	
 	/**
 	 * Load default decorators

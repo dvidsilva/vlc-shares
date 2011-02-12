@@ -111,6 +111,7 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 				/* @var $share Application_Model_FilesystemShare */
 				$item = new X_Page_Item_PItem($this->getId().'-'.$share->getLabel(), $share->getLabel());
 				$item->setIcon('/images/icons/folder_32.png')
+					->setDescription(APPLICATION_ENV == 'development' ? $share->getPath() : null)
 					->setType(X_Page_Item_PItem::TYPE_CONTAINER)
 					->setCustom(__CLASS__.':location', "{$share->getId()}:/")
 					->setLink(array(
@@ -199,8 +200,7 @@ class X_VlcShares_Plugins_FileSystem extends X_VlcShares_Plugins_Abstract implem
 		$link->setIcon('/images/plus.png')
 			->setLink(array(
 					'controller'	=>	'filesystem',
-					'action'		=>	'index',
-					'a'				=>	'add'
+					'action'		=>	'add'
 				), 'default', true);
 		return new X_Page_ItemList_ActionLink(array($link));
 		

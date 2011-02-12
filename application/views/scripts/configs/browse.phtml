@@ -8,11 +8,11 @@
 	<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
 		var baseUrl = "<?php echo $this->baseUrl(); ?>";
 	<?php $this->headScript()->captureEnd(); ?>
-	<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/blueprint/screen.css'), 'screen, projection'); ?>
-	<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/blueprint/ie.css'), 'screen, projection', 'IE'); ?>
-	<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/blueprint/print.css'), 'print'); ?>
+	<?php //$this->headLink()->appendStylesheet($this->baseUrl('/css/blueprint/screen.css'), 'screen, projection'); ?>
+	<?php //$this->headLink()->appendStylesheet($this->baseUrl('/css/blueprint/ie.css'), 'screen, projection', 'IE'); ?>
+	<?php //$this->headLink()->appendStylesheet($this->baseUrl('/css/blueprint/print.css'), 'print'); ?>
 	<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/smoothness/jquery-ui-1.8.4.custom.css')); ?>
-	<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/style.css')); ?>
+	<?php //$this->headLink()->appendStylesheet($this->baseUrl('/css/style.css')); ?>
 	<?php echo $this->headTitle(); ?> 
 	<?php echo $this->headScript(); ?> 
 	<?php echo $this->headLink(); ?>	
@@ -58,7 +58,7 @@
 							<a href="<?php echo $item['href']; ?>">
 								<?php echo $item['label']; ?>
 							</a>
-							<?php if ( $this->filter == 'folder' ): ?>
+							<?php if ( $this->filter == 'folder' && $item['label'] != '../' ): ?>
 								<a href="javascript:parent.<?php echo "{$this->callback}('".str_replace('\\', '\\\\', $item['path'])."')"; ?>;" style="float: right;">
 									[<?php echo X_Env::_('select'); ?>]
 								</a>

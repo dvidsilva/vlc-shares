@@ -1,45 +1,32 @@
 
+function setPath(path) {
+	$('form #path').val(path);
+	$('#close_frm-path').fadeOut().remove();
+	$('#iframe_frm-path').fadeOut().remove();
+	$('#browse_frm-path').fadeIn();
+}
+
 
 $(document).ready(function() {
 	
 	debug.log('document.ready: /public/js/filesystem/index.js');
-	$('.quickbox-add').click(function (event) {
-		debug.log(event.pageY + " - " + event.pageX);
-		var leftD = 0;
-		var topD = 0;
-		if ( typeof(event.pageY) == "undefined" || typeof(event.pageX) == "undefined" ) {
-			leftD = "40%";
-			topD = "150px";
-			debug.log("fallback");
-		} else {
-			topD = event.pageY+'px';
-			leftD = (event.pageX - 280)+'px';
-		}
-		$('#label').val("");
-		$('#path').val("");
-		$('#id').val("");
-		$('#formbox').css('top', topD).css('left', leftD).fadeIn('slow');
-	});
 
-	$('.ui-icon-trash').click(function (event) {
-		var shareId = $(this).parentsUntil('.boxes').last().attr('id').split('-')[1];
-		$(location).attr('href', baseUrl+'/filesystem/remove/shareId/'+shareId);
-	});
-	
-	$('.ui-icon-pencil').click(function (event) {
-		var shareId = $(this).parentsUntil('.boxes').last().attr('id').split('-')[1];
-		var label = $(this).parentsUntil('.boxes').last().find('.label').text().trim();
-		var path = $(this).parentsUntil('.boxes').last().find('.path').text().trim();
-		
-		$('#label').val(label);
-		$('#path').val(path);
-		$('#id').val(shareId);
-		
-		$('#formbox').css('top', event.pageY+'px').css('left', (event.pageX - 280)+'px').fadeIn('slow');
-	});
-	
-	$('#formbox #abort').click(function (event) {
-		$('#formbox').fadeOut('slow');
+	$('form #path').css({'max-width':'75%'}).after('<input id="browse_frm-path" width="24%" type="button" value="Browse" />');
+	$('#browse_frm-path').click(function (event){
+		var $iframe = $('<iframe id="iframe_frm-path" class="iframe-browser" src="' + baseUrl + '/configs/browse/f/folder/c/setPath" width="100%" height="300px"></iframe>')
+		var $closeB = $('<input type="button" value="Close" id="close_frm-path" />').click(function() {
+			$iframe.fadeOut(function() {
+				$(this).remove();
+			});
+			$closeB.fadeOut(function() {
+				$(this).remove();
+			});
+			$('#browse_frm-path, #autosearch_frm-path').fadeIn();
+		});
+		$('form #path').after($iframe).after($closeB);
+		$('#browse_frm-path').fadeOut();
+		//Elastic.refresh($iframe);
+		//$('#iframe_frm-vlc-path').fadeIn();
 	});
 	
 });

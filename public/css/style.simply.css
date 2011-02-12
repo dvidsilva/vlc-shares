@@ -569,8 +569,9 @@ a.button.light:hover {
 
 .iframe-browser {
 	position: relative;
+	display: block;
 	background-color: #888;
-	z-index: 5;
+	z-index: 2;
 	border: 0;
 }
 

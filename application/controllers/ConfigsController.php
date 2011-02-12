@@ -235,7 +235,7 @@ class ConfigsController extends X_Controller_Action
 							'label'	=> $object.'/',
 							'href'	=> $this->_helper->url(
 								'browse',
-								'manage',
+								'configs',
 								'default',
 								array(
 									'f' => $filter,
