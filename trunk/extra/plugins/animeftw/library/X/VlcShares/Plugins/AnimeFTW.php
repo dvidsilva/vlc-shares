@@ -13,6 +13,8 @@ require_once 'Zend/Dom/Query.php';
  */
 class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
+	const PLG_VERSION = '0.2';
+	
 	const BASE_URL = 'http://www.animeftw.tv/';
 	const PAGE_LOGIN = 'https://www.animeftw.tv/login';
 	const PAGE_SERIES = 'http://www.animeftw.tv/videos';
@@ -610,8 +612,9 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 		));
 		
 		$http->setHeaders(array(
-			$this->config('hide.useragent', true) ? 'User-Agent: vlc-shares/'.X_VlcShares::VERSION : 'User-Agent: Mozilla/5.0 (X11; Linux i686; rv:2.0.1) Gecko/20101019 Firefox/4.0.1',
+			//$this->config('hide.useragent', true) ? 'User-Agent: vlc-shares/'.X_VlcShares::VERSION : 'User-Agent: Mozilla/5.0 (X11; Linux i686; rv:2.0.1) Gecko/20101019 Firefox/4.0.1',
 			//'Content-Type: application/x-www-form-urlencoded'
+			'User-Agent: vlc-shares/'.X_VlcShares::VERSION.' animeftw/'.self::PLG_VERSION
 		));
 		
 		$jarFile = APPLICATION_PATH . '/../data/animeftw/cookie.jar';

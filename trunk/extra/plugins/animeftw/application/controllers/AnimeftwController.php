@@ -56,7 +56,8 @@ class AnimeftwController extends X_Controller_Action
 		// close and clean the output buffer, everything will be read and send to device
 		ob_end_clean();
 		
-		$userAgent = $this->plugin->config('hide.useragent', true) ? 'User-Agent: vlc-shares/'.X_VlcShares::VERSION : 'User-Agent: Mozilla/5.0 (X11; Linux i686; rv:2.0.1) Gecko/20101019 Firefox/4.0.1'; 
+		//$userAgent = $this->plugin->config('hide.useragent', true) ? 'User-Agent: vlc-shares/'.X_VlcShares::VERSION : 'User-Agent: Mozilla/5.0 (X11; Linux i686; rv:2.0.1) Gecko/20101019 Firefox/4.0.1';
+		$userAgent = 'User-Agent: vlc-shares/'.X_VlcShares::VERSION.' animeftw/'.X_VlcShares_Plugins_AnimeFTW::PLG_VERSION; 
 		
 		$opts = array('http' =>
 			array(
