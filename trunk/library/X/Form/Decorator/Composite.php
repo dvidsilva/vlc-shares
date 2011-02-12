@@ -65,7 +65,7 @@ class X_Form_Decorator_Composite extends Zend_Form_Decorator_Abstract {
         $output = '<div class="columns on-4 same-height row' . $class . '">'
                 . $label
                 . $input
-                . $errors
+                . ( count($element->getMessages()) ? $errors : '' )
                 . '</div>';
  
         

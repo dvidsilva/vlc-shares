@@ -97,18 +97,8 @@ $(document).ready(function() {
 		var pluginId = $(this).parentsUntil('.boxes').last().attr('id').split('-')[1];
 		$(location).attr('href', baseUrl+'/manage/enable/pluginId/'+pluginId);
 	});
-	
-	
-	$('form#configs #vlc_path').css({'max-width': '75%'});/*.after('<input id="autosearch_frm-vlc-path" width="24%" type="button" value="Auto-search" />');
-	$('#autosearch_frm-vlc-path').click(function (event){
-		$.getJSON(baseUrl + '/manage/autosearch', function(data){
-			if ( !data.error ) {
-				$('form#configs #vlc_path').val(data.path);
-			}
-		});
-	});*/
 
-	$('form#configs #vlc_path').after('<input id="browse_frm-vlc-path" width="24%" type="button" value="Browse" />');
+	$('form#configs #vlc_path').css({'max-width':'75%'}).after('<input id="browse_frm-vlc-path" width="24%" type="button" value="Browse" />');
 	$('#browse_frm-vlc-path').click(function (event){
 		var $iframe = $('<iframe id="iframe_frm-vlc-path" class="iframe-browser" src="' + baseUrl + '/configs/browse/f/file/c/setVlcPath" width="100%" height="300px"></iframe>')
 		var $closeB = $('<input type="button" value="Close" />').click(function() {

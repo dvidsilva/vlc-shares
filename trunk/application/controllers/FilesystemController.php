@@ -57,24 +57,94 @@ class FilesystemController extends X_Controller_Action {
 	}
 	
 	function removeAction() {
-		$shareId = $this->getRequest()->getParam('shareId', false);
-		if ( $shareId !== false ) {
-			$share = new Application_Model_FilesystemShare();
-			Application_Model_FilesystemSharesMapper::i()->find($shareId, $share);
-			if ( $share->getId() == $shareId ) {
-				try {
-					Application_Model_FilesystemSharesMapper::i()->delete($share);
-					$this->_helper->flashMessenger(X_Env::_('p_filesystem_delete_done'));
-				} catch (Exception $e) {
-					$this->_helper->flashMessenger(X_Env::_('p_filesystem_err_db'));
-				}
-			} else {
-				$this->_helper->flashMessenger(X_Env::_('p_filesystem_err_invaliddata'));
-			}
-		} else {
+		$shareId = $this->getRequest()->getParam('id', false);
+		$csrf = $this->getRequest()->getParam('csrf', false);
+		
+		if ( $shareId === false ) {
 			$this->_helper->flashMessenger(X_Env::_('p_filesystem_err_invaliddata'));
+			$this->_helper->redirector('index', 'filesystem');
 		}
-		$this->_helper->redirector('index', 'filesystem');
+		
+		$share = new Application_Model_FilesystemShare();
+		Application_Model_FilesystemSharesMapper::i()->find($shareId, $share);
+		if ( is_null($share->getId()) ) {
+			$this->_helper->flashMessenger(X_Env::_('p_filesystem_err_invaliddata'));
+			$this->_helper->redirector('index', 'filesystem');
+		}
+
+		$form = new X_Form();
+		$form->setMethod(Zend_Form::METHOD_POST)->setAction($this->_helper->url('remove', 'filesystem', 'default', array('id' => $share->getId())));
+		$form->addElement('hash', 'csrf', array(
+			'salt'  => __CLASS__,
+			'ignore' => true,
+			'required' => false
+		));
+		
+		$form->addElement('hidden', 'id', array(
+			'ignore' => true,
+			'required' => false
+		));
+		
+		$form->addElement('submit', 'submit', array(
+            'ignore'   => true,
+            'label'    => X_Env::_('confirm'),
+        ));
+        
+        $form->addDisplayGroup(array('submit', 'csrf', 'id'), 'buttons', array('decorators' => $form->getDefaultButtonsDisplayGroupDecorators()));
+		
+		// execute delete and redirect to index
+		if ( $form->isValid($this->getRequest()->getPost()) ) {
+			try {
+				Application_Model_FilesystemSharesMapper::i()->delete($share);
+				$this->_helper->flashMessenger(X_Env::_('p_filesystem_delete_done'));
+			} catch (Exception $e) {
+				$this->_helper->flashMessenger(X_Env::_('p_filesystem_err_db'));
+			}
+			$this->_helper->redirector('index', 'filesystem');
+		}
+		
+		$form->setDefault('id', $share->getId());
+		
+		$this->view->form = $form;
+		$this->view->share = $share;
+		
 	}
 	
+	function addAction() {
+		
+		$form = new Application_Form_FileSystemShare();
+		$form->setAction($this->_helper->url('save', 'filesystem'));
+		
+		$this->view->form = $form;
+		$this->render('edit');
+	}
+	
+	function editAction() {
+		
+		$shareId = $this->getRequest()->getParam('id', false);
+		if ( $shareId === false ) {
+			$this->_helper->flashMessenger(X_Env::_('p_filesystem_err_invaliddata'));
+			$this->_helper->redirector('index', 'filesystem');
+		}
+		
+		$share = new Application_Model_FilesystemShare();
+		Application_Model_FilesystemSharesMapper::i()->find($shareId, $share);
+
+		if ( is_null($share->getId()) ) {
+			$this->_helper->flashMessenger(X_Env::_('p_filesystem_err_invaliddata'));
+			$this->_helper->redirector('index', 'filesystem');
+		}
+		
+		$defaults = array(
+			'id' => $share->getId(),
+			'label' => $share->getLabel(),
+			'path'	=> $share->getPath()
+		);
+		
+		$form = new Application_Form_FileSystemShare();
+		$form->setAction($this->_helper->url('save', 'filesystem'));
+		$form->setDefaults($defaults);
+		
+		$this->view->form = $form;
+	}
 }
