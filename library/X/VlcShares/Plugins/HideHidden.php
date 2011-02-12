@@ -87,7 +87,14 @@ class X_VlcShares_Plugins_HideHidden extends X_VlcShares_Plugins_Abstract {
 	}
 	
 	private function _isHiddenOnWindows($fileName) {
-		$fileName = trim($fileName, '\\/');
+		$fileName = rtrim($fileName, '\\/');
+		
+		// Drives root have s flag always and h flag sometimes, so i have to remove check for them
+		// FIX: issue 8 
+		if ( strlen($fileName) <= 3 ) {
+			return false;
+		}
+		
 	    $attr = trim(exec('FOR %A IN ("'.$fileName.'") DO @ECHO %~aA'));
 	
 	    if($attr[3] === 'h' /* || $attr[4] === 's' */ ) return true;
