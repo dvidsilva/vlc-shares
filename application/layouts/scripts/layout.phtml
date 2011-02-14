@@ -1,6 +1,6 @@
-<!-- application/layouts/scripts/altgui.phtml -->
 <?php echo $this->doctype(); ?> 
 <html xmlns="http://www.w3.org/1999/xhtml">
+<!-- application/layouts/scripts/altgui.phtml -->
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<?php // Items added in reverse order ?>
@@ -31,15 +31,26 @@
 </head>
 <body>
 	<div class="unit" style="min-width: 960px;">
-		<div class="container columns" id="header">
+		<div class="container columns same-height" id="header">
 			<div class="elastic column">
 				<div class="container" id="applications-links">
 					<?php echo $this->action('applications', 'manage'); ?>
 				</div>
 			</div>
 			<div class="fixed column" style="min-width: 160px;">
-				<div class="container" id="logo">
-					RIGHT LOGO
+				<div class="container " id="logo">
+					<a rel="external" target="_blank" href="http://code.google.com/p/vlc-shares/">
+						<img src="<?php echo $this->baseUrl('/images/logo.png')?>" title="VLCShares" alt="VLCShares Logo" />
+						VLCShares: <i><b><?php echo X_VlcShares::VERSION ?></b></i>
+					</a>
+					<br/>
+					<a rel="external" target="_blank" href="http://framework.zend.com/">
+						ZF: <i><b><?php echo Zend_Version::VERSION; ?></b></i>
+					</a>
+					<br/>
+					<a rel="external" target="_blank" href="http://www.wiimc.org/forum/viewforum.php?f=8">
+						Forum
+					</a>
 				</div>
 			</div>
 		</div>
@@ -64,6 +75,11 @@
 		</div>
 		<div id="content" class="container">
 			<?php echo $this->layout()->content; ?>
+		</div>
+		<div id="footer">
+			<br/>
+			<center><small><b>&copy; Ximarx</b></small></center>
+			<br/>	
 		</div>
 	</div>
 </body>

@@ -110,20 +110,22 @@ $this->layout()->breadcrumb = $breadcrumb
 				<?php if (count($this->videos)): ?>
 					<table class="table">
 						<tr class="header">
-							<th width="100px;">Anteprima</th>
-							<th>Nome e Descrizione</th>
-							<th width="100px;">Opzioni</th>
+							<th width="100px;"><?php echo X_Env::_('p_youtube_categorytable_header_preview')?></th>
+							<th><?php echo X_Env::_('p_youtube_categorytable_header_namedesc')?></th>
+							<th width="100px;"><?php echo X_Env::_('table_options')?></th>
 						</tr>
 						<?php foreach ($this->videos as $i => $video): ?>
 							<?php /* @var $video Application_Model_YoutubeVideo */ ?>
 							<tr class="<?php echo $i % 2 ? 'alt' : ''; ?>">
 								<td>
-									<a rel="external" href="http://www.youtube.com/watch?v=<?php echo $video->getIdYoutube(); ?>">
+									<a href="http://www.youtube.com/watch?v=<?php echo $video->getIdYoutube(); ?>">
 										<img class="preview" src="<?php echo $video->getThumbnail(); ?>" />
 									</a>
 								</td>
 								<td>
-									<b><?php echo $video->getLabel(); ?></b>
+									<a rel="external" href="http://www.youtube.com/watch?v=<?php echo $video->getIdYoutube(); ?>">
+										<b><?php echo $video->getLabel(); ?></b>
+									</a>
 									<?php if ( $video->getDescription() ): ?>
 										<p><?php echo $video->getDescription(); ?></p>
 									<?php endif; ?>

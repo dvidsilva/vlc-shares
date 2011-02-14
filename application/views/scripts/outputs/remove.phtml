@@ -47,7 +47,7 @@ $this->layout()->breadcrumb = $breadcrumb
 					<dt><b><?php echo X_Env::_('p_outputs_form_link_label'); ?></b></dt>
 					<dd style="word-break: break-all"><?php echo $this->output->getLink(); ?></dd>
 					<dt><b><?php echo X_Env::_('p_outputs_form_arg_label'); ?></b></dt>
-					<dd style="word-break: break-all"><?php echo $this->output->getArg(); ?></dd>
+					<dd style="word-break: break-all"><pre style="font-size: small;"><?php echo X_Env::codeFormat($this->output->getArg()); ?></pre></dd>
 				</dl>
 				<?php echo $this->form; ?>
 			</div>

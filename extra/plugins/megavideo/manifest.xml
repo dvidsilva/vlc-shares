@@ -9,8 +9,8 @@
 		<file>X/VlcShares/Plugins/Megavideo.php</file>
 		<class>X_VlcShares_Plugins_Megavideo</class>
 		<compatibility>
-			<from>0.6</from>
-			<to>0.7</to>
+			<from>0.5.3</from>
+			<to>0.6</to>
 		</compatibility>
 	</metadata>
 	<files>

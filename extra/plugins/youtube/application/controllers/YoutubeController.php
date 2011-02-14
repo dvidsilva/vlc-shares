@@ -317,7 +317,7 @@ class YoutubeController extends X_Controller_Action
 			if ( $videoId == $video->getId() ) {
 				$idCategory = $video->getIdCategory();
 				try {
-					Application_Model_YoutubeAccountsMapper::i()->delete($video);
+					Application_Model_YoutubeVideosMapper::i()->delete($video);
 					$this->_helper->flashMessenger(array('text' => X_Env::_('p_youtube_delete_completed_video'), 'type' => 'info'));
 				} catch (Exception $e) {
 					$this->_helper->flashMessenger(array('text' => X_Env::_('p_youtube_delete_err_dberror').": {$e->getMessage()}", 'type' => 'error'));

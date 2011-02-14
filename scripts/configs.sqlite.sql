@@ -10,6 +10,17 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, `type`, label, descr
 	'config_general_languageFile_desc'
 );
 
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'extraPlugins', 
+	'0',
+	'0',
+	'general',
+	3,
+	'config_general_extraPlugins_label',
+	'config_general_extraPlugins_desc',
+	'advanced'
+);
+
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description ) VALUES (
 	'debug.enabled', 
 	'0',
