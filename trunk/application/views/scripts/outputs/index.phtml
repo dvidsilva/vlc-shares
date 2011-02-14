@@ -1,18 +1,21 @@
 <!-- application/views/scripts/filesystem/index.phtml -->
+<?php 
 
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('p_outputs_output_new'), "outputs", "add");
+	;
+	
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLabel(X_Env::_('p_outputs_title'));
+
+?>
 <?php $this->headLink()->appendStylesheet($this->baseUrl('/css/outputs/style.css')); ?>
 <?php $this->headScript()->appendFile($this->baseUrl("/js/outputs/index.js")); ?>
 <?php $this->headTitle()->prepend(X_Env::_('p_outputs_title')); ?>
-
-
-<div class="span-24 last" id="back-to-home">
-	<div class="span-4 box back">
-		<a href="<?php echo $this->url(array('controller' => 'manage', 'action' => 'index'), 'default', true); ?>"><?php echo X_Env::_('back_to_home'); ?></a>
-	</div>
-	<div class="span-18 box title last">
-		<h4><?php echo X_Env::_('p_outputs_title'); ?></h4>
-	</div>
-</div>
 
 
 <?php if ( count($this->messages) ) :?>
@@ -29,177 +32,60 @@
 </div>
 <?php endif; ?>
 
-<div class="quickactionbox">
-	<button class="quickbox-add"><?php echo X_Env::_('p_outputs_output_new'); ?></button>
+
+<div class="unit">
+	<div class="container">
+		<div class="box">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('p_outputs_title'); ?></span>
+			</div>
+			<div class="content">
+				<table class="table" id="outputs-table">
+					<tr class="header">
+						<th><?php echo X_Env::_('p_outputs_header_label'); ?></th>
+						<th><?php echo X_Env::_('p_outputs_header_link'); ?></th>
+						<th><?php echo X_Env::_('p_outputs_header_args'); ?></th>
+						<th><?php echo X_Env::_('p_outputs_header_device'); ?></th>
+						<th><?php echo X_Env::_('p_profiles_header_priority'); ?></th>
+						<th><?php echo X_Env::_('table_options'); ?></th>
+					</tr>
+					<?php foreach ( $this->outputs as $i => $output): ?>
+						<?php /* @var $profile Application_Model_Output */?>
+						<tr class="<?php echo $i % 2 ? 'alt' : ''?>" id="outputId-<?php echo $output->getId(); ?>">
+							<td><b><?php echo $output->getLabel() ?></b></td>
+							<td style="word-break: break-all"><?php echo $output->getLink() ?></td>
+							<td style="word-break: break-all"><?php echo $output->getArg() ?></td>
+							<td><?php echo @$this->devices[$output->getCondDevices()]; ?></td>
+							<td><?php echo $output->getWeight() ?></td>
+							<td>
+								<ul class="inline-menu">
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-pencil"
+										title="<?php echo X_Env::_('edit')?>" 
+										href="<?php echo $this->url(array(
+											'controller' => 'outputs',
+											'action' => 'edit',
+											'id' => $output->getId(),
+										), 'default', true); ?>">R</a>
+									</li>
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-trash"
+										title="<?php echo X_Env::_('remove')?>"
+										href="<?php echo $this->url(array(
+											'controller' => 'outputs',
+											'action' => 'remove',
+											'id' => $output->getId(),
+										), 'default', true); ?>">E</a>
+									</li>
+								</ul>								
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</table>
+			</div>
+		</div>
+	</div>
 </div>
-
-<h2><?php echo X_Env::_('p_outputs_general_title'); ?></h2>
-<div class="span-24 last boxes" id="devices-null">
-	<div class="span-24 last">
-		<div class="span-6"><h4><?php echo X_Env::_('p_outputs_header_label'); ?></h4></div>
-		<div class="span-6"><h4><?php echo X_Env::_('p_outputs_header_link'); ?></h4></div>
-		<div class="span-7"><h4><?php echo X_Env::_('p_outputs_header_args'); ?></h4></div>
-		<div class="span-1 last"><h4><?php echo X_Env::_('p_outputs_header_priority'); ?></h4></div>
-	</div>
-	<?php foreach ( $this->generalOuts as $i => $out): ?>
-		<?php /* @var $out Application_Model_Output */?>
-		<div class="span-24 last sharebox" id="outputId-<?php echo $out->getId();?>">
-			<div class="span-6 share">
-				<span class="label">
-					<?php echo $out->getLabel() ?>
-				</span>
-			</div>
-			<div class="span-17 subboxright">
-				<div class="boxitem-rowicon ui-state-default" title="<?php echo X_Env::_('remove'); ?>">
-					<span class="ui-icon ui-icon-trash"><?php echo X_Env::_('remove'); ?></span>
-				</div>
-				<div class="boxitem-rowicon ui-state-default" title="<?php echo X_Env::_('edit'); ?>">
-					<span class="ui-icon ui-icon-pencil"><?php echo X_Env::_('edit'); ?></span>
-				</div>
-				<div class="span-15 cell">
-					<div class="span-6 link" title="<?php echo $out->getLink(); ?>">
-						<?php echo (strlen($out->getLink()) > 35 ? substr($out->getLink(), 0, 31).'...' : $out->getLink()); ?>
-					</div>
-					<div class="span-7 arg" title="<?php echo $out->getArg(); ?>">
-						<?php echo (strlen($out->getArg()) > 45 ? substr($out->getArg(), 0, 41).'...' : $out->getArg()); ?>
-					</div>
-					<div class="span-1">
-						<input type="text" size="3" class="priority" disabled="disabled" style="margin: 0px; padding: 0px" value="<?php echo $out->getWeight()?>" />
-					</div>
-				</div>
-			</div>
-		</div>
-	<?php endforeach; ?>
-</div>
-
-<?php if ( count($this->wiimcOuts)) : ?>
-	<hr class="space"/>
-	<h2><?php echo X_Env::_('p_outputs_wiimc_title'); ?></h2>
-	<div class="span-24 last boxes" id="devices-<?php echo X_VlcShares_Plugins_Helper_Devices::DEVICE_WIIMC?>">
-		<div class="span-24 last">
-			<div class="span-6"><h4><?php echo X_Env::_('p_outputs_header_label'); ?></h4></div>
-			<div class="span-6"><h4><?php echo X_Env::_('p_outputs_header_link'); ?></h4></div>
-			<div class="span-7"><h4><?php echo X_Env::_('p_outputs_header_args'); ?></h4></div>
-			<div class="span-1 last"><h4><?php echo X_Env::_('p_outputs_header_priority'); ?></h4></div>
-		</div>
-		<?php foreach ( $this->wiimcOuts as $i => $out): ?>
-			<?php /* @var $out Application_Model_Output */?>
-			<div class="span-24 last sharebox" id="outputId-<?php echo $out->getId();?>">
-				<div class="span-6 share">
-					<span class="label">
-						<?php echo $out->getLabel() ?>
-					</span>
-				</div>
-				<div class="span-17 subboxright">
-					<div class="boxitem-rowicon ui-state-default" title="<?php echo X_Env::_('remove'); ?>">
-						<span class="ui-icon ui-icon-trash"><?php echo X_Env::_('remove'); ?></span>
-					</div>
-					<div class="boxitem-rowicon ui-state-default" title="<?php echo X_Env::_('edit'); ?>">
-						<span class="ui-icon ui-icon-pencil"><?php echo X_Env::_('edit'); ?></span>
-					</div>
-					<div class="span-15 cell">
-						<div class="span-6 link" title="<?php echo $out->getLink(); ?>">
-							<?php echo (strlen($out->getLink()) > 35 ? substr($out->getLink(), 0, 31).'...' : $out->getLink()); ?>
-						</div>
-						<div class="span-7 arg" title="<?php echo $out->getArg(); ?>">
-							<?php echo (strlen($out->getArg()) > 45 ? substr($out->getArg(), 0, 41).'...' : $out->getArg()); ?>
-						</div>
-						<div class="span-1">
-							<input type="text" size="3" class="priority" disabled="disabled" style="margin: 0px; padding: 0px" value="<?php echo $out->getWeight()?>" />
-						</div>
-					</div>
-				</div>
-			</div>
-		<?php endforeach; ?>
-	</div>
-<?php endif; ?>
-
-
-<?php if ( count($this->androidOuts)) : ?>
-	<hr class="space"/>
-	<h2><?php echo X_Env::_('p_outputs_android_title'); ?></h2>
-	<div class="span-24 last boxes" id="devices-<?php echo X_VlcShares_Plugins_Helper_Devices::DEVICE_ANDROID?>">
-		<div class="span-24 last">
-			<div class="span-6"><h4><?php echo X_Env::_('p_outputs_header_label'); ?></h4></div>
-			<div class="span-6"><h4><?php echo X_Env::_('p_outputs_header_link'); ?></h4></div>
-			<div class="span-7"><h4><?php echo X_Env::_('p_outputs_header_args'); ?></h4></div>
-			<div class="span-1 last"><h4><?php echo X_Env::_('p_outputs_header_priority'); ?></h4></div>
-		</div>
-		<?php foreach ( $this->androidOuts as $i => $out): ?>
-			<?php /* @var $out Application_Model_Output */?>
-			<div class="span-24 last sharebox" id="outputId-<?php echo $out->getId();?>">
-				<div class="span-6 share">
-					<span class="label">
-						<?php echo $out->getLabel() ?>
-					</span>
-				</div>
-				<div class="span-17 subboxright">
-					<div class="boxitem-rowicon ui-state-default" title="<?php echo X_Env::_('remove'); ?>">
-						<span class="ui-icon ui-icon-trash"><?php echo X_Env::_('remove'); ?></span>
-					</div>
-					<div class="boxitem-rowicon ui-state-default" title="<?php echo X_Env::_('edit'); ?>">
-						<span class="ui-icon ui-icon-pencil"><?php echo X_Env::_('edit'); ?></span>
-					</div>
-					<div class="span-15 cell">
-						<div class="span-6 link" title="<?php echo $out->getLink(); ?>">
-							<?php echo (strlen($out->getLink()) > 35 ? substr($out->getLink(), 0, 31).'...' : $out->getLink()); ?>
-						</div>
-						<div class="span-7 arg" title="<?php echo $out->getArg(); ?>">
-							<?php echo (strlen($out->getArg()) > 45 ? substr($out->getArg(), 0, 41).'...' : $out->getArg()); ?>
-						</div>
-						<div class="span-1">
-							<input type="text" size="3" class="priority" disabled="disabled" style="margin: 0px; padding: 0px" value="<?php echo $out->getWeight()?>" />
-						</div>
-					</div>
-				</div>
-			</div>
-		<?php endforeach; ?>
-	</div>
-<?php endif; ?>
-
-
-<?php if ( count($this->pcOuts)) : ?>
-	<hr class="space"/>
-	<h2><?php echo X_Env::_('p_outputs_pc_title'); ?></h2>
-	<div class="span-24 last boxes" id="devices-<?php echo X_VlcShares_Plugins_Helper_Devices::DEVICE_PC?>">
-		<div class="span-24 last">
-			<div class="span-6"><h4><?php echo X_Env::_('p_outputs_header_label'); ?></h4></div>
-			<div class="span-6"><h4><?php echo X_Env::_('p_outputs_header_link'); ?></h4></div>
-			<div class="span-7"><h4><?php echo X_Env::_('p_outputs_header_args'); ?></h4></div>
-			<div class="span-1 last"><h4><?php echo X_Env::_('p_outputs_header_priority'); ?></h4></div>
-		</div>
-		<?php foreach ( $this->pcOuts as $i => $out): ?>
-			<?php /* @var $out Application_Model_Output */?>
-			<div class="span-24 last sharebox" id="outputId-<?php echo $out->getId();?>">
-				<div class="span-6 share">
-					<span class="label">
-						<?php echo $out->getLabel() ?>
-					</span>
-				</div>
-				<div class="span-17 subboxright">
-					<div class="boxitem-rowicon ui-state-default" title="<?php echo X_Env::_('remove'); ?>">
-						<span class="ui-icon ui-icon-trash"><?php echo X_Env::_('remove'); ?></span>
-					</div>
-					<div class="boxitem-rowicon ui-state-default" title="<?php echo X_Env::_('edit'); ?>">
-						<span class="ui-icon ui-icon-pencil"><?php echo X_Env::_('edit'); ?></span>
-					</div>
-					<div class="span-15 cell">
-						<div class="span-6 link" title="<?php echo $out->getLink(); ?>">
-							<?php echo (strlen($out->getLink()) > 35 ? substr($out->getLink(), 0, 31).'...' : $out->getLink()); ?>
-						</div>
-						<div class="span-7 arg" title="<?php echo $out->getArg(); ?>">
-							<?php echo (strlen($out->getArg()) > 45 ? substr($out->getArg(), 0, 41).'...' : $out->getArg()); ?>
-						</div>
-						<div class="span-1">
-							<input type="text" size="3" class="priority" disabled="disabled" style="margin: 0px; padding: 0px" value="<?php echo $out->getWeight()?>" />
-						</div>
-					</div>
-				</div>
-			</div>
-		<?php endforeach; ?>
-	</div>
-<?php endif; ?>
-
 
 
 <div id="formbox" class="span-10 last hidden box" style="display: none; position: absolute; z-index: 100;">
