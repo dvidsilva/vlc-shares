@@ -268,9 +268,12 @@ class X_VlcShares_Plugins_Helper_Stream extends X_VlcShares_Plugins_Helper_Abstr
 
 	/**
 	 * Redirect fetch to Mediainfo helper
+	 * @deprecated use ffmpeg
+	 * @version 0.5.3
 	 */
 	private function fetchByMediainfo() {
-		return X_VlcShares_Plugins::helpers()->mediainfo()->setLocation($this->_location)->getInfos();
+		//return X_VlcShares_Plugins::helpers()->mediainfo()->setLocation($this->_location)->getInfos();
+		return $this->fetchByFFMpeg();
 	}
 	
 	/**

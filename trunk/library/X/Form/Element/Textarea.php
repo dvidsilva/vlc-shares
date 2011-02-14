@@ -2,6 +2,13 @@
 
 class X_Form_Element_Textarea extends Zend_Form_Element_Textarea {
 	
+	function init() {
+		parent::init();
+		if ( is_null($this->getAttrib('rows')) ) {
+			$this->setAttrib('rows', '5');
+		}
+	}
+	
 	/**
 	 * Load default decorators
 	 *

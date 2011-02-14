@@ -1,18 +1,21 @@
-<!-- application/views/scripts/filesystem/index.phtml -->
+<!-- application/views/scripts/profiles/index.phtml -->
+<?php 
 
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('p_profiles_profile_new'), "profiles", "add");
+	;
+	
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLabel(X_Env::_('p_profiles_title'));
+
+?>
 <?php $this->headLink()->appendStylesheet($this->baseUrl('/css/profiles/style.css')); ?>
 <?php $this->headScript()->appendFile($this->baseUrl("/js/profiles/index.js")); ?>
 <?php $this->headTitle()->prepend(X_Env::_('p_profiles_title')); ?>
-
-
-<div class="span-24 last" id="back-to-home">
-	<div class="span-4 box back">
-		<a href="<?php echo $this->url(array('controller' => 'manage', 'action' => 'index'), 'default', true); ?>"><?php echo X_Env::_('back_to_home'); ?></a>
-	</div>
-	<div class="span-18 box title last">
-		<h4><?php echo X_Env::_('p_profiles_title'); ?></h4>
-	</div>
-</div>
 
 
 <?php if ( count($this->messages) ) :?>
@@ -29,74 +32,78 @@
 </div>
 <?php endif; ?>
 
-<div class="quickactionbox">
-	<button class="quickbox-add"><?php echo X_Env::_('p_profiles_profile_new'); ?></button>
-</div>
-
-<h2><?php echo X_Env::_('p_profiles_tabletitle'); ?></h2>
-<div class="span-17">
-	<div class="span-17 table-head last">
-		<div class="span-4 header"><h4><?php echo X_Env::_('p_profiles_header_label'); ?></h4></div>
-		<div class="span-6 header"><h4><?php echo X_Env::_('p_profiles_header_arg'); ?></h4></div>
-		<div class="span-2 header"><h4><?php echo X_Env::_('p_profiles_header_codecs'); ?></h4></div>
-		<div class="span-2 header"><h4><?php echo X_Env::_('p_profiles_header_device'); ?></h4></div>
-		<div class="span-3 last header"><h4><?php echo X_Env::_('p_profiles_header_priority'); ?></h4></div>
-	</div>
-	<div class="span-17 last table-body">
-		<?php foreach ( $this->profiles as $i => $profile): ?>
-			<?php /* @var $profile Application_Model_Profile */?>
-			<div class="span-17 last table-row <?php echo $i % 2 == 1 ? 'alt' : ''; ?>" id="profileId-<?php echo $profile->getId();?>">
-				<div class="span-4 cell">
-					<span class="label innercell">
-						<?php echo $profile->getLabel() ?>
-					</span>
-				</div>
-				<div class="span-6 cell">
-					<span class="arg innercell" title="<?php echo $profile->getArg(); ?>">
-						<?php echo (strlen($profile->getArg()) > 35 ? substr($profile->getArg(), 0, 31).'...' : $profile->getArg()); ?>
-					</span>
-				</div>
-				<div class="span-2 cell">
-					<span class="codec innercell" title="<?php echo $profile->getCondFormats(); ?>">
-						<?php echo $profile->getCondFormats(); ?>&nbsp;
-					</span>
-				</div>
-				<div class="span-2 cell">
-					<span class="device innercell" title="<?php echo $profile->getCondDevices(); ?>">
-						<?php echo @$this->devices[$profile->getCondDevices()]; ?>&nbsp;
-					</span>
-				</div>
-				<div class="span-3 cell last">
-					<div class="boxitem-rowicon ui-state-default" title="<?php echo X_Env::_('remove'); ?>">
-						<span class="ui-icon ui-icon-trash"><?php echo X_Env::_('remove'); ?></span>
+<div class="unit">
+	<div class="container">
+		<div class="box">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('p_profiles_testtitle')?></span>
+			</div>
+			<div class="content">
+				<div class="unit columns same-height">
+					<div class="column"><?php echo X_Env::_('p_profiles_test_video')?>: <?php echo $this->formSelect('test_vcodec', 'unknown', '', $this->vcodecs); ?></div>
+					<div class="column"><?php echo X_Env::_('p_profiles_test_audio')?>: <?php echo $this->formSelect('test_acodec', 'unknown', '', $this->acodecs); ?></div>
+					<div class="column"><?php echo X_Env::_('p_profiles_test_device')?>: <?php echo $this->formSelect('test_device', 'unknown', '', $this->devices); ?></div>
+					<div class="column">
+						<button id="test"><?php echo X_Env::_('p_profiles_testbutton'); ?></button>
+						<button id="test-reset"><?php echo X_Env::_('p_profiles_testresetbutton'); ?></button>
 					</div>
-					<div class="boxitem-rowicon ui-state-default" title="<?php echo X_Env::_('edit'); ?>">
-						<span class="ui-icon ui-icon-pencil"><?php echo X_Env::_('edit'); ?></span>
-					</div>
-					<span class="priority innercell" title="<?php echo $profile->getWeight(); ?>">
-						<?php echo $profile->getWeight(); ?>&nbsp;
-					</span>
 				</div>
 			</div>
-		<?php endforeach; ?>
+		</div>
 	</div>
 </div>
-<div class="span-7 last">
-	<div id="formbox" class="span-6 last box hidden">
-		<h3><?php echo X_Env::_('p_profiles_newprofile_title'); ?></h3>
-		<?php echo $this->form; ?>
-	</div>
-	<div class="span-6 box last">
-		<h3><?php echo X_Env::_('p_profiles_testtitle')?></h3>
-		<dl>
-			<dt><?php echo X_Env::_('p_profiles_test_video')?></dt>
-			<dd><?php echo $this->formSelect('test_vcodec', 'unknown', '', $this->vcodecs); ?></dd>
-			<dt><?php echo X_Env::_('p_profiles_test_audio')?></dt>
-			<dd><?php echo $this->formSelect('test_acodec', 'unknown', '', $this->acodecs); ?></dd>
-			<dt><?php echo X_Env::_('p_profiles_test_device')?></dt>
-			<dd><?php echo $this->formSelect('test_device', 'unknown', '', $this->devices); ?></dd>
-		</dl>
-		<button id="test"><?php echo X_Env::_('p_profiles_testbutton'); ?></button>
-		<button id="test-reset"><?php echo X_Env::_('p_profiles_testresetbutton'); ?></button>
+
+<div class="unit">
+	<div class="container">
+		<div class="box">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('p_profiles_tabletitle'); ?></span>
+			</div>
+			<div class="content">
+				<table class="table" id="profiles-table">
+					<tr class="header">
+						<th><?php echo X_Env::_('p_profiles_header_label'); ?></th>
+						<th><?php echo X_Env::_('p_profiles_header_arg'); ?></th>
+						<th><?php echo X_Env::_('p_profiles_header_codecs'); ?></th>
+						<th><?php echo X_Env::_('p_profiles_header_device'); ?></th>
+						<th><?php echo X_Env::_('p_profiles_header_priority'); ?></th>
+						<th><?php echo X_Env::_('table_options'); ?></th>
+					</tr>
+					<?php foreach ( $this->profiles as $i => $profile): ?>
+						<?php /* @var $profile Application_Model_Profile */?>
+						<tr class="<?php echo $i % 2 ? 'alt' : ''?>" id="profileId-<?php echo $profile->getId(); ?>">
+							<td><b><?php echo $profile->getLabel() ?></b></td>
+							<td style="word-break: break-all"><?php echo $profile->getArg() ?></td>
+							<td><?php echo $profile->getCondFormats() ?></td>
+							<td><?php echo @$this->devices[$profile->getCondDevices()]; ?></td>
+							<td><?php echo $profile->getWeight() ?></td>
+							<td>
+								<ul class="inline-menu">
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-pencil"
+										title="<?php echo X_Env::_('edit')?>" 
+										href="<?php echo $this->url(array(
+											'controller' => 'profiles',
+											'action' => 'edit',
+											'id' => $profile->getId(),
+										), 'default', true); ?>">R</a>
+									</li>
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-trash"
+										title="<?php echo X_Env::_('remove')?>"
+										href="<?php echo $this->url(array(
+											'controller' => 'profiles',
+											'action' => 'remove',
+											'id' => $profile->getId(),
+										), 'default', true); ?>">E</a>
+									</li>
+								</ul>								
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</table>
+			</div>
+		</div>
 	</div>
 </div>
+
