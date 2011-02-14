@@ -2,9 +2,12 @@
 
 
 html {
+	padding: 0;
+	margin: 0;
 	background-color: #efefef;
 }
 body {
+	margin-top: 0;
 	color: #333;
 	background-color: #efefef;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -15,13 +18,41 @@ body {
 	position: relative;
 }
 
+a[rel="external"]:before, a.external:before {
+	content: url(../images/a-extern.gif); margin: 0 0.2em;
+}
+
 /* top bar */
 #header {
 	background-color: #D5D8DB;
 	background-size: 100% 100%;
 	background: -moz-linear-gradient(top, #efefef, #D5D8DB );
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#efefef), to(#D5D8DB));
+}
+
+#logo {
+	/*text-align: right;*/
+	padding-top: 0.5em;
+	padding-right: 0.5em;
+	-moz-border-radius: 0 0 0 8px;
+	-webkit-border-radius: 0 0 0 8px;
+	border-radius: 0 0 0 8px;
+	-moz-box-shadow: 0 0 4px rgba(50, 50, 50, 0.5);
+	-webkit-box-shadow: 0 0 4px rgba(50, 50, 50, 0.5);
+	box-shadow: 0 0 4px rgba(50, 50, 50, 0.5);
 	
+}
+
+#logo a {
+	color: #333;
+	text-decoration: none;
+	line-height: 1.5em;
+}
+
+#logo img {
+	float: left;
+	height: 52px;
+	margin: 5px;
 }
 
 #applications-links {

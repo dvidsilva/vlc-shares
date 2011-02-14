@@ -54,7 +54,7 @@ $this->layout()->breadcrumb = $breadcrumb
 						<tr class="<?php echo $i % 2 ? 'alt' : ''?>" id="outputId-<?php echo $output->getId(); ?>">
 							<td><b><?php echo $output->getLabel() ?></b></td>
 							<td style="word-break: break-all"><?php echo $output->getLink() ?></td>
-							<td style="word-break: break-all"><?php echo $output->getArg() ?></td>
+							<td style="overflow: auto; max-width: 33%"><pre style="font-size: small;"><?php echo X_Env::codeFormat($output->getArg()); ?></pre></td>
 							<td><?php echo @$this->devices[$output->getCondDevices()]; ?></td>
 							<td><?php echo $output->getWeight() ?></td>
 							<td>

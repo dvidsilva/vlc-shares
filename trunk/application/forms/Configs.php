@@ -59,7 +59,7 @@ class Application_Form_Configs extends X_Form
         	$elementName = $config->getSection().'_'.str_replace('.', '_', $config->getKey());
         	
         	$elementLabel = ($config->getLabel() != null && $config->getLabel() != '' ? X_Env::_($config->getLabel()) : $config->getKey() );
-        	$elementDescription = ($config->getDescription() ? X_Env::_($config->getDescription()) . '<br/>' : '' ) . ($config->getDefault() != null ?  "<br/><i>Default:</i> ".$defaultStr : '<br/><i>Default:</i> *Nessun valore*'); 
+        	$elementDescription = ($config->getDescription() ? X_Env::_($config->getDescription()) . '<br/>' : '' ) . ($config->getDefault() != null ?  "<br/><i>Default:</i> ".$defaultStr : '<br/><i>Default:</i> '.X_Env::_('configs_options_novalue')); 
         	
         	$element = $this->createElement($elementType, $elementName, array(
         		'label'			=> $elementLabel,

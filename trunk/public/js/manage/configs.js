@@ -22,7 +22,7 @@ function toggleAdvanced() {
 	if ( toggleAdvancedReady ) {
 		$('form#configs .advanced').slideToggle();
 	}
-	return false;
+	//return false;
 } 
 
 

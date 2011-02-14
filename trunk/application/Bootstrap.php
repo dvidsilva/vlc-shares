@@ -10,9 +10,17 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$this->bootstrap('plugins');
 		$this->bootstrap('frontController');
 		$this->bootstrap('view');
+		$this->bootstrap('configs');
+		
+		$configs = $this->getResource('configs');
+		/*
+		if ($configs instanceof Zend_Config ) {
+			isset($configs->general->)
+		}
+		*/
 		
 		// only add them if in development env
-		if ( APPLICATION_ENV != 'development' ) {
+		if (  APPLICATION_ENV != 'development'|| !$configs->general->get('extraPlugins', false) ) {
 			return;
 		}
 

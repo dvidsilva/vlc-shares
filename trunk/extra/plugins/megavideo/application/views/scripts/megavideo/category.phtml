@@ -30,9 +30,9 @@ $this->headTitle()->prepend(X_Env::_('megavideo_manage_title'));
 			<div class="content">
 				<table class="table">
 					<tr class="header">
-						<th>ID</th>
-						<th>Nome e Descrizione</th>
-						<th>Opzioni</th>
+						<th><?php echo X_Env::_('p_megavideo_videostable_header_id')?></th>
+						<th><?php echo X_Env::_('p_megavideo_videostable_header_namedesc')?></th>
+						<th><?php echo X_Env::_('table_options')?></th>
 					</tr>
 					<?php foreach ($this->videos as $i => $video): ?>
 						<?php /* @var $video Application_Model_Megavideo */ ?>

@@ -1,18 +1,24 @@
 <!-- application/views/scripts/backupper/index.phtml -->
+<?php 
 
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('back'), "backupper", "index");
+	;
+	
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLinkRoute(X_Env::_('p_backupper_title'), 'backupper', 'index' )
+	->addLabel(X_Env::_('p_backupper_title_restore'))
+	;
+	
+
+?>
 <?php $this->headLink()->appendStylesheet($this->baseUrl('/css/backupper/style.css')); ?>
 <?php $this->headScript()->appendFile($this->baseUrl("/js/backupper/index.js")); ?>
 <?php $this->headTitle()->prepend(X_Env::_('p_backupper_title_restore')); ?>
-
-<div class="span-24 last" id="back-to-home">
-	<div class="span-4 box back">
-		<a href="<?php echo $this->url(array('controller' => 'manage', 'action' => 'index'), 'default', true); ?>"><?php echo X_Env::_('back_to_home'); ?></a>
-	</div>
-	<div class="span-18 box title last">
-		<h4><?php echo X_Env::_('p_backupper_title_restore'); ?></h4>
-	</div>
-</div>
-
 
 <?php if ( count($this->messages) ) :?>
 <div class="span-24 last" id="manage-messages">
@@ -28,35 +34,62 @@
 </div>
 <?php endif; ?>
 
-<div class="span-14 box">
-	<h2><?php echo X_Env::_('p_backupper_restoredetails_title')?></h2>
-	<dl>
-		<dt><?php echo X_Env::_('p_backupper_restoredetails_filename')?></dt>
-		<dd><?php echo $this->file ?></dd>
-		<dt><?php echo X_Env::_('p_backupper_restoredetails_created')?></dt>
-		<dd><?php echo $this->created ?></dd>
-		<dt><?php echo X_Env::_('p_backupper_restoredetails_version')?></dt>
-		<dd><?php echo $this->version ?></dd>
-	</dl>
-	<h2><?php echo X_Env::_('p_backupper_restoredetails_components')?></h2>
-	<p><a href="javascript:void();" id="select-all"><?php echo X_Env::_('p_backupper_backuppablelist_selectall'); ?></a></p>
-	<form method="post" action="<?php echo $this->url(array('controller' => 'backupper', 'action' => 'restore'), 'default', true); ?>">
-		<?php foreach ( $this->components as $i => $label): ?>
-			<div>
-				<?php echo $this->formCheckbox("components[$i]", true); ?> <label for="components-<?php echo $i?>"><?php echo $label; ?></label>
-			</div>
-		<?php endforeach; ?>
-		<div>
-			<?php echo $this->formSubmit('submit', X_Env::_('p_backupper_dorestore') );?> 
-			<?php echo X_Env::_('or'); ?> 
-			<a href="<?php echo $this->url(array('controller' => 'backupper', 'action' => 'index'), 'default', true);?>"><?php echo X_Env::_('abort'); ?></a>
-			<?php echo $this->formHidden('file', $this->file); ?>
-		</div>
-	</form>
-</div>
+<div class="unit columns on-3">
+	<div class="column span-2">
+		<div class="container">
+			<div class="box">
+				<div class="header">
+					<span class="title"><?php echo X_Env::_('p_backupper_restoredetails_title')?></span>
+				</div>
+				<div class="content">
+				
+					<dl>
+						<dt><b><?php echo X_Env::_('p_backupper_restoredetails_filename')?></b></dt>
+						<dd><?php echo $this->file ?></dd>
+						<dt><b><?php echo X_Env::_('p_backupper_restoredetails_created')?></b></dt>
+						<dd><?php echo $this->created ?></dd>
+						<dt><b><?php echo X_Env::_('p_backupper_restoredetails_version')?></b></dt>
+						<dd><?php echo $this->version ?></dd>
+					</dl>
 
-<div class="span-8 box last">
-	<h3><?php echo X_Env::_('p_backupper_restorecomponentshelp_title'); ?></h3>
-	<p><?php echo X_Env::_('p_backupper_restorecomponentshelp_desc'); ?></p>
+					<div class="box">
+						<div class="header">
+							<span class="title"><?php echo X_Env::_('p_backupper_restoredetails_components')?></span>
+						</div>
+						<div class="content">
+						
+							<p><a href="javascript:void();" id="select-all"><?php echo X_Env::_('p_backupper_backuppablelist_selectall'); ?></a></p>
+							<form class="x_form" method="post" action="<?php echo $this->url(array('controller' => 'backupper', 'action' => 'restore'), 'default', true); ?>">
+								<?php foreach ( $this->components as $i => $label): ?>
+									<div class="row">
+										<?php echo $this->formCheckbox("components[$i]", true); ?> <label for="components-<?php echo $i?>"><?php echo $label; ?></label>
+									</div>
+								<?php endforeach; ?>
+								<div class="row buttons">
+									<?php echo $this->formSubmit('submit', X_Env::_('p_backupper_dorestore') );?> 
+									<?php echo X_Env::_('or'); ?> 
+									<a href="<?php echo $this->url(array('controller' => 'backupper', 'action' => 'index'), 'default', true);?>"><?php echo X_Env::_('abort'); ?></a>
+									<?php echo $this->formHidden('file', $this->file); ?>
+								</div>
+							</form>
+						
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="elastic column">
+		<div class="container">
+			<div class="box">
+				<div class="header">
+					<span class="title"><?php echo X_Env::_('p_backupper_restorecomponentshelp_title'); ?></span>
+				</div>
+				<div class="content">
+					<p><?php echo X_Env::_('p_backupper_restorecomponentshelp_desc'); ?></p>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 

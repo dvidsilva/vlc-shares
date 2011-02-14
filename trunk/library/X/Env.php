@@ -239,6 +239,33 @@ class X_Env {
 		return base64_decode(str_replace('_', '/', $string));
 	}
 	
+	
+	static public function codeFormat($string, $addLevel = '{', $sameLevel = ',', $removeLevel = '}') {
+		$string = str_replace(array("\n", "\r", "\t"), '', $string);
+		$string = str_replace(array($addLevel, $sameLevel, $removeLevel), array($addLevel."\n", $sameLevel."\n", "\n".$removeLevel), $string);
+		$stringArray = explode("\n", $string);
+		
+		$currentLvl = 0;
+		foreach ($stringArray as $key => $value) {
+			$padd = '';
+			for ( $i = 0; $i < $currentLvl; $i++) {
+				$padd .= "\t"; 
+			}  
+			if ( substr($value, -1) == $addLevel ) {
+				$stringArray[$key] = $padd . $stringArray[$key];
+				$currentLvl++;
+			} elseif ( substr($value, -1) == $sameLevel ) {
+				$stringArray[$key] = $padd . $stringArray[$key];
+			} elseif ( substr($value, -1) == $sameLevel ) {
+				$stringArray[$key] = $padd . $stringArray[$key];
+			} else {
+				$stringArray[$key] = $padd . $stringArray[$key];
+				$currentLvl--;
+			}
+			$currentLvl = $currentLvl >= 0 ? $currentLvl : 0;
+		}
+		return implode("\n", $stringArray);
+	}
 }
 
 class StringsWriter {

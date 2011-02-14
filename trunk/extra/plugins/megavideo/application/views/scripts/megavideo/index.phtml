@@ -38,7 +38,7 @@ $this->headTitle()->prepend(X_Env::_('megavideo_manage_title'));
 		<div class="container">
 			<div class="box">
 				<div class="header">
-					<span class="title">Libreria Megavideo</span>
+					<span class="title"><?php echo X_Env::_('megavideo_manage_title')?></span>
 					<!-- 
 					<ul class="menu">
 						<li>
@@ -52,9 +52,9 @@ $this->headTitle()->prepend(X_Env::_('megavideo_manage_title'));
 				<div class="content">
 					<table class="table" id="megavideo-categories">
 						<tr class="header">
-							<th>Categorie</th>
-							<th width="100px">Video</th>
-							<th width="100px">Opzioni</th>
+							<th><?php echo X_Env::_('p_megavideo_categoriestable_header_label')?></th>
+							<th width="100px"><?php echo X_Env::_('p_megavideo_categoriestable_header_num')?></th>
+							<th width="100px"><?php echo X_Env::_('p_megavideo_categoriestable_header_options')?></th>
 						</tr>
 						<?php foreach ($this->categories as $i => $category): ?>
 							<tr class="<?php echo $i % 2 ? 'alt' : ''; ?>">
@@ -100,7 +100,7 @@ $this->headTitle()->prepend(X_Env::_('megavideo_manage_title'));
 		<div class="container">
 			<div class="box" id="megavideo-bookmarklets">
 				<div class="header">
-					<span class="title">Bookmarklet</span>
+					<span class="title"><?php echo X_Env::_('p_megavideo_manage_bookmarkletstitle')?></span>
 				</div>
 				<div class="content">
 					<center>

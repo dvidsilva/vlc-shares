@@ -1,8 +1,8 @@
 <?php
 
 class X_VlcShares {
-	const VERSION = '0.5.2';
-	const VERSION_CLEAN = '0.5.2';
+	const VERSION = '0.5.3alpha1';
+	const VERSION_CLEAN = '0.5.3';
 	private $CONFIG_PATH;
 	
 	
