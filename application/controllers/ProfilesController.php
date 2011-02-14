@@ -104,28 +104,7 @@ class ProfilesController extends X_Controller_Action {
 		}
 		$this->_helper->redirector('index', 'profiles');
 	}
-	
-	function removeAction() {
-		$id = $this->getRequest()->getParam('profileId', false);
-		if ( $id !== false ) {
-			$model = new Application_Model_Profile();
-			Application_Model_ProfilesMapper::i()->find($id, $model);
-			if ( $model->getId() == $id ) {
-				try {
-					Application_Model_ProfilesMapper::i()->delete($model);
-					$this->_helper->flashMessenger(X_Env::_('p_profiles_delete_done'));
-				} catch (Exception $e) {
-					$this->_helper->flashMessenger(X_Env::_('p_profiles_err_db'));
-				}
-			} else {
-				$this->_helper->flashMessenger(X_Env::_('p_profiles_err_invaliddata'));
-			}
-		} else {
-			$this->_helper->flashMessenger(X_Env::_('p_profiles_err_invaliddata'));
-		}
-		$this->_helper->redirector('index', 'profiles');
-	}
-	
+		
 	public function testAction() {
 		
 		$audio = $this->getRequest()->getParam('audio', 'unknown');
@@ -189,5 +168,108 @@ class ProfilesController extends X_Controller_Action {
 		}
 		return $this->form;	
 	}
+	
+	
+	function removeAction() {
+		$id = $this->getRequest()->getParam('id', false);
+		$csrf = $this->getRequest()->getParam('csrf', false);
+		
+		if ( $id === false ) {
+			$this->_helper->flashMessenger(X_Env::_('p_profiles_err_invaliddata'));
+			$this->_helper->redirector('index', 'profiles');
+		}
+		
+		$profile = new Application_Model_Profile();
+		Application_Model_ProfilesMapper::i()->find($id, $profile);
+		if ( is_null($profile->getId()) ) {
+			$this->_helper->flashMessenger(X_Env::_('p_profiles_err_invaliddata'));
+			$this->_helper->redirector('index', 'profiles');
+		}
+
+		$form = new X_Form();
+		$form->setMethod(Zend_Form::METHOD_POST)->setAction($this->_helper->url('remove', 'profiles', 'default', array('id' => $profile->getId())));
+		$form->addElement('hash', 'csrf', array(
+			'salt'  => __CLASS__,
+			'ignore' => true,
+			'required' => false
+		));
+		
+		$form->addElement('hidden', 'id', array(
+			'ignore' => true,
+			'required' => false
+		));
+		
+		$form->addElement('submit', 'submit', array(
+            'ignore'   => true,
+            'label'    => X_Env::_('confirm'),
+        ));
+        
+        $form->addDisplayGroup(array('submit', 'csrf', 'id'), 'buttons', array('decorators' => $form->getDefaultButtonsDisplayGroupDecorators()));
+		
+		// execute delete and redirect to index
+		if ( $form->isValid($this->getRequest()->getPost()) ) {
+			try {
+				Application_Model_ProfilesMapper::i()->delete($profile);
+				$this->_helper->flashMessenger(X_Env::_('p_profiles_delete_done'));
+			} catch (Exception $e) {
+				$this->_helper->flashMessenger(X_Env::_('p_profiles_err_db'));
+			}
+			$this->_helper->redirector('index', 'profiles');
+		}
+		
+		$form->setDefault('id', $profile->getId());
+		
+		$this->view->form = $form;
+		$this->view->profile = $profile;
+		
+	}
+	
+	function addAction() {
+		
+		//$form = new Application_Form_FileSystemShare();
+		//$form->setAction($this->_helper->url('save', 'filesystem'));
+		$form = $this->_initForm();
+		
+		$this->view->form = $form;
+		$this->render('edit');
+	}
+	
+	function editAction() {
+		
+		$id = $this->getRequest()->getParam('id', false);
+		if ( $id === false ) {
+			$this->_helper->flashMessenger(X_Env::_('p_profiles_err_invaliddata'));
+			$this->_helper->redirector('index', 'profiles');
+		}
+		
+		$profile = new Application_Model_Profile();
+		Application_Model_ProfilesMapper::i()->find($id, $profile);
+
+		if ( is_null($profile->getId()) ) {
+			$this->_helper->flashMessenger(X_Env::_('p_profiles_err_invaliddata'));
+			$this->_helper->redirector('index', 'profiles');
+		}
+		
+		@list($video, $audio ) = explode('+', $profile->getCondFormats(), 2);
+		
+		$defaults = array(
+			'id' => $profile->getId(),
+			'label' => $profile->getLabel(),
+			'device'	=> $profile->getCondDevices(),
+			'arg'	=> $profile->getArg(),
+			'audio' => $audio,
+			'video' => $video,
+			'weight' => $profile->getWeight()
+		);
+		
+		/*
+		$form = new Application_Form_FileSystemShare();
+		$form->setAction($this->_helper->url('save', 'filesystem'));
+		*/
+		$form = $this->_initForm();
+		$form->setDefaults($defaults);
+		
+		$this->view->form = $form;
+	}	
 	
 }

@@ -3,7 +3,7 @@
 
 $menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
 $this->layout()->subNavigator =	$menu
-	->addLinkRoute(X_Env::_('p_filesystem_shares_new'), "filesystem", "add");
+	->addLinkRoute(X_Env::_('p_filesystem_actionadddirectory'), "filesystem", "add");
 	;
 	
 $breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
@@ -38,7 +38,7 @@ $this->layout()->breadcrumb = $breadcrumb
 				<span class="title"><?php echo X_Env::_('p_filesystem_shares_title'); ?></span>
 			</div>
 			<div class="content">
-				<table class="table" id="megavideo-categories">
+				<table class="table">
 					<tr class="header">
 						<th><?php echo X_Env::_('p_filesystem_shares_tabletitle_label'); ?></th>
 						<th><?php echo X_Env::_('p_filesystem_shares_tabletitle_path'); ?></th>

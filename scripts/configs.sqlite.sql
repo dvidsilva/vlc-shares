@@ -118,27 +118,27 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	'advanced'
 );
 
-INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'mediainfo.enabled', 
-	'1',
-	'1',
-	'helpers',
-	3,
-	'config_helpers_mediainfo_enabled_label',
-	'config_helpers_mediainfo_enabled_desc',
-	NULL
-);
-
-INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'mediainfo.path', 
-	'/usr/bin/mediainfo',
-	'/usr/bin/mediainfo',
-	'helpers',
-	0,
-	'config_helpers_mediainfo_path_label',
-	'config_helpers_mediainfo_path_desc',
-	NULL
-);
+--INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+--	'mediainfo.enabled', 
+--	'1',
+--	'1',
+--	'helpers',
+--	3,
+--	'config_helpers_mediainfo_enabled_label',
+--	'config_helpers_mediainfo_enabled_desc',
+--	NULL
+--);
+--
+--INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+--	'mediainfo.path', 
+--	'/usr/bin/mediainfo',
+--	'/usr/bin/mediainfo',
+--	'helpers',
+--	0,
+--	'config_helpers_mediainfo_path_label',
+--	'config_helpers_mediainfo_path_desc',
+--	NULL
+--);
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'ffmpeg.enabled', 

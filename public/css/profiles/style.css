@@ -1,76 +1,9 @@
 @CHARSET "UTF-8";
 
-
-.table-head {
-
-	background: #7d7d7d url(../../images/gradient.png) repeat-x 0 -110px;
-
-	/*margin-top: 0.3em;*/
-	/*margin-bottom: 0.1em;*/
-
-	/*padding: 1em;*/
-	
-	border-radius: 0.5em;
-	-webkit-border-radius: 0.5em;
-	-moz-border-radius: 0.5em;
-
-	-webkit-box-shadow: 0 1px 3px rgba(0,0,0, .4);
-	-moz-box-shadow: 0 1px 3px rgba(0,0,0, .4);
-
-	font-weight: bold;
-	text-shadow: 0 1px 1px rgba(255,255,255, .6);
-
-	margin-bottom: 0.5em;
-	
-}
-
-
-.table-head .header h4 {
-	
-	margin: 0.5em;
-	font-weight: bold;
-	text-shadow: 0 1px 1px rgba(255,255,255, .6);
-	
-}
-
-.table-row {
-	
-	margin-bottom: 0.1em;
-	background-color: #333;
-	background: #333 url(../../images/grid.png);
-	
-	font-weight: bold;
-	color: #ccc;
-
-	padding-top: 0.3em;
-	padding-bottom: 0.3em;
-	
-	border-radius: 0.2em;
-	-webkit-border-radius: 0.2em;
-	-moz-border-radius: 0.2em;
-
-	margin-bottom: 0.2em;
-	
-	-webkit-box-shadow: 0 1px 3px rgba(0,0,0, .4);
-	-moz-box-shadow: 0 1px 3px rgba(0,0,0, .4);
-
-	color: #e7e5e5;
-	
-}
-
-.table-row.alt {
-	background-color: #444;
-}
-
-.table-row .cell .innercell {
-	margin: 0.5em;
-}
-
-.hidden {
-	display: none;
-}
-
 .highlight {
-	background-color: #c00 !important;
+	background-color: #900 !important;
 }
 
+.highlight * {
+	color: white;
+}

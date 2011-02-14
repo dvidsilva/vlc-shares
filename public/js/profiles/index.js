@@ -3,6 +3,7 @@
 $(document).ready(function() {
 	
 	debug.log('document.ready: /public/js/profiles/index.js');
+	/*
 	$('.quickbox-add').click(function (event) {
 		$('#label').val("");
 		$('#arg').val("");
@@ -16,6 +17,8 @@ $(document).ready(function() {
 		$('#id').val("");
 		$('#formbox').slideDown('slow');
 	});
+	*/
+	/*
 
 	$('.ui-icon-trash').click(function (event) {
 		var profileId = $(this).parentsUntil('.table-body').last().attr('id').split('-')[1];
@@ -60,7 +63,7 @@ $(document).ready(function() {
 	$('#formbox #abort').click(function (event) {
 		$('#formbox').slideUp('slow');
 	});
-	
+	*/
 	
 	$('#test').click(function (event) {
 		// reset old highlighted row

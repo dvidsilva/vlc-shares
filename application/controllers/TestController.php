@@ -47,10 +47,10 @@ class TestController extends X_Controller_Action
     	
     	$tests[] = $this->_check('Language file is valid ('.$this->options->general->languageFile.')', $this->_languageCheck($this->options->general->languageFile));
     	
-    	$tests[] = $this->_check('Mediainfo helper enabled', (boolean) $this->options->helpers->mediainfo->enabled);
-    	if ( $this->options->helpers->mediainfo->enabled ) {
-    		$tests[] = $this->_check('Mediainfo path is valid ('.$this->options->helpers->mediainfo->path.')', $this->_mediainfoCheck($this->options->helpers->mediainfo->path));
-    	}
+    	//$tests[] = $this->_check('Mediainfo helper enabled', (boolean) $this->options->helpers->mediainfo->enabled);
+    	//if ( $this->options->helpers->mediainfo->enabled ) {
+    		//$tests[] = $this->_check('Mediainfo path is valid ('.$this->options->helpers->mediainfo->path.')', $this->_mediainfoCheck($this->options->helpers->mediainfo->path));
+    	//}
 
     	$tests[] = $this->_check('FFMpeg helper enabled', (boolean) $this->options->helpers->ffmpeg->enabled);
     	if ( $this->options->helpers->ffmpeg->enabled ) {
