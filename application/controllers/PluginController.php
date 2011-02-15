@@ -102,6 +102,7 @@ class PluginController extends X_Controller_Action
 			if ( $plugin->getId() !== null && $plugin->getKey() == $key && $plugin->getType() == Application_Model_Plugin::USER) {
 				
 				$form = new Application_Form_PluginUConfirm();
+				$form->setAction($this->_helper->url('uninstall', 'plugin'));
 				$form->key->setValue($key);
 				
 				$this->view->plugin = $plugin;
