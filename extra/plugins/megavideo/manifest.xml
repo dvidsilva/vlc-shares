@@ -36,6 +36,8 @@
 						<file>bookmarklets.phtml</file>
 						<file>index.phtml</file>
 						<file>status.phtml</file>
+						<file>bmscript.phtml</file>
+						<file>category.phtml</file>
 					</megavideo>
 				</scripts>
 			</views>
