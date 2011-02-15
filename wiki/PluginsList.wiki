@@ -30,11 +30,12 @@ A list of additional plugins is available in the [PluginsList#Plugins_List Plugi
 This kind of plugins adds new collections inside VLCShares
 
 || *Name* || *Key* || *Last Version* || *Compatibility* || *Description* ||
-|| *[PluginsList#Anime_Db Anime Db]* || animedb || 0.1 || 0.5.1 or later || Adds the site animedb.tv inside VLCShares_ ||
+|| *[PluginsList#Anime_Db Anime Db]* || animedb || 0.1 || 0.5.1 or later & megavideo plugin || Adds the site animedb.tv inside VLCShares_ ||
 || *[PluginYoutube Youtube]* || youtube || 0.1 || 0.5.1 or later || Adds Youtube inside VLCShares_, with support for closed caption ||
-|| *[PluginsList#OPFItalia OPFItalia]* || opfitalia || 0.2 || 0.5.1 or later || Adds the site opfitalia.net inside VLCShares_ ||
-|| *Jigoku* || jigoku || 0.1beta || 0.5.1 or later || Adds the site http://www.jigoku.it inside VLCShares_ ||
+|| *[PluginsList#OPFItalia OPFItalia]* || opfitalia & megavideo plugin || 0.2 || 0.5.1 or later || Adds the site opfitalia.net inside VLCShares_ ||
+|| *Jigoku* || jigoku || 0.1beta || 0.5.1 or later & megavideo plugin || Adds the site http://www.jigoku.it inside VLCShares_ ||
 || *AnimeFTW* || animeftw || 0.1 || 0.5.1 or later || Adds the site http://www.animeftw.tv inside VLCShares_ ||
+|| *Megavideo* || megavideo || 0.2alpha || 0.5.3 or later || Adds megavideo with premium account support inside VLCShares_ ||
 
 =Plugins Guide=
 
