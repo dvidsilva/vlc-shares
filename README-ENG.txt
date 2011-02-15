@@ -25,6 +25,18 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 | Changelog
 \==========---
 
+*** 0.5.3 alpha1 (15/02/2010) ***
+ - New management gui
+ - Improved error reporting
+ - [Issue-8] Fixed problems while sharing root drives folders in windows env
+ - [EXTRA] Youtube: updated to support restricted content (with 240p quality only)
+ - [EXTRA] AnimeFTW: fixed auth problems with video in server1 forcing proxy method to all videos
+ - [EXTRA] AnimeFTW: removed hide user-agent config and user-agent locked to vlc-shares/VERSION animeftw/VERSION
+ - [EXTRA] Jigoku: stable release
+ - [EXTRA] Megavideo: moved to extra
+ - [EXTRA] Megavideo: added premium account support
+ - [EXTRA] Megavideo: support for megaupload->megavideo videos (?d= links)
+
 *** 0.5.2 (16/12/2010) ***
  - Support for WiiMC 1.1.1 and WiiMC 1.1.1+
  - Fix a regression in configs label and description
