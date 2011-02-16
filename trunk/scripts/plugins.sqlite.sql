@@ -349,3 +349,22 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	1
 );
 
+
+
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'cache',
+	'X_VlcShares_Plugins_Cache', 
+	'X/VlcShares/Plugins/Cache.php',
+	'p_cache_plglabel',
+	'p_cache_plgdesc',
+	1,
+	1
+);
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'cache.validity','60','60','plugins',0,'p_cache_conf_validity_label','p_cache_conf_validity_desc','');
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'cache.refresh.allowed','1','1','plugins',3,'p_cache_conf_refreshallowed_label','p_cache_conf_refreshallowed_desc','');
+
+

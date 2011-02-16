@@ -201,14 +201,23 @@ class X_Env {
 		}
 	}
 	
-	
+	/**
+     * @param string message id
+     * @param mixed ...args a long list of params
+	 */
 	static public function _($message) {
 		//if ( !is_null(self::$_stringsWriter)) self::$_stringsWriter->_($message);
 		if ( !is_null(self::$_translator) ) {
 			if ( false && APPLICATION_ENV == 'development') {
 				return "#(".self::$_translator->_($message).")";
 			} else {
-				return self::$_translator->_($message);
+				$return = self::$_translator->_($message);
+				if ( func_num_args() > 1 ) {
+					$args = func_get_args();
+					array_shift($args);
+					$return = vsprintf($return, $args);
+				}
+				return $return;
 			}
 		}
 	}

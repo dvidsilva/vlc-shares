@@ -701,6 +701,17 @@ class X_VlcShares_Plugins_Youtube extends X_VlcShares_Plugins_Abstract implement
 	
 	protected function mainMenu(X_Page_ItemList_PItem $items) {
 		
+		// disabling cache plugin
+		try {
+			$cachePlugin = X_VlcShares_Plugins::broker()->getPlugins('cache');
+			if ( method_exists($cachePlugin, 'setDoNotCache') ) {
+				$cachePlugin->setDoNotCache();
+			}
+		} catch (Exception $e) {
+			// cache plugin not registered, no problem
+		}
+		
+		
 		$item = new X_Page_Item_PItem('youtube-accounts', X_Env::_('p_youtube_br_mainmenu_accounts'));
 		$item->setDescription(X_Env::_('p_youtube_br_mainmenu_accounts_desc'))
 			->setIcon('/images/youtube/icons/accounts.png')
@@ -724,6 +735,17 @@ class X_VlcShares_Plugins_Youtube extends X_VlcShares_Plugins_Abstract implement
 	
 	protected function accountsMenu(X_Page_ItemList_PItem $items, $accountId = null) {
 
+		// disabling cache plugin
+		try {
+			$cachePlugin = X_VlcShares_Plugins::broker()->getPlugins('cache');
+			if ( method_exists($cachePlugin, 'setDoNotCache') ) {
+				$cachePlugin->setDoNotCache();
+			}
+		} catch (Exception $e) {
+			// cache plugin not registered, no problem
+		}
+		
+		
 		if ( $accountId != null ) {
 			$account = new Application_Model_YoutubeAccount();
 			Application_Model_YoutubeAccountsMapper::i()->find($accountId, $account);
@@ -1030,6 +1052,18 @@ class X_VlcShares_Plugins_Youtube extends X_VlcShares_Plugins_Abstract implement
 	
 	protected function libraryMenu(X_Page_ItemList_PItem $items, $submode = false) {
 		X_Debug::i("Submode requested: ". print_r($submode, true));
+		
+		// disabling cache plugin
+		try {
+			$cachePlugin = X_VlcShares_Plugins::broker()->getPlugins('cache');
+			if ( method_exists($cachePlugin, 'setDoNotCache') ) {
+				$cachePlugin->setDoNotCache();
+			}
+		} catch (Exception $e) {
+			// cache plugin not registered, no problem
+		}
+		
+		
 		if ($submode === false || $submode == null ) {
 			// load all categories in the library
 			$categories = Application_Model_YoutubeCategoriesMapper::i()->fetchAll();
