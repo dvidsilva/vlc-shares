@@ -16,7 +16,12 @@ $this->layout()->breadcrumb = $breadcrumb
 	
 	
 $this->headTitle()->prepend(X_Env::_('megavideo_manage_title'));
+
 ?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
+	var str_p_megavideo_manage_newcategoryname = "<?php echo X_Env::_('p_megavideo_manage_newcategoryname') ?>";
+<?php $this->headScript()->captureEnd(); ?>
+
 
 <?php if ( count($this->messages) ) :?>
 <div class="span-24 last" id="manage-messages">
@@ -71,7 +76,7 @@ $this->headTitle()->prepend(X_Env::_('megavideo_manage_title'));
 								<td>
 									<ul class="inline-menu">
 										<li class="ui-state-default">
-											<a class="ui-icon ui-icon-pencil" href="<?php echo $this->url(array(
+											<a class="ui-icon ui-icon-pencil megavideo-category-rename" href="<?php echo $this->url(array(
 												'controller' => 'megavideo',
 												'action' => 'rename',
 												'id' => urlencode($category['category']),
