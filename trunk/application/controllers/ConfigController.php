@@ -67,7 +67,7 @@ class ConfigController extends X_Controller_Action {
     	/* @var $request Zend_Controller_Request_Http */
     	$request = $this->getRequest();
     	
-    	$configs = Application_Model_ConfigsMapper::i()->fetchAll();
+    	//$configs = Application_Model_ConfigsMapper::i()->fetchAll();
     	
     	if ( $request->isPost() ) {
     		
@@ -77,7 +77,19 @@ class ConfigController extends X_Controller_Action {
     			$redirect = array('config', 'index');
     		}
     		
-    		$form = $this->_initConfigsForm($configs, $request->getPost());
+    		
+	    	$section = 'plugins';
+	    	$key = $this->getRequest()->getParam('key', false);
+	    	
+	    	if ( $key === false ) {
+	    		$this->_helper->flashMessenger(array('type' => 'error', 'text' => X_Env::_('config_invalidkey')));
+	    		$this->_helper->redirector('index','manage');
+	    	}
+	    	
+	    	$configs = Application_Model_ConfigsMapper::i()->fetchBySectionNamespace($section, $key);
+	    	$form = $this->_initConfigsForm($section, $key, $configs, $request->getPost());
+    		
+    		//$form = $this->_initConfigsForm($configs, $request->getPost());
     		$form->addElement('hidden', 'redirect', array('value' => "{$redirect[0]}:{$redirect[1]}", 'ignore' => true, 'decorators' => array('ViewHelper')));
     		
     		if ( !$form->isErrors() ) {
@@ -127,7 +139,10 @@ class ConfigController extends X_Controller_Action {
 	    	
 	    	$this->configForm->setAction($this->_helper->url->url(array('action' => 'save', 'controller' => 'config'), 'default', false));
 	    	
-
+	    	if ( $posts !== null && is_array($posts)  ) {
+	    		$this->configForm->isValid($posts);
+	    	}
+	    	
 	    	foreach ($this->configForm->getElements() as $key => $element) {
 	    		// plugins prepare known elements
 	    		X_VlcShares_Plugins::broker()->prepareConfigElement($section, $namespace, $key, $element, $this->configForm, $this);
@@ -135,9 +150,11 @@ class ConfigController extends X_Controller_Action {
 	    	
     	}
     	
+    	/*
     	if ( $posts !== null && is_array($posts)  ) {
     		$this->configForm->isValid($posts);
     	}
+    	*/
 
     	return $this->configForm;
     }

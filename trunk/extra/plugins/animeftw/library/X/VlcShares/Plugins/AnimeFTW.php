@@ -40,6 +40,7 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 			->setPriority('getIndexManageLinks')
 			->setPriority('getIndexMessages')
 			->setPriority('getTestItems')
+			->setPriority('prepareConfigElement')
 			;
 	}
 	
@@ -404,6 +405,41 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 		return new X_Page_ItemList_ManageLink(array($link));
 		
 	}
+	
+
+	/**
+	 * Remove cookie.jar if configs change and convert form password to password element
+	 * @param string $section
+	 * @param string $namespace
+	 * @param unknown_type $key
+	 * @param Zend_Form_Element $element
+	 * @param Zend_Form $form
+	 * @param Zend_Controller_Action $controller
+	 */
+	public function prepareConfigElement($section, $namespace, $key, Zend_Form_Element $element, Zend_Form  $form, Zend_Controller_Action $controller) {
+		// nothing to do if this isn't the right section
+		if ( $namespace != $this->getId() ) return;
+		
+		switch ($key) {
+			// i have to convert it to a password element
+			case 'plugins_animeftw_auth_password':
+				$password = $form->createElement('password', 'plugins_animeftw_auth_password', array(
+					'label' => $element->getLabel(),
+					'description' => $element->getDescription(),
+				));
+				$form->plugins_animeftw_auth_password = $password;
+				break;
+		}
+		
+		// remove cookie.jar if somethings has value
+		if ( !$form->isErrors() && !is_null($element->getValue()) && file_exists(APPLICATION_PATH . '/../data/animeftw/cookie.jar') ) {
+			if ( @!unlink(APPLICATION_PATH . '/../data/animeftw/cookie.jar') ) {
+				X_Debug::e("Error removing cookie.jar");
+			}
+		}
+	}	
+	
+	
 
 	private function _fetchClassification(X_Page_ItemList_PItem $items, $type) {
 		
