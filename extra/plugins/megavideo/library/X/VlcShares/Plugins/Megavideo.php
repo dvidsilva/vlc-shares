@@ -81,6 +81,17 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 		if ( $provider != $this->getId() ) return;
 		
 		X_Debug::i("Plugin triggered");
+
+		// disabling cache plugin
+		try {
+			$cachePlugin = X_VlcShares_Plugins::broker()->getPlugins('cache');
+			if ( method_exists($cachePlugin, 'setDoNotCache') ) {
+				$cachePlugin->setDoNotCache();
+			}
+		} catch (Exception $e) {
+			// cache plugin not registered, no problem
+		}
+		
 		
 		$urlHelper = $controller->getHelper('url');
 		

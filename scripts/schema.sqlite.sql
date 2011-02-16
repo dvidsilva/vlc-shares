@@ -63,3 +63,12 @@ CREATE TABLE plugins (
 
 CREATE INDEX "plugins_id" ON "plugins" ("id");
 
+
+CREATE TABLE plg_cache (
+	uri TEXT NOT NULL PRIMARY KEY,
+	content BLOB DEFAULT NULL,
+	cType INTEGER NOT NULL DEFAULT 0,
+	created INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE INDEX "plg_cache_uri" ON "plg_cache" ("uri");

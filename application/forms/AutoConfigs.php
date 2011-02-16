@@ -105,6 +105,13 @@ class Application_Form_AutoConfigs extends X_Form
         	'value'	   => 0,
         	'decorators' => array('ViewHelper')
         ));
+
+        // Add the submit button
+        $this->addElement('hidden', 'redirect', array(
+            'ignore'   => true,
+        	'value'	   => 'manage/index',
+        	'decorators' => array('ViewHelper')
+        ));
         
         
         // And finally add some CSRF protection
@@ -114,7 +121,7 @@ class Application_Form_AutoConfigs extends X_Form
         	'decorators' => array('ViewHelper')
         ));
         
-        $this->addDisplayGroup(array('submit', 'abort', 'csrf', 'isapply'), 'buttons', array('decorators' => $this->getDefaultButtonsDisplayGroupDecorators()));
+        $this->addDisplayGroup(array('submit', 'abort', 'csrf', 'isapply', 'redirect'), 'buttons', array('decorators' => $this->getDefaultButtonsDisplayGroupDecorators()));
         
         //$this->addDisplayGroup(array('submit', 'abort', 'hash'), 'buttons');
         

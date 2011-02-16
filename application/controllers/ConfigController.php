@@ -37,7 +37,7 @@ class ConfigController extends X_Controller_Action {
     	
     	$redirect = X_Env::decode($this->getRequest()->getParam('r', ''));
     	if ( $redirect == '') {
-    		$redirect = 'config:index';
+    		$redirect = 'manage:index';
     		if ( !is_null($form->getElement('redirect') ) ) {
     			$form->redirect->setValue($redirect);
     		}
