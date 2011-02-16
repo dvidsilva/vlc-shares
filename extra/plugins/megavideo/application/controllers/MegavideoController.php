@@ -214,7 +214,7 @@ NEWINLINE;
 				}
 				
 			} elseif ($type == 'category' ) {
-				$mapper->deleteCategory($id);
+				$mapper->deleteCategory(urldecode($id));
 			}
         }
         $this->_helper->redirector('index','megavideo');
