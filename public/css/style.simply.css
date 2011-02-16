@@ -529,6 +529,7 @@ a.button.light:hover {
 }
 
 .x_form .element input[type="text"],
+.x_form .element input[type="password"],
 .x_form .element select,
 .x_form .element textarea {
 	border: 1px solid #333;
