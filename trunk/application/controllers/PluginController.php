@@ -189,7 +189,7 @@ class PluginController extends X_Controller_Action
 			$vFrom = $egg->getCompatibilityFrom();
 			$vTo = $egg->getCompatibilityTo();
 			if ( version_compare(X_VlcShares::VERSION_CLEAN, $vFrom, '<')
-					|| ( $vTo !== null && version_compare(X_VlcShares::VERSION_CLEAN, $vTo, '>')) ) {
+					|| ( $vTo !== null && version_compare(X_VlcShares::VERSION_CLEAN, $vTo, '>=')) ) {
 						
 				throw new Exception(X_Env::_('plugin_err_installerror_unsupported'). ": $vFrom - $vTo");
 			}
