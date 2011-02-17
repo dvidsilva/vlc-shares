@@ -51,6 +51,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 				continue;
 			}
 			
+			// skip this directory if a plugin with the same id is already registered
+			if ( X_VlcShares_Plugins::broker()->isRegistered($entry->getFilename()) ) { 
+				continue;
+			}
+			
 			$bootstrapFile = $entry->getRealPath() . '/dev_bootstrap.php';
 			
 			if ( file_exists($bootstrapFile) ) {
