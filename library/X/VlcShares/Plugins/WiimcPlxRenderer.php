@@ -45,6 +45,8 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 					$totalTime = X_Env::formatTime($vlc->getTotalTime());
 					$plx->setWiimcplus_current_time("$currentTime/$totalTime"); // uses the __call api
 				}
+			} elseif ( $request->getControllerName() == 'browse' && $request->getActionName() == 'selection' ) {
+				$plx->setWiimcplus_assert_nohistory('true'); // uses the __call api
 			}
 		}
 		

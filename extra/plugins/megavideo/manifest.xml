@@ -4,7 +4,7 @@
 		<label>p_megavideo_plglabel</label>
 		<description>p_megavideo_plgdesc</description>
 		<version>0.2</version>
-		<status>alpha</status>
+		<status>alpha2</status>
 		<key>megavideo</key>
 		<file>X/VlcShares/Plugins/Megavideo.php</file>
 		<class>X_VlcShares_Plugins_Megavideo</class>

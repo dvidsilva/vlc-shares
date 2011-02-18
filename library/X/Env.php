@@ -215,7 +215,8 @@ class X_Env {
 				if ( func_num_args() > 1 ) {
 					$args = func_get_args();
 					array_shift($args);
-					$return = vsprintf($return, $args);
+					// remove warning output
+					$return = @vsprintf($return, $args);
 				}
 				return $return;
 			}

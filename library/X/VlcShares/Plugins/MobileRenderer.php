@@ -32,6 +32,12 @@ class X_VlcShares_Plugins_MobileRenderer extends X_VlcShares_Plugins_Abstract {
 		$view->setViewSuffix('mobile.phtml');
 		$layout->getLayoutInstance()->setLayout('mobile', true);
 		
+		if ( $request instanceof Zend_Controller_Request_Http ) {
+			if ( $request->isXmlHttpRequest() ) {
+				$layout->getLayoutInstance()->disableLayout();
+			}
+		}
+		
 		try {
 			$providerObj = X_VlcShares_Plugins::broker()->getPlugins($request->getParam('p',''));
 			$view->view->providerName = strtolower($providerObj->getId());

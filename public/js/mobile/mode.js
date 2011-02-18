@@ -8,7 +8,7 @@ function loaded() {
 }
 */
 
-$().ready(function(){
+$(document).ready(function(){
 	// show/hide search form label
 	if ($("#search").val()=="") {
 		$("#searchLabel").css("visibility","visible");
@@ -24,23 +24,38 @@ $().ready(function(){
 	
 	$(".item.option ul").hide();
 	
-	$(".item.option > a").click(function (event) {
+	$(".item.option a").each(function (i, item) {
+		var $item = $(item);
+		$item.attr('id', $item.attr('href'));
+		$item.attr('href', '#');
+		$item.click(function(event) {
+			event.preventDefault();
+		});
+	});
+	
+	$(".item.option").click(function (event) {
+		event.stopPropagation();
 		event.preventDefault();
-		$parent = $(this).parent();
+		
+		$parent = $(this);
 		//event.stopPropagation();
 		if ( $parent.find('ul.items li').size() > 0 ) return; // already unfolded
+		
 		var $ul = $(".item.option").not($parent).find('ul');
-		var href = $parent.find('a').attr('href');
-		$thisul = $parent.find('ul.items');
+		
+		var href = $parent.find('a').attr('id');
+		
+		var $thisul = $parent.find('ul.items');
 		$ul.slideUp('slow', function () {
 			$ul.find('li').remove();
-			$thisul.load(href + ' ul.items>*', function () {
-				$thisul.slideDown('slow');
-			});
+		});
+
+		$thisul.load(href + ' ul.items>*', function () {
+			$thisul.find('a').click(function (event) { event.stopPropagation(); });
+			$thisul.slideDown('slow');
 		});
 		
-		$thisul.find('a').click(function (event) { event.stopPropagation(); });
-		
+		return false;
 	});
 	
 });	
