@@ -7,6 +7,9 @@
  */
 class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface, X_VlcShares_Plugins_BackuppableInterface {
 	
+	const VERSION_CLEAN = '0.2';
+	const VERSION = '0.2alpha2';
+	
 	public function __construct() {
 		$this
 			->setPriority('gen_beforeInit')
@@ -257,13 +260,13 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 		// we want to expose items only if pid is this plugin
 		if ( $this->getId() != $pid ) return;
 		
-		X_Debug::i('Plugin triggered');		
+		X_Debug::i('Plugin triggered');	
 		
 		$urlHelper = $controller->getHelper('url');
 		$link = new X_Page_Item_PItem($this->getId().'-header', X_Env::_('p_megavideo_qualityselection_title'));
 		$link->setType(X_Page_Item_PItem::TYPE_ELEMENT)
 			->setLink(X_Env::completeUrl($urlHelper->url()));
-		return new X_Page_ItemList_PItem();
+		return new X_Page_ItemList_PItem(array($link));
 		
 	}
 	
