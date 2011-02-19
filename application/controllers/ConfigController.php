@@ -6,7 +6,7 @@ class ConfigController extends X_Controller_Action {
 
 	/**
 	 * 
-	 * @var Application_Form_Configs
+	 * @var Application_Form_AutoConfigs
 	 */
 	private $configForm = null;
 	
@@ -115,11 +115,13 @@ class ConfigController extends X_Controller_Action {
     				} 
     			}
     			if (!$isError) {
+    				
     				$this->_helper->flashMessenger(X_Env::_('configs_save_done'));
-    				$this->_helper->redirector->gotoRoute(array('controller' => $redirect[0], 'action' => $redirect[1]), 'default', false);
+    				$this->_helper->redirector($redirect[1], $redirect[0]);
+    				
+    			} else {
+	    			$this->_forward('index');
     			}
-    			
-    			$this->_forward('index');
     			
     		} else {
     			$this->_forward('index');
