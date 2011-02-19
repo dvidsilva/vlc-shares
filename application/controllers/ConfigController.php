@@ -38,11 +38,11 @@ class ConfigController extends X_Controller_Action {
     	$redirect = X_Env::decode($this->getRequest()->getParam('r', ''));
     	if ( $redirect == '') {
     		$redirect = 'manage:index';
-    		if ( !is_null($form->getElement('redirect') ) ) {
-    			$form->redirect->setValue($redirect);
-    		}
     	}
-
+   		if ( !is_null($form->getElement('redirect') ) ) {
+   			$form->redirect->setValue($redirect);
+   		}
+    	
     	$defaultValues = array();
     	foreach($configs as $config) {
     		/* @var $config Application_Model_Config */
