@@ -202,7 +202,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$view->guiElements()->registerElement('portion', 'X_VlcShares_Elements_Portion');
 		$view->guiElements()->registerElement('block', 'X_VlcShares_Elements_Block');
 		// this is only a shortcut for decorator setting to innerblock. Everything is done by Block
-		$view->guiElements()->registerElement('innerBlock', 'X_VlcShares_Elements_InnerBlock');
+		$view->guiElements()->registerElement('innerBlock', 'X_VlcShares_Elements_Block');
 		$view->guiElements()->registerElement('sectionContainer', 'X_VlcShares_Elements_SectionContainer');
 		$view->guiElements()->registerElement('section', 'X_VlcShares_Elements_Section');
 		$view->guiElements()->registerElement('menu', 'X_VlcShares_Elements_Menu');
