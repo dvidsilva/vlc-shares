@@ -8,7 +8,7 @@
 class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface, X_VlcShares_Plugins_BackuppableInterface {
 	
 	const VERSION_CLEAN = '0.2';
-	const VERSION = '0.2alpha2';
+	const VERSION = '0.2beta';
 	
 	public function __construct() {
 		$this
