@@ -8,7 +8,7 @@
 #     															#
 #################################################################
 
-VLC-SHARES v0.5.2 - 16/12/2010
+VLC-SHARES v0.5.3 - 16/12/2010
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -24,6 +24,21 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.5.3 beta (19/02/2010) ***
+ - Cache plugin integrated
+ - Lazy plugins configuration redirect on configs change fixed
+ - [MobileRenderer] Fixed a bug in mode/selection page that provoke multiple calls to the same page
+ - [FileSystem] Disable cache when it's the provider
+ - [PluginInstaller] VERSION_TO param in plugin manifest is handled as an upper bound and it's the first incompatible version
+ - [PluginInstaller] Fixed regression in plugin removal procedure 
+ - Translation function allow params substitution
+ - [EXTRA][JDownloader] JDownloader plugin added
+ - [EXTRA][Megavideo] Fixed regression in category removal/rename
+ - [EXTRA][Megavideo] Missing translation strings added
+ - [EXTRA][Youtube,Megavideo] Cache disabled when playlist is built with local data only
+ - [EXTRA][AnimeFTW, AnimeDB, Megavideo] Form password element type changed to password
+ - [EXTRA][AnimeFTW, AnimeDB, Megavideo] Cookie jar reset on plugin configs change
 
 *** 0.5.3 alpha1 (15/02/2010) ***
  - New management gui
