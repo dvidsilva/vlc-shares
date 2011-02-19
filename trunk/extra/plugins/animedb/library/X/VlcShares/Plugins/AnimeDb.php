@@ -324,8 +324,6 @@ class X_VlcShares_Plugins_AnimeDb extends X_VlcShares_Plugins_Abstract implement
 		// nothing to do if this isn't the right section
 		if ( $namespace != $this->getId() ) return;
 		
-		echo "$key ";
-		
 		switch ($key) {
 			// i have to convert it to a password element
 			case 'plugins_animedb_auth_password':
