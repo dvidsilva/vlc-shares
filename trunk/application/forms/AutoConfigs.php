@@ -109,7 +109,7 @@ class Application_Form_AutoConfigs extends X_Form
         // Add the submit button
         $this->addElement('hidden', 'redirect', array(
             'ignore'   => true,
-        	'value'	   => 'manage/index',
+        	/*'value'	   => 'manage:index',*/
         	'decorators' => array('ViewHelper')
         ));
         
