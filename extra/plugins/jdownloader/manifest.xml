@@ -4,7 +4,7 @@
 		<label>p_jdownloader_plglabel</label>
 		<description>p_jdownloader_plgdesc</description>
 		<version>0.1</version>
-		<status>alpha</status>
+		<status>beta</status>
 		<key>jdownloader</key>
 		<file>X/VlcShares/Plugins/JDownloader.php</file>
 		<class>X_VlcShares_Plugins_JDownloader</class>
