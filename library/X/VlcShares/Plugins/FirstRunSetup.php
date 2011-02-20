@@ -26,6 +26,7 @@ class X_VlcShares_Plugins_FirstRunSetup extends X_VlcShares_Plugins_Abstract {
 		$controllerName = $controller->getRequest()->getControllerName();
 		
 		if ( $controllerName != 'installer' ) {
+			//die($controllerName);
 			$controller->getRequest()->setControllerName('installer')->setActionName('index')->setDispatched(false);
 		}
 	}
