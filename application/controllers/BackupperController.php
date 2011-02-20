@@ -113,12 +113,16 @@ class BackupperController extends X_Controller_Action
     			
     			$data['metadata'] = array(
     				'version'	=> X_VlcShares::VERSION,
-    				'created'	=> date('d/m/Y H:i:s')
+    				'created'	=> date('d/m/Y H:i:s'),
+    				'decrypt'	=> 'backupper_decodevalues_0_5_3'
     			);
     			
     			$data['plugins'] = $items;
     			
     			$filename = APPLICATION_PATH . "/../data/backupper/backup_{$date}_{$type}.xml";
+    			
+    			$data['plugins'] = array_map('backupper_encodevalues', $data['plugins']);
+    			
     			$configs = new Zend_Config($data);
     			$writer->setFilename($filename);
     			
@@ -154,7 +158,11 @@ class BackupperController extends X_Controller_Action
     		$this->_helper->redirector('index', 'backupper');
     	}
 	    	
-		$backup = new Zend_Config_Xml(file_get_contents(APPLICATION_PATH . "/../data/backupper/$file"));
+    	$data = file_get_contents(APPLICATION_PATH . "/../data/backupper/$file");
+    	
+    	//@$data['plugins'] = array_map('backupper_decodevalues_0_5_3', $data['plugins']);
+    	
+		$backup = new Zend_Config_Xml($data);
 		
 		try {
 			
@@ -205,7 +213,22 @@ class BackupperController extends X_Controller_Action
     		try {
     			/* @var $backuppedData Zend_Config_Xml */
     			$backuppedData = new Zend_Config_Xml(APPLICATION_PATH . "/../data/backupper/$file");
+    			
+    			$decryptFunction = $backuppedData->metadata->get('decrypt', false);
+    			
+    			if ( $decryptFunction !== false ) { 
+    				if ( function_exists($decryptFunction) ) {
+		    			$arrayBackuppedData = $backuppedData->toArray();
+	    				$arrayBackuppedData['plugins'] = array_map('backupper_decodevalues_0_5_3', $arrayBackuppedData['plugins']);
+    				} else {
+    					throw new Exception("Unknown decryption function: $decryptFunction");
+    				}
+    			}
+    			
+    			$backuppedData = new Zend_Config($arrayBackuppedData);
+    			
     		} catch (Exception $e) {
+    			X_Debug::e("Error while restoring: {$e->getMessage()}");
     			$this->_helper->flashMessenger(array('text' => X_Env::_('p_backupper_err_malformedrestorefile'), 'type' => 'error' ));
     			$this->_helper->redirector('index', 'backupper');
     		}
@@ -295,3 +318,29 @@ class BackupperController extends X_Controller_Action
     
 }
 
+
+if ( !function_exists('backupper_encodevalues') ) {
+	function backupper_encodevalues($value) {
+		if ( is_array($value) ) {
+			foreach ($value as $k => $v) {
+				$value[$k] = backupper_encodevalues($v);
+			}
+			return $value;
+		} else {
+			return base64_encode($value);
+		}
+	}
+}
+
+if ( !function_exists('backupper_decodevalues_0_5_3') ) {
+	function backupper_decodevalues_0_5_3($value) {
+		if ( is_array($value) ) {
+			foreach ($value as $k => $v) {
+				$value[$k] = backupper_decodevalues_0_5_3($v);
+			}
+			return $value;
+		} else {
+			return base64_decode($value);
+		}
+	}
+}

@@ -541,7 +541,7 @@ class X_VlcShares_Plugins_Youtube extends X_VlcShares_Plugins_Abstract implement
 	}
 	
 	
-	public function getParentLocation($location) {
+	public function getParentLocation($location = null) {
 		//return false;
 		@list($mode, $submode, $page, $videoId) = explode('/', $location);
 		

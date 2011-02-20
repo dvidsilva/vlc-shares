@@ -16,7 +16,7 @@ interface X_VlcShares_Plugins_ResolverInterface {
 	 * @param string $location
 	 * @return string resource real location
 	 */
-	function resolveLocation($location);
+	function resolveLocation($location = null);
 	/**
 	 * Get the parent location string of the current location
 	 * value
@@ -24,7 +24,7 @@ interface X_VlcShares_Plugins_ResolverInterface {
 	 * @param $location
 	 * @return string resource parent. NULL if there is no parent, false if location is invalid
 	 */
-	function getParentLocation($location);
+	function getParentLocation($location = null);
 	
 }
 

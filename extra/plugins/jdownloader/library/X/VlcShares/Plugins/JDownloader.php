@@ -503,11 +503,11 @@ class X_VlcShares_Plugins_JDownloader extends X_VlcShares_Plugins_Abstract imple
 	}
 	
 	
-	function resolveLocation($location) {
+	function resolveLocation($location = null) {
 		return false;
 	}
 	
-	function getParentLocation($location) {
+	function getParentLocation($location = null) {
 		return false;
 	}
 	
