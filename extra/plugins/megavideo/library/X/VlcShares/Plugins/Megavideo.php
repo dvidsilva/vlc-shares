@@ -8,7 +8,7 @@
 class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface, X_VlcShares_Plugins_BackuppableInterface {
 	
 	const VERSION_CLEAN = '0.2';
-	const VERSION = '0.2beta';
+	const VERSION = '0.2';
 	
 	public function __construct() {
 		$this
@@ -510,6 +510,7 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 				$password = $form->createElement('password', 'plugins_megavideo_premium_password', array(
 					'label' => $element->getLabel(),
 					'description' => $element->getDescription(),
+					'renderPassword' => true,
 				));
 				$form->plugins_megavideo_premium_password = $password;
 				break;

@@ -544,8 +544,8 @@ NEWINLINE;
 		
 		$http->setMethod(Zend_Http_Client::POST)
 			->setParameterPost(array(
-				'username' => urlencode($username),
-				'password' => urlencode($password),
+				'username' => /*urlencode*/($username),
+				'password' => /*urlencode*/($password),
 				'login' => '1',
 			));
 			
