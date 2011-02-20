@@ -136,7 +136,7 @@ class X_VlcShares_Plugins_Backupper extends X_VlcShares_Plugins_Abstract impleme
 		foreach ($configs as $config) {
 			/* @var $config Application_Model_Config */
 			if ( array_key_exists($config->getKey(), $items['configs'])) {
-				if ( $config->getSection() == @$items['configs'][$config->getKey()]['section'] && $config->getValue() != ($items['configs'][$config->getKey()]['value'] ) ) {
+				if ( $config->getSection() == @$items['configs'][$config->getKey()]['section'] && $config->getValue() != $items['configs'][$config->getKey()]['value']  ) {
 					$config->setValue( @$items['configs'][$config->getKey()]['value']);
 					// i need to commit change
 					try {

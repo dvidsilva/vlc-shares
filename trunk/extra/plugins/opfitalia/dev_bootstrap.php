@@ -40,15 +40,30 @@ $pluginsIncludes = array(
 $helpersIncludes = array(
 );
 
-$pluginsInstances = array(
-	'opfitalia' => array(
-		'class' => 'X_VlcShares_Plugins_OPFItalia',
-		'configs' => array(
-			// special configs aren't required, so i use defaults hardcoded
+/* @var $runtimeConfigs Zend_Config */
+$runtimeConfigs = $this->getResource('configs');
+// check here for configs from runtime
+if ( isset($runtimeConfigs->plugins->opfitalia ) ) {
+	$pluginsInstances = array(
+		'opfitalia' => array(
+			'class' => 'X_VlcShares_Plugins_OPFItalia',
+			'configs' => array(
+				'auth.username' => $runtimeConfigs->plugins->opfitalia->auth->username,
+				'auth.password' => $runtimeConfigs->plugins->opfitalia->auth->password,
+			)
 		)
-	)
-);
-
+	);
+	unset($runtimeConfigs);
+} else {
+	$pluginsInstances = array(
+		'opfitalia' => array(
+			'class' => 'X_VlcShares_Plugins_OPFItalia',
+			'configs' => array(
+				// special configs aren't required, so i use defaults hardcoded
+			)
+		)
+	);
+}
 $dbInits = array(
 	$basePath.'/install.sql' => (file_exists(APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_OPFItalia.en_GB.ini') == false),
 );
