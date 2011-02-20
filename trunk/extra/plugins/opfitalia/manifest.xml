@@ -3,7 +3,7 @@
 	<metadata>
 		<label>p_opfitalia_plglabel</label>
 		<description>p_opfitalia_plgdesc</description>
-		<version>0.2</version>
+		<version>0.2.1</version>
 		<status>stable</status>
 		<key>opfitalia</key>
 		<file>X/VlcShares/Plugins/OPFItalia.php</file>

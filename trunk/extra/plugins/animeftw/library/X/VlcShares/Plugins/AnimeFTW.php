@@ -13,7 +13,7 @@ require_once 'Zend/Dom/Query.php';
  */
 class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const PLG_VERSION = '0.2';
+	const VERSION = '0.2.1';
 	
 	const BASE_URL = 'http://www.animeftw.tv/';
 	const PAGE_LOGIN = 'https://www.animeftw.tv/login';
@@ -426,6 +426,7 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 				$password = $form->createElement('password', 'plugins_animeftw_auth_password', array(
 					'label' => $element->getLabel(),
 					'description' => $element->getDescription(),
+					'renderPassword' => true,
 				));
 				$form->plugins_animeftw_auth_password = $password;
 				break;
@@ -650,7 +651,7 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 		$http->setHeaders(array(
 			//$this->config('hide.useragent', true) ? 'User-Agent: vlc-shares/'.X_VlcShares::VERSION : 'User-Agent: Mozilla/5.0 (X11; Linux i686; rv:2.0.1) Gecko/20101019 Firefox/4.0.1',
 			//'Content-Type: application/x-www-form-urlencoded'
-			'User-Agent: vlc-shares/'.X_VlcShares::VERSION.' animeftw/'.self::PLG_VERSION
+			'User-Agent: vlc-shares/'.X_VlcShares::VERSION.' animeftw/'.self::VERSION
 		));
 		
 		$jarFile = APPLICATION_PATH . '/../data/animeftw/cookie.jar';
