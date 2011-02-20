@@ -13,7 +13,96 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 
 	function __construct() {
 		$this->setPriority('gen_afterPageBuild')
+		->setPriority('gen_beforePageBuild')
 		->setPriority('getIndexManageLinks');
+	}
+	
+	/**
+	 * Show an wiimc compatible error page in plx format
+	 */
+	function gen_beforePageBuild(Zend_Controller_Action $controller) {
+		if ( !((bool) $this->config('forced.enabled', false)) && !$this->helpers()->devices()->isWiimc() ) return;
+		
+		$controllerName = $controller->getRequest()->getControllerName();
+		$actionName = $controller->getRequest()->getControllerName();
+		
+		if ( "$controllerName/$actionName" != "error/error") return;
+
+		X_Debug::i("Plugin triggered");
+		
+		try {
+			$cachePlugin = X_VlcShares_Plugins::broker()->getPlugins('cache');
+			if ( method_exists($cachePlugin, 'setDoNotCache' ) ) {
+				$cachePlugin->setDoNotCache();
+			}
+		} catch (Exception $e) {}
+		
+		// setting request as dispatched prevent action execution
+		$controller->getRequest()->setDispatched(true);
+		
+		/* @var $urlHelper Zend_Controller_Action_Helper_Url */
+		$urlHelper = $controller->getHelper('url');
+		
+		
+		
+        $errors = $controller->getRequest()->getParam('error_handler');
+
+        $view = new stdClass();
+        
+        switch ($errors->type) {
+            case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
+            case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
+            case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION:
+        
+                // 404 error -- controller or action not found
+                //$this->getResponse()->setHttpResponseCode(404);
+                $view->message = 'Page not found';
+                break;
+            default:
+                // application error
+                //$this->getResponse()->setHttpResponseCode(500);
+                $view->message = 'Application error';
+                break;
+        }
+        
+        X_Debug::f($view->message . ": " . $errors->exception->getMessage());
+        X_Debug::f($errors->exception->getTraceAsString());
+        
+		$view->exception = $errors->exception;
+            
+		$plx = new X_Plx(
+			X_Env::_('p_wiimcplxrenderer_plxtitle_error_error'),
+			X_Env::_('p_wiimcplxrenderer_plxdescription_error_error')
+		);
+		
+		$plx->addItem(new X_Plx_Item(X_Env::_('p_wiimcplxrenderer_plxerror_title', $view->message),X_Env::completeUrl($urlHelper->url()))); 
+		
+		$plx->addItem(new X_Plx_Item(X_Env::_('p_wiimcplxrenderer_plxerror_message', $errors->exception->getMessage()), X_Env::completeUrl($urlHelper->url())));
+		
+		$plx->addItem(new X_Plx_Item(X_Env::_('p_wiimcplxrenderer_plxerror_stacktrace_separator'),X_Env::completeUrl($urlHelper->url())));
+		
+		$stacktrace = explode("\n", $errors->exception->getTraceAsString());
+		
+		foreach ($stacktrace as $i => $trace) {
+			$plx->addItem(new X_Plx_Item(X_Env::_('p_wiimcplxrenderer_plxerror_trace', $i, $trace), X_Env::completeUrl($urlHelper->url())));
+		}
+		
+		$plx->addItem(new X_Plx_Item(X_Env::_('p_wiimcplxrenderer_plxerror_request_separator'),X_Env::completeUrl($urlHelper->url())));
+        
+		$params = $errors->request->getParams();
+		
+		foreach ($params as $key => $value) {
+			$plx->addItem(new X_Plx_Item(X_Env::_('p_wiimcplxrenderer_plxerror_param', $key, $value), X_Env::completeUrl($urlHelper->url())));
+		}
+        
+		$this->_render($plx, $controller);
+		
+		$controller->getResponse()->sendResponse();
+		
+		// the execution will stop here!
+		// or zf will send in header code 500 and wiimc will not parse the response
+		exit;
+		
 	}
 	
 	public function gen_afterPageBuild(X_Page_ItemList_PItem $list, Zend_Controller_Action $controller) {
@@ -150,6 +239,7 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 			$body = (string) $plx;
 		}
 		$controller->getResponse()->setBody($body);
+		return $body;
 	}
 	
 	/**
