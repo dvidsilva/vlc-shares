@@ -12,16 +12,45 @@ class InstallerController extends X_Controller_Action
 	}
 	
     public function indexAction() {
+    	
+    	$lang = $this->getRequest()->getParam('lang', false);
+    	
 
     	$languages = array();
     	foreach ( new DirectoryIterator(APPLICATION_PATH ."/../languages/") as $entry ) {
     		if ( $entry->isFile() && pathinfo($entry->getFilename(), PATHINFO_EXTENSION) == 'ini' ) {
-    			$languages[$entry->getFilename()] = pathinfo($entry->getFilename(), PATHINFO_FILENAME);
+    			if ( count(explode('.',$entry->getFilename())) == 2 ) {
+    				$languages[$entry->getFilename()] = pathinfo($entry->getFilename(), PATHINFO_FILENAME);
+    			}
+    		}
+    	}
+
+    	if ( $lang != false ) {
+    		// cleanup from ./ and ../
+    		$lang = str_replace(array('.', '/'), '', $lang);
+    		if ( file_exists(APPLICATION_PATH ."/../languages/$lang.ini") && array_key_exists("$lang.ini", $languages) ) {
+	    		$translation = new Zend_Translate('ini', APPLICATION_PATH ."/../languages/$lang.ini");
+	    		X_Env::initTranslator($translation);
+    		} else {
+    			$this->_helper->flashMessenger(array('type' => 'error', 'text' => X_Env::_('installer_invalid_language') ));
+    			$lang = false;
     		}
     	}
     	
+    	
+    	$form = new Application_Form_Installer();
+    	$form->setAction($this->_helper->url('save', 'installer'));
+    	try {
+    		$form->lang->setMultiOptions($languages);
+    		$form->setDefault('lang', $lang !== false ? "$lang.ini" : 'en_GB.ini');
+    	} catch (Exception $e) {
+    		// WTF?
+    	}
+    	
     	$this->view->messages = array_merge($this->_helper->flashMessenger->getMessages(), $this->_helper->flashMessenger->getCurrentMessages()) ;
+    	$this->_helper->flashMessenger->clearCurrentMessages();
     	$this->view->languages = $languages;
+    	$this->view->form = $form;
     	
     }
     
