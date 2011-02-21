@@ -87,8 +87,6 @@ class InstallerController extends X_Controller_Action
 	    	$this->_helper->redirector('index');
     	}
     	
-    	//die(print_r($this->getRequest()->getParam('plugins')));
-    	
     	$plugins = $this->getRequest()->getParam('plugins', array());
     	
     	ini_set('max_execution_time', 0);
@@ -104,8 +102,9 @@ class InstallerController extends X_Controller_Action
     			
     			$response = $http->request();
     			
-    			$this->_installPlugin($response->getStreamName());
-    			
+    			if ( $this->_installPlugin($response->getStreamName()) ) {
+    				$this->_helper->flashMessenger(array('type' => 'success', 'text' => X_Env::_('plugin_install_done') . ": $plugin"));
+    			}
     		}
     	}
     	
