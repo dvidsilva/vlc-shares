@@ -22,6 +22,13 @@ class Application_Form_Installer extends X_Form
         	'multiOptions' => array(),
         ));
         
+
+        $this->addElement('multiCheckbox', 'plugins', array(
+        	'required' => false,
+        	'label' => X_Env::_('installer_optionalplugins'),
+        	'description' => X_Env::_('installer_optionalplugins_desc'),
+        ));
+        
         
         // Add the submit button
         $this->addElement('submit', 'submit', array(
