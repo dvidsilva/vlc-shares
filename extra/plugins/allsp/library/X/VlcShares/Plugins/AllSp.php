@@ -4,14 +4,35 @@ require_once 'X/VlcShares/Plugins/Abstract.php';
 
 
 /**
- * Add AnimeLand.it site as a videos source
+ * Add Allsp.com site as a video source
  * @author ximarx
- *
+ * @version 0.2
  */
-class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
+class X_VlcShares_Plugins_AllSp extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
+	
+	const VERSION = '0.2';
+
+	private $seasons = array(
+		1 => "http://allsp.com/e.php?season=1",
+		2 => "http://allsp.com/e.php?season=2",
+		3 => "http://allsp.com/e.php?season=3",
+		4 => "http://allsp.com/e.php?season=4",
+		5 => "http://allsp.com/e.php?season=5",
+		6 => "http://allsp.com/e.php?season=6",
+		7 => "http://allsp.com/e.php?season=7",
+		8 => "http://allsp.com/e.php?season=8",
+		9 => "http://allsp.com/e.php?season=9",
+		10 => "http://allsp.com/e.php?season=10",
+		11 => "http://allsp.com/e.php?season=11",
+		12 => "http://allsp.com/e.php?season=12",
+		13 => "http://allsp.com/e.php?season=13",
+		14 => "http://allsp.com/e.php?season=14",
+	);
+	
 	
 	public function __construct() {
-		$this->setPriority('getCollectionsItems')
+		$this->setPriority('gen_beforeInit')
+			->setPriority('getCollectionsItems')
 			->setPriority('preRegisterVlcArgs')
 			->setPriority('getShareItems')
 			->setPriority('preGetModeItems')
@@ -19,16 +40,24 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 	}
 	
 	/**
-	 * Add the main link for animeland library
+	 * Inizialize translator for this plugin
+	 * @param Zend_Controller_Action $controller
+	 */
+	function gen_beforeInit(Zend_Controller_Action $controller) {
+		$this->helpers()->language()->addTranslation(__CLASS__);
+	}
+	
+	/**
+	 * Add the main link for allsp library
 	 * @param Zend_Controller_Action $controller
 	 */
 	public function getCollectionsItems(Zend_Controller_Action $controller) {
 		
 		X_Debug::i("Plugin triggered");
-		
-		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_animeland_collectionindex'));
-		$link->setIcon('/images/animeland/logo.png')
-			->setDescription(X_Env::_('p_animeland_collectionindex_desc'))
+
+		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_allsp_collectionindex'));
+		$link->setIcon('/images/allsp/logo.png')
+			->setDescription(X_Env::_('p_allsp_collectionindex_desc'))
 			->setType(X_Page_Item_PItem::TYPE_CONTAINER)
 			->setLink(
 				array(
@@ -38,7 +67,6 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 				), 'default', true
 			);
 		return new X_Page_ItemList_PItem(array($link));
-		
 	}
 	
 	/**
@@ -53,83 +81,74 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 		
 		X_Debug::i("Plugin triggered");
 		
+		// try to disable SortItems plugin, so link are listed as in html page
+		X_VlcShares_Plugins::broker()->unregisterPluginClass('X_VlcShares_Plugins_SortItems');
+		
+		
 		$urlHelper = $controller->getHelper('url');
 		
 		$items = new X_Page_ItemList_PItem();
 		
-		if ( $location != '' ) {
+		if ( $location != '' && array_key_exists((int) $location, $this->seasons) ) {
 			
-			// try to disable SortItems plugin, so link are listed as in html page
-			X_VlcShares_Plugins::broker()->unregisterPluginClass('X_VlcShares_Plugins_SortItems');
+			// episodes list
+			$url = $this->seasons[(int) $location];
 			
-			$pageIndex = rtrim($this->config('base.url', 'http://www.animeland.it/'), '/')."/$location";
+			$html = $this->_loadPage($url);
+			$dom = new Zend_Dom_Query($html);
 			
-			$htmlString = $this->_loadPage($pageIndex);
+			$results = $dom->queryXpath('//div[@id="randomVideos"]//div[@class="randomTab"]//a[@class="previewDescriptionTitle"]');
 			
-			$dom = new Zend_Dom_Query($htmlString);
-			
-			$results = $dom->queryXpath('//a[@href!="menu_streaming.html"]');
+			$resultsImages = $dom->queryXpath('//div[@id="randomVideos"]//div[@class="randomTab"]//img[1]/attribute::src');
 			
 			for ( $i = 0; $i < $results->count(); $i++, $results->next()) {
 				
 				$node = $results->current();
 				$href = $node->getAttribute('href');
 				$label = $node->nodeValue;
+				
+				$id = explode('id=', $href, 2);
+				$id = @$id[1];
+
+				$thumb = null;
+				try {
+					if ( $resultsImages->valid() ) {
+						$thumb = $resultsImages->current()->nodeValue;
+						$resultsImages->next();
+					}
+				} catch ( Exception $e) {
+					$thumb = null;
+				}
 				
 				$item = new X_Page_Item_PItem($this->getId().'-'.$label, $label);
 				$item->setIcon('/images/icons/file_32.png')
 					->setType(X_Page_Item_PItem::TYPE_ELEMENT)
-					->setCustom(__CLASS__.':location', $href)
+					->setCustom(__CLASS__.':location', $id)
 					->setLink(array(
 						'action' => 'mode',
-						'l'	=>	X_Env::encode($href)
+						'l'	=>	X_Env::encode($id)
 					), 'default', false);
+				if ( $thumb !== null ) {
+					$item->setThumbnail($thumb);
+				}
 				$items->append($item);
 			}
-			
+				
 			
 		} else {
 			
-			$pageIndex = rtrim($this->config('base.url', 'http://www.animeland.it/'), '/')."/".$this->config('index.page', 'menu_streaming.html');
-			
-			$htmlString = $this->_loadPage($pageIndex);
-			
-			$dom = new Zend_Dom_Query($htmlString);
-			
-			$results = $dom->queryXpath('//a[@href!="menu_streaming.html"]');
-			
-			for ( $i = 0; $i < $results->count(); $i++, $results->next()) {
+			foreach ($this->seasons as $key => $seasons) {
 				
-				$node = $results->current();
-				$href = $node->getAttribute('href');
-				$label = $node->nodeValue;
+				$item = new X_Page_Item_PItem($this->getId().'-'.$key, X_Env::_('p_allsp_season_n').": $key");
+				$item->setIcon('/images/icons/folder_32.png')
+					->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+					->setCustom(__CLASS__.':location', $key)
+					->setLink(array(
+						'action' => 'share',
+						'l'	=>	X_Env::encode($key)
+					), 'default', false);
+				$items->append($item);
 				
-				$target = $node->getAttribute('target');
-				
-				if ( $target == '_blank' ) {
-					
-					$item = new X_Page_Item_PItem($this->getId().'-'.$label, $label);
-					$item->setIcon('/images/icons/file_32.png')
-						->setType(X_Page_Item_PItem::TYPE_ELEMENT)
-						->setCustom(__CLASS__.':location', $href)
-						->setLink(array(
-							'action' => 'mode',
-							'l'	=>	X_Env::encode($href)
-						), 'default', false);
-					$items->append($item);
-					
-				} else {
-
-					$item = new X_Page_Item_PItem($this->getId().'-'.$label, $label);
-					$item->setIcon('/images/icons/folder_32.png')
-						->setType(X_Page_Item_PItem::TYPE_CONTAINER)
-						->setCustom(__CLASS__.':location', $href)
-						->setLink(array(
-							'action' => 'share',
-							'l'	=>	X_Env::encode($href)
-						), 'default', false);
-					$items->append($item);
-				}
 			}
 		}
 		
@@ -181,12 +200,13 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 		$url = $this->resolveLocation($location);
 		
 		if ( $url ) {
-			$link = new X_Page_Item_PItem('core-directwatch', X_Env::_('p_animeland_watchdirectly'));
+			$link = new X_Page_Item_PItem('core-directwatch', X_Env::_('p_allsp_watchdirectly'));
 			$link->setIcon('/images/icons/play.png')
 				->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
 				->setLink($url);
 			return new X_Page_ItemList_PItem(array($link));
 		}
+		
 	}
 	
 	private $cachedLocation = array();
@@ -205,22 +225,20 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 		// prevent no-location-given error
 		if ( $location === null ) return false;
 		
-		$htmlString = $this->_loadPage($location);
+		$pageVideo = "http://allsp.com/xml.php?id=$location";
+		
+		$htmlString = $this->_loadPage($pageVideo);
 		
 		$dom = new Zend_Dom_Query($htmlString);
 		
-		$results = $dom->queryXpath('//embed/attribute::flashvars');
+		$results = $dom->queryXpath('//location');
 		
 		if ( $results->valid() ) {
 
-			$attr = $results->current()->nodeValue;
-			$attrs = explode("&", $attr);
-			foreach ($attrs as $attr) {
-				list($type, $value) = explode('=', $attr);
-				if ( $type == 'file' ) {
-					$this->cachedLocation[$location] = $value;
-					return $value;
-				}
+			$value = $results->current()->nodeValue;
+			if ( $value != '' ) {
+				$this->cachedLocation[$location] = $value;
+				return $value;
 			}
 		}
 		$this->cachedLocation[$location] = false;
@@ -229,29 +247,29 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 	}
 	
 	/**
-	 * This plugin don't support
-	 * parent location resolver. So i redirect to history-1
+	 * No support for parent location
 	 * @see X_VlcShares_Plugins_ResolverInterface::getParentLocation
 	 * @param $location
 	 */
 	function getParentLocation($location = null) {
-		return false;
+		if ( $location == null || $location == '') return false;
 	}
 	
+	
 	/**
-	 * Add the link for -manage-animeland-
+	 * Add the link for -manage-allsp-
 	 * @param Zend_Controller_Action $this
 	 * @return X_Page_ItemList_ManageLink
 	 */
 	public function getIndexManageLinks(Zend_Controller_Action $controller) {
-		
-		$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_animeland_mlink'));
-		$link->setTitle(X_Env::_('p_animeland_managetitle'))
-			->setIcon('/images/animeland/logo.png')
+
+		$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_allsp_mlink'));
+		$link->setTitle(X_Env::_('p_allsp_managetitle'))
+			->setIcon('/images/allsp/logo.png')
 			->setLink(array(
 					'controller'	=>	'config',
 					'action'		=>	'index',
-					'key'			=>	'animeland'
+					'key'			=>	'allsp'
 			), 'default', true);
 		return new X_Page_ItemList_ManageLink(array($link));
 	}

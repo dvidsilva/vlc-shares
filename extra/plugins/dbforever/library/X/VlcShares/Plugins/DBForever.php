@@ -4,49 +4,46 @@ require_once 'X/VlcShares/Plugins/Abstract.php';
 
 
 /**
- * Add Allsp.com site as a video source
+ * Add DBForever.org site as a video source
  * @author ximarx
  *
  */
-class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
-
-	private $seasons = array(
-		1 => "http://allsp.com/e.php?season=1",
-		2 => "http://allsp.com/e.php?season=2",
-		3 => "http://allsp.com/e.php?season=3",
-		4 => "http://allsp.com/e.php?season=4",
-		5 => "http://allsp.com/e.php?season=5",
-		6 => "http://allsp.com/e.php?season=6",
-		7 => "http://allsp.com/e.php?season=7",
-		8 => "http://allsp.com/e.php?season=8",
-		9 => "http://allsp.com/e.php?season=9",
-		10 => "http://allsp.com/e.php?season=10",
-		11 => "http://allsp.com/e.php?season=11",
-		12 => "http://allsp.com/e.php?season=12",
-		13 => "http://allsp.com/e.php?season=13",
-		14 => "http://allsp.com/e.php?season=14",
-	);
+class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
+	const VERSION = '0.2';
+	
+	const INDEX_NARUTO = 'strm_naruto';
+	const INDEX_ONEPIECE = 'strm_onepiece';
+	const INDEX_BLEACH = 'strm_bleach';
 	
 	public function __construct() {
 		$this->setPriority('getCollectionsItems')
 			->setPriority('preRegisterVlcArgs')
 			->setPriority('getShareItems')
 			->setPriority('preGetModeItems')
+			->setPriority('gen_beforeInit')
 			->setPriority('getIndexManageLinks');
 	}
 	
 	/**
-	 * Add the main link for southpark library
+	 * Inizialize translator for this plugin
+	 * @param Zend_Controller_Action $controller
+	 */
+	function gen_beforeInit(Zend_Controller_Action $controller) {
+		$this->helpers()->language()->addTranslation(__CLASS__);
+	}
+	
+	/**
+	 * Add the main link for megavideo library
 	 * @param Zend_Controller_Action $controller
 	 */
 	public function getCollectionsItems(Zend_Controller_Action $controller) {
 		
 		X_Debug::i("Plugin triggered");
 
-		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_southpark_collectionindex'));
-		$link->setIcon('/images/southpark/logo.png')
-			->setDescription(X_Env::_('p_southpark_collectionindex_desc'))
+		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_dbforever_collectionindex'));
+		$link->setIcon('/images/dbforever/logo.png')
+			->setDescription(X_Env::_('p_dbforever_collectionindex_desc'))
 			->setType(X_Page_Item_PItem::TYPE_CONTAINER)
 			->setLink(
 				array(
@@ -70,75 +67,71 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 		
 		X_Debug::i("Plugin triggered");
 		
-		// try to disable SortItems plugin, so link are listed as in html page
-		X_VlcShares_Plugins::broker()->unregisterPluginClass('X_VlcShares_Plugins_SortItems');
-		
-		
 		$urlHelper = $controller->getHelper('url');
 		
 		$items = new X_Page_ItemList_PItem();
 		
-		if ( $location != '' && array_key_exists((int) $location, $this->seasons) ) {
+		if ( $location != '' && ( $location == self::INDEX_NARUTO || $location == self::INDEX_ONEPIECE || $location == self::INDEX_BLEACH   ) ) {
 			
-			// episodes list
-			$url = $this->seasons[(int) $location];
 			
-			$html = $this->_loadPage($url);
-			$dom = new Zend_Dom_Query($html);
+			$pageIndex = $this->config('index.url', 'http://www.dbforever.net/home.php')."?page=$location";
 			
-			$results = $dom->queryXpath('//div[@id="randomVideos"]//div[@class="randomTab"]//a[@class="previewDescriptionTitle"]');
+			$htmlString = $this->_loadPage($pageIndex);
 			
-			$resultsImages = $dom->queryXpath('//div[@id="randomVideos"]//div[@class="randomTab"]//img[1]/attribute::src');
+			$dom = new Zend_Dom_Query($htmlString);
+			
+			$results = $dom->queryXpath('//div[@align="left"]/a');
 			
 			for ( $i = 0; $i < $results->count(); $i++, $results->next()) {
 				
 				$node = $results->current();
 				$href = $node->getAttribute('href');
 				$label = $node->nodeValue;
-				
-				$id = explode('id=', $href, 2);
-				$id = @$id[1];
 
-				$thumb = null;
-				try {
-					if ( $resultsImages->valid() ) {
-						$thumb = $resultsImages->current()->nodeValue;
-						$resultsImages->next();
-					}
-				} catch ( Exception $e) {
-					$thumb = null;
-				}
-				
 				$item = new X_Page_Item_PItem($this->getId().'-'.$label, $label);
 				$item->setIcon('/images/icons/file_32.png')
 					->setType(X_Page_Item_PItem::TYPE_ELEMENT)
-					->setCustom(__CLASS__.':location', $id)
+					->setCustom(__CLASS__.':location', $href)
 					->setLink(array(
 						'action' => 'mode',
-						'l'	=>	X_Env::encode($id)
+						'l'	=>	X_Env::encode($href)
 					), 'default', false);
-				if ( $thumb !== null ) {
-					$item->setThumbnail($thumb);
-				}
 				$items->append($item);
-			}
 				
+			}
 			
 		} else {
+
+			$item = new X_Page_Item_PItem($this->getId().'-'.self::INDEX_NARUTO, X_Env::_('p_dbforever_naruto_ep'));
+			$item->setIcon('/images/icons/folder_32.png')
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+				->setCustom(__CLASS__.':location', self::INDEX_NARUTO)
+				->setThumbnail('http://www.dbforever.net/img/banner/naruto_banner_grande.jpg')
+				->setLink(array(
+					'l'	=>	X_Env::encode(self::INDEX_NARUTO)
+				), 'default', false);
+			$items->append($item);
+
+			$item = new X_Page_Item_PItem($this->getId().'-'.self::INDEX_ONEPIECE, X_Env::_('p_dbforever_onepiece_ep'));
+			$item->setIcon('/images/icons/folder_32.png')
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+				->setCustom(__CLASS__.':location', self::INDEX_ONEPIECE)
+				->setThumbnail('http://www.dbforever.net/img/banner/onepiece_banner_grande.jpg')
+				->setLink(array(
+					'l'	=>	X_Env::encode(self::INDEX_ONEPIECE)
+				), 'default', false);
+			$items->append($item);
 			
-			foreach ($this->seasons as $key => $seasons) {
-				
-				$item = new X_Page_Item_PItem($this->getId().'-'.$key, X_Env::_('p_southpark_season_n').": $key");
-				$item->setIcon('/images/icons/folder_32.png')
-					->setType(X_Page_Item_PItem::TYPE_CONTAINER)
-					->setCustom(__CLASS__.':location', $key)
-					->setLink(array(
-						'action' => 'share',
-						'l'	=>	X_Env::encode($key)
-					), 'default', false);
-				$items->append($item);
-				
-			}
+			$item = new X_Page_Item_PItem($this->getId().'-'.self::INDEX_BLEACH, X_Env::_('p_dbforever_bleach_ep'));
+			$item->setIcon('/images/icons/folder_32.png')
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+				->setCustom(__CLASS__.':location', self::INDEX_BLEACH)
+				->setThumbnail('http://www.dbforever.net/img/banner/bleach_banner_grande.jpg')
+				->setLink(array(
+					'l'	=>	X_Env::encode(self::INDEX_BLEACH)
+				), 'default', false);
+			$items->append($item);
+			
 		}
 		
 		return $items;
@@ -189,13 +182,12 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 		$url = $this->resolveLocation($location);
 		
 		if ( $url ) {
-			$link = new X_Page_Item_PItem('core-directwatch', X_Env::_('p_southpark_watchdirectly'));
+			$link = new X_Page_Item_PItem('core-directwatch', X_Env::_('p_dbforever_watchdirectly'));
 			$link->setIcon('/images/icons/play.png')
 				->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
 				->setLink($url);
 			return new X_Page_ItemList_PItem(array($link));
 		}
-		
 	}
 	
 	private $cachedLocation = array();
@@ -214,20 +206,28 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 		// prevent no-location-given error
 		if ( $location === null ) return false;
 		
-		$pageVideo = "http://allsp.com/xml.php?id=$location";
+		$pageVideo = $this->config('index.url', 'http://www.dbforever.net/home.php')."$location";
 		
 		$htmlString = $this->_loadPage($pageVideo);
 		
 		$dom = new Zend_Dom_Query($htmlString);
 		
-		$results = $dom->queryXpath('//location');
+		$results = $dom->queryXpath('//embed/attribute::flashvars');
 		
 		if ( $results->valid() ) {
 
-			$value = $results->current()->nodeValue;
-			if ( $value != '' ) {
-				$this->cachedLocation[$location] = $value;
-				return $value;
+			$attr = $results->current()->nodeValue;
+			$attrs = explode("&", $attr);
+			foreach ($attrs as $attr) {
+				list($type, $value) = explode('=', $attr);
+				if ( $type == 'file' ) {
+					// fix for relative links inside bleach category
+					if ( !X_Env::startWith($value, 'http://') ) {
+						$value = "http://www.dbforever.net$value";
+					}
+					$this->cachedLocation[$location] = $value;
+					return $value;
+				}
 			}
 		}
 		$this->cachedLocation[$location] = false;
@@ -236,31 +236,51 @@ class X_VlcShares_Plugins_SouthPark extends X_VlcShares_Plugins_Abstract impleme
 	}
 	
 	/**
-	 * No support for parent location
 	 * @see X_VlcShares_Plugins_ResolverInterface::getParentLocation
 	 * @param $location
 	 */
 	function getParentLocation($location = null) {
-		if ( $location == null || $location == '') return false;
+		if ($location == null || $location == '') return false;
+		
+		if ( $location == self::INDEX_BLEACH || $location == self::INDEX_ONEPIECE || $location == self::INDEX_NARUTO ) {
+			return null; // no parent for category index. Fallback to normal index
+		} else {
+			if ( X_Env::startWith($location, '?page=') ) {
+				// ok, we are inside a category
+				$location = substr($location, strlen('?page='));
+				if ( X_Env::startWith($location, self::INDEX_BLEACH)) {
+					return self::INDEX_BLEACH;
+				} elseif ( X_Env::startWith($location, self::INDEX_BLEACH)) {
+					return self::INDEX_NARUTO;
+				} elseif ( X_Env::startWith($location, self::INDEX_ONEPIECE) || X_Env::startWith($location, 'strm_one_piece') ) {
+					// i need to use double condition because in the page i have an inconsitence
+					return self::INDEX_ONEPIECE;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
 	}
 	
-	
 	/**
-	 * Add the link for -manage-southpark-
+	 * Add the link for -manage-dbforever-
 	 * @param Zend_Controller_Action $this
 	 * @return X_Page_ItemList_ManageLink
 	 */
 	public function getIndexManageLinks(Zend_Controller_Action $controller) {
 
-		$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_southpark_mlink'));
-		$link->setTitle(X_Env::_('p_southpark_managetitle'))
-			->setIcon('/images/southpark/logo.png')
+		$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_dbforever_mlink'));
+		$link->setTitle(X_Env::_('p_dbforever_managetitle'))
+			->setIcon('/images/dbforever/logo.png')
 			->setLink(array(
 					'controller'	=>	'config',
 					'action'		=>	'index',
-					'key'			=>	'southpark'
+					'key'			=>	'dbforever'
 			), 'default', true);
 		return new X_Page_ItemList_ManageLink(array($link));
+		
 	}
 	
 	private function _loadPage($uri) {
