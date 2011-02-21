@@ -296,3 +296,40 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	'cache.refresh.allowed','1','1','plugins',3,'p_cache_conf_refreshallowed_label','p_cache_conf_refreshallowed_desc','');
 
 
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'updatenotifier',
+	'X_VlcShares_Plugins_UpdateNotifier', 
+	'X/VlcShares/Plugins/UpdateNotifier.php',
+	'p_updatenotifier_plglabel',
+	'p_updatenotifier_plgdesc',
+	1,
+	1
+);
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'updatenotifier.autocheck.delay','3','3',
+	'plugins',0,'p_updatenotifier_conf_autocheckdelay_label','p_updatenotifier_conf_autocheckdelay_desc','');
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'updatenotifier.autocheck.last','','',
+	'plugins',0,'p_updatenotifier_conf_autochecklast_label','p_updatenotifier_conf_autochecklast_desc','hidden');
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'updatenotifier.core.stable.index','http://vlc-shares.googlecode.com/svn/updates/core/STABLE.xml','http://vlc-shares.googlecode.com/svn/updates/core/STABLE.xml',
+	'plugins',0,'p_updatenotifier_conf_corestableindex_label','p_updatenotifier_conf_corestableindex_desc','');
+	
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'updatenotifier.core.unstable.index','http://vlc-shares.googlecode.com/svn/updates/core/UNSTABLE.xml','http://vlc-shares.googlecode.com/svn/updates/core/UNSTABLE.xml',
+	'plugins',0,'p_updatenotifier_conf_coreunstableindex_label','p_updatenotifier_conf_coreunstableindex_desc','');
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'updatenotifier.plugins.index','http://vlc-shares.googlecode.com/svn/updates/plugins/INDEX.xml','http://vlc-shares.googlecode.com/svn/updates/plugins/INDEX.xml',
+	'plugins',0,'p_updatenotifier_conf_pluginsindex_label','p_updatenotifier_conf_pluginsindex_desc','');
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'updatenotifier.core.allow.unstable','0','0',
+	'plugins',3,'p_updatenotifier_conf_coreallowunstable_label','p_updatenotifier_conf_coreallowunstable_desc','');
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'updatenotifier.plugins.allow.unstable','0','0',
+	'plugins',3,'p_updatenotifier_conf_pluginsallowunstable_label','p_updatenotifier_conf_pluginsallowunstable_desc','');
