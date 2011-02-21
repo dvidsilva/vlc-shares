@@ -227,9 +227,10 @@ class X_Egg {
 	 * @param string $eggfile path to manifest file or xegg file
 	 * @param string $dest_basepath destination root path
 	 * @param string $tmp_path temp dir for xegg unpack (ignored if $eggfile is a manifest)
+	 * @param bool $disableExtCheck allow to disable zip xegg file type check
 	 * @return X_Egg
 	 */
-	public static function factory($eggfile, $dest_basepath, $tmp_path = false) {
+	public static function factory($eggfile, $dest_basepath, $tmp_path = false, $disableExtCheck = false) {
 		
 		$egg = new X_Egg();
 		
@@ -239,7 +240,7 @@ class X_Egg {
 			// i only have to read it
 			$manifestFile = $eggfile;
 			$basepath = dirname($eggfile);
-		} elseif ( $extension == 'zip' || $extension == 'xegg' ) {
+		} elseif ( $disableExtCheck || $extension == 'zip' || $extension == 'xegg' ) {
 			// i have to unpack the zip file
 			
 			$pclzip = new PclZip($eggfile);

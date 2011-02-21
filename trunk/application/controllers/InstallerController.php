@@ -116,6 +116,12 @@ class InstallerController extends X_Controller_Action
     
     public function executeAction() {
 
+    	// propagate current messages
+    	$messages = $this->_helper->flashMessenger->getMessages();
+    	foreach ($messages as $message) {
+    		$this->_helper->flashMessenger->addMessage($message);
+    	}
+    	
     	try {
     		
 	    	try {
@@ -247,7 +253,7 @@ class InstallerController extends X_Controller_Action
 
 		try {
 			// unzip and manifest parse
-			$egg = X_Egg::factory($filepath, APPLICATION_PATH . '/../', APPLICATION_PATH . '/../data/plugin/tmp/');
+			$egg = X_Egg::factory($filepath, APPLICATION_PATH . '/../', APPLICATION_PATH . '/../data/plugin/tmp/', true);
 			
 			$pluginKey = $egg->getKey();
 			
