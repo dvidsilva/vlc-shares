@@ -10,6 +10,8 @@ require_once 'X/VlcShares/Plugins/Abstract.php';
  */
 class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
+	const VERSION = '0.2';
+	
 	const INDEX_NARUTO = 'naruto';
 	const INDEX_SHIPPUDEN = 'shippuden'; 
 	
@@ -18,8 +20,18 @@ class X_VlcShares_Plugins_NarutoGet extends X_VlcShares_Plugins_Abstract impleme
 			->setPriority('preRegisterVlcArgs')
 			->setPriority('getShareItems')
 			->setPriority('preGetModeItems')
+			->setPriority('gen_beforeInit')
 			->setPriority('getIndexManageLinks');
 	}
+	
+	/**
+	 * Inizialize translator for this plugin
+	 * @param Zend_Controller_Action $controller
+	 */
+	function gen_beforeInit(Zend_Controller_Action $controller) {
+		$this->helpers()->language()->addTranslation(__CLASS__);
+	}
+	
 	
 	/**
 	 * Add the main link for megavideo library

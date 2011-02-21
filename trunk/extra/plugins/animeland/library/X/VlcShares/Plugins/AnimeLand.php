@@ -4,35 +4,43 @@ require_once 'X/VlcShares/Plugins/Abstract.php';
 
 
 /**
- * Add DBForever.org site as a video source
+ * Add AnimeLand.it site as a videos source
  * @author ximarx
  *
  */
-class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
+class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const INDEX_NARUTO = 'strm_naruto';
-	const INDEX_ONEPIECE = 'strm_onepiece';
-	const INDEX_BLEACH = 'strm_bleach';
+	const VERSION = '0.2';
 	
 	public function __construct() {
 		$this->setPriority('getCollectionsItems')
 			->setPriority('preRegisterVlcArgs')
 			->setPriority('getShareItems')
 			->setPriority('preGetModeItems')
+			->setPriority('gen_beforeInit')
 			->setPriority('getIndexManageLinks');
 	}
 	
 	/**
-	 * Add the main link for megavideo library
+	 * Inizialize translator for this plugin
+	 * @param Zend_Controller_Action $controller
+	 */
+	function gen_beforeInit(Zend_Controller_Action $controller) {
+		$this->helpers()->language()->addTranslation(__CLASS__);
+	}
+	
+	
+	/**
+	 * Add the main link for animeland library
 	 * @param Zend_Controller_Action $controller
 	 */
 	public function getCollectionsItems(Zend_Controller_Action $controller) {
 		
 		X_Debug::i("Plugin triggered");
-
-		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_dbforever_collectionindex'));
-		$link->setIcon('/images/dbforever/logo.png')
-			->setDescription(X_Env::_('p_dbforever_collectionindex_desc'))
+		
+		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_animeland_collectionindex'));
+		$link->setIcon('/images/animeland/logo.png')
+			->setDescription(X_Env::_('p_animeland_collectionindex_desc'))
 			->setType(X_Page_Item_PItem::TYPE_CONTAINER)
 			->setLink(
 				array(
@@ -42,6 +50,7 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 				), 'default', true
 			);
 		return new X_Page_ItemList_PItem(array($link));
+		
 	}
 	
 	/**
@@ -60,23 +69,25 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 		
 		$items = new X_Page_ItemList_PItem();
 		
-		if ( $location != '' && ( $location == self::INDEX_NARUTO || $location == self::INDEX_ONEPIECE || $location == self::INDEX_BLEACH   ) ) {
+		if ( $location != '' ) {
 			
+			// try to disable SortItems plugin, so link are listed as in html page
+			X_VlcShares_Plugins::broker()->unregisterPluginClass('X_VlcShares_Plugins_SortItems');
 			
-			$pageIndex = $this->config('index.url', 'http://www.dbforever.net/home.php')."?page=$location";
+			$pageIndex = rtrim($this->config('base.url', 'http://www.animeland.it/'), '/')."/$location";
 			
 			$htmlString = $this->_loadPage($pageIndex);
 			
 			$dom = new Zend_Dom_Query($htmlString);
 			
-			$results = $dom->queryXpath('//div[@align="left"]/a');
+			$results = $dom->queryXpath('//a[@href!="menu_streaming.html"]');
 			
 			for ( $i = 0; $i < $results->count(); $i++, $results->next()) {
 				
 				$node = $results->current();
 				$href = $node->getAttribute('href');
 				$label = $node->nodeValue;
-
+				
 				$item = new X_Page_Item_PItem($this->getId().'-'.$label, $label);
 				$item->setIcon('/images/icons/file_32.png')
 					->setType(X_Page_Item_PItem::TYPE_ELEMENT)
@@ -86,41 +97,52 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 						'l'	=>	X_Env::encode($href)
 					), 'default', false);
 				$items->append($item);
-				
 			}
 			
+			
 		} else {
-
-			$item = new X_Page_Item_PItem($this->getId().'-'.self::INDEX_NARUTO, X_Env::_('p_dbforever_naruto_ep'));
-			$item->setIcon('/images/icons/folder_32.png')
-				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
-				->setCustom(__CLASS__.':location', self::INDEX_NARUTO)
-				->setThumbnail('http://www.dbforever.net/img/banner/naruto_banner_grande.jpg')
-				->setLink(array(
-					'l'	=>	X_Env::encode(self::INDEX_NARUTO)
-				), 'default', false);
-			$items->append($item);
-
-			$item = new X_Page_Item_PItem($this->getId().'-'.self::INDEX_ONEPIECE, X_Env::_('p_dbforever_onepiece_ep'));
-			$item->setIcon('/images/icons/folder_32.png')
-				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
-				->setCustom(__CLASS__.':location', self::INDEX_ONEPIECE)
-				->setThumbnail('http://www.dbforever.net/img/banner/onepiece_banner_grande.jpg')
-				->setLink(array(
-					'l'	=>	X_Env::encode(self::INDEX_ONEPIECE)
-				), 'default', false);
-			$items->append($item);
 			
-			$item = new X_Page_Item_PItem($this->getId().'-'.self::INDEX_BLEACH, X_Env::_('p_dbforever_bleach_ep'));
-			$item->setIcon('/images/icons/folder_32.png')
-				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
-				->setCustom(__CLASS__.':location', self::INDEX_BLEACH)
-				->setThumbnail('http://www.dbforever.net/img/banner/bleach_banner_grande.jpg')
-				->setLink(array(
-					'l'	=>	X_Env::encode(self::INDEX_BLEACH)
-				), 'default', false);
-			$items->append($item);
+			$pageIndex = rtrim($this->config('base.url', 'http://www.animeland.it/'), '/')."/".$this->config('index.page', 'menu_streaming.html');
 			
+			$htmlString = $this->_loadPage($pageIndex);
+			
+			$dom = new Zend_Dom_Query($htmlString);
+			
+			$results = $dom->queryXpath('//a[@href!="menu_streaming.html"]');
+			
+			for ( $i = 0; $i < $results->count(); $i++, $results->next()) {
+				
+				$node = $results->current();
+				$href = $node->getAttribute('href');
+				$label = $node->nodeValue;
+				
+				$target = $node->getAttribute('target');
+				
+				if ( $target == '_blank' ) {
+					
+					$item = new X_Page_Item_PItem($this->getId().'-'.$label, $label);
+					$item->setIcon('/images/icons/file_32.png')
+						->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+						->setCustom(__CLASS__.':location', $href)
+						->setLink(array(
+							'action' => 'mode',
+							'l'	=>	X_Env::encode($href)
+						), 'default', false);
+					$items->append($item);
+					
+				} else {
+
+					$item = new X_Page_Item_PItem($this->getId().'-'.$label, $label);
+					$item->setIcon('/images/icons/folder_32.png')
+						->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+						->setCustom(__CLASS__.':location', $href)
+						->setLink(array(
+							'action' => 'share',
+							'l'	=>	X_Env::encode($href)
+						), 'default', false);
+					$items->append($item);
+				}
+			}
 		}
 		
 		return $items;
@@ -171,7 +193,7 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 		$url = $this->resolveLocation($location);
 		
 		if ( $url ) {
-			$link = new X_Page_Item_PItem('core-directwatch', X_Env::_('p_dbforever_watchdirectly'));
+			$link = new X_Page_Item_PItem('core-directwatch', X_Env::_('p_animeland_watchdirectly'));
 			$link->setIcon('/images/icons/play.png')
 				->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
 				->setLink($url);
@@ -195,9 +217,7 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 		// prevent no-location-given error
 		if ( $location === null ) return false;
 		
-		$pageVideo = $this->config('index.url', 'http://www.dbforever.net/home.php')."$location";
-		
-		$htmlString = $this->_loadPage($pageVideo);
+		$htmlString = $this->_loadPage($location);
 		
 		$dom = new Zend_Dom_Query($htmlString);
 		
@@ -210,10 +230,6 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 			foreach ($attrs as $attr) {
 				list($type, $value) = explode('=', $attr);
 				if ( $type == 'file' ) {
-					// fix for relative links inside bleach category
-					if ( !X_Env::startWith($value, 'http://') ) {
-						$value = "http://www.dbforever.net$value";
-					}
 					$this->cachedLocation[$location] = $value;
 					return $value;
 				}
@@ -225,51 +241,31 @@ class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract impleme
 	}
 	
 	/**
+	 * This plugin don't support
+	 * parent location resolver. So i redirect to history-1
 	 * @see X_VlcShares_Plugins_ResolverInterface::getParentLocation
 	 * @param $location
 	 */
 	function getParentLocation($location = null) {
-		if ($location == null || $location == '') return false;
-		
-		if ( $location == self::INDEX_BLEACH || $location == self::INDEX_ONEPIECE || $location == self::INDEX_NARUTO ) {
-			return null; // no parent for category index. Fallback to normal index
-		} else {
-			if ( X_Env::startWith($location, '?page=') ) {
-				// ok, we are inside a category
-				$location = substr($location, strlen('?page='));
-				if ( X_Env::startWith($location, self::INDEX_BLEACH)) {
-					return self::INDEX_BLEACH;
-				} elseif ( X_Env::startWith($location, self::INDEX_BLEACH)) {
-					return self::INDEX_NARUTO;
-				} elseif ( X_Env::startWith($location, self::INDEX_ONEPIECE) || X_Env::startWith($location, 'strm_one_piece') ) {
-					// i need to use double condition because in the page i have an inconsitence
-					return self::INDEX_ONEPIECE;
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
-		}
+		return false;
 	}
 	
 	/**
-	 * Add the link for -manage-dbforever-
+	 * Add the link for -manage-animeland-
 	 * @param Zend_Controller_Action $this
 	 * @return X_Page_ItemList_ManageLink
 	 */
 	public function getIndexManageLinks(Zend_Controller_Action $controller) {
-
-		$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_dbforever_mlink'));
-		$link->setTitle(X_Env::_('p_dbforever_managetitle'))
-			->setIcon('/images/dbforever/logo.png')
+		
+		$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_animeland_mlink'));
+		$link->setTitle(X_Env::_('p_animeland_managetitle'))
+			->setIcon('/images/animeland/logo.png')
 			->setLink(array(
 					'controller'	=>	'config',
 					'action'		=>	'index',
-					'key'			=>	'dbforever'
+					'key'			=>	'animeland'
 			), 'default', true);
 		return new X_Page_ItemList_ManageLink(array($link));
-		
 	}
 	
 	private function _loadPage($uri) {
