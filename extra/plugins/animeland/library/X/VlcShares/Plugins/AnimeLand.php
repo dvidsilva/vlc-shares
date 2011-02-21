@@ -271,8 +271,8 @@ class X_VlcShares_Plugins_AnimeLand extends X_VlcShares_Plugins_Abstract impleme
 	private function _loadPage($uri) {
 
 		$http = new Zend_Http_Client($uri, array(
-			'maxredirects'	=> $this->config('request.maxredirects'),
-			'timeout'		=> $this->config('request.timeout')
+			'maxredirects'	=> $this->config('request.maxredirects', 0),
+			'timeout'		=> $this->config('request.timeout', 10)
 		));
 		
 		$response = $http->request();
