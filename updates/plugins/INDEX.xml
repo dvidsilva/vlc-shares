@@ -1,0 +1,99 @@
+<plugins>
+	<plugin key="youtube">
+		<!-- version 0.1 for 0.5 -> 0.5.2 -->
+		<version name="0.1" type="stable" cMin="0.5" cMax="0.5.3">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_youtube_0.1.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+		</version>
+		
+		<!-- version 0.1.2 for 0.5.3 --> 
+		<version name="0.1.2" type="stable" cMin="0.5.3" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_youtube_0.1.2.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+		</version>
+	</plugin>
+	<plugin key="megavideo">
+		<version name="0.2" type="stable" cMin="0.5.3" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_megavideo_0.2.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+		</version>
+	</plugin>
+	<plugin key="allsp">
+		<version name="0.2" type="stable" cMin="0.5.3" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_allsp_0.2.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+		</version>
+	</plugin>
+	<plugin key="animedb">
+		<version name="0.1.1" type="stable" cMin="0.5" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_animedb_0.1.1.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+		</version>
+	</plugin>
+	<plugin key="animeftw">
+		<version name="0.2.1" type="stable" cMin="0.5" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_animeftw_0.2.1.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+		</version>
+	</plugin>
+	<plugin key="animeland">
+		<version name="0.2" type="stable" cMin="0.5.3" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_animeland_0.2.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+		</version>
+	</plugin>
+	<plugin key="dbforever">
+		<version name="0.2" type="stable" cMin="0.5.3" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_dbforever_0.2.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+		</version>
+	</plugin>
+	<plugin key="jdownloader">
+		<version name="0.1" type="stable" cMin="0.5.3" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_jdownloader_0.1.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+		</version>
+	</plugin>
+	<plugin key="jigoku">
+		<version name="0.1.1" type="stable" cMin="0.5" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_jigoku_0.1.1.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+		</version>
+	</plugin>
+	<plugin key="narutoget">
+		<version name="0.2" type="stable" cMin="0.5.3" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_narutoget_0.2.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+		</version>
+	</plugin>
+	<plugin key="opfitalia">
+		<version name="0.2.1" type="stable" cMin="0.5.2" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_opfitalia_0.2.1.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+		</version>
+	</plugin>
+</plugins>

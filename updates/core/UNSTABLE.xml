@@ -1,0 +1,23 @@
+<version name="0.5.3" type="beta">
+	<update></update>
+	<download>http://vlc-shares.googlecode.com/files/vlc-shares_0.5.3beta.zip</download>
+	<changelog><![CDATA[
+*** 0.5.3 beta (19/02/2010) ***
+
+ - Cache plugin integrated
+ - Lazy plugins configuration redirect on configs change fixed
+ - [MobileRenderer] Fixed a bug in mode/selection page that provoke multiple calls to the same page
+ - [FileSystem] Disable cache when it's the provider
+ - [PluginInstaller] VERSION_TO param in plugin manifest is handled as an upper bound and it's the first incompatible version
+ - [PluginInstaller] Fixed regression in plugin removal procedure 
+ - Translation function allow params substitution
+ - [EXTRA][JDownloader] JDownloader plugin added
+ - [EXTRA][Megavideo] Fixed regression in category removal/rename
+ - [EXTRA][Megavideo] Missing translation strings added
+ - [EXTRA][Youtube,Megavideo] Cache disabled when playlist is built with local data only
+ - [EXTRA][AnimeFTW, AnimeDB, Megavideo] Form password element type changed to password
+ - [EXTRA][AnimeFTW, AnimeDB, Megavideo] Cookie jar reset on plugin configs change
+		]]>
+	</changelog>
+</version>
+

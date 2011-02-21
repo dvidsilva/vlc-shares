@@ -1,0 +1,12 @@
+<version name="0.5.2">
+	<update>http://vlc-shares.googlecode.com/files/UPDATE_vlc-shares_0.5.2.zip</update>
+	<download>http://vlc-shares.googlecode.com/files/vlc-shares_0.5.2.zip</download>
+	<changelog><![CDATA[
+*** 0.5.2 (16/12/2010) ***
+ - Support for WiiMC 1.1.1 and WiiMC 1.1.1+
+ - Fix a regression in configs label and description
+ - Added more infos in debug log
+		]]>
+	</changelog>
+</version>
+
