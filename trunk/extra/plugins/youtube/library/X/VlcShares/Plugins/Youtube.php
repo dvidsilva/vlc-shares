@@ -13,6 +13,9 @@ require_once 'Zend/Gdata/YouTube/VideoEntry.php';
  */
 class X_VlcShares_Plugins_Youtube extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface, X_VlcShares_Plugins_BackuppableInterface {
 	
+	const VERSION = '0.1.2';
+	const VERSION_CLEAN = '0.1.2';
+	
 	const MODE_LIBRARY = "l";
 	const MODE_ACCOUNTS = "a";
 	

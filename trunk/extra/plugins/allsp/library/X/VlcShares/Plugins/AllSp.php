@@ -11,6 +11,7 @@ require_once 'X/VlcShares/Plugins/Abstract.php';
 class X_VlcShares_Plugins_AllSp extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
 	const VERSION = '0.2';
+	const VERSION_CLEAN = '0.2';
 
 	private $seasons = array(
 		1 => "http://allsp.com/e.php?season=1",

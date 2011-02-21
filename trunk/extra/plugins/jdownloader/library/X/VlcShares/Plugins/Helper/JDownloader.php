@@ -7,7 +7,7 @@
 class X_VlcShares_Plugins_Helper_JDownloader extends X_VlcShares_Plugins_Helper_Abstract {
 	
 	const VERSION_CLEAN = '0.1';
-	const VERSION = '0.1beta';
+	const VERSION = '0.1';
 	
 	private $options;
 	

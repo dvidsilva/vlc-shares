@@ -75,6 +75,15 @@ class PluginController extends X_Controller_Action
 					$filename = $form->file->getFileName();
 					
 					if ( $this->_install($filename) ) {
+						
+						// rebuild update notifier cache
+						if ( X_VlcShares_Plugins::broker()->isRegistered('updatenotifier') ) {
+							$notifier = X_VlcShares_Plugins::broker()->getPlugins('updatenotifier');
+							if ( method_exists($notifier, 'clearLastCheck' ) ) {
+								$notifier->clearLastCheck();
+							}
+						}
+						
 						$this->_helper->flashMessenger(array('text' => X_Env::_('plugin_install_done'), 'type' => 'info'));
 					} else {
 						$this->_helper->flashMessenger(array('text' => X_Env::_('plugin_install_errors'), 'type' => 'error'));
@@ -153,6 +162,16 @@ class PluginController extends X_Controller_Action
 		if ( file_exists($manifest) ) {
 			try {
 				$this->_uninstall($manifest);
+				
+				// rebuild update notifier cache
+				if ( X_VlcShares_Plugins::broker()->isRegistered('updatenotifier') ) {
+					$notifier = X_VlcShares_Plugins::broker()->getPlugins('updatenotifier');
+					if ( method_exists($notifier, 'clearLastCheck' ) ) {
+						$notifier->clearLastCheck();
+					}
+				}
+				
+				
 				// all done, continue
 			} catch (Exception $e) {
 				$this->_helper->flashMessenger(array('text' => X_Env::_('plugin_err_uninstall_processingmanifest').": {$e->getMessage()}", 'type' => 'error'));

@@ -11,6 +11,7 @@ require_once 'X/VlcShares/Plugins/Abstract.php';
 class X_VlcShares_Plugins_DBForever extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
 	const VERSION = '0.2';
+	const VERSION_CLEAN = '0.2';
 	
 	const INDEX_NARUTO = 'strm_naruto';
 	const INDEX_ONEPIECE = 'strm_onepiece';

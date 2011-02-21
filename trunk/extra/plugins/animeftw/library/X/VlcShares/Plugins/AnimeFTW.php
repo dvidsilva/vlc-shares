@@ -14,6 +14,7 @@ require_once 'Zend/Dom/Query.php';
 class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
 	const VERSION = '0.2.1';
+	const VERSION_CLEAN = '0.2.1';
 	
 	const BASE_URL = 'http://www.animeftw.tv/';
 	const PAGE_LOGIN = 'https://www.animeftw.tv/login';
