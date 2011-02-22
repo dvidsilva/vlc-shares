@@ -10,7 +10,9 @@ This tutorial show how to configure VLCShares and the Android Phone for the use 
 In this tutorial will be used as placeholder the following strings:
   # IP_ADDRESS: is the lan ip address of the server where you installed vlc-shares
 
-= Instruction for VLCShares 0.5 =
+= Instruction for VLCShares 0.5 ONLY =
+
+===From 0.5.1 you don't need to do anything===
 
 Android browse interface is provided _temporarily_ by the WiimcPlxRenderer. In next versions this features will be provided by a dedicated plugin with a optimized interface. So, until next version will be ready the plugin WiimcPlxRenderer is required for Android support
 
