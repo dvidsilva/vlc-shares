@@ -19,6 +19,8 @@ If you use the installer, every time you will start easyphp you will get an erro
 
 [http://wiitaly.altervista.org/forum/viewtopic.php?f=23&t=478&p=2021 Un tutorial in lingua italiana potete trovarlo a questo indirizzo grazie alla community di Wiitaly]
 
+[http://www.howtogeek.com/howto/43484/how-to-get-airvideo-features-in-android-for-free How To Geek published a good tutorial about vlc-shares's installation. You can give a look to it if you are in troubles]
+
 = Manual Installation =
 
 == Requirement ==
