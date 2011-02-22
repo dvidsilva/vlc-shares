@@ -37,6 +37,12 @@ class ConfigsController extends X_Controller_Action
     	
     	$plugins = Application_Model_PluginsMapper::i()->fetchAll();
     	
+		$csrf = new Zend_Form_Element_Hash('csrf', array(
+			'salt'  => __CLASS__
+		));
+		$csrf->initCsrfToken();    	
+    	
+    	$this->view->csrf = $csrf->getHash();
     	$this->view->plugins = $plugins;
     	$this->view->form = $form;
     	$this->view->messages = array_merge($this->_helper->flashMessenger->getMessages(), $this->_helper->flashMessenger->getCurrentMessages()) ;
@@ -105,28 +111,39 @@ class ConfigsController extends X_Controller_Action
     	$request = $this->getRequest();
     	$pluginId = $request->getParam('pluginId', false);
 		$plugin = new Application_Model_Plugin();
-    	
-    	if ( $pluginId !== false ) {
-    		Application_Model_PluginsMapper::i()->find($pluginId, $plugin);
-    		if ( $plugin->getId() != null && $plugin->getId() == $pluginId ) {
-    			if ( $plugin->getType() != Application_Model_Plugin::SYSTEM ) {
-    				try {
-	    				$plugin->setEnabled(false);
-	    				Application_Model_PluginsMapper::i()->save($plugin);
-	    				$this->_helper->flashMessenger(X_Env::_('configs_plugins_plugindisabled'));
-    				} catch ( Exception $e) {
-    					$this->_helper->flashMessenger(X_Env::_('configs_plugins_err_db').": {$e->getMessage()}");
-    				}
-    			} else {
-    				$this->_helper->flashMessenger(X_Env::_('configs_plugins_err_pluginId_notdisable'));
-    			}
-    		} else {
-    			$this->_helper->flashMessenger(X_Env::_('configs_plugins_err_pluginId_unknown'));	
-    		} 
-    	} else {
-    		$this->_helper->flashMessenger(X_Env::_('configs_plugins_err_pluginId_missing'));
-    	}
-    	
+		
+		$csrfValue = $request->getParam('csrf', false);
+
+		$csrf = new Zend_Form_Element_Hash('csrf', array(
+			'salt'  => __CLASS__
+		));
+		
+		if ( $csrf->isValid($csrfValue) ) {
+		
+	    	if ( $pluginId !== false ) {
+	    		Application_Model_PluginsMapper::i()->find($pluginId, $plugin);
+	    		if ( $plugin->getId() != null && $plugin->getId() == $pluginId ) {
+	    			if ( $plugin->getType() != Application_Model_Plugin::SYSTEM ) {
+	    				try {
+		    				$plugin->setEnabled(false);
+		    				Application_Model_PluginsMapper::i()->save($plugin);
+		    				$this->_helper->flashMessenger(X_Env::_('configs_plugins_plugindisabled'));
+	    				} catch ( Exception $e) {
+	    					$this->_helper->flashMessenger(X_Env::_('configs_plugins_err_db').": {$e->getMessage()}");
+	    				}
+	    			} else {
+	    				$this->_helper->flashMessenger(X_Env::_('configs_plugins_err_pluginId_notdisable'));
+	    			}
+	    		} else {
+	    			$this->_helper->flashMessenger(X_Env::_('configs_plugins_err_pluginId_unknown'));	
+	    		} 
+	    	} else {
+	    		$this->_helper->flashMessenger(X_Env::_('configs_plugins_err_pluginId_missing'));
+	    	}
+		} else {
+			$this->_helper->flashMessenger(array('type' => 'error', 'text' => X_Env::_('configs_plugins_err_invalidtoken')));
+		}
+	    	    	
     	$this->_helper->redirector('index','configs');
     	
     }
@@ -137,28 +154,39 @@ class ConfigsController extends X_Controller_Action
     	$request = $this->getRequest();
     	$pluginId = $request->getParam('pluginId', false);
 		$plugin = new Application_Model_Plugin();
-    	
-    	if ( $pluginId !== false ) {
-    		Application_Model_PluginsMapper::i()->find($pluginId, $plugin);
-    		if ( $plugin->getId() != null && $plugin->getId() == $pluginId ) {
-    			if ( $plugin->getType() != Application_Model_Plugin::SYSTEM ) {
-    				try {
-	    				$plugin->setEnabled(true);
-	    				Application_Model_PluginsMapper::i()->save($plugin);
-	    				$this->_helper->flashMessenger(X_Env::_('configs_plugins_pluginenabled'));
-    				} catch ( Exception $e) {
-    					$this->_helper->flashMessenger(X_Env::_('configs_plugins_err_db').": {$e->getMessage()}");
-    				}
-    			} else {
-    				$this->_helper->flashMessenger(X_Env::_('configs_plugins_err_pluginId_notenable'));
-    			}
-    		} else {
-    			$this->_helper->flashMessenger(X_Env::_('configs_plugins_err_pluginId_unknown'));	
-    		} 
-    	} else {
-    		$this->_helper->flashMessenger(X_Env::_('configs_plugins_err_pluginId_missing'));
-    	}
-    	
+		
+		$csrfValue = $request->getParam('csrf', false);
+
+		$csrf = new Zend_Form_Element_Hash('csrf', array(
+			'salt'  => __CLASS__
+		));
+		
+		if ( $csrf->isValid($csrfValue) ) {
+	    	if ( $pluginId !== false ) {
+	    		Application_Model_PluginsMapper::i()->find($pluginId, $plugin);
+	    		if ( $plugin->getId() != null && $plugin->getId() == $pluginId ) {
+	    			if ( $plugin->getType() != Application_Model_Plugin::SYSTEM ) {
+	    				try {
+		    				$plugin->setEnabled(true);
+		    				Application_Model_PluginsMapper::i()->save($plugin);
+		    				$this->_helper->flashMessenger(X_Env::_('configs_plugins_pluginenabled'));
+	    				} catch ( Exception $e) {
+	    					$this->_helper->flashMessenger(X_Env::_('configs_plugins_err_db').": {$e->getMessage()}");
+	    				}
+	    			} else {
+	    				$this->_helper->flashMessenger(X_Env::_('configs_plugins_err_pluginId_notenable'));
+	    			}
+	    		} else {
+	    			$this->_helper->flashMessenger(X_Env::_('configs_plugins_err_pluginId_unknown'));	
+	    		} 
+	    	} else {
+	    		$this->_helper->flashMessenger(X_Env::_('configs_plugins_err_pluginId_missing'));
+	    	}
+		} else {
+			$this->_helper->flashMessenger(array('type' => 'error', 'text' => X_Env::_('configs_plugins_err_invalidtoken')));
+		}
+		
+		
     	$this->_helper->redirector('index', 'configs');
     	
     }
