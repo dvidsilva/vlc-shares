@@ -48,7 +48,7 @@ class X_VlcShares_Plugins_DirettaRai extends X_VlcShares_Plugins_Abstract implem
 			->setPriority('getCollectionsItems')
 			->setPriority('preRegisterVlcArgs')
 			->setPriority('getShareItems')
-			->setPriority('preGetModeItems')
+			//->setPriority('preGetModeItems')
 			//->setPriority('getIndexManageLinks')
 			//->setPriority('getIndexMessages')
 			//->setPriority('getTestItems')
