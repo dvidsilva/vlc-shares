@@ -99,15 +99,15 @@ $this->layout()->breadcrumb = $breadcrumb
 															'controller' => 'configs',
 															'action' => 'disable',
 															'pluginId' => $plugin->getId(),
-															'csrf' => 'widqjoijdqw'
-														), 'default', true); ?>" class="ui-icon ui-icon-refresh" title="Disattiva">Disattiva</a>
+															'csrf' => $this->csrf
+														), 'default', true); ?>" class="ui-icon ui-icon-refresh" title="<?php echo X_Env::_('disable'); ?>"><?php echo X_Env::_('disable'); ?></a>
 													<?php else: ?>
 														<a href="<?php echo $this->url(array(
 															'controller' => 'configs',
 															'action' => 'enable',
 															'pluginId' => $plugin->getId(),
-															'csrf' => 'widqjoijdqw'
-														), 'default', true); ?>" class="ui-icon ui-icon-refresh" title="Attiva">Attiva</a>
+															'csrf' => $this->csrf
+														), 'default', true); ?>" class="ui-icon ui-icon-refresh" title="<?php echo X_Env::_('enable'); ?>"><?php echo X_Env::_('enable'); ?></a>
 													<?php endif; ?>
 												</span>
 											<?php endif; ?>
@@ -117,7 +117,7 @@ $this->layout()->breadcrumb = $breadcrumb
 															'controller' => 'plugin',
 															'action' => 'uconfirm',
 															'key' => $plugin->getKey(),
-														), 'default', true); ?>" class="ui-icon ui-icon-trash" title="Rimuovi">Disinstalla</a>
+														), 'default', true); ?>" class="ui-icon ui-icon-trash" title="<?php echo X_Env::_('uninstall'); ?>"><?php echo X_Env::_('uninstall'); ?></a>
 												</span>
 											<?php endif; ?>
 										</div>
