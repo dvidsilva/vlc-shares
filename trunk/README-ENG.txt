@@ -8,7 +8,7 @@
 #     															#
 #################################################################
 
-VLC-SHARES v0.5.3 beta - 19/02/2010
+VLC-SHARES v0.5.3 - 23/02/2010
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -25,7 +25,16 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 | Changelog
 \==========---
 
-*** 0.5.3 beta (19/02/2010) ***
+*** 0.5.3 (23/02/2010) ***
+ - Some fixes to object interfaces of X_Vlc_... objects
+ - [EXTRA][AnimeDB] New link scaper algorithm submitted by Valerio Moretti can be selected in config page (it's experimental)
+ - [UpdateNotifier] New plugin for update notification (for vlc-shares and official plugins)
+ - [EXTRA][AnimeLand, AllSp, DBForever, NarutoGet] Moved to extra
+ - Better error handling for WiimcPlxRenderer: now we can get error information in WiiMC
+ - Installation script allow to automatically download and install optional plugins
+ - [EXTRA][Megavideo] Removed urlencoding of username/password while authentication agains megavideo site
+ - [Backupper] Backup file changed with value encryption
+ - [EXTRA][DirettaRai] New plugin added for live channel from RAI (italian television)
  - Cache plugin integrated
  - Lazy plugins configuration redirect on configs change fixed
  - [MobileRenderer] Fixed a bug in mode/selection page that provoke multiple calls to the same page
@@ -39,8 +48,6 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
  - [EXTRA][Youtube,Megavideo] Cache disabled when playlist is built with local data only
  - [EXTRA][AnimeFTW, AnimeDB, Megavideo] Form password element type changed to password
  - [EXTRA][AnimeFTW, AnimeDB, Megavideo] Cookie jar reset on plugin configs change
-
-*** 0.5.3 alpha1 (15/02/2010) ***
  - New management gui
  - Improved error reporting
  - [Issue-8] Fixed problems while sharing root drives folders in windows env
