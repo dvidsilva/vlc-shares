@@ -62,6 +62,11 @@ class X_VlcShares_Plugins_DirettaRai extends X_VlcShares_Plugins_Abstract implem
 	 */
 	function gen_beforeInit(Zend_Controller_Action $controller) {
 		$this->helpers()->language()->addTranslation(__CLASS__);
+		
+		if ( $this->helpers()->devices()->isWiimc() && $this->config('direct.enabled', true) ) {
+			$this->setPriority('preGetModeItems');
+		}
+		
 	}
 	
 	/**

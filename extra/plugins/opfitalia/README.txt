@@ -1,0 +1,35 @@
+#################################################################
+# __      ___       _____       _____ _                         #
+# \ \    / / |     / ____|     / ____| |                        #
+#  \ \  / /| |    | |   ______| (___ | |__   __ _ _ __ ___ ___  #
+#   \ \/ / | |    | |  |______|\___ \| '_ \ / _` | '__/ _ | __| #
+#    \  /  | |____| |____      ____) | | | | (_| | | |  __|__ \ #
+#     \/   |______|\_____|    |_____/|_| |_|\__,_|_|  \___|___/ #
+#     															#
+########## OPFItalia.net Plugin #################################
+
+OPFItalia.net v0.2.1
+Created by Francesco Capozzo (Ximarx)
+ximarx@gmail.com
+
+All content of this file is released using
+GPL v3 (http://www.gnu.org/licenses/gpl.html)
+
+Allows to watch videos from OPFItalia.net
+
+For more infos, browse the project site at http://code.google.com/p/vlc-shares/
+
+/==========---
+| Changelog
+\==========---
+
+*** 0.2.1 ***
+ - Compatibility with VLCShares 0.5.3
+ - Form password is password type
+
+*** 0.2 ***
+ - Plugin updated for the new OPFItalia site
+ - Moved to Extra
+
+*** 0.1 ***
+ - Initial version
