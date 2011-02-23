@@ -64,9 +64,8 @@ class DirettaraiController extends X_Controller_Action
 		);
 
 		$context  = stream_context_create($opts);
-		// readfile open a file and send it directly to output buffer
-		
-		if ( X_VlcShares_Plugins::helpers()->devices()->isWiimc() && $this->plugin->config('direct.enabled', true) ) {
+		// redirect support in wiimc exists only from 1.1.0
+		if ( X_VlcShares_Plugins::helpers()->devices()->isWiimc() && !X_VlcShares_Plugins::helpers()->devices()->isWiimcBeforeVersion('1.0.9') && $this->plugin->config('direct.enabled', true) ) {
 			$match = array();
 			$xml = file_get_contents($videoUrl, false, $context);
 			if (  preg_match('/<REF HREF=\"([^\"]*)\"\/>/', $xml, $match ) ) {
@@ -81,6 +80,7 @@ class DirettaraiController extends X_Controller_Action
 			// close and clean the output buffer, everything will be read and send to device
 			ob_end_clean();
 			
+			// readfile open a file and send it directly to output buffer
 			readfile($videoUrl, false, $context);
 		}
 		
