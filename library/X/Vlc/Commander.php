@@ -19,14 +19,14 @@ abstract class X_Vlc_Commander {
 		$this->options = $options;
 	}
 
-	abstract public function play($resource);
+	abstract public function play($resource = null);
 	abstract public function stop();
 	abstract public function pause();
-	abstract public function seek($time, $relative);
+	abstract public function seek($time, $relative = false);
 	abstract public function next();
 	abstract public function previous();
 	
-	abstract public function getInfo();
+	abstract public function getInfo($infos = null);
 	abstract public function getTotalTime();
 	abstract public function getCurrentTime();
 	abstract public function getCurrentName();
