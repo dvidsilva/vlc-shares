@@ -461,6 +461,20 @@ class X_VlcShares_Plugins_AnimeDb extends X_VlcShares_Plugins_Abstract implement
 		$baseUrl = $this->config('base.url', 'http://animedb.tv/forum/');
 		$baseUrl .= "$thread";
 		$htmlString = $this->_loadPage($baseUrl, true);
+		
+
+		if ( $this->config('scraper.alternative.enabled', false) ) {
+			
+			X_Debug::w("Using alternative scaper");
+			
+			// From a patch submitted by Valerio Moretti
+			$this->_parseAlternativeScaper($htmlString, $items, $category, $letter, $thread);
+			// all items should be in the list. It's useless to continue
+			return;
+		}
+		
+		
+		
 		$dom = new Zend_Dom_Query($htmlString);
 		
 		// xpath index stars from 1
@@ -473,6 +487,7 @@ class X_VlcShares_Plugins_AnimeDb extends X_VlcShares_Plugins_Abstract implement
 		for ( $i = 0; $i < $results->count(); $i++, $results->next()) {
 		
 			$current = $results->current(); 
+			
 			$label = trim(trim($current->nodeValue), chr(0xC2).chr(0xA0));
 			if ( $label == '') {
 				$label = X_Env::_('p_animedb_nonamevideo');
@@ -515,6 +530,89 @@ class X_VlcShares_Plugins_AnimeDb extends X_VlcShares_Plugins_Abstract implement
 			$items->append($item);
 		}
 		*/
+	}
+	
+	/**
+	 * Find links using an alternative way
+	 * @author Valerio Moretti
+	 */
+	private function _parseAlternativeScaper($htmlString, X_Page_ItemList_PItem $items, $category, $letter, $thread) {
+		
+		//mi suddivido il post in righe
+		$htmlRows = explode('<br />', $htmlString);
+		
+		/*
+		//qua volevo selezionarmi solo il codice del post per rendere il tutto piu' veloce
+		//pero' sbaglio qualcosa e non mi funziona
+		
+		$dom = new Zend_Dom_Query($htmlString);
+		$content = $dom->queryXpath('//ol[@id="posts"]/li[1]//div[@class="content"]');
+		$htmlPost = $content->current();
+		
+		$htmlRows = explode('<br />', $htmlPost);
+		*/
+
+		//analizzo riga per riga
+		foreach($htmlRows as $row)
+		{
+			
+			//la mia ignoranza del Xpath e' immensa e questo e' l'unico modo che ho trovato per farlo funzionare
+			$row = '<root>'.$row.'</root>';
+			
+			$dom = new Zend_Dom_Query($row);
+			
+			// xpath index stars from 1
+			
+			
+			$results = $dom->queryXpath('//a');
+			
+			X_Debug::i("Links found: ".$results->count());
+			
+			$found = false;
+			$title = ''; //il testo del primo link della riga
+			
+			for ( $i = 0; $i < $results->count(); $i++, $results->next()) {
+			
+				$current = $results->current(); 
+				$label = trim(trim($current->nodeValue), chr(0xC2).chr(0xA0));
+
+				if ( $label == '') {
+					$label = X_Env::_('p_animedb_nonamevideo');
+				}
+				if ($title == '') {
+					$title = $label;
+				}
+				$href = $current->getAttribute('href');
+				
+				if ( strpos(strtolower($href), 'megavideo' ) === false ) {
+					continue;
+				}
+				
+				
+				$label = $label == $title ? $label : $title.' | '.$label;
+				
+				$found = true;
+				
+				X_Debug::i("Valid link found: $href");
+				
+				$item = new X_Page_Item_PItem($this->getId()."-$label", $label);
+				$item->setIcon('/images/icons/folder_32.png')
+					->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+					->setCustom(__CLASS__.':location', "$category/$letter/$thread/$href")
+					->setLink(array(
+						'action'	=> 'mode',
+						'l'	=>	X_Env::encode("$category/$letter/$thread/$href")
+					), 'default', false);
+					
+				if ( APPLICATION_ENV == 'development' ) {
+					$item->setDescription("$category/$letter/$thread/$href");
+				}
+					
+				$items->append($item);
+				
+			}
+		}		
+		
 	}
 	
 	private function _loadPage($uri, $forceAuth = false) {

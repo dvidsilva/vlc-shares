@@ -40,14 +40,31 @@ $pluginsIncludes = array(
 $helpersIncludes = array(
 );
 
-$pluginsInstances = array(
-	'animedb' => array(
-		'class' => 'X_VlcShares_Plugins_AnimeDb',
-		'configs' => array(
-			// special configs aren't required, so i use defaults hardcoded
+/* @var $runtimeConfigs Zend_Config */
+$runtimeConfigs = $this->getResource('configs');
+// check here for configs from runtime
+if ( isset($runtimeConfigs->plugins->animedb ) ) {
+	$pluginsInstances = array(
+		'animedb' => array(
+			'class' => 'X_VlcShares_Plugins_AnimeDb',
+			'configs' => array(
+				'auth.username' => $runtimeConfigs->plugins->animedb->auth->username,
+				'auth.password' => $runtimeConfigs->plugins->animedb->auth->password,
+				'scraper.alternative.enabled' => $runtimeConfigs->plugins->animedb->scaper->alternative->enabled,
+			)
 		)
-	)
-);
+	);
+	unset($runtimeConfigs);
+} else {
+	$pluginsInstances = array(
+		'animedb' => array(
+			'class' => 'X_VlcShares_Plugins_AnimeDb',
+			'configs' => array(
+				// special configs aren't required, so i use defaults hardcoded
+			)
+		)
+	);
+}
 
 $dbInits = array(
 	$basePath.'/install.sql' => (file_exists(APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_AnimeDb.en_GB.ini') == false),

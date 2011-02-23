@@ -15,6 +15,9 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	'animedb.request.maxredirects', '10', '10', 'plugins', 0, 'p_animedb_conf_requestredirects_label', 'p_animedb_conf_requestredirects_desc', '');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'animedb.hide.useragent', '0', '0', 'plugins', 3, 'p_animedb_conf_hideuseragent_label', 'p_animedb_conf_hideuseragent_desc',	'');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'animedb.scraper.alternative.enabled', '0', '0', 'plugins', 3, 'p_animedb_conf_scraperalternativeenabled_label', 'p_animedb_conf_scraperalternativeenabled_desc',	'');
+
 	
 UPDATE plugins SET enabled=1 WHERE key = "animedb";
 
