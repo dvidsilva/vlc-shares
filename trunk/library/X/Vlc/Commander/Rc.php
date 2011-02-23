@@ -92,7 +92,7 @@ class X_Vlc_Commander_Rc extends X_Vlc_Commander {
 	/**
 	 * 
 	 */
-	public function getInfo() {
+	public function getInfo($infos =  null) {
 		$infos = $this->_send('info', X_Env::EXECUTE_OUT_ARRAY);
 		/**
 		status change: ( new input: /home/ximarx/Musica/QOD/QOD/musica.mp3 )
