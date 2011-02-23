@@ -13,6 +13,9 @@
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_youtube_0.1.2.zip</download>
 			<changelog><![CDATA[
+			*** 0.1.2 ***
+			 - Support for cache plugin
+			 - Support for UpdateNotifier plugin
 			]]></changelog>
 		</version>
 	</plugin>
@@ -21,6 +24,19 @@
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_megavideo_0.2.zip</download>
 			<changelog><![CDATA[
+			*** 0.2 ***
+			 - Moved to EXTRA
+			 - Compatibility with VLCShares 0.5.3
+			 - Lazy plugins configuration redirect on configs change fixed
+			 - Fixed regression in category removal/rename
+			 - Missing translation strings added
+			 - Cache disabled when playlist is built with local data only
+			 - Form password element type changed to password
+			 - Cookie jar reset on plugin configs change
+			 - Megavideo Helper has a new getter method for Id param
+			 - added premium account support
+			 - support for megaupload->megavideo videos (?d= links)
+			 - New bookmarklet (update your link)
 			]]></changelog>
 		</version>
 	</plugin>
@@ -29,6 +45,9 @@
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_allsp_0.2.zip</download>
 			<changelog><![CDATA[
+			*** 0.2 ***
+			 - Moved to Extra
+			 - Plugin key changed from southpark to allsp
 			]]></changelog>
 		</version>
 	</plugin>
@@ -37,6 +56,10 @@
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_animedb_0.1.1.zip</download>
 			<changelog><![CDATA[
+			*** 0.1.1 ***
+			 - Added a new experimental link scaper submitted by Valerio Moretti
+			 - Password field in the configuration form is type="password"
+			 - Cookies resetted on configs change
 			]]></changelog>
 		</version>
 	</plugin>
@@ -45,6 +68,9 @@
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_animeftw_0.2.1.zip</download>
 			<changelog><![CDATA[
+			*** 0.2.1 ***
+			 - Password field in config page is type="password"
+			 - Cookie reset on configs change
 			]]></changelog>
 		</version>
 	</plugin>
@@ -53,6 +79,8 @@
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_animeland_0.2.zip</download>
 			<changelog><![CDATA[
+			*** 0.2 ***
+			 - Moved to Extra
 			]]></changelog>
 		</version>
 	</plugin>
@@ -61,6 +89,8 @@
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_dbforever_0.2.zip</download>
 			<changelog><![CDATA[
+			*** 0.2 ***
+			 - Moved to Extra
 			]]></changelog>
 		</version>
 	</plugin>
@@ -77,6 +107,8 @@
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_jigoku_0.1.1.zip</download>
 			<changelog><![CDATA[
+			*** 0.1.1 ***
+			 - Compatibility with VLCShares 0.5.3
 			]]></changelog>
 		</version>
 	</plugin>
@@ -85,6 +117,8 @@
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_narutoget_0.2.zip</download>
 			<changelog><![CDATA[
+			*** 0.2 ***
+			 - Moved to Extra
 			]]></changelog>
 		</version>
 	</plugin>
@@ -92,6 +126,17 @@
 		<version name="0.2.1" type="stable" cMin="0.5.2" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_opfitalia_0.2.1.zip</download>
+			<changelog><![CDATA[
+			*** 0.2.1 ***
+			 - Compatibility with VLCShares 0.5.3
+			 - Form password is password type
+			]]></changelog>
+		</version>
+	</plugin>
+	<plugin key="direttarai">
+		<version name="0.1" type="stable" cMin="0.5.3" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_direttarai_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 		</version>
