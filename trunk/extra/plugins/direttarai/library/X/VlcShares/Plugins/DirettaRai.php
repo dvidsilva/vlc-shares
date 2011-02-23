@@ -49,7 +49,7 @@ class X_VlcShares_Plugins_DirettaRai extends X_VlcShares_Plugins_Abstract implem
 			->setPriority('preRegisterVlcArgs')
 			->setPriority('getShareItems')
 			//->setPriority('preGetModeItems')
-			//->setPriority('getIndexManageLinks')
+			->setPriority('getIndexManageLinks')
 			//->setPriority('getIndexMessages')
 			//->setPriority('getTestItems')
 			//->setPriority('prepareConfigElement')
@@ -66,6 +66,25 @@ class X_VlcShares_Plugins_DirettaRai extends X_VlcShares_Plugins_Abstract implem
 		if ( $this->helpers()->devices()->isWiimc() && $this->config('direct.enabled', true) ) {
 			$this->setPriority('preGetModeItems');
 		}
+		
+	}
+	
+	/**
+	 * Add the link for -manage-direttarai-
+	 * @param Zend_Controller_Action $this
+	 * @return X_Page_ItemList_ManageLink
+	 */
+	public function getIndexManageLinks(Zend_Controller_Action $controller) {
+
+		$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_direttarai_mlink'));
+		$link->setTitle(X_Env::_('p_direttarai_managetitle'))
+			->setIcon('/images/direttarai/logo.jpg')
+			->setLink(array(
+					'controller'	=>	'config',
+					'action'		=>	'index',
+					'key'			=>	'direttarai'
+			), 'default', true);
+		return new X_Page_ItemList_ManageLink(array($link));
 		
 	}
 	
