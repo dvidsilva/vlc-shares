@@ -159,7 +159,7 @@ if ( $createAll || $pluginsList ) {
 				$pluginState = '';
 			}
 			
-			$pluginFilename = APPLICATION_PATH.$distDir."/plugin_{$entry->getFilename()}_$pluginVersion$pluginState.zip".PHP_EOL;
+			$pluginFilename = APPLICATION_PATH.$distDir."/plugin_{$entry->getFilename()}_$pluginVersion$pluginState.zip";
 			
 			$pluginZip = new PclZip($pluginFilename);
 			
