@@ -27,19 +27,19 @@ class X_Vlc_Adapter_Windows extends X_Vlc_Adapter {
 			
 			$result = X_Env::execute("tasklist /FO CSV /FI \"imagename eq vlc.exe\"", X_Env::EXECUTE_OUT_ARRAY, X_Env::EXECUTE_PS_WAIT);
 			$pid = 0;
-			X_Env::debug(print_r($result, true));
+			X_Debug::i(print_r($result, true));
 			// suppongo che l'ultimo creato sia la riga del pid valido
 			$line = $result[count($result)-1];
 			$array = str_getcsv($line);
-			X_Env::debug(print_r($array, true));
+			X_Debug::i(print_r($array, true));
 			if ( $array[2] == 'Console' || $array[0] == 'vlc.exe' ) {
 				$pid = $array[1];
 			}
 			if ( $pid != 0 ) {
-				X_Env::debug("PID: $pid");
+				X_Debug::i("PID: $pid");
 				file_put_contents($this->pidFile, $pid);
 			} else {
-				X_Env::debug("No pid found. VLC is not working for me");
+				X_Debug::e("No pid found. VLC is not working for me");
 			}
 		}
 	}

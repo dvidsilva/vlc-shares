@@ -49,11 +49,6 @@ class DirettaraiController extends X_Controller_Action
 		
 		$videoUrl = constant("X_VlcShares_Plugins_DirettaRai::C_$videoUrl");
 		
-		// if user abort request (vlc/wii stop playing, this process ends
-		ignore_user_abort(false);
-		
-		// close and clean the output buffer, everything will be read and send to device
-		ob_end_clean();
 		
 		//$userAgent = $this->plugin->config('hide.useragent', true) ? 'User-Agent: vlc-shares/'.X_VlcShares::VERSION.' direttarai/'.X_VlcShares_Plugins_DirettaRai::VERSION : 'User-Agent: Mozilla/5.0 (X11; Linux i686; rv:2.0.1) Gecko/20101019 Firefox/4.0.1';
 		//$userAgent = 'User-Agent: vlc-shares/'.X_VlcShares::VERSION.' direttarai/'.X_VlcShares_Plugins_DirettaRai::VERSION; 
@@ -70,7 +65,24 @@ class DirettaraiController extends X_Controller_Action
 
 		$context  = stream_context_create($opts);
 		// readfile open a file and send it directly to output buffer
-		readfile($videoUrl, false, $context);
+		
+		if ( X_VlcShares_Plugins::helpers()->devices()->isWiimc() && $this->plugin->config('direct.enabled', true) ) {
+			$match = array();
+			$xml = file_get_contents($videoUrl, false, $context);
+			if (  preg_match('/<REF HREF=\"([^\"]*)\"\/>/', $xml, $match ) ) {
+				$this->_helper->redirector->gotoUrlAndExit($match[1]);
+			} else {
+				throw new Exception(X_Env::_('p_direttarai_err_invalidchannel'));
+			}
+		} else {
+			// if user abort request (vlc/wii stop playing, this process ends)
+			ignore_user_abort(false);
+			
+			// close and clean the output buffer, everything will be read and send to device
+			ob_end_clean();
+			
+			readfile($videoUrl, false, $context);
+		}
 		
 	}
 }
