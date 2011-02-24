@@ -1,0 +1,50 @@
+<!-- application/views/scripts/test/index.phtml -->
+<?php 
+	
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLabel('System tests');
+
+?>
+<?php $this->headTitle()->prepend('System tests'); ?>
+
+<div class="unit">
+	<div class="container">
+		<div class="box">
+			<div class="header">
+				<span class="title">Test results:</span>
+			</div>
+			<div class="content">
+				<div class="span-24 last" id="manage-messages">
+					<ul>
+						<?php foreach ($this->tests->getItems() as $i => $test ): ?>
+							<?php /* @var $test X_Page_Item_Test */ ?>
+							<li class="<?php echo $test->getType(); ?>">
+								<img src="<?php echo @$this->baseUrl("/images/msg_{$test->getType()}.png");?>" alt="<?php echo $test->getType(); ?>" />
+								<?php echo $test->getLabel()?>
+								<?php if ( $test->getReason() != null ): ?>
+									: <?php echo $test->getReason(); ?> 
+								<?php endif; ?>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="unit">
+	<div class="container">
+		<div class="box">
+			<div class="header">
+				<span class="title">Debug log:</span>
+			</div>
+			<div class="content">
+				<textarea rows="10" style="width: 100%;"><?php echo $this->log;?></textarea>
+			</div>
+		</div>
+	</div>
+</div>

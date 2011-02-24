@@ -1,0 +1,13 @@
+<!-- application/views/scripts/manage/status.phtml -->
+<?php 
+$v_statusLinks = $this->statusLinks->getItems();
+?>
+<?php if (count($v_statusLinks) ) : ?>
+<ul>
+	<?php foreach ($v_statusLinks as $statusLink): ?>
+		<li>
+			<?php echo $this->xStatusLink($statusLink); ?>
+		</li>
+	<?php endforeach; ?>
+</ul>
+<?php endif; ?>

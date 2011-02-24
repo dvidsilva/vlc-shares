@@ -1,0 +1,127 @@
+<!-- application/views/scripts/megavideo/index.phtml -->
+<?php $this->headScript()->appendFile($this->baseUrl("/js/megavideo/script.js")); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/megavideo/style.css')); ?>
+<?php 
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('megavideo_manage_add_new_entry'), "megavideo", "add")
+	//->addButton(X_Env::_('megavideo_bookmarklets_title'), "javascript:showModal('bookmarklets'); return false;" )
+	->addLinkRoute(X_Env::_('megavideo_manage_options'), "config", "index", array('key' => 'megavideo', 'r' => X_Env::encode('megavideo:index')));
+	
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLabel(X_Env::_('megavideo_manage_title'));
+	
+	
+$this->headTitle()->prepend(X_Env::_('megavideo_manage_title'));
+
+?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
+	var str_p_megavideo_manage_newcategoryname = "<?php echo X_Env::_('p_megavideo_manage_newcategoryname') ?>";
+<?php $this->headScript()->captureEnd(); ?>
+
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+
+<div class="unit columns on-2">
+	<div class="elastic column">
+		<div class="container">
+			<div class="box">
+				<div class="header">
+					<span class="title"><?php echo X_Env::_('megavideo_manage_title')?></span>
+					<!-- 
+					<ul class="menu">
+						<li>
+							<a href="#">
+								<img src="<?php echo $this->baseUrl('/images/megavideo/logo.png'); ?>" />
+							</a>
+						</li>
+					</ul>
+					 -->
+				</div>
+				<div class="content">
+					<table class="table" id="megavideo-categories">
+						<tr class="header">
+							<th><?php echo X_Env::_('p_megavideo_categoriestable_header_label')?></th>
+							<th width="100px"><?php echo X_Env::_('p_megavideo_categoriestable_header_num')?></th>
+							<th width="100px"><?php echo X_Env::_('p_megavideo_categoriestable_header_options')?></th>
+						</tr>
+						<?php foreach ($this->categories as $i => $category): ?>
+							<tr class="<?php echo $i % 2 ? 'alt' : ''; ?>">
+								<td>
+									<a href="<?php echo $this->url(array(
+											'controller' => 'megavideo',
+											'action'	=> 'category',
+											'id'	=> urlencode($category['category'])
+										), 'default', true); ?>">
+										<?php echo $category['category']; ?>
+									</a>
+								</td>
+								<td><?php echo count($category['entries']);?></td>
+								<td>
+									<ul class="inline-menu">
+										<li class="ui-state-default">
+											<a class="ui-icon ui-icon-pencil megavideo-category-rename" href="<?php echo $this->url(array(
+												'controller' => 'megavideo',
+												'action' => 'rename',
+												'id' => urlencode($category['category']),
+												'name' => ''
+											), 'default', true); ?>">R</a>
+										</li>
+										<li class="ui-state-default">
+											<a class="ui-icon ui-icon-trash" href="<?php echo $this->url(array(
+												'controller' => 'megavideo',
+												'action' => 'delete',
+												'type' => 'category',
+												'id' => urlencode($category['category']),
+												'name' => ''
+											), 'default', true); ?>">E</a>
+										</li>
+									</ul>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="fixed column" style="width: 400px">
+		<div class="container">
+			<div class="box" id="megavideo-bookmarklets">
+				<div class="header">
+					<span class="title"><?php echo X_Env::_('p_megavideo_manage_bookmarkletstitle')?></span>
+				</div>
+				<div class="content">
+					<center>
+						<iframe title="YouTube video player" class="youtube-player" type="text/html" height="260px" src="http://www.youtube.com/embed/GycWEv7cWLk" frameborder="0" allowFullScreen="allowFullScreen"></iframe>
+					</center>					
+					<br />
+					<p align="center">
+						<a class="button" id="megavide-bookmarklets-button" href="<?php echo $this->inlineJs; ?>" title="<?php echo X_Env::_('megavideo_bookmarklets_link_title'); ?>">
+							 <?php echo X_Env::_('megavideo_bookmarklets_link_title'); ?>
+						</a>
+					</p>
+					<p>
+						<?php echo X_Env::_('megavideo_bookmarklets_description')?>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,54 @@
+<!-- application/views/scripts/profiles/remove.phtml -->
+<?php 
+
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('back'), "profiles", "index");
+	
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLinkRoute(X_Env::_('p_profiles_title'), 'profiles', 'index')
+	->addLabel(X_Env::_('p_profiles_removeprofile_title'));
+
+?>
+<?php //$this->headScript()->appendFile($this->baseUrl("/js/plugin/index.js")); ?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
+<?php $this->headScript()->captureEnd(); ?>
+<?php $this->headTitle()->prepend(X_Env::_('p_profiles_removeprofile_title')); ?>
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+
+<div class="unit">
+	<div class="container horizontal-center" style="width: 960px">
+		<div class="box">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('p_profiles_removeprofile_maintitle'); ?></span>
+			</div>
+			<div class="content">
+				<p><?php echo X_Env::_('p_profiles_removeprofile_maindesc'); ?></p>
+				<dl>
+					<dt><b><?php echo X_Env::_('p_profiles_form_label_label'); ?></b></dt>
+					<dd><?php echo $this->profile->getLabel(); ?></dd>
+					<dt><b><?php echo X_Env::_('p_profiles_form_arg_label'); ?></b></dt>
+					<dd style="word-break: break-all"><pre style="font-size: small;"><?php echo X_Env::codeFormat($this->profile->getArg()); ?></pre></dd>
+				</dl>
+				<?php echo $this->form; ?>
+			</div>
+		</div>
+	</div>
+</div>

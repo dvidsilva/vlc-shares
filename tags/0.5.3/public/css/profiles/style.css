@@ -1,0 +1,9 @@
+@CHARSET "UTF-8";
+
+.highlight {
+	background-color: #900 !important;
+}
+
+.highlight * {
+	color: white;
+}

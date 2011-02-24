@@ -1,0 +1,22 @@
+<?php echo $this->doctype('<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.1//EN" "http://www.openmobilealliance.org/tech/DTD/xhtml-mobile11.dtd">'); ?>
+<!-- application/layouts/scripts/layout.phtml --> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"> 
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<?php $this->headScript()->prependFile($this->baseUrl("/js/jquery-1.4.2.min.js")); ?>
+	<?php $this->headScript()->prependFile($this->baseUrl('/js/console.js')); ?>
+	<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
+		var baseUrl = "<?php echo $this->baseUrl(); ?>";
+	<?php $this->headScript()->captureEnd(); ?>
+	<?php $this->headMeta()->appendHttpEquiv('Content-Type','application/xhtml+xml; charset=utf-8'); ?>
+	<?php $this->headMeta()->appendName('viewport','width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;'); ?>
+	<?php echo $this->headTitle(); ?> 
+	<?php echo $this->headScript(); ?> 
+	<?php echo $this->headMeta(); ?> 
+	<?php echo $this->headLink(); ?> 	
+	<?php echo $this->headStyle(); ?> 
+</head>
+<body>
+<?php echo $this->layout()->content; ?>
+</body>
+</html>

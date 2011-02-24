@@ -1,0 +1,86 @@
+<?php echo $this->doctype(); ?> 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!-- application/layouts/scripts/altgui.phtml -->
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<?php // Items added in reverse order ?>
+	<?php $this->headScript()->prependFile($this->baseUrl("/js/elastic/elastic.js")); ?>	
+	<?php $this->headScript()->prependFile($this->baseUrl("/js/jquery-ui-1.8.4.custom.min.js")); ?>
+	<?php $this->headScript()->prependFile($this->baseUrl("/js/jquery-1.4.2.min.js")); ?>
+	<?php $this->headScript()->prependFile($this->baseUrl('/js/console.js')); ?>
+	<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
+		var baseUrl = "<?php echo $this->baseUrl(); ?>";
+	<?php $this->headScript()->captureEnd(); ?>
+	<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::APPEND); ?>
+		$(document).ready(function() {
+			$('.ui-state-default').hover(function() {
+				$(this).toggleClass('ui-state-hover');
+			});
+		});
+	<?php $this->headScript()->captureEnd(); ?>
+	<?php //$this->headLink()->prependStylesheet($this->baseUrl('/css/style.altgui.css'), 'all'); ?>
+	<?php $this->headLink()->prependStylesheet($this->baseUrl('/css/style.simply.css'), 'all'); ?>
+	<?php $this->headLink()->prependStylesheet($this->baseUrl('/css/smoothness/jquery-ui-1.8.4.custom.css')); ?>
+	<?php //$this->headLink()->prependStylesheet($this->baseUrl('/css/ui-darkness/jquery-ui-1.8.9.custom.css')); ?>	
+	<?php $this->headLink()->prependStylesheet($this->baseUrl('/css/elastic/elastic.print.css'), 'print'); ?>
+	<?php $this->headLink()->prependStylesheet($this->baseUrl('/css/elastic/elastic.css'), 'all'); ?>
+	<?php echo $this->headTitle(); ?> 
+	<?php echo $this->headStyle(); ?>
+	<?php echo $this->headLink(); ?>	
+	<?php echo $this->headScript(); ?> 
+</head>
+<body>
+	<div class="unit" style="min-width: 960px;">
+		<div class="container columns same-height" id="header">
+			<div class="elastic column">
+				<div class="container" id="applications-links">
+					<?php echo $this->action('applications', 'manage'); ?>
+				</div>
+			</div>
+			<div class="fixed column" style="min-width: 160px;">
+				<div class="container " id="logo">
+					<a rel="external" target="_blank" href="http://code.google.com/p/vlc-shares/">
+						<img src="<?php echo $this->baseUrl('/images/logo.png')?>" title="VLCShares" alt="VLCShares Logo" />
+						VLCShares: <i><b><?php echo X_VlcShares::VERSION ?></b></i>
+					</a>
+					<br/>
+					<a rel="external" target="_blank" href="http://framework.zend.com/">
+						ZF: <i><b><?php echo Zend_Version::VERSION; ?></b></i>
+					</a>
+					<br/>
+					<a rel="external" target="_blank" href="http://www.wiimc.org/forum/viewforum.php?f=8">
+						Forum
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="container columns" id="status-bar">
+			<div class="elastic column" id="breadcrumb">
+				<?php if ( !empty($this->layout()->breadcrumb) ) : ?>
+					<?php echo $this->layout()->breadcrumb; ?>
+				<?php else: ?>
+				&nbsp;
+				<?php endif;?>
+			</div>
+			<div class="fixed column" style="min-width: 200px;" id="status">
+				<div class="container">
+					<?php echo $this->action('status', 'manage'); ?>
+				</div>
+			</div>
+		</div>
+		<div class="container columns" id="subheader">
+			<div class="elastic column">
+				<?php echo $this->layout()->subNavigator; ?>
+			</div>
+		</div>
+		<div id="content" class="container">
+			<?php echo $this->layout()->content; ?>
+		</div>
+		<div id="footer">
+			<br/>
+			<center><small><b>&copy; Ximarx</b></small></center>
+			<br/>	
+		</div>
+	</div>
+</body>
+</html>
