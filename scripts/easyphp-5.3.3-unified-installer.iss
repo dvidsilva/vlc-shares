@@ -7,15 +7,15 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{2D3CDCAB-4146-42D2-83B6-E52B8BB7CE83}
 AppName=VLCShares
-AppVersion=0.5_beta1
-;AppVerName=VLCShares 0.5_beta1
+AppVersion=0.5.3
+;AppVerName=VLCShares 0.5.3
 AppPublisher=Ximarx
 AppPublisherURL=http://code.google.com/p/vlc-shares/
 AppSupportURL=http://code.google.com/p/vlc-shares/
 AppUpdatesURL=http://code.google.com/p/vlc-shares/
 DefaultDirName={pf}\VLCShares
 DefaultGroupName=VLCShares
-OutputBaseFilename=setup
+OutputBaseFilename=vlc-shares
 Compression=lzma
 SolidCompression=yes
 AppMutex=EasyPhpMutex
@@ -45,5 +45,5 @@ Type: files; Name: "{app}\mysql\data\ib_logfile1"
 Type: files; Name: "{app}\mysql\data\ibdata1"
 
 [Run]
-Filename: {app}\EasyPHP-5.3.3.exe; Parameters: /install /browse; Flags: nowait
+Filename: {app}\EasyPHP-5.3.3.exe; Parameters: /install; Flags: nowait
 
