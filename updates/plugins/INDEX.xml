@@ -141,4 +141,12 @@
 			]]></changelog>
 		</version>
 	</plugin>
+	<plugin key="gogocinema">
+		<version name="0.1" type="stable" cMin="0.5.3" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_gogocinema_0.1.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+		</version>
+	</plugin>
 </plugins>
