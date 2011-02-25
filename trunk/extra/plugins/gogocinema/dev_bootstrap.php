@@ -1,8 +1,5 @@
 <?php 
 
-// bootstrap not allowed for this
-return;
-
 // context of this file is Bootstrap::_initExtraPlugins()
 
 // dev bootstrap file
@@ -21,22 +18,13 @@ $neededDirectories = array(
 );
 
 $neededLinks = array(
-	//$basePath.'/public/images/jigoku/' => APPLICATION_PATH.'/../public/images/jigoku',
-	$basePath.'/languages/X_VlcShares_Plugins_Cache.en_GB.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_Cache.en_GB.ini',
-	$basePath.'/languages/X_VlcShares_Plugins_Cache.it_IT.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_Cache.it_IT.ini',
+	$basePath.'/public/images/gogocinema/' => APPLICATION_PATH.'/../public/images/gogocinema',
+	$basePath.'/languages/X_VlcShares_Plugins_GoGoCinema.en_GB.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_GoGoCinema.en_GB.ini',
+	$basePath.'/languages/X_VlcShares_Plugins_GoGoCinema.it_IT.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_GoGoCinema.it_IT.ini',
 );
 
 // Include files
 $includeFiles = array(
-	// dbtables
-	$basePath.'/application/models/DbTable/Cache.php',
-
-	// models
-	$basePath.'/application/models/Cache.php',
-	$basePath.'/application/models/CacheMapper.php',
-	
-	// controllers
-	$basePath.'/application/controllers/CacheController.php',
 );
 
 // add your view scripts path
@@ -45,7 +33,7 @@ $viewScriptsPath = array(
 
 // include path for Plugins
 $pluginsIncludes = array(
-	$basePath.'/library/X/VlcShares/Plugins/Cache.php',
+	$basePath.'/library/X/VlcShares/Plugins/GoGoCinema.php',
 );
 
 // include path for Helpers
@@ -53,8 +41,8 @@ $helpersIncludes = array(
 );
 
 $pluginsInstances = array(
-	'cache' => array(
-		'class' => 'X_VlcShares_Plugins_Cache',
+	'gogocinema' => array(
+		'class' => 'X_VlcShares_Plugins_GoGoCinema',
 		'configs' => array(
 			// special configs aren't required, so i use defaults hardcoded
 		)
@@ -62,6 +50,6 @@ $pluginsInstances = array(
 );
 
 $dbInits = array(
-	$basePath.'/install.sql' => (file_exists(APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_Cache.en_GB.ini') == false),
+	$basePath.'/install.sql' => (file_exists(APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_GoGoCinema.en_GB.ini') == false),
 );
 
