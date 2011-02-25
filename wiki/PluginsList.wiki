@@ -42,6 +42,7 @@ This kind of plugins adds new collections inside VLCShares
 || *DBForever* || dbforever || 0.2 || 0.5.3 or later || Adds dbforever.net inside VLCShares_ ||
 || *AllSp (southpark)* || allsp || 0.2 || 0.5.3 or later || Adds allsp.com inside VLCShares_ ||
 || *DirettaRAI* || direttarai || 0.1 || 0.5.3 or later (italian users only) || Adds some RAI live channels inside VLCShares_ ||
+|| *GoGoCinema* || gogocinema || 0.1 || 0.5.3 or later || Adds gogocinema.com inside VLCShares_ ||
 
 
 
