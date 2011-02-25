@@ -9,7 +9,7 @@
 		<file>X/VlcShares/Plugins/GoGoCinema.php</file>
 		<class>X_VlcShares_Plugins_GoGoCinema</class>
 		<compatibility>
-			<from>0.5.1</from>
+			<from>0.5.3</from>
 			<to>0.6</to>
 		</compatibility>
 	</metadata>
