@@ -11,7 +11,7 @@ require_once 'Zend/Dom/Query.php';
  */
 class X_VlcShares_Plugins_GoGoCinema extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.1alpha';
+	const VERSION = '0.1';
 	const VERSION_CLEAN = '0.1';
 	
 	const SORT_ALPHA = 'a';
