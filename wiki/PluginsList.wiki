@@ -35,7 +35,7 @@ This kind of plugins adds new collections inside VLCShares
 || *[PluginYoutube Youtube]* || youtube || 0.1.2 || 0.5.3 or later || Adds Youtube inside VLCShares_, with support for closed caption ||
 || *[PluginsList#OPFItalia OPFItalia]* || opfitalia || 0.2.1 || 0.5.1 or later  & megavideo plugin|| Adds the site opfitalia.net inside VLCShares_ ||
 || *Jigoku* || jigoku || 0.1.1 || 0.5.1 or later & megavideo plugin || Adds the site http://www.jigoku.it inside VLCShares_ ||
-|| *AnimeFTW* || animeftw || 0.2.1 || 0.5.1 or later || Adds the site http://www.animeftw.tv inside VLCShares_ ||
+|| *AnimeFTW* || animeftw || 0.2.2 || 0.5.1 or later || Adds the site http://www.animeftw.tv inside VLCShares_ ||
 || *Megavideo* || megavideo || 0.2 || 0.5.3 or later || Adds megavideo with premium account support inside VLCShares_ ||
 || *AnimeLand* || animeland || 0.2 || 0.5.3 or later || Adds animeland.it inside VLCShares_ ||
 || *NarutoGet* || narutoget || 0.2 || 0.5.3 or later || Adds narutoget.com inside VLCShares_ ||
