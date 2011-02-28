@@ -13,11 +13,11 @@ require_once 'Zend/Dom/Query.php';
  */
 class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.2.1';
-	const VERSION_CLEAN = '0.2.1';
+	const VERSION = '0.2.2';
+	const VERSION_CLEAN = '0.2.2';
 	
 	const BASE_URL = 'http://www.animeftw.tv/';
-	const PAGE_LOGIN = 'https://www.animeftw.tv/login';
+	const PAGE_LOGIN = 'http://www.animeftw.tv/login';
 	const PAGE_SERIES = 'http://www.animeftw.tv/videos';
 	const PAGE_MOVIES = 'http://www.animeftw.tv/movies';
 	const PAGE_OAV = 'http://www.animeftw.tv/ovas';
