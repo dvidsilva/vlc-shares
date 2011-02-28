@@ -12,7 +12,7 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'animeftw.base.url', 'http://www.animeftw.tv/', 'http://www.animeftw.tv/', 'plugins', 0, 'p_animeftw_conf_baseurl_label', 'p_animeftw_conf_baseurl_desc', '');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'animeftw.login.url', 'https://www.animeftw.tv/login', 'https://www.animeftw.tv/login', 'plugins', 0, 'p_animeftw_conf_loginurl_label', 'p_animeftw_conf_loginurl_desc', '');
+	'animeftw.login.url', 'http://www.animeftw.tv/login', 'http://www.animeftw.tv/login', 'plugins', 0, 'p_animeftw_conf_loginurl_label', 'p_animeftw_conf_loginurl_desc', '');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'animeftw.request.timeout', '25', '25', 'plugins', 0, 'p_animeftw_conf_requesttimeout_label', 'p_animeftw_conf_requesttimeout_desc', '');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
