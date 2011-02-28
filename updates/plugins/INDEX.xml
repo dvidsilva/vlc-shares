@@ -64,13 +64,12 @@
 		</version>
 	</plugin>
 	<plugin key="animeftw">
-		<version name="0.2.1" type="stable" cMin="0.5" cMax="0.6">
+		<version name="0.2.2" type="stable" cMin="0.5" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_animeftw_0.2.1.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_animeftw_0.2.2.zip</download>
 			<changelog><![CDATA[
-			*** 0.2.1 ***
-			 - Password field in config page is type="password"
-			 - Cookie reset on configs change
+			*** 0.2.2 ***
+			 - Workaround for wrong config in windows auto installer: moved login page to standard http. This will not require php_openssl enabled for windows users.
 			]]></changelog>
 		</version>
 	</plugin>
