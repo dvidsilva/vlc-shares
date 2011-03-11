@@ -5,7 +5,9 @@ require_once 'Zend/Gdata/YouTube.php';
 
 class X_VlcShares_Plugins_Helper_Youtube extends X_VlcShares_Plugins_Helper_Abstract {
 
-	const VERSION = '0.1beta2';
+	const VERSION = '0.1.3';
+	const VERSION_CLEAN = '0.1.3';
+	
 	const ITEMS_PER_PAGE = 50;
 	
 	private $_cachedSearch = array();
@@ -318,7 +320,10 @@ class X_VlcShares_Plugins_Helper_Youtube extends X_VlcShares_Plugins_Helper_Abst
 			
 			$start = strpos($htmlString, 'swfHTML');
 			
-			$htmlString = substr($htmlString, $start, 16384); // 16384 has been taken from wiimc menu.ccp
+			if ( $start !== false) {
+				// reduce string (for old page format)
+				$htmlString = substr($htmlString, $start, 16384); // 16384 has been taken from wiimc menu.ccp
+			}
 			
 			$matches = array();
 			
