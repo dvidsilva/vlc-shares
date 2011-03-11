@@ -11,41 +11,52 @@ $v_items = $this->items;
 	<?php $this->headScript()->appendFile($this->baseUrl("/js/jquery.jcoverflip.js")); ?>
 	<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::APPEND); ?>
 		$(document).ready( function(){
-			jQuery( '#flip' ).jcoverflip({/*
-				beforeCss: function( el, container, offset ){
-					el.css('z-index', 10000-offset);
-					return [
-						$.jcoverflip.animationElement( el, { left: ( container.width( )/2 - 210 - 100*(offset/1.5) + 20*offset )+'px', bottom: '20px'  }, { } ),
-						$.jcoverflip.animationElement( el.find( 'img' ), { width: Math.max(40,100-10*offset) + 'px' }, {} )
-					];
-				},
-				afterCss: function( el, container, offset ){
-					el.css('z-index', 10000-offset);
-					return [
-						$.jcoverflip.animationElement( el, { left: ( container.width( )/2 + 110 + 100*(offset/1.5) )+'px', bottom: '20px' }, { } ),
-						$.jcoverflip.animationElement( el.find( 'img' ), { width: Math.max(40,100-10*offset) + 'px'}, {} )
-					];
-				},
-				currentCss: function( el, container ){
-					el.css('z-index', 10000);
-					return [
-						$.jcoverflip.animationElement( el, { left: ( container.width( )/2 - 100 )+'px', bottom: 0 }, { } ),
-						$.jcoverflip.animationElement( el.find( 'img' ), { width: '200px' }, { } )
-					];
-				},*/
-				change: function(event, ui){
-					//jQuery('#scrollbar').slider('value', ui.to*25);
-					//alert(ui.to);
-					$('#wrapper .items .item.highlight').removeClass('highlight');
-					$('#wrapper .items .item:eq('+ui.to+')').addClass('highlight');
-				},
-				titles: {
-					create: customTitleCreate,
-					destroy: customTitleDestroy
-				}
-	        });
-	        
-	        $('#wrapper .items .item:eq(0)').addClass('highlight');
+			
+			if ( $('#flip li').size() > 0 ) {
+		
+				jQuery( '#flip' ).jcoverflip({/*
+					beforeCss: function( el, container, offset ){
+						el.css('z-index', 10000-offset);
+						return [
+							$.jcoverflip.animationElement( el, { left: ( container.width( )/2 - 210 - 100*(offset/1.5) + 20*offset )+'px', bottom: '20px'  }, { } ),
+							$.jcoverflip.animationElement( el.find( 'img' ), { width: Math.max(40,100-10*offset) + 'px' }, {} )
+						];
+					},
+					afterCss: function( el, container, offset ){
+						el.css('z-index', 10000-offset);
+						return [
+							$.jcoverflip.animationElement( el, { left: ( container.width( )/2 + 110 + 100*(offset/1.5) )+'px', bottom: '20px' }, { } ),
+							$.jcoverflip.animationElement( el.find( 'img' ), { width: Math.max(40,100-10*offset) + 'px'}, {} )
+						];
+					},
+					currentCss: function( el, container ){
+						el.css('z-index', 10000);
+						return [
+							$.jcoverflip.animationElement( el, { left: ( container.width( )/2 - 100 )+'px', bottom: 0 }, { } ),
+							$.jcoverflip.animationElement( el.find( 'img' ), { width: '200px' }, { } )
+						];
+					},*/
+					change: function(event, ui){
+						//jQuery('#scrollbar').slider('value', ui.to*25);
+						//alert(ui);
+						
+						var rel = $('#flip li:eq('+ui.to+') > a').attr('rel');
+						
+						$('#wrapper .items .item.highlight').removeClass('highlight');
+						$('#wrapper .items #'+rel).addClass('highlight');
+					},
+					titles: {
+						create: customTitleCreate,
+						destroy: customTitleDestroy
+					}
+		        });
+		        
+		        var rel = $('#flip li:eq(0) > a').attr('rel');
+		        $('#wrapper .items #'+rel).addClass('highlight');
+		        
+			} else {
+				$('#thumbs').remove();
+			}
 	        
 		});
 		
@@ -92,7 +103,8 @@ $v_items = $this->items;
 		<ul id="flip">
 			<?php foreach ($v_items->getItems() as $i => $item):?>
 				<?php /* @var $item X_Page_Item_PItem */ ?>
-				<li><a href="<?php echo $item->isUrl() ? $item->getLink() : $this->url($item->getLink(), $item->getRoute(), $item->isReset()) ; ?>"> <span class="title"><?php echo $item->getLabel(); ?></span>
+				<?php if ($item->getThumbnail() == null ) continue; ?>
+				<li><a rel="item-<?php echo $i;?>" href="<?php echo $item->isUrl() ? $item->getLink() : $this->url($item->getLink(), $item->getRoute(), $item->isReset()) ; ?>"> <span class="title"><?php echo $item->getLabel(); ?></span>
 						<?php if ($item->getThumbnail() != null ) : ?>
 							<?php if ( X_Env::startWith($item->getThumbnail(), 'http') || X_Env::startWith($item->getThumbnail(), 'https') ) : ?>
 								<img src="<?php echo $item->getThumbnail(); ?>"	title="<?php echo $item->getLabel(); ?>" />
@@ -121,7 +133,7 @@ $v_items = $this->items;
 		-->
 		<?php foreach ($v_items->getItems() as $i => $item):?>
 			<?php /* @var $item X_Page_Item_PItem */ ?>
-			<li class="item">
+			<li class="item" id="item-<?php echo $i ?>">
 				<?php if ( $item->getIcon() != null ): ?>
 					<img src="<?php echo $this->baseUrl($item->getIcon()); ?>"	height="32px" width="32px" alt="" />
 				<?php endif; ?>
@@ -130,8 +142,8 @@ $v_items = $this->items;
 					<p class="date"><?php echo $item->getDescription(); ?></p>
 				<?php endif; ?>
 				<a href="<?php echo $item->isUrl() ? $item->getLink() : $this->url($item->getLink(), $item->getRoute(), $item->isReset()) ; ?>" class="button"></a>
-	<div class="clear"></div>
-	</li>
+				<div class="clear"></div>
+			</li>
 		<?php endforeach; ?>
 	</ul>
 </div>
