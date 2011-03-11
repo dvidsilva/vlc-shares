@@ -54,6 +54,7 @@ This kind of plugins adds new features inside VLCShares
 || *Name* || *Key* || *Last Version* || *Compatibility/Requirement* || *Description* ||
 || *Cache* || cache || 0.1 || 0.5.1 and 0.5.2 || Backported version of the cache manager bundle in versione 0.5.3 for older versions ||
 || *JDownloader* || jdownloader || 0.1 || 0.5.3 || Allow to check JDownloader status and append new Megavideo link to the download queue ||
+|| *FsThumbs* || fsthumbs || 0.1 || 0.5.3 & ffmpeg helper enabled || Show thumbnails for videos in shared folders ||
 
 
 =Plugins Guide=
