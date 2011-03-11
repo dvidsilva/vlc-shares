@@ -524,6 +524,8 @@ NEWINLINE;
 		// close and clean the output buffer, everything will be read and send to device
 		ob_end_clean();
 		
+		header("Content-Type: video/mp4");
+		
 		// readfile open a file and send it directly to output buffer
 		readfile($videoUrl, false, $context);
 		

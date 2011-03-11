@@ -41,16 +41,16 @@ INSERT INTO plg_profiles (label, arg, cond_devices, weight) VALUES
 	1,
 	1);
 
-INSERT INTO plg_profiles (label, arg, cond_devices, cond_formats) VALUES
-	('Android Phone (AVC/AAC)',
-	'transcode{vcodec=h264,venc=x264{no-cabac,level=12,vbv-maxrate=384,vbv-bufsize=1000,keyint=75,ref=3,bframes=0},width=320,height=180,vb=384}',
-	1,
-	'h264+aac');
+--INSERT INTO plg_profiles (label, arg, cond_devices, cond_formats) VALUES
+--	('Android Phone (AVC/AAC)',
+--	'transcode{vcodec=h264,venc=x264{no-cabac,level=12,vbv-maxrate=384,vbv-bufsize=1000,keyint=75,ref=3,bframes=0},width=320,height=180,vb=384}',
+--	1,
+--	'h264+aac');
 	
 	
 INSERT INTO plg_profiles (label, arg, cond_devices) VALUES
 	('Android Phone (LQ)',
-	'transcode{vcodec=mp4v,vb=400,fps=25,scale=0.5,acodec=mp4a,ab=20,channels=2}',
+	'transcode{vcodec=mp4v,vb=400,fps=25,scale=0.5,acodec=mp4a,ab=64,channels=2}',
 	1);
 	
 	
