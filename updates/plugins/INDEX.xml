@@ -8,14 +8,13 @@
 			]]></changelog>
 		</version>
 		
-		<!-- version 0.1.2 for 0.5.3 --> 
-		<version name="0.1.2" type="stable" cMin="0.5.3" cMax="0.6">
+		<!-- version 0.1.3 for 0.5.3 --> 
+		<version name="0.1.3" type="stable" cMin="0.5.3" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_youtube_0.1.2.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_youtube_0.1.3.zip</download>
 			<changelog><![CDATA[
-			*** 0.1.2 ***
-			 - Support for cache plugin
-			 - Support for UpdateNotifier plugin
+			*** 0.1.3 ***
+			 - Fix fetchFormatsNOAPI for new videos
 			]]></changelog>
 		</version>
 	</plugin>
