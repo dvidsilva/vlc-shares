@@ -65,7 +65,7 @@ class DirettaraiController extends X_Controller_Action
 
 		$context  = stream_context_create($opts);
 		// redirect support in wiimc exists only from 1.1.0
-		if ( X_VlcShares_Plugins::helpers()->devices()->isWiimc() && !X_VlcShares_Plugins::helpers()->devices()->isWiimcBeforeVersion('1.0.9') && $this->plugin->config('direct.enabled', true) ) {
+		if ( !X_VlcShares_Plugins::helpers()->devices()->isWiimc() && $this->plugin->config('direct.enabled', true) ) {
 			$match = array();
 			$xml = file_get_contents($videoUrl, false, $context);
 			if (  preg_match('/<REF HREF=\"([^\"]*)\"\/>/', $xml, $match ) ) {
