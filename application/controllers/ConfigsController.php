@@ -82,7 +82,11 @@ class ConfigsController extends X_Controller_Action
     					try {
     						$config->setValue($postValue);
     						Application_Model_ConfigsMapper::i()->save($config);
-    						X_Debug::i("New config: {$config->getSection()}.{$config->getKey()} = {$config->getValue()}");
+    						if ( stripos($config->getKey(), 'password') != false ) {
+    							X_Debug::i("New config: {$config->getSection()}.{$config->getKey()} = ***********");
+    						} else {
+    							X_Debug::i("New config: {$config->getSection()}.{$config->getKey()} = {$config->getValue()}");
+    						}
     					} catch (Exception $e) {
     						$isError = true;
     						$this->_helper->flashMessenger(X_Env::_('configs_save_err_db').": {$e->getMessage()}");
