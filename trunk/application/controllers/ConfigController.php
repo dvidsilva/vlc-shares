@@ -101,10 +101,18 @@ class ConfigController extends X_Controller_Action {
     				
     				$postStoreName = $config->getSection()."_".str_replace('.', '_', $config->getKey());
     				
-    				if ( array_key_exists($postStoreName, $post) && $config->getValue() != $request->getPost($postStoreName) ) {
+    				// ISSUE-15: https://code.google.com/p/vlc-shares/issues/detail?id=15
+    				// This is a workaround it: remove slashes if magic_quotes is enabled
+    				$postValue = $request->getPost($postStoreName);
+    				if ( get_magic_quotes_gpc() ) {
+    					//$postValue = str_replace(array('\\\\' , '=\\"'), array('\\', '="'), $postValue );
+    					$postValue = stripslashes($postValue);
+    				}
+    				
+    				if ( array_key_exists($postStoreName, $post) && $config->getValue() != $postValue ) {
     					// new value
     					try {
-    						$config->setValue($request->getPost($postStoreName));
+    						$config->setValue($postValue);
     						Application_Model_ConfigsMapper::i()->save($config);
     						X_Debug::i("New config: {$config->getKey()} = {$config->getValue()}");
     					} catch (Exception $e) {
