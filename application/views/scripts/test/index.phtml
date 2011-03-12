@@ -1,6 +1,11 @@
 <!-- application/views/scripts/test/index.phtml -->
 <?php 
 	
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute('Download system report', "test", "report");
+	;
+
 $breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
 /* @var $breadcrumb X_VlcShares_Elements_Menu */
 $this->layout()->breadcrumb = $breadcrumb

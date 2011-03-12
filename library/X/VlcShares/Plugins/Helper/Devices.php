@@ -8,6 +8,7 @@ class X_VlcShares_Plugins_Helper_Devices extends X_VlcShares_Plugins_Helper_Abst
 	const DEVICE_ANDROID = 1;
 	const DEVICE_IPHONE = 2;
 	const DEVICE_IPAD = 3;
+	const DEVICE_VLC = 4;
 	const DEVICE_PC = 100;
 	
 	function __construct() {
@@ -77,6 +78,20 @@ class X_VlcShares_Plugins_Helper_Devices extends X_VlcShares_Plugins_Helper_Abst
 		);
 	}
 	
+	public function isVlc() {
+		$userAgent = $_SERVER['HTTP_USER_AGENT'];
+		return ( stripos($userAgent, 'vlc/') !== false	);
+	}
+	
+	public function getVlcVersion() {
+		if ( $this->isVlc() ) {
+			@list(, $version) = explode('/', $_SERVER['HTTP_USER_AGENT']);
+			return $version;
+		} else {
+			return null;
+		}
+	}
+	
 	public function getAndroidClass() {
 		if ( $this->isAndroid() ) {
 			// TODO
@@ -115,6 +130,8 @@ class X_VlcShares_Plugins_Helper_Devices extends X_VlcShares_Plugins_Helper_Abst
 		elseif ( $this->isIPad())
 			return self::DEVICE_IPHONE;
 		*/
+		elseif ( $this->isVlc() )
+			return self::DEVICE_VLC;
 		else
 			return self::DEVICE_PC;
 	}
