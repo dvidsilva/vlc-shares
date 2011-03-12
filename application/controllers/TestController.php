@@ -94,6 +94,12 @@ class TestController extends X_Controller_Action
     	
     	$php = ini_get_all(null, false);
     	foreach ($php as $k => $v) $results[] = "\t$k = $v";
+
+    	
+    	$results[] = ''; $results[] = ''; $results[] = '';
+    	$results[] = '-----------------------';
+    	$results[] = 'Debug log:';
+    	$results[] = '';
     	
     	$this->getResponse()->setHeader('Content-Type', 'plain/text');
     	$this->getResponse()->setHeader('Content-Disposition', 'attachment; filename=vlc-shares_report_'.time().'.txt');
@@ -101,6 +107,14 @@ class TestController extends X_Controller_Action
     	$this->_helper->layout->disableLayout();
     	
     	echo implode(PHP_EOL, $results);
+    	
+		$debugPath = sys_get_temp_dir().'/vlcShares.debug.log';
+		if ( $this->options->general->debug->path != null && trim($this->options->general->debug->path) != '' ) {
+			$debugPath = $this->options->general->debug->path;
+		}
+		// read and append to stdout
+   		@readfile($debugPath);
+    	
     	
     }
     
