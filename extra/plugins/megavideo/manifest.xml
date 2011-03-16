@@ -3,7 +3,7 @@
 	<metadata>
 		<label>p_megavideo_plglabel</label>
 		<description>p_megavideo_plgdesc</description>
-		<version>0.2</version>
+		<version>0.2.1</version>
 		<status>stable</status>
 		<key>megavideo</key>
 		<file>X/VlcShares/Plugins/Megavideo.php</file>
@@ -48,6 +48,7 @@
 					<Plugins>
 						<Helper>
 							<file>Megavideo.php</file>
+							<file>Megaupload.php</file>
 						</Helper>
 						<file>Megavideo.php</file>
 					</Plugins>

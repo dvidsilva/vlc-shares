@@ -59,7 +59,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			$bootstrapFile = $entry->getRealPath() . '/dev_bootstrap.php';
 			
 			if ( file_exists($bootstrapFile) ) {
-				X_Debug::i("Dev bootstrap file found: $bootstrapFile");
+				//X_Debug::i("Dev bootstrap file found: $bootstrapFile");
 				{
 					// delegate everything to dev_bootstrap.php
 					include_once $bootstrapFile;
