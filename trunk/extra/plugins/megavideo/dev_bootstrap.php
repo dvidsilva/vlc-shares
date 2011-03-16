@@ -54,7 +54,8 @@ $pluginsIncludes = array(
 
 // include path for Helpers
 $helpersIncludes = array(
-	$basePath.'/library/X/VlcShares/Plugins/Helper/Megavideo.php'
+	$basePath.'/library/X/VlcShares/Plugins/Helper/Megavideo.php',
+	$basePath.'/library/X/VlcShares/Plugins/Helper/Megaupload.php'
 );
 
 // check here for configs from runtime

@@ -7,8 +7,8 @@
  */
 class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface, X_VlcShares_Plugins_BackuppableInterface {
 	
-	const VERSION_CLEAN = '0.2';
-	const VERSION = '0.2';
+	const VERSION_CLEAN = '0.2.1';
+	const VERSION = '0.2.1';
 	
 	public function __construct() {
 		$this
@@ -37,7 +37,10 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 			'password' => $this->config('premium.password', '')
 		)); 
 		
-		$this->helpers()->registerHelper('megavideo', new X_VlcShares_Plugins_Helper_Megavideo($helper_conf));
+		$helper = new X_VlcShares_Plugins_Helper_Megaupload($helper_conf);
+		
+		$this->helpers()->registerHelper('megavideo', $helper);
+		$this->helpers()->registerHelper('megaupload', $helper);
 		
 		if ( $this->config('premium.enabled', true) && $this->config('premium.username', false) && $this->config('premium.password', false) ) {
 			// allow to choose quality for videos if premium user

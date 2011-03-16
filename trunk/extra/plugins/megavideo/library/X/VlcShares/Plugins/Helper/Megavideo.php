@@ -6,8 +6,8 @@ class X_VlcShares_Plugins_Helper_Megavideo extends X_VlcShares_Plugins_Helper_Ab
 	const QUALITY_NORMAL = 'normal';
 	const QUALITY_NOPREMIUM = 'disabled';
 	
-	const VERSION_CLEAN = '0.2';
-	const VERSION = '0.2';
+	const VERSION_CLEAN = '0.2.1';
+	const VERSION = '0.2.1';
 	
 	private $_cachedSearch = array();
 	private $_location = null;

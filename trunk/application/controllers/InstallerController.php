@@ -207,6 +207,9 @@ class InstallerController extends X_Controller_Action
 				
 				$key = (string) $plugin['key'];
 				
+				// if a plugin key is already installer, skip it
+				if ( X_VlcShares_Plugins::broker()->isRegistered($key) ) continue;
+				
 				foreach ($plugin->version as $version) {
 					$version = array(
 						'version' => (string)  $version['name'],
