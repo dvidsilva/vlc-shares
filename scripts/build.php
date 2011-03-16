@@ -1,5 +1,15 @@
 <?php 
 
+function ignoreVcsCB($p_event, &$p_header) {
+	if ( strpos($p_header['filename'], '/.svn/') !== false || ($p_header['folder'] && substr($p_header['filename'],-5) == '/.svn' ) ) {
+		//echo "\t{$p_header['filename']} skipped".PHP_EOL;
+		return 0;
+	} else {
+		return 1;
+	}
+}
+
+
 // Initialize the application path and autoloading
 defined('APPLICATION_PATH')
     || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application'));
@@ -96,7 +106,8 @@ if ( $createAll || $coreOnly ) {
 	$response = $coreZip->create(
 		implode(',', $coreInclude), // all directories and file to include
 		PCLZIP_OPT_REMOVE_PATH, realpath(APPLICATION_PATH.'/..'), // remove the local path
-		PCLZIP_OPT_ADD_PATH, 'vlc-shares' // insert all element inside a /vlc-shares/ folder
+		PCLZIP_OPT_ADD_PATH, 'vlc-shares', // insert all element inside a /vlc-shares/ folder,
+		PCLZIP_CB_PRE_ADD, 'ignoreVcsCB'
 	);
 	
 	if ( $response == 0 ) {
@@ -165,7 +176,8 @@ if ( $createAll || $pluginsList ) {
 			
 			$response = $pluginZip->create(
 				$entry->getRealPath(), // add all the dir content
-				PCLZIP_OPT_REMOVE_PATH, $entry->getRealPath() // remove local path
+				PCLZIP_OPT_REMOVE_PATH, $entry->getRealPath(), // remove local path
+				PCLZIP_CB_PRE_ADD, 'ignoreVcsCB' // skip .svn folders
 			); 
 			
 			
