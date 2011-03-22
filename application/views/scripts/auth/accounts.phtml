@@ -1,0 +1,93 @@
+<!-- application/views/scripts/auth/index.phtml -->
+<?php 
+
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('p_auth_account_new'), "auth", "add");
+	;
+	
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLabel(X_Env::_('p_auth_title'));
+
+?>
+<?php //$this->headLink()->appendStylesheet($this->baseUrl('/css/auth/style.css')); ?>
+<?php //$this->headScript()->appendFile($this->baseUrl("/js/outputs/index.js")); ?>
+<?php $this->headTitle()->prepend(X_Env::_('p_auth_title')); ?>
+
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+
+<div class="unit">
+	<div class="container">
+		<div class="box">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('p_auth_title'); ?></span>
+			</div>
+			<div class="content">
+				<table class="table" id="accounts-table">
+					<tr class="header">
+						<th><?php echo X_Env::_('p_auth_header_username'); ?></th>
+						<th><?php echo X_Env::_('p_auth_header_enabled'); ?></th>
+						<th><?php echo X_Env::_('p_auth_header_altallowed'); ?></th>
+						<th><?php echo X_Env::_('p_auth_header_alturl'); ?></th>
+						<th><?php echo X_Env::_('table_options'); ?></th>
+					</tr>
+					<?php foreach ( $this->accounts as $i => $model): ?>
+						<?php /* @var $model Application_Model_AuthAccount */?>
+						<tr class="<?php echo $i % 2 ? 'alt' : ''?>" id="accountId-<?php echo $model->getId(); ?>">
+							<td><b><?php echo $model->getUsername() ?></b></td>
+							<td><i><?php echo $model->isEnabled() ? X_Env::_('enabled') : X_Env::_('disabled'); ?></i></td>
+							<td><i><?php echo $model->isAltAllowed() ? X_Env::_('enabled') : X_Env::_('disabled'); ?></i></td>
+							<td>
+								<?php if ( $model->isAltAllowed() ) : ?>
+									http://%IP_ADDRESS%<?php echo $this->baseUrl("/auth/login/m/alt/u/{$model->getUsername()}/p/{$model->getPassphrase()}"); ?>
+								<?php else: ?>
+									<i><?php echo X_Env::_('disabled'); ?></i>
+							 	<?php endif; ?>
+							</td>
+							<td>
+								<ul class="inline-menu">
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-pencil"
+										title="<?php echo X_Env::_('edit')?>" 
+										href="<?php echo $this->url(array(
+											'controller' => 'auth',
+											'action' => 'edit',
+											'id' => $model->getId(),
+										), 'default', true); ?>">E</a>
+									</li>
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-trash"
+										title="<?php echo X_Env::_('remove')?>"
+										href="<?php echo $this->url(array(
+											'controller' => 'auth',
+											'action' => 'remove',
+											'id' => $model->getId(),
+											'csrf' => $this->csrf
+										), 'default', true); ?>">R</a>
+									</li>
+								</ul>								
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

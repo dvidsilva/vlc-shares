@@ -72,3 +72,26 @@ CREATE TABLE plg_cache (
 );
 
 CREATE INDEX "plg_cache_uri" ON "plg_cache" ("uri");
+
+
+CREATE TABLE plg_auth_accounts (
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	username VARCHAR(255) NOT NULL UNIQUE,
+	password VARCHAR(32) NOT NULL,
+	passphrase VARCHAR(32) NOT NULL,
+	enabled INTEGER NOT NULL DEFAULT 1,
+	altAllowed INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE INDEX "plg_auth_accounts_id" ON "plg_auth_accounts" ("id");
+
+--INSERT INTO plg_auth_accounts VALUES (1, 'admin', 'd2abaa37a7c3db1137d385e1d8c15fd2', 'passphrase', 1, 1);
+
+CREATE TABLE plg_auth_sessions (
+	ip VARCHAR(45) NOT NULL,
+	useragent VARCHAR(255) DEFAULT NULL,
+	created INTEGER NOT NULL DEFAULT 0,
+	username VARCHAR(255) NOT NULL,
+	PRIMARY KEY (ip, useragent)
+);
+

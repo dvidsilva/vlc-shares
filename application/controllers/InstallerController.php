@@ -57,6 +57,13 @@ class InstallerController extends X_Controller_Action
     		// Connection kaboom?
     	}
     	
+    	$ns = new Zend_Session_Namespace('vlc-shares::installer');
+    	if ( isset($ns->errors) && $ns->errors ) {
+    		$form->isValid($ns->data);
+    		unset($ns->errors); 
+    		unset($ns->data);
+    	}
+    	
     	$this->view->messages = array_merge($this->_helper->flashMessenger->getMessages(), $this->_helper->flashMessenger->getCurrentMessages()) ;
     	$this->_helper->flashMessenger->clearCurrentMessages();
     	$this->view->languages = $languages;
@@ -76,16 +83,67 @@ class InstallerController extends X_Controller_Action
     			$config->setValue($lang);
     			try {
     				Application_Model_ConfigsMapper::i()->save($config);
-	    			$this->_helper->flashMessenger(X_Env::_('installer_language_done'));
+	    			$this->_helper->flashMessenger(array('type' => 'success', 'text' => X_Env::_('installer_language_done')));
 	    			//$this->_helper->redirector('execute');
     			} catch (Exception $e) {
-    				$this->_helper->flashMessenger(X_Env::_("installer_err_db").": {$e->getMessage()}");
+    				$this->_helper->flashMessenger(array('type' => 'fatal', 'text' => X_Env::_("installer_err_db").": {$e->getMessage()}"));
     			}
     		}
     	} else {
-	    	$this->_helper->flashMessenger(X_Env::_('installer_invalid_language'));
+	    	$this->_helper->flashMessenger(array('type' => 'error', 'text' => X_Env::_('installer_invalid_language')));
 	    	$this->_helper->redirector('index');
     	}
+    	
+    	
+    	// check for admin username/password
+    	$form = new Application_Form_Installer();
+    	$form->removeElement('lang');
+    	$form->removeElement('plugins');
+    	
+    	if ( !$form->isValid($this->getRequest()->getPost())) {
+    		$ns = new Zend_Session_Namespace('vlc-shares::installer');
+    		$ns->errors = true;
+    		$ns->data = $this->getRequest()->getPost();
+	    	$this->_helper->flashMessenger(array('type' => 'error', 'text' => X_Env::_('installer_invalid_data')));
+	    	$this->_helper->redirector('index');
+	    	return;
+    	}
+    	
+    	$username = $form->getValue('username');
+    	$password = $form->getValue('password');
+    	
+    	if ( Application_Model_AuthAccountsMapper::i()->getCount(true) == 0 ) {
+    		// try to reenable/create a new account
+    		try {
+	    		$account = new Application_Model_AuthAccount();
+	    		Application_Model_AuthAccountsMapper::i()->fetchByUsername($username);
+	    		$account->setUsername($username)
+	    			->setPassword($password)
+	    			->setEnabled(true)
+	    			->setPassphrase(md5("$username():$password:".rand(10000,99999).time()))
+	    			->setAltAllowed(true)
+	    			;
+	    		Application_Model_AuthAccountsMapper::i()->save($account);
+    			
+	    		$this->_helper->flashMessenger(array('type' => 'success', 'text' => X_Env::_('installer_newaccount_done')));
+	    		
+    		} catch (Exception $e) {
+		    	$this->_helper->flashMessenger(X_Env::_('installer_err_db').": {$e->getMessage()}");
+		    	$this->_helper->redirector('index');
+		    	return;
+    		}
+    		
+    		// after that account is stored, try to do a login
+    		if ( X_VlcShares_Plugins::broker()->isRegistered('auth') ) {
+    			$auth = X_VlcShares_Plugins::broker()->getPlugins('auth');
+    		} else {
+    			$auth = new X_VlcShares_Plugins_Auth();
+    		}
+    		if ( !$auth->isLoggedIn() ) {
+    			$auth->doLogin($username);
+    		}
+    	}
+    	
     	
     	$plugins = $this->getRequest()->getParam('plugins', array());
     	
@@ -151,7 +209,14 @@ class InstallerController extends X_Controller_Action
 	    	//Application_Model_PluginsMapper::i()->delete($plugin);
 			$plugin->setEnabled(false);
 			Application_Model_PluginsMapper::i()->save($plugin);
-	    	
+
+	    	$plugin = new Application_Model_Plugin();
+	    	Application_Model_PluginsMapper::i()->fetchByClass('X_VlcShares_Plugins_Auth', $plugin);
+	    	//Application_Model_PluginsMapper::i()->delete($plugin);
+			$plugin->setEnabled(true);
+			Application_Model_PluginsMapper::i()->save($plugin);
+			
+			
 	    	$this->_helper->flashMessenger(X_Env::_('installer_op_completed'));
 	    	
 	    	// all done, redirect to config page
