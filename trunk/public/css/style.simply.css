@@ -139,7 +139,7 @@ a[rel="external"]:before, a.external:before {
 	text-decoration: none;
 }
 
-#breadcrumb li {
+#breadcrumb li, #status li {
 	list-style: none;
 	display: inline;
 }
@@ -153,6 +153,25 @@ a[rel="external"]:before, a.external:before {
 	background-size: 100% 100%;
 	background: -moz-linear-gradient(top, #D5D8DB, #efefef);
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#D5D8DB), to(#efefef));
+}
+
+#status li {
+	margin-left: 0.5em;
+	color: white;
+}
+
+#status li .label {
+	
+}
+
+#status li .link {
+	color: white;
+	font-weight: bold;
+}
+
+#status li .link.highlight {
+	color: red;
+	font-weight: bold;
 }
 
 

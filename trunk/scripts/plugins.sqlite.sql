@@ -1,4 +1,14 @@
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'auth',
+	'X_VlcShares_Plugins_Auth', 
+	'X/VlcShares/Plugins/Auth.php',
+	'p_auth_plglabel',
+	'p_auth_plgdesc',
+	0,
+	1
+);
+
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
 	'plugininstaller',
 	'X_VlcShares_Plugins_PluginInstaller', 
 	'X/VlcShares/Plugins/PluginInstaller.php',
@@ -333,3 +343,4 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'updatenotifier.plugins.allow.unstable','0','0',
 	'plugins',3,'p_updatenotifier_conf_pluginsallowunstable_label','p_updatenotifier_conf_pluginsallowunstable_desc','');
+

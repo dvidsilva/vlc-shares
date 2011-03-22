@@ -2,27 +2,14 @@
 
 require_once 'X/Env.php';
 
-class Application_Form_Installer extends X_Form
+class Application_Form_AuthAccount extends X_Form
 {
-	
-	function __construct($options = null) {
-		parent::__construct($options);
-	}
-	
     public function init()
     {
+    	$this->setName('auth_account');
         // Set the method for the display form to POST
         $this->setMethod('post');
-        $this->setName('installer');
  
-
-        $this->addElement('select', 'lang', array(
-        	'required' => true,
-        	'label' => X_Env::_('installer_selectlanguage'),
-        	'multiOptions' => array(),
-        ));
-        
-        
         $this->addElement('text', 'username', array(
             'label'      => X_Env::_('p_auth_form_account_username_label'),
             'required'   => true,
@@ -38,28 +25,46 @@ class Application_Form_Installer extends X_Form
                 )
         ));
         
-        $this->addElement('multiCheckbox', 'plugins', array(
-        	'required' => false,
-        	'label' => X_Env::_('installer_optionalplugins'),
-        	'description' => X_Env::_('installer_optionalplugins_desc'),
+        $this->addElement('radio', 'enabled', array(
+        	'label'		=> X_Env::_('p_auth_form_account_enabled_label'),
+        	'required'	=> true,
+        	'multiOptions' => array(
+        		1 => X_Env::_('enabled'),
+        		0 => X_Env::_('disabled'),
+        	)
+        ));
+
+        $this->addElement('radio', 'altallowed', array(
+        	'label'		=> X_Env::_('p_auth_form_account_altallowed_label'),
+        	'required'	=> true,
+        	'multiOptions' => array(
+        		1 => X_Env::_('enabled'),
+        		0 => X_Env::_('disabled'),
+        	)
         ));
         
         
         // Add the submit button
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
-            'label'    => X_Env::_('installer_startbutton'),
-        	//'decorators' => array('ViewHelper')
+            'label'    => X_Env::_('p_auth_form_account_save'),
+        	'decorators' => array('ViewHelper')
         ));
  
         // And finally add some CSRF protection
         $this->addElement('hash', 'csrf', array(
-        	'salt'	=> __CLASS__,
             'ignore' => true,
+        	'salt'	=> __CLASS__,
         	//'decorators' => array('ViewHelper')
         ));
         
-        $this->addDisplayGroup(array('submit', 'csrf'), 'buttons', array('decorators' => $this->getDefaultButtonsDisplayGroupDecorators())); 
+        $this->addElement('hidden', 'id', array(
+            'ignore' => true,
+        	'required'	=> false,
+        	//'decorators' => array('ViewHelper')
+        ));
+        
+        $this->addDisplayGroup(array('submit', 'csrf', 'id'), 'buttons', array('decorators' => $this->getDefaultButtonsDisplayGroupDecorators()));
         
     }
 }
