@@ -9,11 +9,6 @@ class AuthController extends X_Controller_Action
 	 */
 	protected $plugin = null;
 	
-	/**
-	 * @var Zend_Session_Namespace
-	 */
-	protected $ns = null;
-	
 	function init() {
 		// call parent init, always
 		parent::init();
@@ -26,8 +21,6 @@ class AuthController extends X_Controller_Action
 		} else {
 			$this->plugin = X_VlcShares_Plugins::broker()->getPlugins('auth');
 		}
-		
-		$this->ns = new Zend_Session_Namespace('zender::auth');
 	}
 	
 	function indexAction() {
@@ -46,8 +39,8 @@ class AuthController extends X_Controller_Action
 			$this->_helper->viewRenderer->setNoRender(true);
 			$this->_helper->layout->disableLayout();
 			$this->getResponse()->setHeader('Content-Type', 'text/plain');
-			//$this->getResponse()->setBody((string) $plx);
-			echo $plx;
+			$this->getResponse()->setBody((string) $plx);
+			//echo $plx;
 			return;
 		}
 		
@@ -155,11 +148,44 @@ class AuthController extends X_Controller_Action
 		
 	}
 	
+	/*
 	function enabledAction() {
 		
 	}
+	*/
 	
 	function removeAction() {
+
+		$hash = $this->getRequest()->getParam('csrf');
+		$accountId = $this->getRequest()->getParam('id');
+		
+		$csrf = new Zend_Form_Element_Hash('csrf', array(
+			'salt' => __CLASS__
+		));
+		
+		if ( !$csrf->isValid($hash) ) {
+			$this->_helper->flashMessenger(array('type' => 'error', 'text' => X_Env::_('p_auth_err_invalidhash')));
+			$this->_helper->redirector('accounts', 'auth');
+			return;
+		}
+		
+		$account = new Application_Model_AuthAccount();
+		Application_Model_AuthAccountsMapper::i()->find($accountId, $account);
+		if ( is_null($account->getId()) ) {
+			$this->_helper->flashMessenger(array('type' => 'error', 'text' => X_Env::_('p_auth_err_invalidaccount')));
+			$this->_helper->redirector('accounts', 'auth');
+			return;
+		}
+	
+		if ( $this->plugin->getCurrentUser() == $account->getUsername() ) {
+			$this->_helper->flashMessenger(array('type' => 'error', 'text' => X_Env::_('p_auth_err_currentremovalnotallowed')));
+			$this->_helper->redirector('accounts', 'auth');
+			return;
+		}
+		
+		Application_Model_AuthAccountsMapper::i()->delete($account);
+		$this->_helper->flashMessenger(array('type' => 'success', 'text' => X_Env::_('p_auth_accountremoved', $account->getUsername())));
+		$this->_helper->redirector('accounts', 'auth');
 		
 	}
 	
@@ -183,7 +209,7 @@ class AuthController extends X_Controller_Action
 		Application_Model_AuthAccountsMapper::i()->find($accountId, $account);
 		
 		if ( is_null($account->getId()) ) {
-			$this->_helper->flashMessenger(array('type' => 'error', 'text' => X_Env::_('p_auth_error_invalidaccount')));
+			$this->_helper->flashMessenger(array('type' => 'error', 'text' => X_Env::_('p_auth_err_invalidaccount')));
 			$this->_helper->redirector('accounts', 'auth');
 			return;
 		}
@@ -205,7 +231,7 @@ class AuthController extends X_Controller_Action
 	function saveAction() {
 		
 		if ( !$this->getRequest()->isPost() ) {
-			$this->_helper->flashMessenger(array('type' => 'error', 'text' => X_Env::_('p_auth_error_invalidrequest')));
+			$this->_helper->flashMessenger(array('type' => 'error', 'text' => X_Env::_('p_auth_err_invalidrequest')));
 			$this->_helper->redirector('accounts', 'auth');
 			return;
 		}
@@ -226,7 +252,7 @@ class AuthController extends X_Controller_Action
 			if ( $id ) {
 				Application_Model_AuthAccountsMapper::i()->find($id, $account);
 				if ( is_null($account->getId()) ) {
-					$this->_helper->flashMessenger(array('type' => 'error', 'text' => X_Env::_('p_auth_error_invalidaccount')));
+					$this->_helper->flashMessenger(array('type' => 'error', 'text' => X_Env::_('p_auth_err_invalidaccount')));
 					$this->_helper->redirector('accounts', 'auth');
 					return;
 				}

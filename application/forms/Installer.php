@@ -21,7 +21,17 @@ class Application_Form_Installer extends X_Form
         	'label' => X_Env::_('installer_selectlanguage'),
         	'multiOptions' => array(),
         ));
-        
+
+        $this->addElement('radio', 'auth', array(
+            'label'      => X_Env::_('installer_authrequired_label'),
+        	'description' => X_Env::_('installer_authrequired_desc'),
+            'required'   => true,
+            'filters'    => array('StringTrim'),
+        	'multiOptions' => array(
+        		1 => X_Env::_('configs_options_yes'),
+        		0 => X_Env::_('configs_options_no'),
+        	)
+        ));
         
         $this->addElement('text', 'username', array(
             'label'      => X_Env::_('p_auth_form_account_username_label'),
@@ -31,6 +41,7 @@ class Application_Form_Installer extends X_Form
  
         $this->addElement('password', 'password', array(
             'label'      => X_Env::_('p_auth_form_account_password_label'),
+        	'description'      => X_Env::_('p_auth_form_account_password_desc2'),
 			'required'   => true,
         	'filters'    => array('StringTrim'),
             'validators' => array(

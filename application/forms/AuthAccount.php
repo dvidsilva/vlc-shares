@@ -18,6 +18,7 @@ class Application_Form_AuthAccount extends X_Form
  
         $this->addElement('password', 'password', array(
             'label'      => X_Env::_('p_auth_form_account_password_label'),
+        	'description'	=> X_Env::_('p_auth_form_account_password_desc'),
 			'required'   => true,
         	'filters'    => array('StringTrim'),
             'validators' => array(
@@ -36,6 +37,7 @@ class Application_Form_AuthAccount extends X_Form
 
         $this->addElement('radio', 'altallowed', array(
         	'label'		=> X_Env::_('p_auth_form_account_altallowed_label'),
+        	'description'	=> X_Env::_('p_auth_form_account_altallowed_desc'),
         	'required'	=> true,
         	'multiOptions' => array(
         		1 => X_Env::_('enabled'),

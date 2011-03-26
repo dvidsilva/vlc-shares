@@ -43,6 +43,7 @@ class InstallerController extends X_Controller_Action
     	try {
     		$form->lang->setMultiOptions($languages);
     		$form->setDefault('lang', $lang !== false ? "$lang.ini" : 'en_GB.ini');
+    		$form->setDefault('auth', 1);
     	} catch (Exception $e) {
     		// WTF?
     	}
@@ -118,9 +119,9 @@ class InstallerController extends X_Controller_Action
 	    		$account = new Application_Model_AuthAccount();
 	    		Application_Model_AuthAccountsMapper::i()->fetchByUsername($username);
 	    		$account->setUsername($username)
-	    			->setPassword($password)
+	    			->setPassword(md5("$username:$password"))
 	    			->setEnabled(true)
-	    			->setPassphrase(md5("$username():$password:".rand(10000,99999).time()))
+	    			->setPassphrase(md5("$username:$password:".rand(10000,99999).time()))
 	    			->setAltAllowed(true)
 	    			;
 	    		Application_Model_AuthAccountsMapper::i()->save($account);
@@ -142,6 +143,21 @@ class InstallerController extends X_Controller_Action
     		if ( !$auth->isLoggedIn() ) {
     			$auth->doLogin($username);
     		}
+    	}
+    	
+    	
+    	try {
+    		// enable auth plugin after authentication
+    		if ( $form->getValue('auth', '0') == '1' ) {
+		    	$plugin = new Application_Model_Plugin();
+		    	Application_Model_PluginsMapper::i()->fetchByClass('X_VlcShares_Plugins_Auth', $plugin);
+		    	//Application_Model_PluginsMapper::i()->delete($plugin);
+				$plugin->setEnabled(true);
+				Application_Model_PluginsMapper::i()->save($plugin);
+    		}
+    	} catch (Exception $e) {
+		    $this->_helper->flashMessenger(X_Env::_('installer_err_db').": {$e->getMessage()}");
+		    $this->_helper->redirector('index');
     	}
     	
     	
@@ -208,12 +224,6 @@ class InstallerController extends X_Controller_Action
 	    	Application_Model_PluginsMapper::i()->fetchByClass('X_VlcShares_Plugins_FirstRunSetup', $plugin);
 	    	//Application_Model_PluginsMapper::i()->delete($plugin);
 			$plugin->setEnabled(false);
-			Application_Model_PluginsMapper::i()->save($plugin);
-
-	    	$plugin = new Application_Model_Plugin();
-	    	Application_Model_PluginsMapper::i()->fetchByClass('X_VlcShares_Plugins_Auth', $plugin);
-	    	//Application_Model_PluginsMapper::i()->delete($plugin);
-			$plugin->setEnabled(true);
 			Application_Model_PluginsMapper::i()->save($plugin);
 			
 			
