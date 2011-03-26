@@ -27,7 +27,7 @@ class X_VlcShares_Plugins_Auth extends X_VlcShares_Plugins_Abstract {
 	}
 	
 	function gen_beforeInit(Zend_Controller_Action $controller) {
-		
+		X_Debug::i("Clearing outdated sessions");
 		Application_Model_AuthSessionsMapper::i()->clearInvalid();
 		
 	}
@@ -65,14 +65,14 @@ class X_VlcShares_Plugins_Auth extends X_VlcShares_Plugins_Abstract {
 		} catch (Exception $e) {
 			$username = null;
 		}
-		if ( empty($username) ) $username = "SCONOSCIUTO";
+		if ( is_null($username) ) $username = X_Env::_('p_auth_userunknown');
 		
-		$item = new X_Page_Item_StatusLink('auth-username', "Ciao, <i>$username</i>");
+		$item = new X_Page_Item_StatusLink('auth-username', X_Env::_("p_auth_welcome", "<b><i>$username</b></i>"));
 		$item->setType(X_Page_Item_StatusLink::TYPE_LABEL);
 		$items->append($item);
 		
 		
-		$item = new X_Page_Item_StatusLink('auth-logout', "Logout");
+		$item = new X_Page_Item_StatusLink('auth-logout', X_Env::_('p_auth_logout'));
 		$item->setType(X_Page_Item_StatusLink::TYPE_BUTTON)
 			->setLink(array(
 				'controller' => 'auth',
@@ -126,10 +126,10 @@ class X_VlcShares_Plugins_Auth extends X_VlcShares_Plugins_Abstract {
 			$session->setCreated(time());
 			$session->setUsername($username);
 			Application_Model_AuthSessionsMapper::i()->save($session);
-		} else {
-			$this->_ns->username = $username;
-			$this->_ns->enabled = true;
 		}
+		// anyway, try to use sessions
+		$this->_ns->username = $username;
+		$this->_ns->enabled = true;
 	}
 	
 	public function checkAuth($username, $password, $altMethod = false) {
@@ -146,6 +146,13 @@ class X_VlcShares_Plugins_Auth extends X_VlcShares_Plugins_Abstract {
 		$this->_ns->unsetAll();
 		Application_Model_AuthSessionsMapper::i()->clearSessions($_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']);
 		
+	}
+	
+	public function getCurrentUser() {
+		if ( $this->isLoggedIn(false) ) {
+			return $this->_ns->username;
+		}
+		throw new Exception("User not authenticated (in normal way)");
 	}
 	
 }
