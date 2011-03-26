@@ -8,7 +8,7 @@
 #     															#
 #################################################################
 
-VLC-SHARES v0.5.3 - 23/02/2010
+VLC-SHARES v0.5.4alpha1 - 26/03/2011
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -25,7 +25,16 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 | Changelog
 \==========---
 
-*** 0.5.3 (23/02/2010) ***
+*** 0.5.4alpha1 (26/3/2011) ***
+ - Authetication features
+ - build script improved
+ - robots.txt
+ - System report
+ - rules for magic_quotes and register_globals in htaccess and system tests
+ - audio quality for Android LQ improved (ab=20 -> ab=64)
+ - Android LQ is the new default profile for android devices
+
+*** 0.5.3 (23/02/2011) ***
  - Some fixes to object interfaces of X_Vlc_... objects
  - [EXTRA][AnimeDB] New link scaper algorithm submitted by Valerio Moretti can be selected in config page (it's experimental)
  - [UpdateNotifier] New plugin for update notification (for vlc-shares and official plugins)
