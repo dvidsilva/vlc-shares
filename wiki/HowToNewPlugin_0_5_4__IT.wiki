@@ -100,3 +100,10 @@ SELEZIONE TIPO -----> SELEZIONE GRUPPO ---> SEL. TITOLO --> SEL. VIDEO
 
 
 }}}
+
+
+I plugin per VLCShares sono molto versatili e possono utilizzare molte componenti diverse: oltre al plugin in se è possibile che in ogni pacchetto di installazione contenga al suo interno molti altri componenti come controller, traduzioni, viste, helper, modelli, tabelle... (per una lista completa è bene dare uno sguardo [PluginsAPI#System_Architecture all'architettura di sistema]). In questo caso specifico il nostro plugin per funzionare ha bisogno soltanto della classe principale e dei file di traduzione. Ogni altro componente è superfluo. Aggiungeremo anche una immagine che rappresenterà il logo del plugin che verrà visualizzata nell'indice delle collezioni (vedremo dopo come).
+
+==Fase 3: prepariamo la struttura del nostro plugin==
+
+
