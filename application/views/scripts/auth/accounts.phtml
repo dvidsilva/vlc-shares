@@ -56,7 +56,7 @@ $this->layout()->breadcrumb = $breadcrumb
 							<td><i><?php echo $model->isAltAllowed() ? X_Env::_('enabled') : X_Env::_('disabled'); ?></i></td>
 							<td>
 								<?php if ( $model->isAltAllowed() ) : ?>
-									http://%IP_ADDRESS%<?php echo $this->baseUrl("/auth/login/m/alt/u/{$model->getUsername()}/p/{$model->getPassphrase()}"); ?>
+									http://<?php echo $this->ip ?><?php echo $this->baseUrl("/auth/login/m/alt/u/{$model->getUsername()}/p/{$model->getPassphrase()}"); ?>
 								<?php else: ?>
 									<i><?php echo X_Env::_('disabled'); ?></i>
 							 	<?php endif; ?>
