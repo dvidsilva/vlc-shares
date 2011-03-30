@@ -409,3 +409,10 @@ Specificando quindi il valore di provider pari a `$this->getId()` stiamo indican
 I valori di `action` e `controller` indicano il passaggio del sistema nella fase di navigazione. Un grafico degli stati di navigazione è disponibile [PluginsAPI#System_Architecture nell'architettura di sistema].
 
 
+==Fase 6: testiamo quanto fatto finora==
+
+Lo so, siamo ancora all'inizio. Però è il momento di cominciare a guardare qualche risultato. La fase preparatoria del `dev_cleanup.php` ci permette di poter testare in maniera agevole il plugin senza doverlo installare. Per farlo basta recarsi nella pagina delle configurazioni di vlc-shares (`http://localhost/vlc-shares-dev/public/configs`), mostrare le configurazioni avanzate e specificare all'interno della lista di plugin opzionali da caricare, la chiave del nostro plugin, in questo caso `filmstream`. Vedremo più avanti che è possibile specificare un elenco di plugin da caricare semplicemente separando ogni singola chiave con una virgola. Salviamo le modifiche (visto che ci siete, attivare il debug log e impostarne il livello su TUTTO non sarebbe una cattiva idea) e andiamo all'indice delle collezioni (il pulsante Browse nella barra superiore di vlc-shares). 
+
+Eccolo li, il nostro nuovo fiammante pulsante per FilmStream che compare. 
+
+https://lh5.googleusercontent.com/_U6HIkh_ODAo/TZOx70OiwiI/AAAAAAAAAGg/4kvP0N0-4EU/s800/plugin_0.5.4_tutorial_1.png
