@@ -1,0 +1,37 @@
+L'obbiettivo di questo tutorial è quello di mostrare, in maniera pratica, come realizzare un nuovo plugin per VLCShares di tipo DataProvider. I plugin di questo tipo hanno come scopo principale quello di navigare all'interno di un sito web e estrappolarne i contenuti video o audio per renderli utilizzabili dai dispositivi supportati da VLCShares.
+
+==Note preliminari==
+
+Nel tutorial utilizzerò queste convenzioni di base per questioni di comodità:
+   * *APACHE_WWW*: indica la directory _DocumentRoot_ utilizzata da Apache. Per Ubuntu, corrisponde alla directory `/var/www/`, per Windows (utilizzando il pacchetto di installazione automatica di VLCShares) corrisponde a `C:\Program Files\VLCShares\www`.
+   * *VLCSHARES_BASEDIR*: indica la directory principale di VLCShares (quella che contiene le cartelle `library`, `application`,...). Per Ubuntu corrisponde a `APACHE_WWW/vlc-shares/`, per Windows `APACHE_WWW\vlc-shares\`.
+   * *VLCSHARESDEV_BASEDIR*: sarà la directory in cui andremo ad installare la versione di sviluppo di vlc-shares. Per Ubuntu corrisponde a `APACHE_WWW/vlc-shares-dev/`, per Windows `APACHE_WWW\vlc-shares-dev\`.
+
+==Fase 1: prepariamo il NOSTRO ambiente di sviluppo==
+
+Per poter completare con successo questo tutorial è necessario che siate forniti di qualche semplice strumento di base:
+   * *una installazione funzionante di VLCShares.*
+   * *un editor di testo o un IDE per php*. Potete usare quello che preferite. Vanno bene sia i semplici editor di testo con il riconoscimento della sinstassi php (ad esempio Notepad++ se siete su Windows o GEdit se siete su Linux), che IDE più avanzati che offrono ad esempio auto completamento del codice o altro (ad esempio Zend Studio, Eclipse PDT...)
+   * *svn* (se siete su Windows, potete utilizzare TortoiseSVN)
+   * *php-cli* (su ubuntu basta installare il pacchetto php5-cli, su Windows dovrebbe essere già compreso nella distribuzione EasyPHP)
+
+Una volta che vi siete procurato il necessario, iniziamo scaricando la versione di sviluppo di vlc-shares.
+Utilizzando svn (o TortoiseSVN) dovete eseguire un checkout di una versione di sviluppo all'interno della directory *VLCSHARESDEV_BASEDIR*. Dovete però decidere quale. Avete due scelte a disposizione:
+   * potete utilizzare la versione instabile di sviluppo, nel qual caso l'indirizzo di cui effettuare il checkout è il seguente
+{{{
+http://vlc-shares.googlecode.com/svn/trunk/
+}}}
+   * oppure potete utilizzare una versione stabile a vostra scelta. Questa guida ha come obbiettivo lo sviluppo di plugin per la versione 0.5.4. Utilizzeremo quindi come indirizzo 
+{{{
+http://vlc-shares.googlecode.com/svn/tags/0.5.4/
+}}} 
+*ATTENZIONE:* attualmente la versione 0.5.4 non è stata ancora rilasciata, quindi per ora dovete usare la versione di sviluppo instabile. 
+
+Una volta terminato lo scaricamento, aprile il file *VLCSHARESDEV_BASEDIR*`/public/.htaccess` e aggiungete come prima riga questo testo:
+
+{{{
+
+SetEnv APPLICATION_ENV development
+}}}
+
+
