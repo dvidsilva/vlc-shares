@@ -174,4 +174,15 @@ Questo è quello che verrà creato:
                         |- FilmStream.php
 }}}
 
-*ATTENZIONE*: se avete deciso di ignorare la fase [HowToNewPlugin_0_5_4__IT#Prefazione:_prepariamo_il_NOSTRO_ambiente_di_sviluppo Prefazione: prepariamo il NOSTRO ambiente di sviluppo] è necessario che creiate manualmente questa struttura di file e directory per poter continuare a seguire il tutorial.
+*ATTENZIONE*: se avete deciso di ignorare la fase [HowToNewPlugin_0_5_4__IT#Prefazione:__prepariamo_il_NOSTRO_ambiente_di_sviluppo Prefazione: prepariamo il NOSTRO ambiente di sviluppo] è necessario che creiate manualmente questa struttura di file e directory per poter continuare a seguire il tutorial.
+
+Alcuni degli elementi creati dovrebbero essere già noti, così come la struttura delle directory. Nel caso non lo fosse, mi rimando alla lettura della pagina [HowToNewPlugin#Version_0.5.1 sulla creazione dei plugin per la versione 0.5.1] in quanto ancora attuale.
+
+Altri elementi sono stati introdotti dalla versione 0.5.3. I file `dev_bootstrap.php` e `dev_cleanup.php` sono due file utilizzati rispettivamente per l'inizializzazione e la pulizia delle risorse del plugin quando eseguito dall'interno della directory `extra/`.
+
+Normalmente i plugin, per essere inizializzati, necessitano di essere elencati insieme ad alcuni metadati (come la versione e le path dei file), all'interno del database di vlc-shares. Inoltre è necessario che i file siano posizionati in determinati punti del sistema per poter essere utilizzati. Normalmente di questo si occupa il sistema durante l'installazione del plugin utilizzando le informazioni contenute nel file `manifest.xml`. Il problema di questo sistema è che risulta un po' scomodo lavorare sui file di un plugin e poi pacchettizzarlo se è necessario distribuire i file qui e li e dover rimuovere e reinstallare il plugin ogni volta che è necessario apportare delle modifiche e testarle.
+Utilizzando il file `dev_bootstrap.php` (dopo averlo modificato a dovere), è possibile indicare al sistema tutte le informazioni necessarie per inizializzare correttamente il plugin.
+
+Come prima fase quindi provvediamo a configurare correttamente il file `dev_bootstrap.php`
+
+
