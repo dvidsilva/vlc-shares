@@ -185,4 +185,38 @@ Utilizzando il file `dev_bootstrap.php` (dopo averlo modificato a dovere), è po
 
 Come prima fase quindi provvediamo a configurare correttamente il file `dev_bootstrap.php`
 
+Nel nostro caso sarà necessario solo specificare pochi parametri. Modifichiamo l'elenco delle directory e file di cui creare i link 
 
+{{{
+/**
+ * Insert the needed links
+ * Those files or directory will be linked (in linux)
+ * or copied (in windows) everytime the application will be executed
+ * 
+ * Use
+ *  APPLICATION_PATH = /vlc-shares/application
+ * or
+ *  $basePath = the directory where this file is placed
+ *  
+ * as basepath
+ * 
+ * Entry format is:
+ * 	Real entry path => linked/copied path
+ * 
+ * Usually language files or image/css/js folders must be setted here
+ */
+$neededLinks = array(
+	//$basePath.'/public/images/myfolder/' => APPLICATION_PATH.'/../public/images/myfolder', // <--- THIS IS AN EXAMPLE FOR FOLDERS
+	//$basePath.'/languages/myfile.txt' => APPLICATION_PATH.'/../languages/myfile.txt', // <--- THIS IS AN EXAMPLE FOR FILES
+);
+}}}
+
+aggiungendo il percorso dei nostri file di lingua e la nostra directory del logo
+
+{{{
+$neededLinks = array(
+	$basePath.'/public/images/filmstream/' => APPLICATION_PATH.'/../public/images/filmstream', // crea un link della cartella delle immagini
+	$basePath.'/languages/X_VlcShares_Plugins_FilmStream.en_GB.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_FilmStream.en_GB.ini', // link al file di traduzione
+	$basePath.'/languages/X_VlcShares_Plugins_FilmStream.it_IT.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_FilmStream.it_IT.ini', // link al file di traduzione
+);
+}}}
