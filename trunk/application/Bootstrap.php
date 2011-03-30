@@ -20,11 +20,19 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		*/
 		
 		// only add them if in development env
-		if (  APPLICATION_ENV != 'development'|| !$configs->general->get('extraPlugins', false) ) {
+		if (  APPLICATION_ENV != 'development' ) {
 			return;
 		}
-
-		X_Debug::i("Development mode: extra plugins mode enabled");
+		
+		$extraPlugins = $configs->general->get('extraPlugins', '');
+		$extraPlugins = explode(',', $extraPlugins);
+		
+		if ( !count($extraPlugins) ) return;
+		
+		$extraPlugins = array_map('trim', $extraPlugins);
+		
+		X_Debug::i("Extra plugins whitelist: ".implode(', ', $extraPlugins));
+		
 		
 		// check for extra plugins path
 		$extraPluginsPath = APPLICATION_PATH . '/../extra/plugins';
@@ -48,6 +56,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			/* @var $entry DirectoryIterator */
 			// it doesn't allow dotted directories (. and ..) and file/symlink
 			if ( $entry->isDot() || !$entry->isDir() ) {
+				continue;
+			}
+			
+			// not in white list
+			if ( array_search($entry->getFilename(), $extraPlugins) === false ) {
 				continue;
 			}
 			

@@ -142,6 +142,8 @@ class AuthController extends X_Controller_Action
 		));
 		$csrf->initCsrfToken();
 		
+		$this->view->ip = '%IP_ADDRESS%';
+		
 		$this->view->csrf = $csrf->getHash();
 		$this->view->accounts = $accounts;
 		$this->view->messages = $this->_helper->flashMessenger->getMessages();

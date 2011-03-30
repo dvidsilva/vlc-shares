@@ -12,10 +12,10 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, `type`, label, descr
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'extraPlugins', 
-	'0',
-	'0',
+	'',
+	'',
 	'general',
-	3,
+	0,
 	'config_general_extraPlugins_label',
 	'config_general_extraPlugins_desc',
 	'advanced'
