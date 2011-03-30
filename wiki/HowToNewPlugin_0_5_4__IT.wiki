@@ -267,9 +267,9 @@ $neededLinks = array(
 
 Per la compilazione del file `manifest.xml` e le questioni relative a `install.sql` e `uninstall.sql` vi rimando alla guida relativa alla creazione dei plugin per la versione 0.5.1. Potete comunque trovare i file già compilati all'interno della directory `filmstream-vanilla` che avevamo rinominato in precedenza.
 
-==Fase 4: iniziamo a lavorare sul Plugin==
+==Fase 4: prepariamo la classe del Plugin==
 
-Finalmente è arrivato il momento di cominciare a lavorare sul plugin vero e proprio. Come già descritto nella guida relativa alla versione 0.5.1, il cuore del nostro plugin è la classe `X_VlcShares_Plugins_FilmStream`. Il file che conterrà questa classe è gia stato creato durante la preparazione in *VLCSHARESDEV_BASEDIR*`/extra/plugins/filmstream/library/X/VlcShares/Plugins/FilmStream.php`. Non ci rimane che da aprire il file e cominciare a scrivere codice.
+Finalmente è arrivato il momento di cominciare a lavorare sul plugin vero e proprio. Come già descritto nella guida relativa alla versione 0.5.1, il cuore del nostro plugin è la classe `X_VlcShares_Plugins_FilmStream`. Il file che conterrà questa classe è gia stato creato durante la preparazione in *VLCSHARESDEV_BASEDIR*`/extra/plugins/filmstream/library/X/VlcShares/Plugins/FilmStream.php`. Non ci rimane che aprire il file e cominciare a scrivere codice.
 
 Come avrete notato il file esiste, ma è vuoto. Tocca a noi cominciare a riempirlo. 
 Partiamo dai concetti di base: ogni plugin per vlc-shares deve estendere la classe `X_VlcShares_Plugins_Abstract`.
@@ -345,5 +345,67 @@ In questo modo però un plugin che non sia il provider non è in grado di determ
 La funzione `getParentLocation` invece permette di risalire allo stato precedente della navigazione partendo dallo stato attuale.
 
 Sebbene non sia obbligatorio implementare l'interfaccia, lo consiglio caldamente perchè sto valutando l'eventualità di renderlo un requisito per le prossime versioni di vlc-shares.
+
+
+==Fase 5: aggiungiamo il plugin all'indice delle collezioni==
+
+Se avete gia provato vlc-shares, saprete che l'indice delle collezioni è quello mostrato comincia a esplorare i contenuti di vlc-shares. L'indice contiene un riferimento ad ogni provider registrato che è in grado di permettere l'esplorazione di una risorsa.
+
+L'inserimento di un elemento all'interno dell'indice avviene tramite i metodi `preGetCollectionsItems`, `getCollectionsItems` e `postGetCollectionsItems`. I provider segnalano al plugin broker che sono interessati ad inserire un elemento all'interno dell'indice, indicando una priorità per uno di quei 3 metodi (se vuoi maggiori informazioni sul sistema di priorità, puoi trovarle [PluginsAPI#Priority_System qui]). Nel nostro caso, è sufficiente modificare il costruttore della classe per settare la priorità del metodo `getCollectionsItems` che andremo subito a implementare.
+
+{{{
+	function __construct() {
+		$this->setPriority('getCollectionsItems');
+	}
+}}}
+
+Il metodo `getCollectionsItems` prevede che un plugin che voglia inserire uno o più elementi all'interno dell'indice, deve restituire come valore di ritorno una instanza della classe `X_Page_ItemList_PItem`. Questa classe è la rappresentazione di una lista di oggetti `X_Page_Item_PItem`. Ogni singolo oggetto della classe `X_Page_Item_PItem` rappresenta un elemento della playlist. E' possibile specificare molte informazioni tramite questo oggetto (ad esempio un icona, un'immagine di anteprima, una descrizione...), ne vedremo alcuni più in dettaglio. Il sistema provvederà a convertire le informazioni incapsulate in questo oggetto in una rappresentazione consona al tipo di dispositivo che richiederà l'esplorazione.
+
+Nel nostro caso specifico, aggiungeremo un solo elemento all'indice che avrà il compito di consentire la navigazione all'interno delle risorse di FilmStream.
+
+{{{
+	/**
+	 * Add the FilmStream link inside collection index
+	 * @param Zend_Controller_Action $controller
+	 */
+	public function getCollectionsItems(Zend_Controller_Action $controller) {
+		
+		X_Debug::i("Plugin triggered");
+		
+		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_filmstream_collectionindex'));
+		$link->setIcon('/images/filmstream/logo.png')
+			->setDescription(X_Env::_('p_filmstream_collectionindex_desc'))
+			->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+			->setLink(
+				array(
+					'controller' => 'browse',
+					'action' => 'share',
+					'p' => $this->getId(),
+				), 'default', true
+			);
+		return new X_Page_ItemList_PItem(array($link));
+	}
+
+}}}
+
+Tralasciando proprietà più ovvie come `setLabel` o `setDescription`, passiamo subito a spiegare il senso di metodi più particolari.
+
+Il metodo `setType` consente di definire il tipo di elemento che verrà rappresentato dall'oggetto `X_Page_Item_PItem`. In questo caso, poichè il nostro elemento aggiunto è un contenitore di altre risorse, specifichiamo come tipo `X_Page_Item_PItem::TYPE_CONTAINER`. Altri valori possibili sono 
+`X_Page_Item_PItem::TYPE_PLAYABLE` (rappresenta un elemento che può essere riprodotto), `X_Page_Item_PItem::TYPE_ELEMENT` (un elemento generico, può rappresentare qualsiasi cosa), `X_Page_Item_PItem::TYPE_REQUEST` (rappresenta un elemento che richiede una qualche interazione con l'utente per l'inserimento di valori).
+
+Il metodo `setLink` permette di specificare la risorsa che verrà esplorata selezionando questo elemento. Specificando un array associativo, potremo specificare un insieme di parametri che verranno passati alla richiesta successiva qualora l'elemento venisse selezionato. In questo caso stiamo specificando che, nel caso di selezione, il controllo del sistema deve essere affidato al controller `BrowseController` e all'azione `shareAction`. Tutti gli altri elementi specificati nell'array verranno trattati come parametri (chiave => valore) passati direttamente all'azione. Si può passare qualsiasi valore arbitrario senza alcun genere di controllo, fatta eccezione per alcuni parametri riservati a scopi specifici.
+
+Questa è una lista dei parametri riservati:
+
+|| *chiave* || *nome discorsivo* || *descrizione* || *note sui valori* ||
+|| p || provider || rappresenta il plugin che ha il compito di gestire la navigazione nel sistema e che ha il compito di gestire la l (location) || il suo valore è sempre uguale alla chiave di un plugin ||
+|| l || location || rappresenta lo stato attuale di navigazione del sistema. Ogni provider può definirne arbitrariamente il formato e deve provvedere a codificarne il valore tramite la funzione X_Env::encode || Codificato tramite X_Env::encode ||
+|| pid || pluginId || Indica la chiave di un plugin che deve gestire una funzione secondaria || è sempre uguale alla chiave di un plugin ||
+|| a || activity || rappresenta una attività da eseguire || ||
+|| param || parametro || rappresenta un valore arbitrario associato ad una activity || solitamente richiesto all'utente tramite interazione ||
+
+Specificando quindi il valore di provider pari a `$this->getId()` stiamo indicando al sistema che il provider che gestirà la navigazione nel caso di selezione di questa risorsa sarà proprio questo plugin.
+
+I valori di `action` e `controller` indicano il passaggio del sistema nella fase di navigazione. Un grafico degli stati di navigazione è disponibile [PluginsAPI#System_Architecture nell'architettura di sistema].
 
 
