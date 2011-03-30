@@ -138,7 +138,7 @@ Lo script accetta questi parametri:
 {{{
 Usage: create-plugin.php [ options ]
   --key|-k [ <string> ]      Plugin key
-  --name|-n [ <string> ]     Plugins name
+  --name|-n [ <string> ]     Plugin name
   --all|-a                   Create all elements
   --ignorekey|-i             Ignore error if the key already exists
   --elements|-e [ <string> ] Create a list of elements (divided by comma). Supported: plugins, helpers, controllers, models, data, views, forms, layouts, languages, images, css, js
@@ -148,3 +148,30 @@ Usage: create-plugin.php [ options ]
 Nel nostro caso specifico, abbiamo indicato allo script di creare la struttura e i file per un plugin che abbia key `filmstream`, nome `FilmStream`, specificando come elementi richiesti `plugins` (crea il file della classe principale del plugin), `languages` (crea i file delle traduzioni), `images` (crea la directory per l'immagine del logo).
 
 Lo script creerà quanto richiesto all'interno della directory *VLCSHARESDEV_BASEDIR*`/extra/plugins/filestream/`.
+
+Questo è quello che verrà creato:
+
+{{{
+ extra/plugins/filmstream/
+   |-- dev_bootstrap.php
+   |-- dev_cleanup.php
+   |-- install.sql
+   |-- uninstall.sql
+   |-- README.txt
+   |-- manifest.xml
+   |-- languages/
+   |     |- X_VlcShares_Plugins_FilmStream.en_GB.ini
+   |     |- X_VlcShares_Plugins_FilmStream.it_IT.ini
+   |
+   |-- public/
+   |     |- images/
+   |          |- filmstream/
+   |
+   |-- library/
+         |- X/
+              |- VlcShares/
+                   |- Plugins/
+                        |- FilmStream.php
+}}}
+
+*ATTENZIONE*: se avete deciso di ignorare la fase [HowToNewPlugin_0_5_4__IT#Prefazione:_prepariamo_il_NOSTRO_ambiente_di_sviluppo Prefazione: prepariamo il NOSTRO ambiente di sviluppo] è necessario che creiate manualmente questa struttura di file e directory per poter continuare a seguire il tutorial.
