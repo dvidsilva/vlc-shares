@@ -264,3 +264,86 @@ $neededLinks = array(
 	$basePath.'/languages/X_VlcShares_Plugins_FilmStream.it_IT.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_FilmStream.it_IT.ini', // link al file di traduzione
 );
 }}}
+
+Per la compilazione del file `manifest.xml` e le questioni relative a `install.sql` e `uninstall.sql` vi rimando alla guida relativa alla creazione dei plugin per la versione 0.5.1. Potete comunque trovare i file già compilati all'interno della directory `filmstream-vanilla` che avevamo rinominato in precedenza.
+
+==Fase 4: iniziamo a lavorare sul Plugin==
+
+Finalmente è arrivato il momento di cominciare a lavorare sul plugin vero e proprio. Come già descritto nella guida relativa alla versione 0.5.1, il cuore del nostro plugin è la classe `X_VlcShares_Plugins_FilmStream`. Il file che conterrà questa classe è gia stato creato durante la preparazione in *VLCSHARESDEV_BASEDIR*`/extra/plugins/filmstream/library/X/VlcShares/Plugins/FilmStream.php`. Non ci rimane che da aprire il file e cominciare a scrivere codice.
+
+Come avrete notato il file esiste, ma è vuoto. Tocca a noi cominciare a riempirlo. 
+Partiamo dai concetti di base: ogni plugin per vlc-shares deve estendere la classe `X_VlcShares_Plugins_Abstract`.
+
+Cominciamo quindi definendo la nostra classe:
+
+{{{
+
+<?php 
+
+class X_VlcShares_Plugins_FilmStream extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
+	
+	function __construct() {
+		
+	}
+
+	/**
+	 * @see X_VlcShares_Plugins_ResolverInterface::getLocation()
+	 */
+	function resolveLocation($location = null) {
+		return false;
+	}
+	/**
+	 * @see X_VlcShares_Plugins_ResolverInterface::getParentLocation()
+	 */
+	function getParentLocation($location = null) {
+		return false;
+	}
+
+}
+
+}}}
+
+Come avrete notato, la classe implementa anche un'interfaccia, `X_VlcShares_Plugins_ResolverInterface` appunto. Questa interfaccia definisce due funzioni, nello specifico:
+
+{{{
+<?php
+
+/**
+ * Plugins that give browse provider services should
+ * implement this interface.
+ * Other plugin can use this interface for get
+ * real location of a resource
+ * @author ximarx
+ *
+ */
+interface X_VlcShares_Plugins_ResolverInterface {
+	
+	/**
+	 * Get the real location of a resource from
+	 * $location param
+	 * @param string $location
+	 * @return string resource real location
+	 */
+	function resolveLocation($location = null);
+	/**
+	 * Get the parent location string of the current location
+	 * value
+	 * 
+	 * @param $location
+	 * @return string resource parent. NULL if there is no parent, false if location is invalid
+	 */
+	function getParentLocation($location = null);
+	
+}
+
+}}}
+
+Per poter spiegare il senso di questa interfaccia è necessario spiegare per prima cosa il modo in cui vlc-shares gestisce la navigazione. Durante la navigazione dei contenuti delle collezioni, il plugin che sta gestendo la navigazione (da qui in avanti chiamato provider) valorizza un parametro (la $location) che definisce lo stato della navigazione. Il plugin utilizza la $location per definire di fatto un percorso che identifichi la posizione nella collezione. Il modo con il quale la $location viene definita è responsabilità dei provider, che possono di fatto definire un formato autonomamente. L'unica cosa richiesta ai provider è che dopo essere stato formattato, la $location sia codificata tramite la funzione `X_Env::encode(<string>)`. La decodifica viene gestita autonomamente dal sistema. 
+
+In questo modo però un plugin che non sia il provider non è in grado di determinare lo stato corrente della navigazione. Per ovviare al problema, un provider che vuole permettere a terzi di ottenere informazioni sullo stato può, implementando `X_VlcShares_Plugins_ResolverInterface` offrire un interfaccia con la quale permettere di decodificare la $location in una normale URI fruibile anche al di fuori del provider.
+
+La funzione `getParentLocation` invece permette di risalire allo stato precedente della navigazione partendo dallo stato attuale.
+
+Sebbene non sia obbligatorio implementare l'interfaccia, lo consiglio caldamente perchè sto valutando l'eventualità di renderlo un requisito per le prossime versioni di vlc-shares.
+
+
