@@ -174,7 +174,7 @@ Questo è quello che verrà creato:
                         |- FilmStream.php
 }}}
 
-*ATTENZIONE*: se avete deciso di ignorare la fase [HowToNewPlugin_0_5_4__IT#Prefazione:_prepariamo_il_NOSTRO_ambiente_di_sviluppo Prefazione: prepariamo il NOSTRO ambiente di sviluppo] è necessario che creiate manualmente questa struttura di file e directory per poter continuare a seguire il tutorial.
+*ATTENZIONE*: se avete deciso di ignorare la fase di preparazione dell'ambiente di sviluppo è necessario che creiate manualmente questa struttura di file e directory per poter continuare a seguire il tutorial.
 
 Alcuni degli elementi creati dovrebbero essere già noti, così come la struttura delle directory. Nel caso non lo fosse, mi rimando alla lettura della pagina [HowToNewPlugin#Version_0.5.1 sulla creazione dei plugin per la versione 0.5.1] in quanto ancora attuale.
 
@@ -219,4 +219,32 @@ $neededLinks = array(
 	$basePath.'/languages/X_VlcShares_Plugins_FilmStream.en_GB.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_FilmStream.en_GB.ini', // link al file di traduzione
 	$basePath.'/languages/X_VlcShares_Plugins_FilmStream.it_IT.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_FilmStream.it_IT.ini', // link al file di traduzione
 );
+}}}
+
+Aggiungiamo poi il percorso al file del plugin da includere all'interno dell'array dei file dei plugin da includere
+
+{{{
+/**
+ * Plugin class file to include
+ * Use
+ *  $basePath = the directory where this file is placed
+ * as basepath
+ */
+$pluginsIncludes = array(
+	$basePath.'/library/X/VlcShares/Plugins/FileStream.php',
+);
+}}}
+
+L'ultima modifica da apportare è quella relativa all'inserimento del nome della classe e della chiave del plugin:
+
+{{{
+/**
+ * Insert here the pluginKey
+ */
+$pluginInstance_pluginKey = 'filmstream';
+
+/**
+ * Insert here the plugin class
+ */
+$pluginInstance_pluginClass = 'X_VlcShares_Plugins_FilmStream';
 }}}
