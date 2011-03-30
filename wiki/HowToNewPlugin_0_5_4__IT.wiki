@@ -221,7 +221,7 @@ $neededLinks = array(
 );
 }}}
 
-Aggiungiamo poi il percorso al file del plugin da includere all'interno dell'array dei file dei plugin da includere
+Aggiungiamo poi il percorso al file del plugin all'interno dell'array dei file dei plugin da includere
 
 {{{
 /**
@@ -231,7 +231,7 @@ Aggiungiamo poi il percorso al file del plugin da includere all'interno dell'arr
  * as basepath
  */
 $pluginsIncludes = array(
-	$basePath.'/library/X/VlcShares/Plugins/FileStream.php',
+	$basePath.'/library/X/VlcShares/Plugins/FilmStream.php',
 );
 }}}
 
@@ -247,4 +247,20 @@ $pluginInstance_pluginKey = 'filmstream';
  * Insert here the plugin class
  */
 $pluginInstance_pluginClass = 'X_VlcShares_Plugins_FilmStream';
+}}}
+
+Una volta eseguito terminato, salviamo il file.
+
+Passiamo quindi ad impostare il file `dev_cleanup.php`. Questo file verrà per ripulire vlc-shares da tutti i file e i riferimenti inseriti dal file `dev_bootstap.php`. La modifica di questo file è abbastanza banale: basta infatti copiare il contenuto dell'array $neededLinks dal file `dev_bootstrap.php`.
+
+{{{
+/**
+ * Copy here the same value inside the $neededLinks
+ * of dev_bootstrap.php file
+ */
+$neededLinks = array(
+	$basePath.'/public/images/filmstream/' => APPLICATION_PATH.'/../public/images/filmstream', // crea un link della cartella delle immagini
+	$basePath.'/languages/X_VlcShares_Plugins_FilmStream.en_GB.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_FilmStream.en_GB.ini', // link al file di traduzione
+	$basePath.'/languages/X_VlcShares_Plugins_FilmStream.it_IT.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_FilmStream.it_IT.ini', // link al file di traduzione
+);
 }}}
