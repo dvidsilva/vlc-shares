@@ -74,8 +74,29 @@ La struttura del sito è abbastanza semplice, questo schema dovrebbe chiarirla:
              |             |- Titolo A2   |- Puntata [1x02]
              |             |- Titolo B1   |- Puntata [2x01]
              |             |- ...         |- ...
-              
-
+             |
+             |---- FILM (sub-ita) ---- Titolo A1 ---- Megavideo
+             |                      |- Titolo B1   |- Megaupload
+             |                      |- ...         |- ...
+             |
+             |---- SERIETV ---- Titolo A1 ---- Puntata [1x01]
+                             |- Titolo A2   |- Puntata [1x02]
+                             |- Titolo B1   |- Puntata [2x01]
+                             |- ...         |- ...
+    
 }}}
 
+==Fase 2: immaginiamo il nostro plugin==
 
+Struttureremo il nostro plugin in modo che sia possibile raggiungere gli indici delle varie tipologie di filmati suddivisi per lettere e che sia anche possibile ottenere gli ultimi aggiornamenti per ogni categoria. Struttureremo i nostri contenuti in questo modo:
+
+{{{
+
+SELEZIONE TIPO -----> SELEZIONE GRUPPO ---> SEL. TITOLO --> SEL. VIDEO
+ |- film               |- Ult. Aggior.       |- Tit. 1       |- Vid 1
+ |- anime              |- A                  |- Tit. 2       |- Vid 2
+ |- film subita        |- B                  |- ...          |- ...
+ |- serie tv           |- ...
+
+
+}}}
