@@ -15,6 +15,8 @@ require_once 'pclzip.php';
 
 $pluginsDir = APPLICATION_PATH . '/../extra/plugins/';
 
+$modelPlugin = '__ptemplate';
+
 
 $directories = array(
 	// directory path => feature flag
@@ -115,8 +117,18 @@ foreach ($directories as $dirPath => $cType) {
 foreach ($files as $filePath => $cType) {
 	if ( $createAll || array_search($cType, $createElements) !== false ) {
 		$filePath = sprintf($filePath, $pluginKey, $pluginName, ucfirst($pluginKey) );
-		if ( !touch($pluginsDir.$pluginKey.$filePath) ) {
-			echo "[WWW] Error creating file ($pluginsDir$pluginKey$filePath => $cType)".PHP_EOL;
+		// if exists a file with the same name in models, copy it
+		if ( file_exists($pluginsDir.$modelPlugin.$filePath) ) {
+			if ( !copy($pluginsDir.$modelPlugin.$filePath, $pluginsDir.$pluginKey.$filePath)) {
+				echo "[WWW] Error copying (from model) file ($pluginsDir$pluginKey$filePath => $cType)".PHP_EOL;
+				if ( !touch($pluginsDir.$pluginKey.$filePath) ) {
+					echo "[WWW] Error creating file ($pluginsDir$pluginKey$filePath => $cType)".PHP_EOL;
+				}
+			}
+		} else {
+			if ( !touch($pluginsDir.$pluginKey.$filePath) ) {
+				echo "[WWW] Error creating file ($pluginsDir$pluginKey$filePath => $cType)".PHP_EOL;
+			}
 		}
 	}
 }
