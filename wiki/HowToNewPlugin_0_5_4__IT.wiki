@@ -106,4 +106,45 @@ I plugin per VLCShares sono molto versatili e possono utilizzare molte component
 
 ==Fase 3: prepariamo la struttura del nostro plugin==
 
+Se avete seguito la fase [HowToNewPlugin_0_5_4__IT#Prefazione:_prepariamo_il_NOSTRO_ambiente_di_sviluppo Prefazione: prepariamo il NOSTRO ambiente di sviluppo] dovreste avere una console aperta nella directory *VLCSHARESDEV_BASEDIR*`/scripts/`.
 
+Utilizzando quella console eseguite il comando:
+
+per WINDOWS
+{{{
+php.bat create-plugin.php -k filmstream -n FilmStream -e plugins,languages,images
+}}}
+
+per UBUNTU
+{{{
+php create-plugin.php -k filmstream -n FilmStream -e plugins,languages,images
+}}}
+
+L'esecuzione dello script dovrebbe visualizzare come risultato:
+{{{
+[EEE] Key already used
+}}}
+
+Non c'è niente di cui preoccuparsi: semplicemente vi viene notificato che un plugin che utilizza la stessa chiave è gia presente e che quindi non è possibile utilizzarla. Questo è abbastanza normale visto che il plugin di questo tutorial è incluso all'interno della versione di sviluppo di vlc-shares dalla versione 0.5.4 in poi. Per poter proseguire, dobbiamo quindi rinominare la cartella *VLCSHARESDEV_BASEDIR*`/extra/plugins/filmstream/` in *VLCSHARESDEV_BASEDIR*`/extra/plugins/filmstream-vanilla/`. In questo modo conserverete i file conclusivi che potrete usare come riferimento.
+
+Eseguite nuovamente il comando indicato prima. Questa volta il risultato sarà:
+{{{
+All done. Bye
+}}}
+
+Lo script `create-plugin.php` si prenderà carico di creare la struttura delle directory e la lista dei file necessari per il corretto funzionamento del vostro plugin in base ai parametri che gli avrete indicato.
+Lo script accetta questi parametri:
+
+{{{
+Usage: create-plugin.php [ options ]
+  --key|-k [ <string> ]      Plugin key
+  --name|-n [ <string> ]     Plugins name
+  --all|-a                   Create all elements
+  --ignorekey|-i             Ignore error if the key already exists
+  --elements|-e [ <string> ] Create a list of elements (divided by comma). Supported: plugins, helpers, controllers, models, data, views, forms, layouts, languages, images, css, js
+--help|-h                  Help -- usage message
+}}}
+
+Nel nostro caso specifico, abbiamo indicato allo script di creare la struttura e i file per un plugin che abbia key `filmstream`, nome `FilmStream`, specificando come elementi richiesti `plugins` (crea il file della classe principale del plugin), `languages` (crea i file delle traduzioni), `images` (crea la directory per l'immagine del logo).
+
+Lo script creerà quanto richiesto all'interno della directory *VLCSHARESDEV_BASEDIR*`/extra/plugins/filestream/`.
