@@ -1,13 +1,15 @@
 L'obbiettivo di questo tutorial è quello di mostrare, in maniera pratica, come realizzare un nuovo plugin per VLCShares di tipo DataProvider. I plugin di questo tipo hanno come scopo principale quello di navigare all'interno di un sito web e estrappolarne i contenuti video o audio per renderli utilizzabili dai dispositivi supportati da VLCShares.
 
-==Note preliminari==
+==Prefazione: note preliminari==
 
 Nel tutorial utilizzerò queste convenzioni di base per questioni di comodità:
    * *APACHE_WWW*: indica la directory _DocumentRoot_ utilizzata da Apache. Per Ubuntu, corrisponde alla directory `/var/www/`, per Windows (utilizzando il pacchetto di installazione automatica di VLCShares) corrisponde a `C:\Program Files\VLCShares\www`.
    * *VLCSHARES_BASEDIR*: indica la directory principale di VLCShares (quella che contiene le cartelle `library`, `application`,...). Per Ubuntu corrisponde a `APACHE_WWW/vlc-shares/`, per Windows `APACHE_WWW\vlc-shares\`.
    * *VLCSHARESDEV_BASEDIR*: sarà la directory in cui andremo ad installare la versione di sviluppo di vlc-shares. Per Ubuntu corrisponde a `APACHE_WWW/vlc-shares-dev/`, per Windows `APACHE_WWW\vlc-shares-dev\`.
 
-==Fase 1: prepariamo il NOSTRO ambiente di sviluppo==
+==Prefazione: prepariamo il NOSTRO ambiente di sviluppo==
+
+In questa fase cercheremo di preparare una installazione di sviluppo di vlc-shares sulla quale poter sviluppare il nostro plugin in maniera diretta. In questo modo potremo lavorare senza dover necessariamente rimuovere e reinstallare ogni versione del plugin per poterne testare le modifiche.
 
 Per poter completare con successo questo tutorial è necessario che siate forniti di qualche semplice strumento di base:
    * *una installazione funzionante di VLCShares.*
@@ -30,8 +32,50 @@ http://vlc-shares.googlecode.com/svn/tags/0.5.4/
 Una volta terminato lo scaricamento, aprile il file *VLCSHARESDEV_BASEDIR*`/public/.htaccess` e aggiungete come prima riga questo testo:
 
 {{{
-
 SetEnv APPLICATION_ENV development
+}}}
+
+Fatto questo, posizionate il browser all'indirizzo `http://localhost/vlc-shares-dev/public/` e procedete come in una normale installazione di vlc-shares. E' buona norma non installare alcun genere di plugin opzionale, a meno che non lo riteniate un requisito necessario per il vostro plugin.
+
+Una volta completata l'installazione, aprite una console (per Windows XP: cliccate su Start->esegui e scrivete `cmd.exe`, per Windows Vista/7 cliccate su Start e scrivete direttamente `cmd.exe`).
+
+Posizionatevi tramite la console nella directory *VLCSHARESDEV_BASEDIR*`\scripts\`.
+Gli utenti Windows possono farlo scrivendo (chiaramente adattate il percorso in base al vostro caso)
+
+{{{
+cd C:\Program Files\VLCShares\www\vlc-shares-dev\scripts\
+}}}
+
+Gli utenti Ubuntu possono farlo scrivendo
+
+{{{
+cd /var/www/vlc-shares-dev/scripts/
+}}}
+
+A questo punto siamo pronti a cominciare.
+
+==Fase 1: scegliamo il nostro obbiettivo==
+
+Come già detto nelle premesse, il plugin che andremo a realizzare è di tipo DataProvider. Questo significa che abbiamo bisogno di un sito target nel quale il nostro plugin dovrà andare a cercare i video. Ho deciso, per questioni di semplicità di realizzazione, di utilizzare il sito `film-stream.tv` in questo esempio.
+
+La struttura del sito è abbastanza semplice, questo schema dovrebbe chiarirla:
+
+{{{
+            HOME ---- Ultimi aggiornamenti
+             |           |- serie
+             |           |- film
+             |           |- anime
+             |
+             |---- FILM ---- A ----- Titolo A1 ---- Megavideo
+             |            |- B    |- Titolo A2   |- Megaupload
+             |            |- ...  |- ...         |- ...
+             |
+             |---- ANIME ---- Titolo A1 ---- Puntata [1x01]
+             |             |- Titolo A2   |- Puntata [1x02]
+             |             |- Titolo B1   |- Puntata [2x01]
+             |             |- ...         |- ...
+              
+
 }}}
 
 
