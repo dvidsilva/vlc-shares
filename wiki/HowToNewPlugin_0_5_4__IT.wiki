@@ -433,7 +433,7 @@ Durante la _Fase 2_ abbiamo pianificato come dovranno essere organizzate le nost
 
 Utilizzeremo un separatore `/` per separare i parametri contenuti nella location. Non dobbiamo preoccuparci che questo possa interferire con altri parametri di vlc-shares in quanto codificando la `location` tramite `X_Env::encode()` scongiureremo proprio questo genere di eventualità.
 
-In definitiva la nostra `location` verrà rappresentata in questo modo:
+In definitiva la nostra `location` completa verrà rappresentata in questo modo:
 
 {{{
 TIPO_RISORSA/TIPO_GRUPPO/N_PAGINA/ID_TITOLO/ID_FILMATO
@@ -446,11 +446,99 @@ film/I/2/inception/mv:12345678
 }}}
 Indica che stiamo visualizzando la risorsa nella categoria "film", gruppo "i", pagina "2", id elemento "inception", id filmato "mv:12345678". Questa è la location che rappresenta una URL ad un filmato. Tramite `getLocation` potremo infatti ottenere URL diretto ad un video.
 
-{{{film/I/inception/}}}
+{{{
+film/I/inception/
+}}}
 Indica che stiamo visualizzando la risorsa nella categoria "film", gruppo "i", pagina "2", id elemento "inception". Questa `location` rappresenta la pagina indice dei filmati per l'elemento "inception". Il provider genererà quindi l'elenco dei filmato relativi ad "inception"
 
+Utilizzando questa notazione possiamo sempre ottenere facilmente la pagina padre (basterà eliminare ultimo parametro della location) e capire al volo quali risorse generare (quelle in grado di impostare il parametro mancante).
+
+Traduciamo questi concetti in codice:
 
 
+{{{
+	/**
+	 * Fetch resources from filmstream site
+	 * @param string $provider the plugin key of the one who should handle the request
+	 * @param string $location the current $location
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return X_Page_ItemList_PItem
+	 */
+	public function getShareItems($provider, $location, Zend_Controller_Action $controller) {
+		// this plugin fetch resources only if it's the provider
+		if ( $provider != $this->getId() ) return;
+		// add an info inside the debug log so we can trace this call 
+		X_Debug::i('Plugin triggered');
+		// disable automatic sorting, items will be already sorted in the target site
+		X_VlcShares_Plugins::broker()->unregisterPluginClass('X_VlcShares_Plugins_SortItems');
+		// let's create the itemlist
+		$items = new X_Page_ItemList_PItem();
+		// show the requested location in the debug log
+		// $location has been already decoded
+		X_Debug::i("Requested location: $location");
+		
+		// location format:
+		// resourceType/resourceGroup/page/resourceId/videoId
+		
+		$split = $location != '' ? @explode('/', $location, 5) : array();
+		@list($resourceType, $resourceGroup, $page, $resourceId, $videoId) = $split;
+		
+		X_Debug::i("Exploded location: ".var_export($split, true));
 
-
+		// Choose what to do based on the number of params
+		// setted inside $location
+		switch ( count($split) ) {
+			case 5:
+				// we shouldn't be here!
+				// if we have 5 pieces (so even $videoId is setted)
+				// we should be inside the browse/mode page
+				// because the location is about a video URL
+			case 4:
+				// delegate to fetchVideos
+				$this->_fetchVideos($items, $resourceType, $resourceGroup, $page, $resourceId);
+				break;
+			case 2:
+				$page = 1;
+			case 3:
+				// delegate to fetchResources
+				$this->_fetchResources($items, $resourceType, $resourceGroup, $page);
+				break;
+			case 1:
+				// fetchGroups doesn't require any kind of network traffic
+				// so it's useless to cache the results
+				$this->disableCache();
+				// delegate to fetchGroups
+				$this->_fetchGroups($items, $resourceType);
+				break;
+			
+			case 0:
+			default: 
+				// fetchTypes doesn't require any kind of network traffic
+				// so it's useless to cache the results
+				$this->disableCache();
+				// delegate to fetchTypes
+				$this->_fetchTypes($items);
+			
+		}
+				
+		
+		return $items;
+		
+	}
+	
+	/**
+	 * Disable cache plugin is registered and enabled
+	 */
+	private function disableCache() {
+		
+		if ( X_VlcShares_Plugins::broker()->isRegistered('cache') ) {
+			$cache = X_VlcShares_Plugins::broker()->getPlugins('cache');
+			if ( method_exists($cache, 'setDoNotCache') ) {
+				$cache->setDoNotCache();
+			}
+		}
+		
+	}
+	
+}}}
 
