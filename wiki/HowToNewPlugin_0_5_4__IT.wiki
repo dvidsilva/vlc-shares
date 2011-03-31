@@ -716,3 +716,18 @@ Possiamo provare le modifiche selezionando uno dei tipi.
 https://lh6.googleusercontent.com/_U6HIkh_ODAo/TZRP6sDXPKI/AAAAAAAAAG0/FfxxkfxQlTc/s800/plugin_0.5.4_tutorial_3.png
 
 
+==Fase 9: leggiamo i titoli dal sito==
+
+Arrivati a questo punto abbiamo a disposizione (in quanto selezionato dall'utente e quindi presente nella `$location`) il tipo e il gruppo di risorse al quale siamo interessati. Non ci rimane che leggere dal sito i titoli delle risorse
+Questa fase riguarda il `case` a 2 e 3 parametri. Li gestiremo insieme in quanto sul sito non è presente una divisione dei contenuti in più pagine per categoria, quindi il caso a 2 parametri (cioè quello in cui il numero di pagina non è selezionato) verrà considerato come se il numero di pagina indicato sia 1.
+
+{{{
+
+			case 2:
+				$page = 1;
+			case 3:
+				// delegate to fetchResources
+				$this->_fetchResources($items, $resourceType, $resourceGroup, $page);
+				break;
+
+}}}
