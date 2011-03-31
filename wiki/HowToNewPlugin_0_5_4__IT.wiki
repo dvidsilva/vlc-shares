@@ -1026,3 +1026,52 @@ Purtroppo, quello che posso dirvi su questa parte è piuttosto poco. Semplicemen
 Il suo scopo è quello di ignorare l'elemento se dopo tutti i tentativi non si è ancora arrivati ad individuare un ID_RISORSA valido. 
 
 Tutti gli elementi validi verranno inseriti sotto forma di array, all'interno dell'array `$matches`.
+
+A questo punto non ci rimane che trasformare quanto trovato in una lista di oggetti `X_Page_Item_PItem`.
+
+{{{
+
+			foreach ($matches as $resource) {
+				
+				@list($resourceId, $resourceLabel, $resourceDescription, $resourceThumbnail) = $resource;
+				
+				$item = new X_Page_Item_PItem($this->getId()."-$resourceType-$resourceGroup-$page-$resourceId", $resourceLabel);
+				$item->setIcon('/images/icons/folder_32.png')
+					->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+					->setCustom(__CLASS__.':location', "$resourceType/$resourceGroup/$page/$resourceId")
+					->setLink(array(
+						'l'	=>	X_Env::encode("$resourceType/$resourceGroup/$page/$resourceId")
+					), 'default', false);
+					
+				if ( $resourceDescription != null ) {
+					$item->setDescription($resourceDescription);
+				} elseif ( APPLICATION_ENV == 'development' ) {
+					$item->setDescription("$resourceType/$resourceGroup/$page/$resourceId");
+				}
+				if ( $resourceThumbnail != null ) {
+					$item->setThumbnail($resourceThumbnail);
+				}
+				
+				$items->append($item);
+				
+			}
+			
+			if ( $nextNeeded ) {
+				// we need the "previus-page" link
+				$item = new X_Page_Item_PItem($this->getId()."-nextpage", X_Env::_("p_filmstream_page_next", ($page + 1)));
+				$item->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+					->setCustom(__CLASS__.':location', "$resourceType/$resourceGroup/".($page + 1))
+					->setLink(array(
+						'l'	=>	X_Env::encode("$resourceType/$resourceGroup/".($page + 1))
+					), 'default', false);
+				$items->append($item);
+			}
+
+
+}}}
+
+Semplicemente quello che viene fatto è:
+
+   * inserire il pulsante per la pagina precedente se il numero di pagina corrente è maggiore di 1
+   * per ogni elemento in matches inserire un elemento nella lista specificando, dove possibile, thumbnail e descrizione
+   * aggiungere il pulsante per la pagina successiva se è possibile visualizzare altri elementi dopo questi.
