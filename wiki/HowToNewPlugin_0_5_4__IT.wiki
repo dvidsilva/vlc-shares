@@ -281,6 +281,9 @@ Cominciamo quindi definendo la nostra classe:
 <?php 
 
 class X_VlcShares_Plugins_FilmStream extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
+
+	const VERSION = '0.1';
+	const VERSION_CLEAN = '0.1';
 	
 	function __construct() {
 		
@@ -561,8 +564,19 @@ Fatto questo, andremo a valutare cosa fare in base al numero di parametri indivi
    * se sarà presente solo il TIPO_RISORSA, visualizzeremo quella di selezione di TIPO_GROUPPO
    * ...cosi via...
 
+Dopo aver implementato il nostro trigger, dobbiamo segnalarlo al broker aggiungendo una priorità. Così come abbiamo fatto per `getCollectionsItems`, ripetiamo la procedura anche per `getShareItems`. Modifichiamo il costruttore:
 
-Cerchiamo di risolvere il primo scenario: `ho appena cliccato nell'indice delle collezioni su FilmStream e quindi non ho ancora nessun parametro in $location`.
+{{{
+	function __construct() {
+		$this->setPriority('getCollectionsItems');
+		$this->setPriority('getShareItems');
+	}
+
+}}}
+
+
+
+A questo punto cerchiamo di risolvere il primo scenario: `ho appena cliccato nell'indice delle collezioni su FilmStream e quindi non ho ancora nessun parametro in $location`.
 
 All'interno del nostro `switch`, questo scenario è rappresentato dal `case`:
 
@@ -580,5 +594,47 @@ All'interno del nostro `switch`, questo scenario è rappresentato dal `case`:
 
 Andiamo a implementare quindi `_fetchTypes($items)` come metodo privato.
 
+{{{
+
+	const TYPE_MOVIES = 'movies';
+	const TYPE_TVSHOWS = 'tv';
+	const TYPE_ANIME = 'anime';
+	const TYPE_SUBBED = 'subbed';
+	
+	/**
+	 * Fill a list of types of resoures
+	 * @param X_Page_ItemList_PItem $items an empty list
+	 * @return X_Page_ItemList_PItem the list filled
+	 */
+	private function _fetchTypes(X_Page_ItemList_PItem $items) {
+		
+		$types = array(
+			self::TYPE_MOVIES => X_Env::_('p_filmstream_type_movies'),
+			self::TYPE_TVSHOWS => X_Env::_('p_filmstream_type_tvshows'),
+			self::TYPE_ANIME => X_Env::_('p_filmstream_type_anime'),
+			self::TYPE_SUBBED => X_Env::_('p_filmstream_type_subbed'),
+		);
+		
+		foreach ( $types as $typeLocParam => $typeLabel ) {
+			$item = new X_Page_Item_PItem($this->getId()."-type-$typeLocParam", $typeLabel);
+			$item->setIcon('/images/icons/folder_32.png')
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+				->setCustom(__CLASS__.':location', "$typeLocParam")
+				->setDescription(APPLICATION_ENV == 'development' ? "$typeLocParam" : null)
+				->setLink(array(
+					'l'	=>	X_Env::encode("$typeLocParam")
+				), 'default', false);
+				
+			$items->append($item);
+		}
+	}
+}}}
+
+Quello che fa la funzione è piuttosto semplice: crea per ogni elemento inserito all'interno dell'array `$types` un nuovo elemento, usando la chiave `$typeLocParam` come parametro della `location` e il valore `$typeLabel` come etichetta per l'elemento.
+
+*Importante*: osservate come il parametro `l` (`location`) venga codificato tramite `X_Env::encode`.
+
+Possiamo adesso testare quanto aggiunto cliccando su FilmStream all'interno della lista delle collezioni.
 
 
+https://lh5.googleusercontent.com/_U6HIkh_ODAo/TZRGTBtUqXI/AAAAAAAAAGw/8cRDq48YYtI/s800/plugin_0.5.4_tutorial_2.png
