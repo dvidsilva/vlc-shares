@@ -13,7 +13,7 @@ In questa fase cercheremo di preparare una installazione di sviluppo di vlc-shar
 
 Per poter completare con successo questo tutorial è necessario che siate forniti di qualche semplice strumento di base:
    * *una installazione funzionante di VLCShares.*
-   * *un editor di testo o un IDE per php*. Potete usare quello che preferite. Vanno bene sia i semplici editor di testo con il riconoscimento della sinstassi php (ad esempio Notepad++ se siete su Windows o GEdit se siete su Linux), che IDE più avanzati che offrono ad esempio auto completamento del codice o altro (ad esempio Zend Studio, Eclipse PDT...)
+   * *un editor di testo o un IDE per php*. Potete usare quello che preferite. Vanno bene sia i semplici editor di testo con il riconoscimento della sintassi php (ad esempio Notepad++ se siete su Windows o GEdit se siete su Linux), che IDE più avanzati che offrono ad esempio auto completamento del codice o altro (ad esempio Zend Studio, Eclipse PDT...)
    * *svn* (se siete su Windows, potete utilizzare TortoiseSVN)
    * *php-cli* (su ubuntu basta installare il pacchetto php5-cli, su Windows dovrebbe essere già compreso nella distribuzione EasyPHP)
 
@@ -416,3 +416,41 @@ Lo so, siamo ancora all'inizio. Però è il momento di cominciare a guardare qua
 Eccolo li, il nostro nuovo fiammante pulsante per FilmStream che compare. 
 
 https://lh5.googleusercontent.com/_U6HIkh_ODAo/TZOx70OiwiI/AAAAAAAAAGg/4kvP0N0-4EU/s800/plugin_0.5.4_tutorial_1.png
+
+
+==Fase 7: prepariamo l'indice==
+
+Come avrete sicuramente notato, cliccando sul pulsante appena creato non verrà visualizzato assolutamente nulla. E' ora di cominciare a riempire qualcosa.
+La navigazione all'interno di un provider viene gestita dalla pagina `browse/shares` (`browseController::shareAction()`). Il comportamento della pagina e le interazioni con i plugin sono molto semplici:
+
+   * in controller invoca in successione i trigger `preGetShareItems`, `getShareItems` e `postGetShareItems`. Il loro funzionamento è analogo a `getCollectionsItems`: generano oggetti di tipo `X_Page_Item_PItem` raccolti all'interno di liste di tipo `X_Page_ItemList_PItem`. Le tre liste generate dai tre trigger vengono fuse insieme per generarne una unica che conservi l'ordinamento. In questa fase verranno generati i contenuti visualizzati.
+   * una volta che tutti i contenuti sono stati generati, il controller invoca per ogni contenuto il trigger `filterShareItems`. Questo trigger permette a tutti i plugin che si sono registrati di esprimere un valore booleano che ne determini un'eventuale rimozione dalla lista. Se anche solo uno dei plugin restituirà `false`, l'elemento verrà rimosso dalla lista.
+   * filtrata la lista, l'ultimo passaggi di preparazione riguarda l'ordinamento dei contenuti. Il controller chiama il trigger `orderShareItems` dando in input un array di elementi `X_Page_Item_PItem` per permetterne l'ordinamento in maniera arbitraria. Nelle installazioni standard di vlc-shares è attivo un plugin di default (`X_VlcShares_Plugins_SortItems`) che si occupa proprio di ordinare gli elementi per tipo e in ordine alfabetico. Vedremo più avanti come disattivarlo nel caso in cui non volessimo questo tipo di servizio.
+   * ultimata la preparazione, il controller delega le ultime operazioni ai plugin di tipo Renderer tramite `gen_afterPageBuild`: questo tipo di plugin hanno lo scopo di trasformare gli elementi generati nei passaggi precedenti, in una forma utilizzabile dal device che sta generando la richiesta della pagina (ad esempio: se si sta navigando tramite Wii sarà compito del WiimcPlxRenderer trasformarli in una playlist PLX, se tramite un browser questo sarà onere del MobileRenderer). In ogni caso non discuterò ulteriormente in questa guida le implicazioni di questo trigger visto che è un argomento che merità una trattazione separata.
+
+Ritorniamo al nostro plugin: come avrete sicuramente inteso, l'intera navigazione all'interno dei contenuti avviene sempre in questa pagina. Per determinare la nostra posizione all'interno delle risorse e decidere quali visualizzare utilizzeremo il parametro `location`. Come già detto, il formato di questo parametro è arbitrario. Dobbiamo quindi decidere come gestirlo in base alle nostre esigente.
+Durante la _Fase 2_ abbiamo pianificato come dovranno essere organizzate le nostre risorse. Partendo da li possiamo decidere il modo più idoneo per il formato della nostra `location`.
+
+Utilizzeremo un separatore `/` per separare i parametri contenuti nella location. Non dobbiamo preoccuparci che questo possa interferire con altri parametri di vlc-shares in quanto codificando la `location` tramite `X_Env::encode()` scongiureremo proprio questo genere di eventualità.
+
+In definitiva la nostra `location` verrà rappresentata in questo modo:
+
+{{{
+TIPO_RISORSA/TIPO_GRUPPO/N_PAGINA/ID_TITOLO/ID_FILMATO
+}}}
+
+Per rendere chiaro questo passaggio vi faccio qualche esempio:
+
+{{{
+film/I/2/inception/mv:12345678
+}}}
+Indica che stiamo visualizzando la risorsa nella categoria "film", gruppo "i", pagina "2", id elemento "inception", id filmato "mv:12345678". Questa è la location che rappresenta una URL ad un filmato. Tramite `getLocation` potremo infatti ottenere URL diretto ad un video.
+
+{{{film/I/inception/}}}
+Indica che stiamo visualizzando la risorsa nella categoria "film", gruppo "i", pagina "2", id elemento "inception". Questa `location` rappresenta la pagina indice dei filmati per l'elemento "inception". Il provider genererà quindi l'elenco dei filmato relativi ad "inception"
+
+
+
+
+
+
