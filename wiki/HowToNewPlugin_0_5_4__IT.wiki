@@ -1031,6 +1031,18 @@ A questo punto non ci rimane che trasformare quanto trovato in una lista di ogge
 
 {{{
 
+			
+			if ( $page > 1 ) {
+				// we need the "previus-page" link
+				$item = new X_Page_Item_PItem($this->getId()."-previouspage", X_Env::_("p_filmstream_page_previous", ($page - 1)));
+				$item->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+					->setCustom(__CLASS__.':location', "$resourceType/$resourceGroup/".($page - 1))
+					->setLink(array(
+						'l'	=>	X_Env::encode("$resourceType/$resourceGroup/".($page - 1))
+					), 'default', false);
+				$items->append($item);
+			}
+
 			foreach ($matches as $resource) {
 				
 				@list($resourceId, $resourceLabel, $resourceDescription, $resourceThumbnail) = $resource;
