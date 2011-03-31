@@ -638,3 +638,70 @@ Possiamo adesso testare quanto aggiunto cliccando su FilmStream all'interno dell
 
 
 https://lh5.googleusercontent.com/_U6HIkh_ODAo/TZRGTBtUqXI/AAAAAAAAAGw/8cRDq48YYtI/s800/plugin_0.5.4_tutorial_2.png
+
+
+==Fase 8: preparamo la selezione dei gruppi==
+
+Come visto nella fase preparatoria e in quella precendente a questa, dopo l'indice principale è la volta di gestire lo scenario in cui l'utente ha selezionato uno dei 4 tipi visualizzati.
+Lo scenario è abbastanza semplice: quello che dobbiamo fare è visualizzare una lista di gruppi di risorse (faremo una divisione per lettere e aggiungeremo anche il gruppo "Novità" in testa).
+
+Questo caso corrisponde a quello in cui nella `$location` venga specificato un solo parametro:
+
+{{{
+
+			case 1:
+				// fetchGroups doesn't require any kind of network traffic
+				// so it's useless to cache the results
+				$this->disableCache();
+				// delegate to fetchGroups
+				$this->_fetchGroups($items, $resourceType);
+				break;
+
+
+}}}
+
+
+Andiamo quindi a implementare il metodo privato `_fetchGroups($items, $resourceType)` passando come parametri l'elenco da riemprire e (tramite `$resourceType`) il tipo attualmente selezionato.
+
+{{{
+
+	/**
+	 * Fill a list of groups of resoures by type
+	 * @param X_Page_ItemList_PItem $items an empty list
+	 * @param string $resourceType the resource type selected
+	 * @return X_Page_ItemList_PItem the list filled
+	 */
+	private function _fetchGroups(X_Page_ItemList_PItem $items, $resourceType) {
+
+		if ( $resourceType == self::TYPE_MOVIES ) {
+			$groups = 'new,0-9,a-b,c-d,e-f,g-h-j-k,i-l,m-n,o-p,q-r-s,t-u-v,w-x-y-z';
+		} else {
+			$groups = 'new,'.strtoupper('0-9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z');
+		}
+		$groups = explode(',', $groups);
+		
+		foreach ( $groups as $group ) {
+			$item = new X_Page_Item_PItem($this->getId()."-$resourceType-$group", ($group == 'new' ? X_Env::_('p_filmstream_group_new') : strtoupper($group)));
+			$item->setIcon('/images/icons/folder_32.png')
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+				->setCustom(__CLASS__.':location', "$resourceType/$group")
+				->setDescription(APPLICATION_ENV == 'development' ? "$resourceType/$group" : null)
+				->setLink(array(
+					'l'	=>	X_Env::encode("$resourceType/$group")
+				), 'default', false);
+				
+			$items->append($item);
+		}
+	}
+
+}}}
+
+Questo metodo funziona più o meno come il `_fetchTypes` con una piccola differenza: il tipo di gruppi da visualizzare viene deciso in base al tipo di `$resourceType` che l'utente ha selezionato.
+
+Sul sito FilmStream nello specifico i film vengono divisi in gruppi alfabetici di più lettere, mentre gli altri tipi di risorse sono suddivisi in gruppi di singole lettere (anche se vengono comunque tutti mostrati nella spessa pagina. In realtà solo per i film è stata disposta una pagina per ogni gruppo alfabetico). Questo richiede di effettuare un distinguo, quello che fa il primo `if`.
+
+Altra nota importante riguarda l'uso della `$location`. Come vediamo, il parametro `l` viene compilato inserendo la vecchia selezione e la nuova in successione (`$resourceType/$group`) per ogni singolo gruppo. Questo ci permetterà di passare al caso successivo (quello a 2 parametri) cliccando uno degli elementi generati qui.
+
+Possiamo provare le modifiche selezionando uno dei tipi.
+
+https://lh6.googleusercontent.com/_U6HIkh_ODAo/TZRP6sDXPKI/AAAAAAAAAG0/FfxxkfxQlTc/s800/plugin_0.5.4_tutorial_3.png
