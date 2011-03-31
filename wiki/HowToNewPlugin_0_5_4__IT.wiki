@@ -1,5 +1,3 @@
-#labels Phase-Support
-
 #summary Tutorial per la creazione di plugin per la versione 0.5.4
 #labels Phase-Support
 
@@ -946,3 +944,85 @@ Fatte queste premesse, possiamo passare alla parte pratica.
 	}
 
 }}}
+
+Analizziamo nello dettaglio: all'inizio del metodo troviamo subito una serie di `if`/`switch` che hanno lo scopo di specificare in base alla richiesta, l'indirizzo della pagina che contiene le risorse è una query XPath abbastanza generica in grado di estrappolarle.
+
+Subito dopo queste informazioni vengono utilizzate per ottenere la pagina dal sito, caricarlo in un oggetto DOM e eseguire su di esso la query.
+
+{{{
+		// fetch the page from filmstream (url is different for each $resourceType)
+		$htmlString = $this->_loadPage($url);
+		// load the readed page inside a DOM object, so we can user XPath for traversal
+		$dom = new Zend_Dom_Query($htmlString);
+		// execute the query
+		$result = $dom->queryXpath($xpathQuery);
+}}}
+
+Dopo l'esecuzione della query, la nostra variabile `$result` conterrà l'insieme dei nodi che hanno avuto corrispondenza con la nostra query. 
+
+A questo punto procediamo con la paginazione degli elementi: visto che il numero di elementi trovato è arbitrario e non deterministico, prima di processare tutti gli elementi per suddividerne le componenti procediamo ad una scrematura di quelli che non fanno parte della sezione di quelli che verranno visualizzati.
+
+{{{
+
+			$matches = array();
+			$i = 1;
+			while ( $result->valid() ) {
+				if (  $i > ( ($page -1) * $perPage ) &&  $i < ($page * $perPage)  ) {
+					$currentRes = $result->current();
+					
+					if ( $resourceGroup == 'new' ) {
+						
+						$IdNode = $currentRes->firstChild;
+						while ( $IdNode instanceof DOMText && $IdNode != null ) {
+							$IdNode = $IdNode->nextSibling;
+						}
+						// anime, tvshow, subbed are on the side bar, and $currentRes has 1 child only
+						if ( $currentRes->childNodes->length == 1 ) {
+							$labelNode = $IdNode;
+						} else {
+							$labelNode = $IdNode->nextSibling;
+						}
+						if ( trim($labelNode->nodeValue) == '' ) $labelNode = $labelNode->parentNode;
+						
+						$resourceId = str_replace('/', ':', substr( $IdNode->getAttribute('href'), strlen('http://film-stream.tv/'), -1 ) );
+						
+						// i've done everthing. If all doesn't work, just skip this entry
+						if ( $resourceId == "" ) {
+							$i++;
+							$result->next();
+							continue;
+						}
+						
+						$resourceLabel = trim($labelNode->nodeValue);
+						$resourceDescription = null;
+						$resourceThumbnail = ($IdNode->firstChild != null ? $IdNode->firstChild->getAttribute('src') : null );
+					} else {
+						$resourceId = str_replace('/', ':', substr( $currentRes->getAttribute('href'), strlen('http://film-stream.tv/'), -1 ) );
+						$resourceLabel = trim($currentRes->nodeValue);
+						$resourceDescription = null;
+						$resourceThumbnail = null;
+					}
+					$matches[] = array($resourceId, $resourceLabel, $resourceDescription, $resourceThumbnail);
+				}
+				$i++;
+				$result->next();
+			}
+
+}}}
+
+Per farlo useremo un ciclo while che ignorerà tutti gli elementi fino al primo della pagina che visualizzeremo. Una volta arriveti al punto richiesto, comincierà la scansione.
+
+Purtroppo, quello che posso dirvi su questa parte è piuttosto poco. Semplicemente, la serie di `if` innestati serve per gestire la maggior parte dei casi anomali e per poter gestire le pagine delle novità. La strategia che ho adottato era quella di tentare di individuare un nodo figlio a quello selezionato che potesse contenere con maggiore probabilità le informazioni cercate. Chiaramente il metodo non è infallibile e per questo ho inserito una guard:
+
+{{{
+						if ( $resourceId == "" ) {
+							$i++;
+							$result->next();
+							continue;
+						}
+
+}}}
+
+Il suo scopo è quello di ignorare l'elemento se dopo tutti i tentativi non si è ancora arrivati ad individuare un ID_RISORSA valido. 
+
+Tutti gli elementi validi verranno inseriti sotto forma di array, all'interno dell'array `$matches`.
