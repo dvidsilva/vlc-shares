@@ -1,9 +1,11 @@
 #summary Tutorial per la creazione di plugin per la versione 0.5.4
 #labels Phase-Support
 
+=Premesse=
+
 L'obbiettivo di questo tutorial è quello di mostrare, in maniera pratica, come realizzare un nuovo plugin per VLCShares di tipo DataProvider. I plugin di questo tipo hanno come scopo principale quello di navigare all'interno di un sito web e estrappolarne i contenuti video o audio per renderli utilizzabili dai dispositivi supportati da VLCShares.
 
-<wiki:toc max_depth="1" />
+<wiki:toc max_depth="6" />
 
 ==Prefazione: note preliminari==
 
@@ -58,6 +60,8 @@ cd /var/www/vlc-shares-dev/scripts/
 }}}
 
 A questo punto siamo pronti a cominciare.
+
+=Realizzazione=
 
 ==Fase 1: scegliamo il nostro obbiettivo==
 
