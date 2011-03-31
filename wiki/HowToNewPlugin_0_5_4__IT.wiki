@@ -453,8 +453,7 @@ Indica che stiamo visualizzando la risorsa nella categoria "film", gruppo "i", p
 
 Utilizzando questa notazione possiamo sempre ottenere facilmente la pagina padre (basterà eliminare ultimo parametro della location) e capire al volo quali risorse generare (quelle in grado di impostare il parametro mancante).
 
-Traduciamo questi concetti in codice:
-
+Traduciamo questi concetti in codice aggiungendo due nuovi metodi alla nostra classe `X_VlcShares_Plugins_FilmStream`.
 
 {{{
 	/**
@@ -541,4 +540,45 @@ Traduciamo questi concetti in codice:
 	}
 	
 }}}
+
+Il primo metodo `getShareItems` è il nostro trigger che gestirà la navigazione. Ho deciso di strutturare il metodo in modo che il suo unico compito sia quello di analizzare il formato della `$location` e di delegare la generazione degli elementi a dei metodi privati (che aggiungeremo in seguito) in base al tipo di parametri trovati. Nei commenti in linea potete trovare informazioni specifiche su quello che succede. 
+
+Mi soffermo semplicemente su l'analisi di quello che succede alla `$location`:
+
+{{{
+		// location format:
+		// resourceType/resourceGroup/page/resourceId/videoId
+		
+		$split = $location != '' ? @explode('/', $location, 5) : array();
+		@list($resourceType, $resourceGroup, $page, $resourceId, $videoId) = $split;
+}}}
+
+inseriamo in `$split` un array dei parametri memorizzati in `$location` (dopo averli divisi utilizzando '/' come separatore). In seguito assegnamo in base alla posizione, i valori contenuti all'interno dell'array esploso a delle variabili.
+
+Fatto questo, andremo a valutare cosa fare in base al numero di parametri individuati:
+
+   * se non sarà presente alcun parametro (`$location` vuota), sigificherà che dovremo visualizzare la pagina di selezione del TIPO_RISORSA
+   * se sarà presente solo il TIPO_RISORSA, visualizzeremo quella di selezione di TIPO_GROUPPO
+   * ...cosi via...
+
+
+Cerchiamo di risolvere il primo scenario: `ho appena cliccato nell'indice delle collezioni su FilmStream e quindi non ho ancora nessun parametro in $location`.
+
+All'interno del nostro `switch`, questo scenario è rappresentato dal `case`:
+
+{{{
+
+			case 0:
+			default: 
+				// fetchTypes doesn't require any kind of network traffic
+				// so it's useless to cache the results
+				$this->disableCache();
+				// delegate to fetchTypes
+				$this->_fetchTypes($items);
+
+}}}
+
+Andiamo a implementare quindi `_fetchTypes($items)` come metodo privato.
+
+
 
