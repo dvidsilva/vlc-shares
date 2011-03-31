@@ -685,12 +685,12 @@ Andiamo quindi a implementare il metodo privato `_fetchGroups($items, $resourceT
 		if ( $resourceType == self::TYPE_MOVIES ) {
 			$groups = 'new,0-9,a-b,c-d,e-f,g-h-j-k,i-l,m-n,o-p,q-r-s,t-u-v,w-x-y-z';
 		} else {
-			$groups = 'new,'.strtoupper('0-9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z');
+			$groups = 'new,all';
 		}
 		$groups = explode(',', $groups);
 		
 		foreach ( $groups as $group ) {
-			$item = new X_Page_Item_PItem($this->getId()."-$resourceType-$group", ($group == 'new' ? X_Env::_('p_filmstream_group_new') : strtoupper($group)));
+			$item = new X_Page_Item_PItem($this->getId()."-$resourceType-$group", ($group == 'new' || $group == 'all' ? X_Env::_("p_filmstream_group_$group") : strtoupper($group)));
 			$item->setIcon('/images/icons/folder_32.png')
 				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
 				->setCustom(__CLASS__.':location', "$resourceType/$group")
@@ -707,7 +707,7 @@ Andiamo quindi a implementare il metodo privato `_fetchGroups($items, $resourceT
 
 Questo metodo funziona più o meno come il `_fetchTypes` con una piccola differenza: il tipo di gruppi da visualizzare viene deciso in base al tipo di `$resourceType` che l'utente ha selezionato.
 
-Sul sito FilmStream nello specifico i film vengono divisi in gruppi alfabetici di più lettere, mentre gli altri tipi di risorse sono suddivisi in gruppi di singole lettere (anche se vengono comunque tutti mostrati nella spessa pagina. In realtà solo per i film è stata disposta una pagina per ogni gruppo alfabetico). Questo richiede di effettuare un distinguo, quello che fa il primo `if`.
+Sul sito FilmStream nello specifico i film vengono divisi in gruppi alfabetici di più lettere, mentre gli altri tipi di risorse sono accorpate tutte insieme nella stessa pagina. Questo richiede di effettuare un distinguo, quello che fa il primo `if`.
 
 Altra nota importante riguarda l'uso della `$location`. Come vediamo, il parametro `l` viene compilato inserendo la vecchia selezione e la nuova in successione (`$resourceType/$group`) per ogni singolo gruppo. Questo ci permetterà di passare al caso successivo (quello a 2 parametri) cliccando uno degli elementi generati qui.
 
