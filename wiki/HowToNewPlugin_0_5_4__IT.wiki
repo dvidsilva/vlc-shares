@@ -1,3 +1,5 @@
+#labels Phase-Support
+
 #summary Tutorial per la creazione di plugin per la versione 0.5.4
 #labels Phase-Support
 
@@ -719,7 +721,7 @@ https://lh6.googleusercontent.com/_U6HIkh_ODAo/TZRP6sDXPKI/AAAAAAAAAG0/FfxxkfxQl
 ==Fase 9: leggiamo i titoli dal sito==
 
 Arrivati a questo punto abbiamo a disposizione (in quanto selezionato dall'utente e quindi presente nella `$location`) il tipo e il gruppo di risorse al quale siamo interessati. Non ci rimane che leggere dal sito i titoli delle risorse
-Questa fase riguarda il `case` a 2 e 3 parametri. Li gestiremo insieme in quanto sul sito non è presente una divisione dei contenuti in più pagine per categoria, quindi il caso a 2 parametri (cioè quello in cui il numero di pagina non è selezionato) verrà considerato come se il numero di pagina indicato sia 1.
+Questa fase riguarda il `case` a 2 e 3 parametri. Li gestiremo insieme in quanto sul sito non è presente una divisione dei contenuti in più pagine per categoria, quindi il caso a 2 parametri (cioè quello in cui il numero di pagina non è selezionato) verrà considerato come se il numero di pagina indicato sia 1. Toccherà poi a noi suddividere i risultati in pagine e gestire la paginazione
 
 {{{
 
@@ -729,5 +731,218 @@ Questa fase riguarda il `case` a 2 e 3 parametri. Li gestiremo insieme in quanto
 				// delegate to fetchResources
 				$this->_fetchResources($items, $resourceType, $resourceGroup, $page);
 				break;
+
+}}}
+
+
+E' arrivato il momento di implementare la estrapolazione dei contenuti veri e propri dal sito. Purtroppo il metodo `_fetchResources` è abbastanza complesso, quindi prima di analizzarlo nel dettaglio è necessario fare qualche considerazione.
+
+Quando decidiamo di realizzare questo genere di plugin dobbiamo tenere a mente che la parte più complicata sarà quella relativa alla ricerca delle informazioni importanti all'interno delle pagine. Nel nostro caso, le informazioni importanti, quelle che cerchiamo, sono quelle relative agli indirizzi delle pagine in cui sono contenuti i video e ai titoli degli elementi.
+
+Il caso ideale sarebbe quello in cui le informazioni siano tabulate in maniera coerente e che sia individuabile uno schema comune fra tutte. Questo si permetterebbe di isolare in maniera immediata le informazioni importanti da quelle totalmente inutili. Chiaramente, nel nostro caso ci troviamo nella situazione opposta. Nel sito FilmStream i dati relativi alle pagine sono scritti in maniera abbastanza incoerente fra di loro. Spesso sono presenti formattazioni differenti. Nei casi come questo, il mio consiglio è quello di individuare un modo generale che consenta al maggior numero di elementi di essere individuato correttamente e considerare una stategia di riserva in grado di gestire le anomalie.
+
+Entriamo più nello specifico. A titolo di esempio, analizzerò nel dettaglio solo uno dei casi, gli altri possono essere ricondotti (con le opportune modifiche) a quello. Purtroppo da questo punto in poi la questione diventa abbastanza complicata.
+
+Analizziamo la struttura della pagina indice delle serie tv(l'indirizzo è questo: http://film-stream.tv/serietv/lista-tv/). La struttura della pagina può essere semplificata in questo modo.
+
+{{{
+<html>
+...
+<body>
+...
+<div id="maincontent">
+...
+<p>
+ <strong>
+   <a href="INDIRIZZO">TITOLO RISORSA</a>
+ </strong>
+</p>
+...
+</div>
+...
+</body>
+</html>
+
+}}}
+
+La maggior parte degli elementi ricercati viene rappresentata all'interno di un tag `<p>` e `<strong>`. Utilizzeremo il valore dell'attributo `href` per ottenere l'indirizzo della pagina dei video e il valore testuale nel tag `<a>` come etichetta per il nostro elemento.
+
+Il modo con il quale isolate gli elementi cercati dalla pagina è una vostra decisione. Non ci sono vincoli. Finora, per tutti i plugin che ho scritto ho utilizzato due tipi di strategie:
+   * pattern matching
+   * dom traversal e xpath
+
+La prima strategia consiste nel ricercare nel testo delle stringhe che corrispondano a dei "modelli". Vi rimando a Google  
+o Wikipedia per cercare maggiori informazioni sull'argomento.
+
+La seconda strategia invece consiste nell'usare il modello DOM per navigare all'interno della pagina come se fosse un albero e utilizzare delle query XPath per poter ottenere dei riscontri specifici. Anche in questo caso Wikipedia e Google sono una buona fonte per maggiori informazioni.
+
+In questo caso specifico ho deciso di utilizzare il secondo metodo, anche se più scomodo per un semplice motivo: leggendo il codice sorgente delle pagine si nota subito che realizzare un pattern in grado di riuscire a comprendere un numero soddisfacente di elementi è molto difficile considerando il fatto che molti dei nodi vengono indicati con tag e attributi completamente fuori dallo schema generale.
+
+Utilizzando XPath (anche se il problema relativo ai tag resta), almeno possiamo evitare i problemi relativi agli attributi non coerenti che portavano ai fallimenti nel riconoscimento dei pattern. 
+
+Fatte queste premesse, possiamo passare alla parte pratica.
+
+
+{{{
+
+	/**
+	 * Fill a list of resource by type, group and page
+	 * @param X_Page_ItemList_PItem $items an empty list
+	 * @param string $resourceType the resource type selected
+	 * @param string $resourceGroup the resource group selected
+	 * @param int $page number of the page 
+	 * @return X_Page_ItemList_PItem the list filled
+	 */
+	private function _fetchResources(X_Page_ItemList_PItem $items, $resourceType, $resourceGroup, $page = 1) {
+		
+		X_Debug::i("Fetching resources for $resourceType/$resourceGroup/$page");
+		
+		// if resourceGroup == new, query and url are specials
+		if ( $resourceGroup == 'new' ) {
+			switch ( $resourceType ) {
+				case self::TYPE_MOVIES:
+					$url = self::URL_MOVIES_INDEX_NEW;
+					$xpathQuery = '//div[@id="maincontent"]//div[@class="galleryitem"]';
+					break;
+				case self::TYPE_ANIME:
+					$url = self::URL_ANIME_INDEX_NEW;
+					$xpathQuery = '//div[@id="sidebar"]//div[@id="text-5"]//tr[11]//td';
+					break;
+				case self::TYPE_TVSHOWS:
+					$url = self::URL_TVSHOWS_INDEX_NEW;
+					$xpathQuery = '//div[@id="sidebar"]//div[@id="text-5"]//tr[position()=1 or position()=4 or position()=5]//td//a/parent::node()';
+					break;
+			}
+		} else {
+			switch ( $resourceType ) {
+				case self::TYPE_MOVIES:
+					$url = sprintf(self::URL_MOVIES_INDEX_AZ, $resourceGroup);
+					$xpathQuery = '//div[@id="maincontent"]//p/*/a[1][node()][text()]';
+					$hasThumbnail = false;
+					$hasDescription = false;
+					break;
+				case self::TYPE_ANIME:
+					$url = self::URL_ANIME_INDEX_AZ;
+					$xpathQuery = '//div[@id="maincontent"]//p/*/a[1][node()][text()]';
+					break;
+				case self::TYPE_TVSHOWS:
+					$url = self::URL_TVSHOWS_INDEX_AZ;
+					$xpathQuery = '//div[@id="maincontent"]//p/*/a[1][node()][text()]';
+					break;
+			}
+		}
+		
+		// fetch the page from filmstream (url is different for each $resourceType)
+		$htmlString = $this->_loadPage($url);
+		// load the readed page inside a DOM object, so we can user XPath for traversal
+		$dom = new Zend_Dom_Query($htmlString);
+		// execute the query
+		$result = $dom->queryXpath($xpathQuery);
+		
+		if ( $result->valid() ) {
+			
+			X_Debug::i("Resources found: ".$result->count());
+
+			$perPage = $this->config('items.perpage', 50);
+			
+			// before to slice the results, we must check if a -next-page- is needed
+			$nextNeeded = ($result->count() > ($page * $perPage) ? true : false );
+			
+			$matches = array();
+			$i = 1;
+			while ( $result->valid() ) {
+				if (  $i > ( ($page -1) * $perPage ) &&  $i < ($page * $perPage)  ) {
+					$currentRes = $result->current();
+					
+					if ( $resourceGroup == 'new' ) {
+						
+						$IdNode = $currentRes->firstChild;
+						while ( $IdNode instanceof DOMText && $IdNode != null ) {
+							$IdNode = $IdNode->nextSibling;
+						}
+						// anime, tvshow, subbed are on the side bar, and $currentRes has 1 child only
+						if ( $currentRes->childNodes->length == 1 ) {
+							$labelNode = $IdNode;
+						} else {
+							$labelNode = $IdNode->nextSibling;
+						}
+						if ( trim($labelNode->nodeValue) == '' ) $labelNode = $labelNode->parentNode;
+						
+						$resourceId = str_replace('/', ':', substr( $IdNode->getAttribute('href'), strlen('http://film-stream.tv/'), -1 ) );
+						
+						// i've done everthing. If all doesn't work, just skip this entry
+						if ( $resourceId == "" ) {
+							$i++;
+							$result->next();
+							continue;
+						}
+						
+						$resourceLabel = trim($labelNode->nodeValue);
+						$resourceDescription = null;
+						$resourceThumbnail = ($IdNode->firstChild != null ? $IdNode->firstChild->getAttribute('src') : null );
+					} else {
+						$resourceId = str_replace('/', ':', substr( $currentRes->getAttribute('href'), strlen('http://film-stream.tv/'), -1 ) );
+						$resourceLabel = trim($currentRes->nodeValue);
+						$resourceDescription = null;
+						$resourceThumbnail = null;
+					}
+					$matches[] = array($resourceId, $resourceLabel, $resourceDescription, $resourceThumbnail);
+				}
+				$i++;
+				$result->next();
+			}
+			
+			if ( $page > 1 ) {
+				// we need the "previus-page" link
+				$item = new X_Page_Item_PItem($this->getId()."-previouspage", X_Env::_("p_filmstream_page_previous", ($page - 1)));
+				$item->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+					->setCustom(__CLASS__.':location', "$resourceType/$resourceGroup/".($page - 1))
+					->setLink(array(
+						'l'	=>	X_Env::encode("$resourceType/$resourceGroup/".($page - 1))
+					), 'default', false);
+				$items->append($item);
+			}
+			
+			foreach ($matches as $resource) {
+				
+				@list($resourceId, $resourceLabel, $resourceDescription, $resourceThumbnail) = $resource;
+				
+				$item = new X_Page_Item_PItem($this->getId()."-$resourceType-$resourceGroup-$page-$resourceId", $resourceLabel);
+				$item->setIcon('/images/icons/folder_32.png')
+					->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+					->setCustom(__CLASS__.':location', "$resourceType/$resourceGroup/$page/$resourceId")
+					->setLink(array(
+						'l'	=>	X_Env::encode("$resourceType/$resourceGroup/$page/$resourceId")
+					), 'default', false);
+					
+				if ( $resourceDescription != null ) {
+					$item->setDescription($resourceDescription);
+				} elseif ( APPLICATION_ENV == 'development' ) {
+					$item->setDescription("$resourceType/$resourceGroup/$page/$resourceId");
+				}
+				if ( $resourceThumbnail != null ) {
+					$item->setThumbnail($resourceThumbnail);
+				}
+				
+				$items->append($item);
+				
+			}
+			
+			if ( $nextNeeded ) {
+				// we need the "previus-page" link
+				$item = new X_Page_Item_PItem($this->getId()."-nextpage", X_Env::_("p_filmstream_page_next", ($page + 1)));
+				$item->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+					->setCustom(__CLASS__.':location', "$resourceType/$resourceGroup/".($page + 1))
+					->setLink(array(
+						'l'	=>	X_Env::encode("$resourceType/$resourceGroup/".($page + 1))
+					), 'default', false);
+				$items->append($item);
+			}
+			
+		} else {
+			X_Debug::e("Query failed {{$xpathQuery}}");
+		}
+		
+	}
 
 }}}
