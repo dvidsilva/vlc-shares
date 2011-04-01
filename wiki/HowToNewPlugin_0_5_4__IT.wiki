@@ -1334,3 +1334,124 @@ return error: il tipo_video non è stato riconosciuto
 
 Non sembra molto complesso, no? Implementiamolo.
 
+{{{
+
+	/**
+	 * @see X_VlcShares_Plugins_ResolverInterface::getLocation()
+	 */
+	function resolveLocation($location = null) {
+
+		if ( $location == '' || $location == null ) return false;
+		
+		if ( array_key_exists($location, $this->cachedLocation) ) {
+			return $this->cachedLocation[$location];
+		}
+		
+		X_Debug::i("Requested location: $location");
+
+		$split = $location != '' ? @explode('/', $location, 5) : array();
+		@list($resourceType, $resourceGroup, $page, $resourceId, $videoId) = $split;
+
+		// videoId overwritted by real videoId
+		@list($videoType, $videoId) = @explode(':', $videoId, 2);
+
+		X_Debug::i("Type: $resourceType, Group: $resourceGroup, Page: $page, Resource: $resourceId, VideoType: $videoType, VideoId: $videoId");
+		
+		if ( $videoType == null || $videoId == null ) {
+			// location isn't a valid video url, so we return fals
+			// and insert the query result in the cache
+			$this->cachedLocation[$location] = false;
+			return false;	
+		}
+
+		$return = false;
+		switch ($videoType) {
+			
+			case self::VIDEO_MEGAVIDEO:
+				try {
+					/* @var $megavideoHelper X_VlcShares_Plugins_Helper_Megavideo */
+					$megavideoHelper = $this->helpers('megavideo');
+					
+					X_Debug::i("Megavideo ID: $videoId");
+					if ( $megavideoHelper->setLocation($videoId)->getServer() ) {
+						$return = $megavideoHelper->getUrl();
+					}
+				} catch (Exception $e) {
+					X_Debug::e("Megavideo helper isn't installed or enabled: {$e->getMessage()}");
+				}
+				break;
+				
+			case self::VIDEO_MEGAUPLOAD:				
+				try {
+					/* @var $megauploadHelper X_VlcShares_Plugins_Helper_Megaupload */
+					$megauploadHelper = $this->helpers('megaupload');
+					
+					X_Debug::i("Megaupload ID: $videoId");
+					if ( $megauploadHelper->setMegauploadLocation($videoId)->getServer() ) {
+						$return = $megauploadHelper->getUrl();
+					}
+				} catch (Exception $e) {
+					X_Debug::e("Megaupload helper isn't installed or enabled: {$e->getMessage()}");
+				}
+				break;
+			case self::VIDEO_YOUTUBE:
+				try {
+					/* @var $youtubeHelper X_VlcShares_Plugins_Helper_Youtube */
+					$youtubeHelper = $this->helpers('youtube');
+					/* @var $youtubePlugin X_VlcShares_Plugins_Youtube */
+					$youtubePlugin = X_VlcShares_Plugins::broker()->getPlugins('youtube');
+					
+					X_Debug::i("Youtube ID: $videoId");
+
+					// THIS CODE HAVE TO BE MOVED IN YOUTUBE HELPER
+					// FIXME
+					$formats = $youtubeHelper->getFormatsNOAPI($videoId);
+					$returned = null;
+					$qualityPriority = explode('|', $youtubePlugin->config('quality.priority', '5|34|18|35'));
+					foreach ($qualityPriority as $quality) {
+						if ( array_key_exists($quality, $formats)) {
+							$returned = $formats[$quality];
+							X_Debug::i('Video format selected: '.$quality);
+							break;
+						}
+					}
+					if ( $returned === null ) {
+						// for valid video id but video with restrictions
+						// alternatives formats can't be fetched by youtube page.
+						// i have to fallback to standard api url
+						$apiVideo = $youtubeHelper->getVideo($videoId);
+						
+						foreach ($apiVideo->mediaGroup->content as $content) {
+							if ($content->type === "video/3gpp") {
+								$returned = $content->url;
+								X_Debug::w('Content restricted video, fallback to api url:'.$returned);
+								break;
+							}
+						}
+	
+						if ( $returned === null ) {
+							$returned = false;
+						}
+					}					
+					$return = $returned;
+					
+				} catch (Exception $e) {
+					X_Debug::e("Youtube helper/plugin isn't installed or enabled: {$e->getMessage()}");
+				}
+				break;
+				
+		}
+		
+		$this->cachedLocation[$location] = $return;
+		return $return;
+	
+	}
+
+}}}
+
+L'indirizzo reale dello stream partendo da un ID viene gestito all'interno dello switch e fa uso del sistema di Helper. Questo ci permette di evitare di dover riscrivere codice specifico per ogni plugin che utilizza questo genere di Hoster, ma di fatto ci linka alla necessità di dover inserire all'interno delle dipendenze di questo plugin youtube e megavideo. 
+
+Per poter provare questo codice è quindi necessario andare ad aggiungere negli `extraPlugin` da caricare anche le chiavi `youtube` e `megavideo` (questo passaggio è stato spiegato nella  fase 6).
+
+
+==Fase 12: rendiamo il video riproducibile (parte 2)==
