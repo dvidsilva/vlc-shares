@@ -1147,9 +1147,6 @@ Quello che il nostro metodo `_fetchVideos` deve fare è individuare la pagina gi
 		// substr get a substring of $htmlString from $mainContentStart position to $mainContentEnd position - $mainContentStart position (is the fragment length)
 		$htmlString = ($mainContentEnd === false ? substr($htmlString, $mainContentStart) : substr($htmlString, $mainContentStart, ($mainContentEnd - $mainContentStart) ) );
 
-		// sometimes new line create problem with pattern matching, so we remove all of them
-		//$htmlString = str_replace(array("\n", "\r"), '', $htmlString);
-
 		// let's define some pattern
 		
 		// $ytPattern will try to intercept
@@ -1250,3 +1247,7 @@ Analizziamo il metodo:
 Come per il caso precedente gestito tramite XPath, anche il Pattern Matching non è esente da errori o imprecisioni. Ottenere quindi il 100% di riscontri risulta abbastanza difficile.
 
 Salviamo le modifiche e andiamo a vedere quello cosa succede.
+
+https://lh4.googleusercontent.com/_U6HIkh_ODAo/TZWeTd9xftI/AAAAAAAAAHE/Fl1DaUMHigE/s640/plugin_0.5.4_tutorial_5.png
+
+Nell'immagine c'e' il confronto fra quello che viene mostrato tramite vlc-shares (sulla sinistra) e la pagina originale cosi come mostrata su filmstream (sulla destra). Non c'è male, non credete?
