@@ -1770,6 +1770,96 @@ https://lh4.googleusercontent.com/_U6HIkh_ODAo/TZYLb39-obI/AAAAAAAAAHM/ITSGZGDLJ
 
 ==Utilizzo del sistema di configurazioni==
 
+Un altro servizio offerto da vlc-shares è quello di accesso alle configurazioni per-plugin. Durante l'installazione, il plugin può aggiungere un set di configurazioni all'interno della tabella principale nella sezione plugin. In questo modo, tutte le configurazioni riguardanti la propria chiave e inserite all'interno della sezione plugin verranno offerte in fase di inizializzazione del plugin.
+
+Il nostro plugin potrebbe benissimo fare a meno di questo passaggio, ma colgo l'occasione per utilizzarlo in modo da potervelo presentare brevemente.
+
+L'elenco delle configurazioni va aggiunto al database nello script di installazione `install.sql` e bisogna assicurarsi di non lasciare alcuna traccia dopo la disinstallazione. Dobbiamo quindi prenderci carico di eliminare tutti gli elementi aggiunti nel relativo file `uninstall.sql`
+
+Nel nostro file di installazione aggiungeremo un solo elemento di configurazione che ci permetterà di attivare o disattivare l'offuscamento dello user-agent durante le richieste al sito filmstream.tv
+
+{{{
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'filmstream.hide.useragent', '0', '0', 'plugins', 3, 'p_filmstream_conf_hideuseragent_label', 'p_filmstream_conf_hideuseragent_desc',	'');
+
+
+UPDATE plugins SET enabled=1 WHERE key = "filmstream";
+
+}}}
+
+I tipo di configurazione riconosciuti sono:
+
+   * *0*: input di tipo text
+   * *1*: select
+   * *2*: textarea
+   * *3*: booleano (si/no)
+   * *4*: file (attualmente previsto ma non ancora supportato)
+   * *5*: radio
+
+Potremo usare le configurazioni inserite tramite il metodo `X_VlcShares_Plugins_Abstract::config()`. Dovremo indicare al metodo la `key` della nostra configurazione, escludendo la prima parte che corrisponde alla chiave del plugin.
+
+Nel plugin facciamo uso di questa configurazione nel metodo `_loadPage()`: 
+
+
+{{{
+
+	private function _loadPage($uri) {
+
+		X_Debug::i("Loading page $uri");
+		
+		$http = new Zend_Http_Client($uri, array(
+			'maxredirects'	=> $this->config('request.maxredirects', 10),
+			'timeout'		=> $this->config('request.timeout', 25)
+		));
+		
+		$http->setHeaders(array(
+			$this->config('hide.useragent', false) ? 'User-Agent: vlc-shares/'.X_VlcShares::VERSION .' filmstream/'.self::VERSION_CLEAN : 'User-Agent: Mozilla/5.0 (X11; Linux i686; rv:2.0.1) Gecko/20101019 Firefox/4.0.1',
+		));
+		
+		$response = $http->request();
+		$htmlString = $response->getBody();
+		
+		return $htmlString;
+	}
+
+}}}
+
+Ricordate di aggiungere le rispettive chiavi nei file del linguaggio per label e descrizione delle configurazioni.
+
+Per poter rendere modificabili le configurazioni all'utente, vlc-shares fornisce una pagina che permette di visualizzare tutte le configurazioni relative ad un plugin e modificarle, in maniera totalmente indipendente da qualsiasi interazione del plugin. La pagina che offre questo servizio è `config/index` e per indicare quali configurazioni bisogna visualizzare è sufficiente fornire il parametro `key` con valore uguale alla chiave del plugin al quale appartengono le configurazioni.
+
+Il plugin deve solo provvedere a fornire all'utente un link con il quale accedere alla pagina. Il modo ideale per farlo sarebbe aggiungendo un pulsante alla dashboard di vlc-shares tramite il trigger `getIndexManageLink`.
+
+{{{
+
+	/**
+	 * Add the link for -manage-filmstream-
+	 * @param Zend_Controller_Action $this
+	 * @return X_Page_ItemList_ManageLink
+	 */
+	public function getIndexManageLinks(Zend_Controller_Action $controller) {
+
+		$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_filmstream_mlink'));
+		$link->setTitle(X_Env::_('p_filmstream_managetitle'))
+			->setIcon('/images/filmstream/logo.png')
+			->setLink(array(
+					'controller'	=>	'config',
+					'action'		=>	'index',
+					'key'			=>	'filmstream'
+			), 'default', true);
+		return new X_Page_ItemList_ManageLink(array($link));
+		
+	}
+
+
+}}}
+
+Ricordate di aggiungere priorità al trigger nel costruttore e aggiungere le chiavi di traduzione ai file.
+
+Pronti per i risultati?
+
+https://lh4.googleusercontent.com/_U6HIkh_ODAo/TZYWcBVpidI/AAAAAAAAAHQ/NS5UhAm_HSY/s800/plugin_0.5.4_tutorial_8.png
 
 ==Aggiungere test alla pagina di verifica del sistema==
 
