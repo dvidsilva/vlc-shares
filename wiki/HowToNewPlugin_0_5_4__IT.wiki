@@ -1246,6 +1246,24 @@ Analizziamo il metodo:
 
 Come per il caso precedente gestito tramite XPath, anche il Pattern Matching non è esente da errori o imprecisioni. Ottenere quindi il 100% di riscontri risulta abbastanza difficile.
 
+
+Una cosa importante da notare in questo caso è questa:
+
+{{{
+					->setLink(array(
+						'action'	=> 'mode',
+						'l'	=>	X_Env::encode("$resourceType/$resourceGroup/$page/$resourceId/$videoId")
+					), 'default', false);
+
+}}}
+
+Durante la scrittura dei parametri del link nei casi precedenti ci siamo sempre limitati ad aggiornare (si, aggiornare. Tutte le i parametri non modificati venivano mantenuti da una sessione all'altra) i contenuto del parametro `location`. In questo caso pero abbiamo impostato anche il parametro `action` impostandolo su `mode`. Il controller rimane sempre inalterato (quindi sempre `browseController`, ma il metodo eseguito per gestire la prossima richiesta sarà `modeAction` e non più `shareAction`. 
+
+Questo ci consente di indicare al sistema che se il pulsante venisse cliccato dall'utente, il collegamento dovrebbe essere gestito come una risorsa riproducibile.
+*Attenzione*: risorsa riproducibile non indica un video ad un link, ma solo che la $location potrà essere convertita in un collegamento ad un video usando eventualmente il metodo `getLocation` del provider (se presente).
+
+Da questo punto in poi quindi, il trigger `getShareItems` non verrà più invocato.
+
 Salviamo le modifiche e andiamo a vedere quello cosa succede.
 
 https://lh4.googleusercontent.com/_U6HIkh_ODAo/TZWeTd9xftI/AAAAAAAAAHE/Fl1DaUMHigE/s640/plugin_0.5.4_tutorial_5.png
