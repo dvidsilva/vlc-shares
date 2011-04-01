@@ -1861,7 +1861,86 @@ Pronti per i risultati?
 
 https://lh4.googleusercontent.com/_U6HIkh_ODAo/TZYWcBVpidI/AAAAAAAAAHQ/NS5UhAm_HSY/s800/plugin_0.5.4_tutorial_8.png
 
-==Aggiungere test alla pagina di verifica del sistema==
-
-
 ==Visualizzare una notifica per la mancanza di dipendenze==
+
+Visto che il nostro plugin necessita dei plugin youtube e megavideo per poter vedere i video, è bene notificare all'utente un errore nel caso in cui uno di questi plugin non sia installato o non sia attivo.
+
+Per farlo, il sistema ci offre due possibilità: o tramite un test nella pagina System Test oppure aggiungendo un messaggi di notifica nella dashboard di vlc-shares. Noi implementeremo la seconda strada.
+
+Lo faremo bevemente, in quanto il vecchio tutorial per i plugin della versione 0.5.1 tratta proprio questo stesso argomento.
+
+Il trigger che useremo è `getIndexMessages()`. La funzione dovrà verificare se una delle due dipendenze è mancante, e visualizzare il messaggio in quel caso.
+
+{{{
+
+
+	/**
+	 * Show an error message if one of the plugin dependencies is missing
+	 * @param Zend_Controller_Action $this
+	 * @return X_Page_ItemList_Message
+	 */
+	public function getIndexMessages(Zend_Controller_Action $controller) {
+		$messages = new X_Page_ItemList_Message();
+		if ( !X_VlcShares_Plugins::broker()->isRegistered('megavideo') ) { 
+			$message = new X_Page_Item_Message($this->getId(), X_Env::_('p_filmstream_warning_nomegavideo'));
+			$message->setType(X_Page_Item_Message::TYPE_ERROR);
+			$messages->append($message);
+		}
+		if ( !X_VlcShares_Plugins::broker()->isRegistered('youtube') ) { 
+			$message = new X_Page_Item_Message($this->getId(), X_Env::_('p_filmstream_warning_noyoutube'));
+			$message->setType(X_Page_Item_Message::TYPE_WARNING);
+			$messages->append($message);
+		}
+		return $messages;
+	}
+
+
+}}}
+
+=Conclusioni=
+
+==Pacchettizzazione==
+
+Una volta conclusa la nostra fase di sviluppo, è necessario testare il plugin installandolo tramite il normale plugin installer in una installazione ordinaria di vlc-shares.
+
+Le versioni di sviluppo di vlc-shares offrono uno script in grado di creare un pacchetto installabile di un plugin in maniera automatica.
+
+Per poterlo utilizzare è sufficiente aprire un console nella directory *VLCSHARESDEV_BASEDIR*`/scripts/` e digitare
+
+Su Windows:
+
+{{{
+php.bat build.php -p filmstream
+}}}
+
+Su Linux:
+
+{{{
+php build.php -p filmstream
+}}}
+
+I pacchetti verranno creati nella directory *VLCSHARESDEV_BASEDIR*`/dist/`
+
+Buona installazione.
+
+==Problemi? Volete ripristinare la vostra versione di sviluppo?==
+
+Durante lo sviluppo, nel caso per una qualsiasi motivazione vogliate ripristinare la versione di sviluppo rimuovendo i file linkati/copiati dagli script `dev_bootstrap.php` e ripristinare la versione originale del database, vi basterà eseguire questi script tramite una console aperta nella directory *VLCSHARESDEV_BASEDIR*`/scripts/`
+
+Su Windows:
+
+{{{
+php.bat load.sqlite.php --withdata
+php.bat cleanup.php
+}}}
+
+Su Linux:
+
+{{{
+php load.sqlite.php --withdata
+php cleanup.php
+}}}
+
+==Note conclusive==
+
+Ho cercato di dare un'idea di quello che lo comporta lo sviluppo di un plugin DataProvider. Chiaramente, le problematiche possono essere differenti in base al sito target che vogliamo integrare.
