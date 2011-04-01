@@ -1116,3 +1116,137 @@ Questo scenario corrisponde al `case 4`:
 }}}
 
 Quello che il nostro metodo `_fetchVideos` deve fare è individuare la pagina giusta da leggere (basandosi sulla selezione dell'utente) e scansionarla alla ricerca di link video validi.
+
+
+
+{{{
+
+	
+	private function _fetchVideos(X_Page_ItemList_PItem $items, $resourceType, $resourceGroup, $page, $resourceId) {
+		
+		X_Debug::i("Fetching videos for $resourceType, $resourceGroup, $page, $resourceId");
+		
+		// as first thing we have to recreate the resource url from resourceId
+		$url = self::URL_BASE;
+		// in _fetchResources we converted / in : inside $resourceId and removed the last /
+		// so to come back to the real address we have to undo this changes
+		$url .= str_replace(':', '/', $resourceId) . '/';
+		// now url is something like http://film-stream.tv/01/01/2010/resource-name/
+		
+		// loading page
+		$htmlString = $this->_loadPage($url);
+
+		// it's useless to execute pattern search in the whole page
+		// so we stip from $htmlString only the usefull part
+		$mainContentStart = '<div id="maincontent">';
+		$mainContentEnd = '<div id="sidebar">';
+		
+		$mainContentStart = strpos($htmlString, $mainContentStart);
+		if ( $mainContentStart === false ) $mainContentStart = 0;
+		$mainContentEnd = strpos($htmlString, $mainContentEnd, $mainContentStart);
+		// substr get a substring of $htmlString from $mainContentStart position to $mainContentEnd position - $mainContentStart position (is the fragment length)
+		$htmlString = ($mainContentEnd === false ? substr($htmlString, $mainContentStart) : substr($htmlString, $mainContentStart, ($mainContentEnd - $mainContentStart) ) );
+
+		// sometimes new line create problem with pattern matching, so we remove all of them
+		//$htmlString = str_replace(array("\n", "\r"), '', $htmlString);
+
+		// let's define some pattern
+		
+		// $ytPattern will try to intercept
+		// youtube trailer link 
+		// <param name="movie" value="http://www.youtube.com/v/VIDEOID?version=3">
+		// match[1] = video id
+		$ytPattern = '/<param name\=\"movie\" value\=\"http\:\/\/www\.youtube\.com\/v\/([^\?\"\&]+)([^\>]*)>/';
+		
+		// $mvPattern will try to intercept
+		// megavideo ?v= or ?d= videos
+		// <a href="http://www.megavideo.com/?v=VIDEOID">LABEL</a>
+		// <a href="http://www.megavideo.com/?d=VIDEOID">LABEL</a>
+		// match[1] = v|d
+		// match[2] = video id
+		// match[4] = label
+		$mvPattern = '/href\=\"http\:\/\/www\.megavideo\.com\/\?(v|d)\=([^\"]{8})\"([^\>]*)>([^\<]+)<\/a>/';
+		
+		$matches = array();
+		// first let's search for youtube videos
+		
+		if ( preg_match_all($ytPattern, $htmlString, $matches, PREG_SET_ORDER) ) {
+			
+			foreach ($matches as $match) {
+				
+				$videoId = self::VIDEO_YOUTUBE . ':' . $match[1];
+				$videoLabel = X_Env::_("p_filmstream_video_youtubetrailer");
+				
+				$item = new X_Page_Item_PItem("{$this->getId()}-youtube-$videoId", $videoLabel);
+				$item->setIcon('/images/icons/file_32.png')
+					->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+					->setCustom(__CLASS__.':location', "$resourceType/$resourceGroup/$page/$resourceId/$videoId")
+					->setLink(array(
+						'action'	=> 'mode',
+						'l'	=>	X_Env::encode("$resourceType/$resourceGroup/$page/$resourceId/$videoId")
+					), 'default', false);
+					
+				if ( APPLICATION_ENV == 'development' ) {
+					$item->setDescription("$resourceType/$resourceGroup/$page/$resourceId/$videoId");
+				}
+					
+				$items->append($item);
+				
+			}
+			
+		} else {
+			X_Debug::e("Youtube pattern failure {{$ytPattern}}");
+		}
+		
+		
+		if ( preg_match_all($mvPattern, $htmlString, $matches, PREG_SET_ORDER) ) {
+			
+			foreach ($matches as $match) {
+				if ( $match[1] == 'v' ) {
+					$videoId = self::VIDEO_MEGAVIDEO . ':' . $match[2];
+					$typeLabel = "Megavideo";
+				} else {
+					$videoId = self::VIDEO_MEGAUPLOAD . ':' . $match[2];
+					$typeLabel = "Megaupload";
+				}
+				$videoLabel = "{$match[4]} [$typeLabel]";
+				
+				$item = new X_Page_Item_PItem("{$this->getId()}-youtube-$videoId", $videoLabel);
+				$item->setIcon('/images/icons/file_32.png')
+					->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+					->setCustom(__CLASS__.':location', "$resourceType/$resourceGroup/$page/$resourceId/$videoId")
+					->setLink(array(
+						'action'	=> 'mode',
+						'l'	=>	X_Env::encode("$resourceType/$resourceGroup/$page/$resourceId/$videoId")
+					), 'default', false);
+					
+				if ( APPLICATION_ENV == 'development' ) {
+					$item->setDescription("$resourceType/$resourceGroup/$page/$resourceId/$videoId");
+				}
+					
+				$items->append($item);
+				
+			}
+			
+		} else {
+			X_Debug::e("Youtube pattern failure {{$ytPattern}}");
+		}
+		
+	}	
+
+}}}
+
+In questo caso ho deciso di adottare la tecnica di pattern matching in quanto i link ai video sono abbastanza semplici da intercettare usando dei semplici pattern.
+
+Analizziamo il metodo:
+
+   * nella prima parte provvederemo a ricreare il link della pagina che contiene i video partendo dai parametri memorizzati nella `$location` decisi dall'utente.
+   * in seguito leggeremo la pagina inserendo tutto il contenuto in `$htmlString`
+   * per velocizzare le funzioni di pattern matching ho deciso di ridurre l'area di ricerca solo alla porzione principale della pagina. Per farlo ho ricercato la stringa `<div id="maincontent">` e la stringa `<div id="sidebar">` e le ho usate come fossero degli estremi. Tutto quello che non è compreso fra questi due estremi viene escluso.
+   * a questo punto ho preparato i pattern dopo aver analizzato il codice sorgente di alcune pagine. Ho notato che i trailer da youtube sono tutti uguali nella parte `param` che contiene l'indirizzo al video. Quello che invece ha creato un po' di problemi è la ricerca dei video megavideo/megaupload in quanto per alcuni video il tag `<a>` veniva farcito con attributi anomali (prima e dopo l'href). Vi rimando alla documentazione su Google e Wikipedia (come sempre) per informazioni più dettagliate sul pattern matching.
+   * ho poi ricercato all'interno della pagina i video youtube e li ho inseriti alla mia lista di oggetti `X_Page_Item_PItem`
+   * ho ripetuto il processo analogo per quanto riguarda i video megavideo e megaupload
+
+Come per il caso precedente gestito tramite XPath, anche il Pattern Matching non è esente da errori o imprecisioni. Ottenere quindi il 100% di riscontri risulta abbastanza difficile.
+
+Salviamo le modifiche e andiamo a vedere quello cosa succede.
