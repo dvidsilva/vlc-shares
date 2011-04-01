@@ -1087,3 +1087,7 @@ Semplicemente quello che viene fatto è:
    * inserire il pulsante per la pagina precedente se il numero di pagina corrente è maggiore di 1
    * per ogni elemento in matches inserire un elemento nella lista specificando, dove possibile, thumbnail e descrizione
    * aggiungere il pulsante per la pagina successiva se è possibile visualizzare altri elementi dopo questi.
+
+Curiosi di vedere il risultato?
+
+https://lh6.googleusercontent.com/_U6HIkh_ODAo/TZWFPys9BNI/AAAAAAAAAHA/rBfwgxeqqnM/s400/plugin_0.5.4_tutorial_4.png
