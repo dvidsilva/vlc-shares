@@ -46,8 +46,9 @@ $neededDirectories = array(
  * Usually language files or image/css/js folders must be setted here
  */
 $neededLinks = array(
-	//$basePath.'/public/images/myfolder/' => APPLICATION_PATH.'/../public/images/myfolder', // <--- THIS IS AN EXAMPLE FOR FOLDERS
-	//$basePath.'/languages/myfile.txt' => APPLICATION_PATH.'/../languages/myfile.txt', // <--- THIS IS AN EXAMPLE FOR FILES
+	$basePath.'/public/images/filmstream/' => APPLICATION_PATH.'/../public/images/filmstream', // crea un link della cartella delle immagini
+	$basePath.'/languages/X_VlcShares_Plugins_FilmStream.en_GB.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_FilmStream.en_GB.ini', // link al file di traduzione
+	$basePath.'/languages/X_VlcShares_Plugins_FilmStream.it_IT.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_FilmStream.it_IT.ini', // link al file di traduzione
 );
 
 /**
@@ -84,7 +85,7 @@ $viewScriptsPath = array(
  * as basepath
  */
 $pluginsIncludes = array(
-	//$basePath.'/library/X/VlcShares/Plugins/MyPlugin.php', // <---- THIS IS AN EXAMPLE
+	$basePath.'/library/X/VlcShares/Plugins/FilmStream.php', // <---- THIS IS AN EXAMPLE
 );
 
 /**
@@ -100,12 +101,12 @@ $helpersIncludes = array(
 /**
  * Insert here the pluginKey
  */
-$pluginInstance_pluginKey = 'pluginkey';
+$pluginInstance_pluginKey = 'filmstream';
 
 /**
  * Insert here the plugin class
  */
-$pluginInstance_pluginClass = 'X_VlcShares_Plugins_MyPluginCLass';
+$pluginInstance_pluginClass = 'X_VlcShares_Plugins_FilmStream';
 
 /**
  * Insert here special plugin configs if required
@@ -138,7 +139,7 @@ $pluginInstance_pluginConfigs = array(
  * 			(array_search('MY_TABLE_NAME', $dbAdapter->listTables()) === false)
  */
 $dbInits = array(
-	//$basePath.'/install.sql' => (file_exists(APPLICATION_PATH.'/../languages/myfile.txt') == false),
+	//$basePath.'/install.sql' => (file_exists(APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_FilmStream.en_Gb.ini') == false),
 );
 
 
