@@ -1455,3 +1455,113 @@ Per poter provare questo codice è quindi necessario andare ad aggiungere negli 
 
 
 ==Fase 12: rendiamo il video riproducibile (parte 2)==
+
+Implementando `resolveLocation` abbiamo offerto un modo per ottenere l'indirizzo del vero video selezionato. Sfrutteremo quanto fatto per aggiungere il collegamento "Riproduzione diretta" che consentirà a WiiMC o ai browser di riprodurre il filmato senza richiedere l'intervendo di VLC per la transcodifica.
+
+Come ho già detto, selezionando un video, il controllo dell'applicazione passa al controller `BrowseController` e all'azione `modeAction`.
+
+Questa azione permette di interagire con il sistema tramite questi trigger:
+   * `preGetModeItems`
+   * `getModeItems`
+   * `postGetModeItems`
+   * `filterModeItems`
+
+Il funzionamento di questi trigger è analogo a quelli della pagina `browse/share`.
+
+Quello che stiamo per fare è inserire un nuovo elemento di nome "Riproduzione Diretta" nella parte alta della pagina usando il trigger `preGetModeItems`.
+
+Aggiungiamo priorità al trigger nel costruttore e procediamo con l'implementazione.
+
+{{{
+
+	function __construct() {
+		$this->setPriority('getCollectionsItems');
+		$this->setPriority('getShareItems');
+		$this->setPriority('preGetModeItems');
+	}
+
+}}}
+
+{{{
+
+	/**
+	 *	Add button -watch stream directly-
+	 * 
+	 * @param string $provider
+	 * @param string $location
+	 * @param Zend_Controller_Action $controller
+	 */
+	public function preGetModeItems($provider, $location, Zend_Controller_Action $controller) {
+
+		if ( $provider != $this->getId()) return;
+		
+		X_Debug::i("Plugin triggered");
+		
+		$url = $this->resolveLocation($location);
+		
+		if ( $url ) {
+			$link = new X_Page_Item_PItem('core-directwatch', X_Env::_('p_filmstream_watchdirectly'));
+			$link->setIcon('/images/icons/play.png')
+				->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
+				->setLink($url);
+			return new X_Page_ItemList_PItem(array($link));
+		} else {
+			// if there is no link, i have to remove start-vlc button
+			// and replace it with a Warning button
+			
+			X_Debug::i('Setting priority to filterModeItems');
+			$this->setPriority('filterModeItems', 99);
+			
+			$link = new X_Page_Item_PItem('megavideo-warning', X_Env::_('p_filmstream_invalidlink'));
+			$link->setIcon('/images/msg_error.png')
+				->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+				->setLink(array (
+					'controller' => 'browse',
+					'action' => 'share',
+					'p'	=> $this->getId(),
+					'l' => X_Env::encode($this->getParentLocation($location)),
+				), 'default', true);
+			return new X_Page_ItemList_PItem(array($link));
+
+		}
+	}
+}}}
+
+Il metodo funziona in modo abbastanza semplice: utilizza `resolveLocation` per ottenere il link all'url del video e aggiunge (se il link è valido) un elemento alla lista di tipo `X_Page_Item_PItem::TYPE_PLAYABLE` con l'indirizzo del video.
+In questo caso, utilizzeremo il tipo `TYPE_PLAYABLE` per indicare al sistema che il tipo di link è proprio un URL di un video.
+
+Nel caso in cui `resolveLocation` non indirizzo valido, provvediamo ad aggiungere priorità al trigger `filterModeItems` che verrà chiamato in seguito per rimuovere il pulsante `START VLC STREAM` dalla lista. In seguito aggiungiamo un elemento che indichi all'utente che il video non è valido.
+Utilizzeremo il metodo `getParentLocation` per ottenere l'indirizzo padre del video selezionato.
+
+Procediamo quindi implementando `getParentLocation`. La sua implementazione sarà abbastanza semplice: il metodo dovrà limitarsi a rimuovere il parametro più a destra contenuto nella `location` con l'eccezione del quarto (quello dell'ID_RISORSA), in cui elimineremo due parametri. Questo ci consentirà di passare direttamente dalla pagina contenente i titoli a quella di selezione del gruppo senza dover passare dalla prima pagina.
+
+
+{{{
+
+	/**
+	 * @see X_VlcShares_Plugins_ResolverInterface::getParentLocation()
+	 */
+	function getParentLocation($location = null) {
+		if ( $location == '' || $location == null ) return false;
+		
+		$exploded = explode('/', $location);
+		
+		// type/group/page/idres/idvideo
+		if ( count($exploded) == 4 ) {
+			// i have to add an extra pop
+			// to jump from idres page to group page
+			array_pop($exploded);
+		} 
+		
+		array_pop($exploded);
+		
+		if ( count($exploded) >= 1 ) {
+			return implode('/', $exploded);
+		} else {
+			return null;
+		}			
+	}
+
+
+}}}
+
