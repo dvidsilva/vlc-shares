@@ -1091,3 +1091,28 @@ Semplicemente quello che viene fatto è:
 Curiosi di vedere il risultato?
 
 https://lh6.googleusercontent.com/_U6HIkh_ODAo/TZWFPys9BNI/AAAAAAAAAHA/rBfwgxeqqnM/s400/plugin_0.5.4_tutorial_4.png
+
+
+==Fase 10: cerchiamo i link ai video==
+
+
+Ricapitoliamo un po' la situazione: arrivati a questo punto il nostro utente ha selezionato il tipo di categoria, il gruppo di appartenenza, la pagina e il titolo della risorsa. Non ci rimane che cercare i link ai video nella pagina appartenente alla risorsa.
+
+Questo scenario corrisponde al `case 4`:
+
+{{{
+
+			case 5:
+				// we shouldn't be here!
+				// if we have 5 pieces (so even $videoId is setted)
+				// we should be inside the browse/mode page
+				// because the location is about a video URL
+			case 4:
+				// delegate to fetchVideos
+				$this->_fetchVideos($items, $resourceType, $resourceGroup, $page, $resourceId);
+				break;
+
+
+}}}
+
+Quello che il nostro metodo `_fetchVideos` deve fare è individuare la pagina giusta da leggere (basandosi sulla selezione dell'utente) e scansionarla alla ricerca di link video validi.
