@@ -1565,3 +1565,36 @@ Procediamo quindi implementando `getParentLocation`. La sua implementazione sar�
 
 }}}
 
+Curiosi di vedere il risultato?
+
+https://lh4.googleusercontent.com/_U6HIkh_ODAo/TZW97TC1o0I/AAAAAAAAAHI/edKAR-zBEJA/s800/plugin_0.5.4_tutorial_6.png
+
+==Fase 13: filtriamo un elemento da una lista==
+
+Ho deciso di chiamare questa fare in maniera cosi generica semplicemente perchè quanto vedremo ora può essere applicato a tutti i trigger di tipo `filterXXX` in maniera analoga.
+
+Nello specifico utilizzero il trigger `filterModeItem` per rimuovere il pulsante "START VLC STREAM" nel caso in cui il video non sia valido.
+
+
+Poichè l'attivazione del trigger è stata gestita in modo che venga assegnata priorità solo se già si è a conoscenza del fatto che il video non è valido, il nostro unico obbiettivo sarà quello di individuare l'elemento da filtrare e rimuoverlo senza dover indugiare ulteriormente per verificare la validità del video.
+
+Utilizzeremo l'`id` associato all'item `START VLC STREAM` per identificarlo e rimuoverlo.
+
+
+{{{
+
+	/**
+	 * Remove vlc-play button if location is invalid
+	 * @param X_Page_Item_PItem $item,
+	 * @param string $provider
+	 * @param Zend_Controller_Action $controller
+	 */
+	public function filterModeItems(X_Page_Item_PItem $item, $provider,Zend_Controller_Action $controller) {
+		if ( $item->getKey() == 'core-play') {
+			X_Debug::i('plugin triggered');
+			X_Debug::w('core-play flagged as invalid because the link is invalid');
+			return false;
+		}
+	}
+
+}}}
