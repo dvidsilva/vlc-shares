@@ -22,7 +22,14 @@ foreach ($neededDirectories as $dir) {
 }
 
 foreach ($neededLinks as $linkFrom => $linkTo) {
-	symlink($linkFrom, $linkTo);
+	if ( X_Env::isWindows() ) {
+		// symlink doesn't work:
+		// i need to copy the file everytime
+		// and the old file will be overwritten
+		copy($linkFrom, $linkTo);
+	} else {
+		symlink($linkFrom, $linkTo);
+	}
 }
 
 // let's add models classes
