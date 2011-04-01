@@ -1654,7 +1654,118 @@ Le fasi che seguono servono solo per aggiungere qualche funzionalità opzionale.
 
 =Funzionalità aggiuntive=
 
+Apporteremo adesso qualche modifica finalizzata a migliorare qualche dettaglio e a fare una carrellata delle funzioni più comuni messe a disposizione dei plugin dal sistema di base.
+
 ==Utilizzo del multilinguaggio e delle traduzioni==
+
+La prima cosa che viene chiesta durante l'installazione di vlc-shares è il linguaggio da utilizzare. Mi pare evidente che questo sia dovuto al fatto che vlc-shares ha il supporto per il multi linguaggio. Questo supporto è integrato fra le funzioni del core ed è anche a disposizione dei plugin.
+
+Sicuramente avrete notato come, durante le 10 fasi precedenti, tutte le etichette per gli elementi che abbiamo inserito nelle liste avevano strani nomi ed erano tutte inserite all'interno di una chiamata al metodo statico `X_Env::_()`. Tramite questo metodo infatti, vlc-shares fornisce le funzionalità di traduzione. Inserendo come parametro una chiave, la funzione restituira come output il valore tradotto in base alla lingua selezionata. Tutte le traduzioni di base di vlc-shares sono inserite nei file di linguaggio delle varie lingue (ad esempio it_IT.ini, en_GB.ini o es_ES.ini). Ogni plugin avrà a disposizione tutte le chiavi inserite nei file.
+
+Chiaramente non siamo limitati a quelle. Il sistema fornisce un helper per il caricamento di file di traduzione personalizzati. Tramite questo, un plugin può decidere di aggiungere un file di traduzione personale che verrà integrato alle chiavi gia lette per la lingua corrente.
+
+Vediamo come attivare il supporto al multi linguaggio per il nostro plugin.
+
+Ricordate l'elenco degli elementi che ho fatto inserire durante la creazione della struttura dei file e delle directory del plugin? No? Ve lo ripeto io.
+
+{{{
+
+php create-plugin.php -k filmstream -n FilmStream -e plugins,languages,images
+
+}}}
+
+In quel modo avevano indicato che eravamo interessati alla preparazione della struttura per il linguaggi.
+
+Lo script aveva preparato per noi una directory `/languages` con all'interno i due file per le lingue italiano e inglese.
+
+Quello che dobbiamo fare ora è inserire all'interno dei due file le varie chiavi con la traduzione. Il formato dei file ini utilizzati per le traduzioni è il seguente:
+
+{{{
+
+; Questo è un commento
+questa_e_una_chiave="Questo e' il valore della chiave"
+
+}}}
+
+Quello che dobbiamo fare ora è rintracciare tutte le chiavi che abbiamo utilizzato nel plugin e inserirle all'interno del file di traduzione con le relative traduzioni.
+Questo ad esempio è il file di traduzione (parziale) del nostro plugin per la lingua inglese.
+
+{{{
+
+; X_VlcShares_Plugins_FilmStream.en_GB.ini
+; VLC-SHARES: english translation file for X_VlcShares_Plugins_FilmStream plugin
+; version 0.1
+
+p_filmstream_plglabel="FilmStream.tv"
+p_filmstream_plgdesc="Allow to watch videos from FilmStream.tv site (Italian)"
+
+p_filmstream_collectionindex="FilmStream.tv Channel"
+p_filmstream_collectionindex_desc="Browse FilmStream.tv [Italian]"
+p_filmstream_watchdirectly="Watch directly"
+p_filmstream_invalidlink="Invalid video link"
+p_filmstream_type_movies="Movies"
+p_filmstream_type_tvshows="TV Series"
+p_filmstream_type_anime="Anime"
+p_filmstream_page_previous="<<< Previus Page (%s) <<<"
+p_filmstream_page_next=">>> Next Page (%s) >>>"
+p_filmstream_video_youtubetrailer="Trailer from YouTube"
+
+}}}
+
+L'unica nota da aggiungere a quanto detto è quella relativa alla chiave `p_filmstream_page_next`: nella traduzione si fa uso del segnaposto `%s`. La funzione `X_Env::_()` accetta, oltre alla chiave, un numero arbitrario di parametri che verranno sostituiti ad eventuali segnaposto presenti nelle traduzioni. `X_Env::_()` utilizza internamento la funzione di php `sprintf`, quindi ogni notazione utilizzabile con quest'ultima è ammessa.
+
+Una volta preparati i file di traduzione è necessario che il plugin fornisca comunicazione al sistema per richiederne il caricamento.
+
+C'e' un trigger predisposto a questo utilizzo: `gen_beforeInit`. Questo trigger viene caricato da qualsiasi pagina, sia nella parte di riproduzione, che nelle pagine di amministrazione. E' il posto ideale quindi per poter inserire la nostra richiesta di caricamento.
+
+Come detto, è l'helper `language` che ci fornisce il modo di aggiungere il nostro file di traduzione. In questo modo:
+
+{{{
+
+	/**
+	 * Inizialize translator for this plugin
+	 * @param Zend_Controller_Action $controller
+	 */
+	function gen_beforeInit(Zend_Controller_Action $controller) {
+		$this->helpers()->language()->addTranslation(__CLASS__);
+	}
+
+}}}
+
+Ricordate, chiaramente di modificare il costruttore e aggiungere priorità al trigger `gen_beforeInit`.
+
+{{{
+
+	function __construct() {
+		$this->setPriority('getCollectionsItems');
+		$this->setPriority('getShareItems');
+		$this->setPriority('preGetModeItems');
+		$this->setPriority('preRegisterVlcArgs');
+		$this->setPriority('gen_beforeInit');
+	}
+
+
+}}}
+
+Al metodo `addTranslation` indicheremo semplicemente il prefisso del nostro file di traduzione, al quale verrà aggiunto per completare il tipo di linguaggio attualmente in uso. Per essere più chiaro: se nel sistema è in uso il file di traduzione `en_GB.ini`, il nostro file di traduzione del plugin sarà `X_VlcShares_Plugins_FilmStream.en_GB.ini`.
+
+Ora è tutto pronto, manca solo un piccolo dettaglio: nel file `manifest.xml` relativo al plugin è necessario specificare l'elenco dei file di traduzione del plugin.
+
+Aggiungiamo quindi nel file `manifest.xml` l'elenco dei nostri file come figli del nodo `<files>`, in questo modo
+
+{{{
+
+		<languages>
+			<file>X_VlcShares_Plugins_FilmStream.en_GB.ini</file>
+			<file>X_VlcShares_Plugins_FilmStream.it_IT.ini</file>
+		</languages>
+}}}
+
+Con questi semplici passaggi abbiamo aggiunto il supporto al multi linguaggio al nostro plugin.
+
+Curiosi di vedere il risultato?
+
+https://lh4.googleusercontent.com/_U6HIkh_ODAo/TZYLb39-obI/AAAAAAAAAHM/ITSGZGDLJsM/s640/plugin_0.5.4_tutorial_7.png
 
 
 ==Utilizzo del sistema di configurazioni==
@@ -1664,4 +1775,3 @@ Le fasi che seguono servono solo per aggiungere qualche funzionalità opzionale.
 
 
 ==Visualizzare una notifica per la mancanza di dipendenze==
-
