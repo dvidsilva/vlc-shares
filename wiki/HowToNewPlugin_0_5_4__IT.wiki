@@ -1260,7 +1260,7 @@ Una cosa importante da notare in questo caso è questa:
 Durante la scrittura dei parametri del link nei casi precedenti ci siamo sempre limitati ad aggiornare (si, aggiornare. Tutte le i parametri non modificati venivano mantenuti da una sessione all'altra) i contenuto del parametro `location`. In questo caso pero abbiamo impostato anche il parametro `action` impostandolo su `mode`. Il controller rimane sempre inalterato (quindi sempre `browseController`, ma il metodo eseguito per gestire la prossima richiesta sarà `modeAction` e non più `shareAction`. 
 
 Questo ci consente di indicare al sistema che se il pulsante venisse cliccato dall'utente, il collegamento dovrebbe essere gestito come una risorsa riproducibile.
-*Attenzione*: risorsa riproducibile non indica un video ad un link, ma solo che la $location potrà essere convertita in un collegamento ad un video usando eventualmente il metodo `getLocation` del provider (se presente).
+*Attenzione*: risorsa riproducibile non indica un video ad un link, ma solo che la $location potrà essere convertita in un collegamento ad un video usando eventualmente il metodo `resolveLocation` del provider (se presente).
 
 Da questo punto in poi quindi, il trigger `getShareItems` non verrà più invocato.
 
@@ -1269,3 +1269,68 @@ Salviamo le modifiche e andiamo a vedere quello cosa succede.
 https://lh4.googleusercontent.com/_U6HIkh_ODAo/TZWeTd9xftI/AAAAAAAAAHE/Fl1DaUMHigE/s640/plugin_0.5.4_tutorial_5.png
 
 Nell'immagine c'e' il confronto fra quello che viene mostrato tramite vlc-shares (sulla sinistra) e la pagina originale cosi come mostrata su filmstream (sulla destra). Non c'è male, non credete?
+
+_Nota:_ volevo solo far notare che i video 2 e 3 della prima stagione non vengono intercettati semplicemente perche non sono link a megavideo o megaupload, ma a veoh (che non è supportato, per ora almeno).
+
+==Fase 11: rendiamo il video riproducibile (parte 1)==
+
+Arrivati a questo punto, le maggiori difficoltà sono state superate. Quello che dobbiamo fare ora è permettere al video che è stato selezionato di essere riprodotto.
+
+Facciamo un sunto della situazione: per quanto implementato fino ad ora l'utente può sfogliare i contenuti e selezionarne uno specifico.
+
+Le informazioni sul video specifico vengono memorizzate sempre in `location`.
+
+Abbiamo trattato prima il senso dell'interfaccia `X_VlcShares_Plugins_ResolverInterface` e del metodo `resolveLocation`. Quello che dobbiamo fare è implementarlo per permettere al sistema e agli altri plugin ottenere un link reale ad uno stream video.
+
+Facciamo un piccolo riepilogo anche su quello che è il formato di `$location`. Quando siamo nella pagina `browse/mode` possiamo dare per scontato che la location sia completa di tutti i parametri. Il suo formato sarà:
+
+{{{
+TIPO_RISORSA/GRUPPO_RISORSA/PAGINA/ID_RISORSA/ID_VIDEO
+}}}
+
+Durante il ritrovamento dei video, abbiamo inoltre fatto un distinguo sul tipo di video possibile indicando l'`ID_VIDEO` in questo formato:
+
+{{{
+TIPO_SERVIZIO:ID_VIDEO_NEL_SERVIZIO
+}}}
+
+Durante l'implementazione di `resolveLocation` dobbiamo tenere conto di questo.
+
+Proviamo ad implementare il metodo in pseudo-codice. 
+
+{{{
+
+location_divisa <- dividi( location, '/' )
+
+if ( il numero di pezzi di location_divisa != 5 ) then
+   return errore: non è possibile risolvere perche la location non è completa
+endif 
+
+id_video <- location_divisa[5]
+
+id_video_diviso <- dividi( id_video, ':')
+
+if ( il numero di pezzi di id_video_diviso != 2 ) then
+   return errore: il video id non è ben formato
+endif
+
+tipo_video <- id_video_diviso[1]
+
+id_video_vero <- id_video_diviso[2]
+
+switch ( tipo_video )
+
+    == youtube: return l'indirizzo del video da youtube
+    
+    == megavideo: return l'indirizzo del video da megavideo
+
+    == megaupload: return l'indirizzo del video da megaupload
+
+endswitch
+
+return error: il tipo_video non è stato riconosciuto
+
+}}}
+
+Non sembra molto complesso, no? Implementiamolo.
+
