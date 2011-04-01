@@ -1598,3 +1598,70 @@ Utilizzeremo l'`id` associato all'item `START VLC STREAM` per identificarlo e ri
 	}
 
 }}}
+
+==Fase 14: suggeriamo l'url del video a VLC==
+
+Fino a questo punto siamo riusciti a fornire alle device un link di collegamento diretto. Ma cosa succede se l'utente necessita di utilizzare la transcodifica? 
+Cliccando sul pulsante "START VLC STREAM" viene invocata la pagina `browse/stream` che ha il compito di preparare tutti i parametri da fornire a VLC e avviarlo.
+
+E' compito del provider quello di fornire il parametro `source` a VLC in modo che corrisponda all'url del video. Utilizzeremo il trigger `preRegisterVlcArgs` per intercettare il momento di inserimento dei parametri. Ormai dovrebbe essere chiaro cosa fare: come sempre, aggiungere priorità al trigger nel costruttore e implementare la funzione.
+
+
+{{{
+
+	
+	function __construct() {
+		$this->setPriority('getCollectionsItems');
+		$this->setPriority('getShareItems');
+		$this->setPriority('preGetModeItems');
+		$this->setPriority('preRegisterVlcArgs');
+	}
+
+}}}
+
+
+{{{
+
+	/**
+	 * This hook can be used to add low priority args in vlc stack
+	 * 
+	 * @param X_Vlc $vlc vlc wrapper object
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function preRegisterVlcArgs(X_Vlc $vlc, $provider, $location, Zend_Controller_Action $controller) {
+	
+		// this plugin inject params only if this is the provider
+		if ( $provider != $this->getId() ) return;
+		// i need to register source as first, because subtitles plugin use source
+		// for create subfile
+		X_Debug::i('Plugin triggered');
+		$location = $this->resolveLocation($location);
+		if ( $location !== null ) {
+			$vlc->registerArg('source', "\"$location\"");			
+		} else {
+			X_Debug::e("No source o_O");
+		}
+	}
+
+}}}
+
+Con questa fase abbiamo completato la trattazione delle problematiche generali relative alla scrittura di plugin DataProvider.
+
+Le fasi che seguono servono solo per aggiungere qualche funzionalità opzionale.
+
+
+=Funzionalità aggiuntive=
+
+==Utilizzo del multilinguaggio e delle traduzioni==
+
+
+==Utilizzo del sistema di configurazioni==
+
+
+==Aggiungere test alla pagina di verifica del sistema==
+
+
+==Visualizzare una notifica per la mancanza di dipendenze==
+
