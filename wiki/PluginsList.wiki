@@ -44,8 +44,12 @@ This kind of plugins adds new collections inside VLCShares
 || *DirettaRAI* || direttarai || 0.1 || 0.5.3 or later (italian users only) || Adds some RAI live channels inside VLCShares_ ||
 || *GoGoCinema* || gogocinema || 0.1 || 0.5.3 or later || Adds gogocinema.com inside VLCShares_ ||
 || *IceFilms* || icefilms || 0.1 || 0.5.3 or later & megavideo plugin 0.2.1 or later|| Adds icefilms.info inside VLCShares_ ||
+|| *FilmStream* || filmstream || 0.1 || 0.5.3 or later & megavideo plugin 0.2.1 or later|| Adds filmstream.tv inside VLCShares_ ||
 
+*3rd party*
 
+|| *Name* || *Key* || *Last Version* || *Compatibility/Requirement* || *Description* ||
+|| *SpainTv* || spaintv || 0.1 || 0.5.3 or later & megavideo plugin 0.2.1 or later|| Adds some spanish tv. Done by Miguel Angel Pescador Santirso (mpescadorsantirso@gmail.com) ||
 
 
 ==Management features==
@@ -56,6 +60,7 @@ This kind of plugins adds new features inside VLCShares
 || *Cache* || cache || 0.1 || 0.5.1 and 0.5.2 || Backported version of the cache manager bundle in versione 0.5.3 for older versions ||
 || *JDownloader* || jdownloader || 0.1 || 0.5.3 || Allow to check JDownloader status and append new Megavideo link to the download queue ||
 || *FsThumbs* || fsthumbs || 0.1 || 0.5.3 & ffmpeg helper enabled || Show thumbnails for videos in shared folders ||
+|| *AudioSwitcher* || audioSwitcher || 0.1 || 0.5.1->3 & ffmpeg helper enabled || Allow to change audio track while transconding ||
 
 
 =Plugins Guide=
