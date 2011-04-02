@@ -169,4 +169,12 @@
 			]]></changelog>
 		</version>
 	</plugin>
+	<plugin key="audioSwitcher">
+		<version name="0.1" type="stable" cMin="0.5.1" cMax="0.5.4">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_audioSwitcher_0.1.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+		</version>
+	</plugin>
 </plugins>
