@@ -5,7 +5,7 @@ require_once 'X/VlcShares/Plugins/Abstract.php';
 require_once 'Zend/Config.php';
 require_once 'Zend/Controller/Request/Abstract.php';
 
-class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
+class X_VlcShares_Plugins_AudioSwitcher extends X_VlcShares_Plugins_Abstract {
 	
 	const FILE = 'file';
 	const STREAM = 'stream';
@@ -45,17 +45,17 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		
 		$urlHelper = $controller->getHelper('url');
 
-		$subLabel = X_Env::_('p_filesubs_selection_none');
+		$subLabel = X_Env::_('p_audioswitcher_selection_none');
 
 		$subParam = $controller->getRequest()->getParam($this->getId(), false);
 		
 		if ( $subParam !== false ) {
 			$subParam = X_Env::decode($subParam);
 			list($type, $source) = explode(':', $subParam, 2);
-			$subLabel = X_Env::_("p_filesubs_subtype_$type")." ($source)";
+			$subLabel = X_Env::_("p_audioswitcher_subtype_$type")." ($source)";
 		}
 		
-		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_filesubs_sub').": $subLabel");
+		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_audioswitcher_sub').": $subLabel");
 		$link->setIcon('/images/manage/plugin.png')
 			->setType(X_Page_Item_PItem::TYPE_ELEMENT)
 			->setLink(array(
@@ -82,7 +82,7 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		X_Debug::i('Plugin triggered');		
 		
 		$urlHelper = $controller->getHelper('url');
-		$link = new X_Page_Item_PItem($this->getId().'-header', X_Env::_('p_filesubs_selection_title'));
+		$link = new X_Page_Item_PItem($this->getId().'-header', X_Env::_('p_audioswitcher_selection_title'));
 		$link->setType(X_Page_Item_PItem::TYPE_ELEMENT)
 			->setLink(X_Env::completeUrl($urlHelper->url()));
 		return new X_Page_ItemList_PItem();
@@ -112,7 +112,7 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		if ( $currentSub !== false ) $currentSub = X_Env::decode($currentSub);
 
 		$return = new X_Page_ItemList_PItem();
-		$item = new X_Page_Item_PItem($this->getId().'-none', X_Env::_('p_filesubs_selection_none'));
+		$item = new X_Page_Item_PItem($this->getId().'-none', X_Env::_('p_audioswitcher_selection_none'));
 		$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
 			->setLink(array(
 					'action'	=>	'mode',
@@ -130,12 +130,12 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		// check if infile support is enabled
 		// by default infile.enabled is true
 		if ( $this->config('infile.enabled', true) ) {
-			// check for infile subs
-			$infileSubs = $this->helpers()->stream()->setLocation($location)->getSubsInfo();
+			// check for infile tracks
+			$infileTracks = $this->helpers()->stream()->setLocation($location)->getAudiosInfo();
 			//X_Debug::i(var_export($infileSubs, true));
-			foreach ($infileSubs as $streamId => $sub) {
-				X_Debug::i("Valid infile-sub: [{$streamId}] {$sub['language']} ({$sub['format']})");
-				$item = new X_Page_Item_PItem($this->getId().'-stream-'.$streamId, X_Env::_("p_filesubs_subtype_".self::STREAM)." {$streamId} {$sub['language']} {$sub['format']}");
+			foreach ($infileTracks as $streamId => $track) {
+				X_Debug::i("Valid infile-sub: [{$streamId}] {$track['language']} ({$track['format']})");
+				$item = new X_Page_Item_PItem($this->getId().'-stream-'.$streamId, X_Env::_("p_audioswitcher_subtype_".self::STREAM)." {$streamId} {$track['language']} {$track['format']}");
 				$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
 					->setCustom(__CLASS__.':sub', self::STREAM.":{$streamId}")
 					->setLink(array(
@@ -155,10 +155,10 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 			$dirname = pathinfo($location, PATHINFO_DIRNAME);
 			$filename = pathinfo($location, PATHINFO_FILENAME);
 			
-			$extSubs = $this->getFSSubs($dirname, $filename);
-			foreach ($extSubs as $streamId => $sub) {
-				X_Debug::i("Valid extfile-sub: {$sub['language']} ({$sub['format']})");
-				$item = new X_Page_Item_PItem($this->getId().'-file-'.$streamId, X_Env::_("p_filesubs_subtype_".self::FILE)." {$sub['language']} ({$sub['format']})");
+			$extTracks = $this->getFSTracks($dirname, $filename);
+			foreach ($extTracks as $streamId => $track) {
+				X_Debug::i("Valid extfile-sub: {$track['language']} ({$track['format']})");
+				$item = new X_Page_Item_PItem($this->getId().'-file-'.$streamId, X_Env::_("p_audioswitcher_subtype_".self::FILE)." {$track['language']} ({$track['format']})");
 				$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
 					->setCustom(__CLASS__.':sub', self::FILE.":{$streamId}")
 					->setLink(array(
@@ -208,23 +208,21 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 
 			 	$subFile = realpath($subFile);
 			 	
-			 	X_Debug::i("Sub file selected: $subFile");
+			 	X_Debug::i("Alternative audio file selected: $subFile");
 			 	
-			 	$vlc->registerArg('subtitles', "--sub-file=\"{$subFile}\"");
+			 	$vlc->registerArg('audio', "--input-slave=\"{$subFile}\"");
 			 	
 			 } elseif ( $type == self::STREAM ) {
 			 	
 			 	$sub = (int) $sub;
 			 	
-			 	X_Debug::i("Sub track selected: $sub");
+			 	X_Debug::i("Alternative audio track selected: $sub");
 			 	
-			 	$vlc->registerArg('subtitles', "--sub-track=\"$sub\"");
+			 	$vlc->registerArg('audio', "--audio-track=\"$sub\"");
 			 	
 			 }
 			
-		} else {
-			$vlc->registerArg('subtitles', "--no-sub-autodetect-file");
-		}
+		}	
 	}
 	
 	
@@ -235,31 +233,31 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 	 * @param string $dirPath
 	 * @param string $filename
 	 */
-	public function getFSSubs($dirPath, $filename) {
+	public function getFSTracks($dirPath, $filename) {
 
-		$validSubs = explode('|', $this->config('file.extensions', 'sub|srt|txt'));
-		X_Debug::i("Check for subs in $dirPath for $filename (valid: {$this->config('file.extensions', 'sub|srt|txt')})");
+		$validTracks = explode('|', $this->config('file.extensions', 'mp3|wav|mpa|mp2a|mpga|wma|ogg|aac|ac3'));
+		X_Debug::i("Check for subs in $dirPath for $filename (valid: {$this->config('file.extensions', 'mp3|wav|mpa|mp2a|mpga|wma|ogg|aac|ac3')})");
 		
 		
 		$dir = new DirectoryIterator($dirPath);
-		$subsFound = array();
+		$tracksFound = array();
 		foreach ($dir as $entry) {
 			if ( $entry->isFile() ) {
 				// se e' un file sub valido
-				if ( array_search(pathinfo($entry->getFilename(), PATHINFO_EXTENSION), $validSubs ) !== false ) {
+				if ( array_search(pathinfo($entry->getFilename(), PATHINFO_EXTENSION), $validTracks ) !== false ) {
 					// stessa parte iniziale
 					if ( X_Env::startWith($entry->getFilename(), $filename) ) {
 						X_Debug::i("$entry is valid");
-						$subName = substr($entry->getFilename(), strlen($filename));
-						$subsFound[$subName] = array(
-							'language'	=> trim(pathinfo($subName, PATHINFO_FILENAME), '.'),
-							'format'	=> pathinfo($subName, PATHINFO_EXTENSION)
+						$trackName = substr($entry->getFilename(), strlen($filename));
+						$tracksFound[$validTracks] = array(
+							'language'	=> trim(pathinfo($trackName, PATHINFO_FILENAME), '.'),
+							'format'	=> pathinfo($trackName, PATHINFO_EXTENSION)
 						);						
 					}
 				}
 			}
 		}
-		return $subsFound;
+		return $tracksFound;
 		
 	}
 	
@@ -280,13 +278,13 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 	 */
 	public function getIndexManageLinks(Zend_Controller_Action $controller) {
 
-		$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_filesubs_mlink'));
-		$link->setTitle(X_Env::_('p_filesubs_managetitle'))
+		$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_audioswitcher_mlink'));
+		$link->setTitle(X_Env::_('p_audioswitcher_managetitle'))
 			->setIcon('/images/manage/configs.png')
 			->setLink(array(
 					'controller'	=>	'config',
 					'action'		=>	'index',
-					'key'			=>	'fileSubs'
+					'key'			=>	'audioSwitcher'
 			), 'default', true);
 		return new X_Page_ItemList_ManageLink(array($link));
 	
