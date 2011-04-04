@@ -162,10 +162,12 @@
 		</version>
 	</plugin>
 	<plugin key="filmstream">
-		<version name="0.1" type="stable" cMin="0.5.3" cMax="0.6">
+		<version name="0.1.1" type="stable" cMin="0.5.3" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_filmstream_0.1.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_filmstream_0.1.1.zip</download>
 			<changelog><![CDATA[
+*** 0.1.1 ***
+ - Fix to films index
 			]]></changelog>
 		</version>
 	</plugin>
