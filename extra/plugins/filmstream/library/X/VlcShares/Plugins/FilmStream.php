@@ -2,8 +2,8 @@
 
 class X_VlcShares_Plugins_FilmStream extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.1';
-	const VERSION_CLEAN = '0.1';
+	const VERSION = '0.1.1';
+	const VERSION_CLEAN = '0.1.1';
 	
 	const TYPE_MOVIES = 'movies';
 	const TYPE_TVSHOWS = 'tv';
@@ -429,7 +429,7 @@ class X_VlcShares_Plugins_FilmStream extends X_VlcShares_Plugins_Abstract implem
 	private function _fetchGroups(X_Page_ItemList_PItem $items, $resourceType) {
 
 		if ( $resourceType == self::TYPE_MOVIES ) {
-			$groups = 'new,0-9,a-b,c-d,e-f,g-h-j-k,i-l,m-n,o-p,q-r-s,t-u-v,w-x-y-z';
+			$groups = 'new,0-9,a-b,c-d,e-f,g-i,i-l,m-n,o,q-s,t-v,w-z';
 		} else {
 			$groups = 'new,all';
 		}

@@ -6,21 +6,25 @@
 #    \  /  | |____| |____      ____) | | | | (_| | | |  __|__ \ #
 #     \/   |______|\_____|    |_____/|_| |_|\__,_|_|  \___|___/ #
 #     															#
-########## _PLUGIN_NAME_ Plugin #################################
+########## FilmSteam Plugin @@@@#################################
 
-_PLUGIN_NAME_ v_PLUGIN_VERSION
-Created by _AUTHOR_
-_AUTHOR_EMAIL_
+FilmStream v0.1.1
+Created by Francesco Capozzo (ximarx)
+ximarx@gmail.com
 
-_PLUGIN_LICENSE_
+All content of this file is released using
+GPL v3 (http://www.gnu.org/licenses/gpl.html)
 
-_PLUGIN_SHORT_DESCRIPTION_
+Allows to watch videos from film-stream.tv
 
-_PLUGIN_LONG_DESCRIPTION_AND_NOTES_
+For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 
 /==========---
 | Changelog
 \==========---
 
-*** _PLUGIN_VERSION_ ***
- - _CHANGE_LIST_
+*** 0.1.1 ***
+ - Fix to films index
+
+*** 0.1 ***
+ - Initial version
