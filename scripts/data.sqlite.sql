@@ -58,24 +58,24 @@ INSERT INTO plg_profiles (label, arg, cond_devices, weight) VALUES
 INSERT INTO plg_outputs (label, arg, link, cond_devices) VALUES
 	('Http stream on 8081',
 	'std{access=http,mux=ts,dst=:8081}',
-	'http://{%SERVER_IP%}:8081/',
+	'http://{%SERVER_NAME%}:8081/',
 	NULL);	
 	
 INSERT INTO plg_outputs (label, arg, link, cond_devices) VALUES
 	('WIIMC stream',
 	'std{access=http,mux=ts,dst=:8081}',
-	'http://{%SERVER_IP%}:8081/',
+	'http://{%SERVER_NAME%}:8081/',
 	0);	
 	
 INSERT INTO plg_outputs (label, arg, link, cond_devices) VALUES
 	('Simulated WIIMC stream for PC',
 	'std{access=http,mux=ts,dst=:8081}',
-	'http://{%SERVER_IP%}:8081/',
+	'http://{%SERVER_NAME%}:8081/',
 	100);	
 	
 INSERT INTO plg_outputs (label, arg, link, cond_devices) VALUES
 	('Android Phone (Rtp Stream)',
 	'rtp{mp4a-latm,sdp=rtsp://0.0.0.0:5554/android.sdp}',
-	'rtsp://{%SERVER_IP%}:5554/android.sdp',
+	'rtsp://{%SERVER_NAME%}:5554/android.sdp',
 	1);
 	

@@ -7,18 +7,18 @@
  */
 class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface, X_VlcShares_Plugins_BackuppableInterface {
 	
-	const VERSION_CLEAN = '0.2.1';
-	const VERSION = '0.2.1';
+	const VERSION_CLEAN = '0.3';
+	const VERSION = '0.3';
 	
 	public function __construct() {
 		$this
 			->setPriority('gen_beforeInit')
-			->setPriority('getCollectionsItems')
+			//->setPriority('getCollectionsItems')
 			->setPriority('preRegisterVlcArgs')
 			->setPriority('getShareItems')
 			->setPriority('preGetModeItems')
-			->setPriority('getIndexActionLinks')
-			->setPriority('getIndexStatistics')
+			//->setPriority('getIndexActionLinks')
+			//->setPriority('getIndexStatistics')
 			->setPriority('getIndexManageLinks')
 			->setPriority('prepareConfigElement');
 		
@@ -49,6 +49,9 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 				->setPriority('preGetSelectionItems')
 				->setPriority('getSelectionItems');
 		}
+		
+		$this->helpers()->hoster()->registerHoster(new X_VlcShares_Plugins_Helper_Hoster_Megavideo());
+		$this->helpers()->hoster()->registerHoster(new X_VlcShares_Plugins_Helper_Hoster_Megaupload());
 	}
 	
 	/**
@@ -413,8 +416,11 @@ class X_VlcShares_Plugins_Megavideo extends X_VlcShares_Plugins_Abstract impleme
 		$link->setTitle(X_Env::_('p_megavideo_managetitle'))
 			->setIcon('/images/megavideo/logo.png')
 			->setLink(array(
-					'controller'	=>	'megavideo',
+					//'controller'	=>	'megavideo',
+					//'action'		=>	'index',
+					'controller'	=>	'config',
 					'action'		=>	'index',
+					'key'			=>	'megavideo'
 			), 'default', true);
 		return new X_Page_ItemList_ManageLink(array($link));
 		

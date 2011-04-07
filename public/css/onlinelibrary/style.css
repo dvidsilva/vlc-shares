@@ -1,0 +1,25 @@
+@CHARSET "UTF-8";
+
+
+.onlinelibrary-preview-parent {
+	position: relative;
+}
+
+.onlinelibrary-preview-parent > img {
+	display:none;
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	z-index: 100;
+	padding: 1em;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+	background-color: black;
+	border: 1px solid gray;
+}
+
+.onlinelibrary-preview-parent:hover > img {
+	display: block;
+}
+

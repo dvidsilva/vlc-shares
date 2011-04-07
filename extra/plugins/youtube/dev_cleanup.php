@@ -15,6 +15,7 @@ $neededDirectories = array(
 $neededLinks = array(
 	$basePath.'/languages/X_VlcShares_Plugins_Youtube.en_GB.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_Youtube.en_GB.ini',
 	$basePath.'/languages/X_VlcShares_Plugins_Youtube.it_IT.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_Youtube.it_IT.ini',
+	$basePath.'/public/images/icons/hosters/youtube.png' => APPLICATION_PATH.'/../public/images/icons/hosters/youtube.png',
 	$basePath.'/public/images/youtube/' => APPLICATION_PATH.'/../public/images/youtube',
 	$basePath.'/public/css/youtube/' => APPLICATION_PATH.'/../public/css/youtube',
 	$basePath.'/public/js/youtube/' => APPLICATION_PATH.'/../public/js/youtube',

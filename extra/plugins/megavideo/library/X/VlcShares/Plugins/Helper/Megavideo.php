@@ -6,8 +6,8 @@ class X_VlcShares_Plugins_Helper_Megavideo extends X_VlcShares_Plugins_Helper_Ab
 	const QUALITY_NORMAL = 'normal';
 	const QUALITY_NOPREMIUM = 'disabled';
 	
-	const VERSION_CLEAN = '0.2.1';
-	const VERSION = '0.2.1';
+	const VERSION_CLEAN = '0.3';
+	const VERSION = '0.3';
 	
 	private $_cachedSearch = array();
 	private $_location = null;
@@ -91,7 +91,7 @@ class X_VlcShares_Plugins_Helper_Megavideo extends X_VlcShares_Plugins_Helper_Ab
 	}
 	public function getTitle() {
 		$this->_fetch();
-		return $this->_fetched->get('TITLE');
+		return urldecode($this->_fetched->get('TITLE'));
 	}
 	public function getDuration() {
 		$this->_fetch();
@@ -103,7 +103,7 @@ class X_VlcShares_Plugins_Helper_Megavideo extends X_VlcShares_Plugins_Helper_Ab
 	}
 	public function getDescription() {
 		$this->_fetch();
-		return $this->_fetched->get('DESCRIPTION');
+		return urldecode($this->_fetched->get('DESCRIPTION'));
 	}
 	public function getAdded() {
 		$this->_fetch();

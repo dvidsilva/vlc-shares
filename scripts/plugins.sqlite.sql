@@ -18,13 +18,23 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	1
 );
 
-
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
 	'fileSystem',
 	'X_VlcShares_Plugins_FileSystem', 
 	'X/VlcShares/Plugins/FileSystem.php',
 	'p_filesystem_plglabel',
 	'p_filesystem_plgdesc',
+	1,
+	1
+);
+
+
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'onlinelibrary',
+	'X_VlcShares_Plugins_OnlineLibrary', 
+	'X/VlcShares/Plugins/OnlineLibrary.php',
+	'p_onlinelibrary_plglabel',
+	'p_onlinelibrary_plgdesc',
 	1,
 	1
 );
@@ -364,3 +374,12 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'audioSwitcher.infile.enabled','1','1','plugins',3,'p_audioswitcher_conf_infileenabled_label','p_audioswitcher_conf_infileenabled_desc','');
 
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'bookmarklets',
+	'X_VlcShares_Plugins_Bookmarklets', 
+	'X/VlcShares/Plugins/Bookmarklets.php',
+	'p_bookmarklets_plglabel',
+	'p_bookmarklets_plgdesc',
+	1,
+	1
+);

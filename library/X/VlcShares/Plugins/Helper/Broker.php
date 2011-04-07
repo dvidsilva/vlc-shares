@@ -35,6 +35,11 @@ class X_VlcShares_Plugins_Helper_Broker {
 	 */
 	private $devices;
 	
+	/**
+	 * @var X_VlcShares_Plugins_Helper_Hoster
+	 */
+	private $hoster;
+	
 	private $_helpers = array();
 	
 	public function __construct(Zend_Config $options) {
@@ -50,12 +55,14 @@ class X_VlcShares_Plugins_Helper_Broker {
 		$this->mediainfo = $this->ffmpeg;
 		$this->devices = new X_VlcShares_Plugins_Helper_Devices($options->get('devices', new Zend_Config(array())));
 		$this->stream = new X_VlcShares_Plugins_Helper_Stream($options->get('stream', new Zend_Config(array())));
+		$this->hoster = new X_VlcShares_Plugins_Helper_Hoster();
 		
 		$this->registerHelper('mediainfo', $this->mediainfo, true)
 			->registerHelper('language', $this->language, true)
 			->registerHelper('ffmpeg', $this->ffmpeg, true)
 			->registerHelper('devices', $this->devices, true)
-			->registerHelper('stream', $this->stream, true);
+			->registerHelper('stream', $this->stream, true)
+			->registerHelper('hoster', $this->hoster, true);
 	}
 	
 	/**
@@ -83,6 +90,11 @@ class X_VlcShares_Plugins_Helper_Broker {
 	 * @return X_VlcShares_Plugins_Helper_Devices
 	 */
 	public function devices() { return $this->devices; }
+
+	/**
+	 * @return X_VlcShares_Plugins_Helper_Hoster
+	 */
+	public function hoster() { return $this->hoster; }
 	
 	/**
 	 * Register a new helper in the list
