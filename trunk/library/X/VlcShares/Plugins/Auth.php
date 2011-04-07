@@ -46,6 +46,14 @@ class X_VlcShares_Plugins_Auth extends X_VlcShares_Plugins_Abstract {
 			&& !$this->isLoggedIn() // replace this with a session state check for user auth
 			 ) {
 			
+			if ( $this->helpers()->devices()->isVlc() ) {
+				X_Debug::i("Look like it's this vlc: {$_SERVER['REMOTE_ADDR']}");
+				if ( gethostbyname($_SERVER['REMOTE_ADDR']) == '::1' || gethostbyname($_SERVER['REMOTE_ADDR']) == '127.0.0.1' ) {
+					X_Debug::i("Skipping auth, it should be the local vlc");
+					return;
+				}
+			}
+			 	
 			X_Debug::w("Auth required, redirecting to login");
 			$controller->getRequest()->setControllerName("auth")
 				->setActionName('index')

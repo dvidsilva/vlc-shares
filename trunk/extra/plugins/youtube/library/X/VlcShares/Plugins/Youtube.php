@@ -13,8 +13,8 @@ require_once 'Zend/Gdata/YouTube/VideoEntry.php';
  */
 class X_VlcShares_Plugins_Youtube extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface, X_VlcShares_Plugins_BackuppableInterface {
 	
-	const VERSION = '0.1.3';
-	const VERSION_CLEAN = '0.1.3';
+	const VERSION = '0.2';
+	const VERSION_CLEAN = '0.2';
 	
 	const MODE_LIBRARY = "l";
 	const MODE_ACCOUNTS = "a";
@@ -51,6 +51,7 @@ class X_VlcShares_Plugins_Youtube extends X_VlcShares_Plugins_Abstract implement
 	function gen_beforeInit(Zend_Controller_Action $controller) {
 		$this->helpers()->language()->addTranslation(__CLASS__);
 		$this->helpers()->registerHelper('youtube', new X_VlcShares_Plugins_Helper_Youtube());
+		$this->helpers()->hoster()->registerHoster(new X_VlcShares_Plugins_Helper_Hoster_Youtube());
 	}
 	
 	/**

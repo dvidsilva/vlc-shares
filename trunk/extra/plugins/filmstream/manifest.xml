@@ -33,6 +33,7 @@
 		<languages>
 			<file>X_VlcShares_Plugins_FilmStream.en_GB.ini</file>
 			<file>X_VlcShares_Plugins_FilmStream.it_IT.ini</file>
+			<file>X_VlcShares_Plugins_FilmStream.es_ES.ini</file>
 		</languages>
 	</files>
 	<database>

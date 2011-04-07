@@ -95,3 +95,14 @@ CREATE TABLE plg_auth_sessions (
 	PRIMARY KEY (ip, useragent)
 );
 
+
+CREATE TABLE videos (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    idVideo TEXT NOT NULL,
+	hoster VARCHAR(64) NULL,    
+    category VARCHAR(255) NOT NULL DEFAULT 'Default',
+    title VARCHAR(255) NOT NULL,
+    description TEXT NULL DEFAULT NULL,
+    thumbnail TEXT NULL DEFAULT NULL
+);
+

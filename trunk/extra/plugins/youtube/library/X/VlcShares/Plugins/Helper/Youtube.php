@@ -5,8 +5,8 @@ require_once 'Zend/Gdata/YouTube.php';
 
 class X_VlcShares_Plugins_Helper_Youtube extends X_VlcShares_Plugins_Helper_Abstract {
 
-	const VERSION = '0.1.3';
-	const VERSION_CLEAN = '0.1.3';
+	const VERSION = '0.2';
+	const VERSION_CLEAN = '0.2';
 	
 	const ITEMS_PER_PAGE = 50;
 	

@@ -26,6 +26,7 @@
 		<languages>
 			<file>X_VlcShares_Plugins_AudioSwitcher.en_GB.ini</file>
 			<file>X_VlcShares_Plugins_AudioSwitcher.it_IT.ini</file>
+			<file>X_VlcShares_Plugins_AudioSwitcher.es_ES.ini</file>
 		</languages>
 	</files>
 	<database>

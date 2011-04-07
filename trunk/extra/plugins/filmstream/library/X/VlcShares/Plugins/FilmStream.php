@@ -147,6 +147,16 @@ class X_VlcShares_Plugins_FilmStream extends X_VlcShares_Plugins_Abstract implem
 					X_Debug::e("Youtube helper/plugin isn't installed or enabled: {$e->getMessage()}");
 				}
 				break;
+
+			default:
+				// new hoster helper
+				try {
+					$return = $this->helpers()->hoster()->getHoster($videoType)->getPlayable($videoId, true);
+				} catch (Exception $e) {
+					$return = false;
+				}
+				break;
+				
 				
 		}
 		
@@ -643,19 +653,10 @@ class X_VlcShares_Plugins_FilmStream extends X_VlcShares_Plugins_Abstract implem
 		// <param name="movie" value="http://www.youtube.com/v/VIDEOID?version=3">
 		// match[1] = video id
 		$ytPattern = '/<param name\=\"movie\" value\=\"http\:\/\/www\.youtube\.com\/v\/([^\?\"\&]+)([^\>]*)>/';
-		
-		// $mvPattern will try to intercept
-		// megavideo ?v= or ?d= videos
-		// <a href="http://www.megavideo.com/?v=VIDEOID">LABEL</a>
-		// <a href="http://www.megavideo.com/?d=VIDEOID">LABEL</a>
-		// match[1] = v|d
-		// match[2] = video id
-		// match[4] = label
-		$mvPattern = '/href\=\"http\:\/\/www\.megavideo\.com\/\?(v|d)\=([^\"]{8})\"([^\>]*)>([^\<]+)<\/a>/';
+
 		
 		$matches = array();
 		// first let's search for youtube videos
-		
 		if ( preg_match_all($ytPattern, $htmlString, $matches, PREG_SET_ORDER) ) {
 			
 			foreach ($matches as $match) {
@@ -684,38 +685,43 @@ class X_VlcShares_Plugins_FilmStream extends X_VlcShares_Plugins_Abstract implem
 			X_Debug::e("Youtube pattern failure {{$ytPattern}}");
 		}
 		
-		
-		if ( preg_match_all($mvPattern, $htmlString, $matches, PREG_SET_ORDER) ) {
+		$matches = array();
+		if ( preg_match_all('/href\=\"(?P<LINK>[^\"]+)"([^\>]*)>(?P<LABEL>[^\<]+)<\/a>/', $htmlString, $matches, PREG_SET_ORDER) ) {
+			
+			X_Debug::i(var_export($matches, true));
 			
 			foreach ($matches as $match) {
-				if ( $match[1] == 'v' ) {
-					$videoId = self::VIDEO_MEGAVIDEO . ':' . $match[2];
-					$typeLabel = "Megavideo";
-				} else {
-					$videoId = self::VIDEO_MEGAUPLOAD . ':' . $match[2];
-					$typeLabel = "Megaupload";
-				}
-				$videoLabel = "{$match[4]} [$typeLabel]";
 				
-				$item = new X_Page_Item_PItem("{$this->getId()}-youtube-$videoId", $videoLabel);
-				$item->setIcon('/images/icons/file_32.png')
-					->setType(X_Page_Item_PItem::TYPE_ELEMENT)
-					->setCustom(__CLASS__.':location', "$resourceType/$resourceGroup/$page/$resourceId/$videoId")
-					->setLink(array(
-						'action'	=> 'mode',
-						'l'	=>	X_Env::encode("$resourceType/$resourceGroup/$page/$resourceId/$videoId")
-					), 'default', false);
+				try {
 					
-				if ( APPLICATION_ENV == 'development' ) {
-					$item->setDescription("$resourceType/$resourceGroup/$page/$resourceId/$videoId");
+					$link = $match['LINK'];
+					
+					$hoster = $this->helpers()->hoster()->findHoster($link);
+					$videoLabel = trim(strip_tags($match['LABEL'])). " [". ucfirst($hoster->getId()) ."]";
+					$videoId = "{$hoster->getId()}:{$hoster->getResourceId($link)}";
+					
+					$item = new X_Page_Item_PItem("{$this->getId()}-hoster-$videoId", $videoLabel);
+					$item->setIcon('/images/icons/file_32.png')
+						->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+						->setCustom(__CLASS__.':location', "$resourceType/$resourceGroup/$page/$resourceId/$videoId")
+						->setLink(array(
+							'action'	=> 'mode',
+							'l'	=>	X_Env::encode("$resourceType/$resourceGroup/$page/$resourceId/$videoId")
+						), 'default', false);
+						
+					if ( APPLICATION_ENV == 'development' ) {
+						$item->setDescription("$resourceType/$resourceGroup/$page/$resourceId/$videoId");
+					}
+					
+					$items->append($item);
+					
+				} catch ( Exception $e) {
+					// no hoster for the link, skipped
 				}
-					
-				$items->append($item);
-				
 			}
 			
 		} else {
-			X_Debug::e("Youtube pattern failure {{$ytPattern}}");
+			X_Debug::e("General pattern failure");
 		}
 		
 	}	

@@ -18,6 +18,8 @@ $neededDirectories = array(
 );
 
 $neededLinks = array(
+	$basePath.'/public/images/icons/hosters/megavideo.png' => APPLICATION_PATH.'/../public/images/icons/hosters/megavideo.png',
+	$basePath.'/public/images/icons/hosters/megaupload.png' => APPLICATION_PATH.'/../public/images/icons/hosters/megaupload.png',
 	$basePath.'/languages/X_VlcShares_Plugins_Megavideo.en_GB.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_Megavideo.en_GB.ini',
 	$basePath.'/languages/X_VlcShares_Plugins_Megavideo.it_IT.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_Megavideo.it_IT.ini',
 	$basePath.'/public/images/megavideo/' => APPLICATION_PATH.'/../public/images/megavideo',
@@ -54,6 +56,8 @@ $pluginsIncludes = array(
 
 // include path for Helpers
 $helpersIncludes = array(
+	$basePath.'/library/X/VlcShares/Plugins/Helper/Hoster/Megavideo.php',
+	$basePath.'/library/X/VlcShares/Plugins/Helper/Hoster/Megaupload.php',
 	$basePath.'/library/X/VlcShares/Plugins/Helper/Megavideo.php',
 	$basePath.'/library/X/VlcShares/Plugins/Helper/Megaupload.php'
 );
