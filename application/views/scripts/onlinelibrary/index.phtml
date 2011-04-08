@@ -98,6 +98,25 @@ $this->headTitle()->prepend(X_Env::_('p_onlinelibrary_manage_title'));
 							</tr>
 						<?php endif;?>
 					</table>
+					<?php if ( $this->pages > 1 ) : ?>
+						<center>
+							<ul class="paginator">
+								<?php for ($i = 1; $i <= $this->pages; $i++ ): ?>
+									<li>
+										<?php if ( $i != $this->page ) : ?>
+											<a href="<?php echo $this->url(array(
+												'controller' => 'onlinelibrary',
+												'action'	=> 'index',
+												'page'	=> ($i == 1 ? null : $i)
+											),'default', true)?>"><?php echo $i; ?></a>
+										<?php else: ?>
+											<?php echo $i; ?>
+										<?php endif;?>
+									</li>
+								<?php endfor; ?>
+							</ul>
+						</center>
+					<?php endif; ?>					
 				</div>
 			</div>
 		</div>

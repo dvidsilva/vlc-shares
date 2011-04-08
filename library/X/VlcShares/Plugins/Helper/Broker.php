@@ -36,6 +36,11 @@ class X_VlcShares_Plugins_Helper_Broker {
 	private $devices;
 	
 	/**
+	 * @var X_VlcShares_Plugins_Helper_Paginator
+	 */
+	private $paginator;
+	
+	/**
 	 * @var X_VlcShares_Plugins_Helper_Hoster
 	 */
 	private $hoster;
@@ -55,6 +60,7 @@ class X_VlcShares_Plugins_Helper_Broker {
 		$this->mediainfo = $this->ffmpeg;
 		$this->devices = new X_VlcShares_Plugins_Helper_Devices($options->get('devices', new Zend_Config(array())));
 		$this->stream = new X_VlcShares_Plugins_Helper_Stream($options->get('stream', new Zend_Config(array())));
+		$this->paginator = new X_VlcShares_Plugins_Helper_Paginator($options->get('paginator', new Zend_Config(array())));
 		$this->hoster = new X_VlcShares_Plugins_Helper_Hoster();
 		
 		$this->registerHelper('mediainfo', $this->mediainfo, true)
@@ -62,6 +68,7 @@ class X_VlcShares_Plugins_Helper_Broker {
 			->registerHelper('ffmpeg', $this->ffmpeg, true)
 			->registerHelper('devices', $this->devices, true)
 			->registerHelper('stream', $this->stream, true)
+			->registerHelper('paginator', $this->paginator, true)
 			->registerHelper('hoster', $this->hoster, true);
 	}
 	
@@ -91,6 +98,11 @@ class X_VlcShares_Plugins_Helper_Broker {
 	 */
 	public function devices() { return $this->devices; }
 
+	/**
+	 * @return X_VlcShares_Plugins_Helper_Paginator
+	 */
+	public function paginator() { return $this->paginator; }
+	
 	/**
 	 * @return X_VlcShares_Plugins_Helper_Hoster
 	 */

@@ -12,7 +12,6 @@ class X_VlcShares_Plugins_OnlineLibrary extends X_VlcShares_Plugins_Abstract imp
 	
 	public function __construct() {
 		$this
-			//->setPriority('gen_beforeInit')
 			->setPriority('getCollectionsItems')
 			->setPriority('preRegisterVlcArgs')
 			->setPriority('getShareItems')
@@ -21,38 +20,6 @@ class X_VlcShares_Plugins_OnlineLibrary extends X_VlcShares_Plugins_Abstract imp
 			->setPriority('getIndexStatistics')
 			->setPriority('getIndexManageLinks')
 			;
-	}
-	
-	/**
-	 * Registers a megavideo helper inside the helper broker
-	 */
-	public function gen_beforeInit(Zend_Controller_Action $controller) {
-		
-		/*
-		$this->helpers()->language()->addTranslation(__CLASS__);
-		
-		$helper_conf = new Zend_Config(array(
-			'premium' => $this->config('premium.enabled', false),
-			'username' => $this->config('premium.username', ''),
-			'password' => $this->config('premium.password', '')
-		)); 
-		
-		$helper = new X_VlcShares_Plugins_Helper_Megaupload($helper_conf);
-		
-		$this->helpers()->registerHelper('megavideo', $helper);
-		$this->helpers()->registerHelper('megaupload', $helper);
-		
-		if ( $this->config('premium.enabled', true) && $this->config('premium.username', false) && $this->config('premium.password', false) ) {
-			// allow to choose quality for videos if premium user
-			$this
-				->setPriority('getModeItems')
-				->setPriority('preGetSelectionItems')
-				->setPriority('getSelectionItems');
-		}
-		
-		$this->helpers()->hoster()->registerHoster(new X_VlcShares_Plugins_Helper_Hoster_Megavideo());
-		$this->helpers()->hoster()->registerHoster(new X_VlcShares_Plugins_Helper_Hoster_Megaupload());
-		*/
 	}
 	
 	/**
@@ -81,8 +48,8 @@ class X_VlcShares_Plugins_OnlineLibrary extends X_VlcShares_Plugins_Abstract imp
 	
 	/**
 	 * Get category/video list
-	 * @param unknown_type $provider
-	 * @param unknown_type $location
+	 * @param string $provider
+	 * @param string $location
 	 * @param Zend_Controller_Action $controller
 	 * @return X_Page_ItemList_PItem
 	 */
@@ -102,60 +69,150 @@ class X_VlcShares_Plugins_OnlineLibrary extends X_VlcShares_Plugins_Abstract imp
 			// cache plugin not registered, no problem
 		}
 		
-		
 		$urlHelper = $controller->getHelper('url');
 		
-		$items = new X_Page_ItemList_PItem();
+		X_VlcShares_Plugins::broker()->unregisterPluginClass('X_VlcShares_Plugins_SortItems');
 		
-		if ( $location != '' ) {
-			
-			X_VlcShares_Plugins::broker()->unregisterPluginClass('X_VlcShares_Plugins_SortItems');
-			
-			//list($shareType, $linkId) = explode(':', $location, 2);
-			// $location is the categoryName
+		$items = new X_Page_ItemList_PItem();
 
-			$videos = Application_Model_VideosMapper::i()->fetchByCategory($location);
+		// location format:
+		// $catPage/X_Env::encode($category)/$itemPage/$item
+		$locParts = $location != '' ? explode('/', $location, 4) : array();
+		@list($catPage, $category, $itemPage, $item) = $locParts;
+		$locCount = count($locParts);
+		// category is double encoded so we need an extra decode
+		$category = X_Env::decode($category);
+		
+		switch ($locCount) {
 			
-			foreach ($videos as $video) {
-				/* @var $video Application_Model_Video */
-				$item = new X_Page_Item_PItem($this->getId().'-'.$video->getId(), $video->getTitle() . " [".ucfirst($video->getHoster()."]"));
-				$item->setIcon("/images/icons/hosters/{$video->getHoster()}.png")
-					->setType(X_Page_Item_PItem::TYPE_ELEMENT)
-					->setCustom(__CLASS__.':location', $video->getId())
-					->setLink(array(
-						'action' => 'mode',
-						'l'	=>	X_Env::encode($video->getId())
-					), 'default', false);
-					
-				if ( trim($video->getDescription()) != '' ) {
-					$item->setDescription(trim($video->getDescription()));
-				} 
-
-				if ( trim($video->getThumbnail()) != '' ) {
-					$item->setThumbnail(trim($video->getThumbnail()));
-				} 
-				
-				$items->append($item);
-			}
+			case 2:
+				$itemPage = 1;
+			case 4:
+				// we shouldn't be here, $locCount = 4 means that we have a 
+				// selected video in location. We should be in browse/mode
+			case 3:
+				$this->fetchVideos($items, $catPage, $category, $itemPage);
+				break;
 			
-		} else {
-			// if location is not specified,
-			// show collections
-			$categories = Application_Model_VideosMapper::i()->fetchCategories();
-			foreach ( $categories as $share ) {
-				$item = new X_Page_Item_PItem($this->getId().'-'.$share['category'], "{$share['category']} ({$share['links']})");
-				$item->setIcon('/images/icons/folder_32.png')
-					->setType(X_Page_Item_PItem::TYPE_CONTAINER)
-					->setCustom(__CLASS__.':location', $share['category'])
-					->setLink(array(
-						'l'	=>	X_Env::encode($share['category'])
-					), 'default', false);
-				$items->append($item);
-			}
+			default:
+			case 0:
+				$catPage = 1;
+			case 1:
+				$this->fetchCategories($items, $catPage);
+				break;
+			
 		}
 		
 		return $items;
 	}
+	
+	/**
+	 * Fetch categories in $catPage
+	 */
+	protected  function fetchCategories(X_Page_ItemList_PItem $items, $catPage = 1) {
+		
+		// FIXME we shouldn't use paginator. We could use db for pagination
+		// it's faster
+		
+		$categories = Application_Model_VideosMapper::i()->fetchCategories();
+		$totalPageCount = $this->helpers()->paginator()->getPages($categories);
+		
+		if ( $this->helpers()->paginator()->hasPrevious($categories, $catPage) ) {
+			$item = new X_Page_Item_PItem($this->getId().'-previouscatpage', X_Env::_("p_onlinelibrary_previouspage", ($catPage - 1), $totalPageCount));
+			$item//->setIcon('/images/icons/folder_32.png')
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+				->setCustom(__CLASS__.':location', ($catPage - 1))
+				->setLink(array(
+					'l'	=>	X_Env::encode(($catPage - 1))
+				), 'default', false);
+			$items->append($item);
+		}
+		
+		foreach ( $this->helpers()->paginator()->getPage($categories, $catPage) as $share ) {
+			$item = new X_Page_Item_PItem($this->getId().'-'.$share['category'], X_Env::_("p_onlinelibrary_categorylabel", $share['category'], $share['links']));
+			$item->setIcon('/images/icons/folder_32.png')
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+				->setCustom(__CLASS__.':location', "$catPage/".X_Env::encode($share['category']))
+				->setLink(array(
+					'l'	=>	X_Env::encode("$catPage/".X_Env::encode($share['category']))
+				), 'default', false);
+			$items->append($item);
+		}
+		
+		if ( $this->helpers()->paginator()->hasNext($categories, $catPage) ) {
+			$item = new X_Page_Item_PItem($this->getId().'-nextcatpage', X_Env::_("p_onlinelibrary_nextpage", ($catPage + 1), $totalPageCount));
+			$item//->setIcon('/images/icons/folder_32.png')
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+				->setCustom(__CLASS__.':location', ($catPage + 1))
+				->setLink(array(
+					'l'	=>	X_Env::encode(($catPage + 1))
+				), 'default', false);
+			$items->append($item);
+		}
+		
+	} 
+	
+	/**
+	 * Fetch videos in $category and $itemPage
+	 */
+	protected function fetchVideos(X_Page_ItemList_PItem $items, $catPage, $category, $itemPage) {
+		
+		// FIXME we shouldn't use paginator. We could use db for pagination
+		// it's faster
+
+		$videos = Application_Model_VideosMapper::i()->fetchByCategory($category);
+		
+		$totalPageCount = $this->helpers()->paginator()->getPages($videos);
+		
+		if ( $this->helpers()->paginator()->hasPrevious($videos, $itemPage) ) {
+			$item = new X_Page_Item_PItem($this->getId().'-previousvidpage', X_Env::_("p_onlinelibrary_previouspage", ($itemPage - 1), $totalPageCount));
+			$item//->setIcon('/images/icons/folder_32.png')
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+				->setCustom(__CLASS__.':location', "$catPage/".X_Env::encode($category)."/".($itemPage - 1))
+				->setLink(array(
+					'l'	=>	X_Env::encode("$catPage/".X_Env::encode($category)."/".($itemPage - 1))
+				), 'default', false);
+			$items->append($item);
+		}
+		
+		
+		foreach ($this->helpers()->paginator()->getPage($videos, $itemPage) as $video) {
+			/* @var $video Application_Model_Video */
+			$item = new X_Page_Item_PItem($this->getId().'-'.$video->getId(), $video->getTitle() . " [".ucfirst($video->getHoster()."]"));
+			$item->setIcon("/images/icons/hosters/{$video->getHoster()}.png")
+				->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+				->setCustom(__CLASS__.':location', "$catPage/".X_Env::encode($category)."/$itemPage/".$video->getId())
+				->setLink(array(
+					'action' => 'mode',
+					'l'	=>	X_Env::encode("$catPage/".X_Env::encode($category)."/$itemPage/".$video->getId())
+				), 'default', false);
+				
+			if ( trim($video->getDescription()) != '' ) {
+				$item->setDescription(trim($video->getDescription()));
+			} 
+
+			if ( trim($video->getThumbnail()) != '' ) {
+				$item->setThumbnail(trim($video->getThumbnail()));
+			} 
+			
+			$items->append($item);
+		}
+	
+		if ( $this->helpers()->paginator()->hasNext($videos, $itemPage) ) {
+			$item = new X_Page_Item_PItem($this->getId().'-previousvidpage', X_Env::_("p_onlinelibrary_nextpage", ($itemPage + 1), $totalPageCount));
+			$item//->setIcon('/images/icons/folder_32.png')
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+				->setCustom(__CLASS__.':location', "$catPage/".X_Env::encode($category)."/".($itemPage + 1))
+				->setLink(array(
+					'l'	=>	X_Env::encode("$catPage/".X_Env::encode($category)."/".($itemPage + 1))
+				), 'default', false);
+			$items->append($item);
+		}
+		
+		
+		
+	}
+	
 	
 	/**
 	 * Set the source param into vlc params
@@ -247,13 +304,22 @@ class X_VlcShares_Plugins_OnlineLibrary extends X_VlcShares_Plugins_Abstract imp
 	 * @return string real address of a resource
 	 */
 	function resolveLocation($location = null) {
-
+		
 		// prevent no-location-given error
-		if ( $location === null ) return false;
-		if ( (int) $location < 0 ) return false; // video_model id > 0
+		if ( $location === null || $location === '' ) return false;
+		
+		// location format:
+		// $catPage/X_Env::encode($category)/$itemPage/$item
+		$locParts = explode('/', $location, 4);
+		@list($catPage, $category, $itemPage, $item) = $locParts;
+		$locCount = count($locParts);
+		
+		if ( $locCount != 4 ) return false;
+		
+		if ( (int) $item < 0 ) return false; // video_model id > 0
 		
 		$video = new Application_Model_Video();
-		Application_Model_VideosMapper::i()->find((int) $location, $video);
+		Application_Model_VideosMapper::i()->find((int) $item, $video);
 		
 		if ( $video->getId() == null ) return false;
 		
@@ -277,21 +343,28 @@ class X_VlcShares_Plugins_OnlineLibrary extends X_VlcShares_Plugins_Abstract imp
 	 * @param $location
 	 */
 	function getParentLocation($location = null) {
+		
 		if ($location == null || $location == '') return false;
 		
-		if ( is_numeric($location) && ((int) $location > 0 ) ) {
-			// should be a video id.
-			$model = new Application_Model_Video();
-			Application_Model_VideosMapper::i()->find((int) $location, $model);
-			if ( $model->getId() !== null ) {
-				return $model->getCategory();
-			} else {
-				return null;
-			}
-		} else {
-			// should be a category name
-			return null;
+		// location format:
+		// $catPage/X_Env::encode($category)/$itemPage/$item
+		$locParts = $location != '' ? explode('/', $location, 4) : array();
+		//@list($catPage, $category, $itemPage, $item) = $locParts;
+		$locCount = count($locParts);
+		
+		switch ($locCount) {
+			
+			case 3:
+				array_pop($locParts);
+			default:
+				array_pop($locParts);
 		}
+		
+		if ( count($locParts) >= 1 ) {
+			return implode('/', $locParts);
+		} else {
+			return false;
+		}			
 	}
 	
 	/**

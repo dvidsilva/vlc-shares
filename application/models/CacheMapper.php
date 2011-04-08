@@ -28,7 +28,7 @@ class Application_Model_CacheMapper extends Application_Model_AbstractMapper {
 			'uri'			=> $model->getUri(),
 			'content'		=> $model->getContent(),
 			'cType'			=> $model->getCType(),
-			'created'		=> $model->getCreated(),
+			'validity'		=> $model->getValidity(),
 		);
 
 		if ($model->isNew()) {
@@ -60,7 +60,7 @@ class Application_Model_CacheMapper extends Application_Model_AbstractMapper {
 		$model->setUri($row->uri)
 			->setContent($row->content)
 			->setCType($row->cType)
-			->setCreated($row->created)
+			->setValidity($row->validity)
 			->setNew(false);
 	}
 	
@@ -68,8 +68,12 @@ class Application_Model_CacheMapper extends Application_Model_AbstractMapper {
 		$this->getDbTable()->delete(array('uri = ?' => $model->getUri()));
 	}
 	
-	public function clearAfter($time) {
-		$this->getDbTable()->delete(array('created > ?' => $time));
+	public function clearOutdated($time) {
+		$this->getDbTable()->delete(array('validity < ?' => $time));
+	}
+
+	public function clearAll() {
+		$this->getDbTable()->delete(array('validity > ?' => 0));
 	}
 	
 	public function getCount() {
