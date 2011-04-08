@@ -717,3 +717,29 @@ a.button.light:hover {
 .messages li.error, .messages li.fatal, #manage-messages li.error, #manage-messages li.fatal {
 	background-color: #571D1B;
 }
+
+.paginator {
+	align: right;
+	list-style-type: none;
+	display: inline-block;
+	background-color: #D5D8DB;
+	border-radius: 8px;
+	
+	padding: 0.5em;
+}
+
+.paginator li {
+	border: 1px solid #999;
+	background-color: #EAEAEA;
+	width: 1em;
+	color: #666;
+	padding: 0.5em;
+	display: inline-block;
+	margin-right: 0.1em;
+	margin-bottom: 0.1em;
+}
+
+.paginator li a {
+	color: #333;
+	font-weight: bold;
+}

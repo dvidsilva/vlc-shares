@@ -12,11 +12,11 @@ class Application_Model_Cache extends Application_Model_Abstract {
 	/**
 	 * @var integer
 	 */
-	protected $created;
+	protected $validity;
 	
 	function __construct() {
 		$this->new = true;
-		$this->created = time();
+		$this->validity = time();
 	}
 	
 	/**
@@ -43,8 +43,8 @@ class Application_Model_Cache extends Application_Model_Abstract {
 	/**
 	 * @return the $created
 	 */
-	public function getCreated() {
-		return $this->created;
+	public function getValidity() {
+		return $this->validity;
 	}
 
 	/**
@@ -60,7 +60,7 @@ class Application_Model_Cache extends Application_Model_Abstract {
 	 */
 	public function isValid($timeLimit) {
 		//X_Debug::i("Check validity: isNew {$this->isNew()} - Created: {$this->getCreated()} - Limit: $timeLimit");
-		return ( !$this->isNew() && $this->getCreated() > $timeLimit );
+		return ( !$this->isNew() && $this->getValidity() > $timeLimit );
 	}
 
 	/**
@@ -103,8 +103,8 @@ class Application_Model_Cache extends Application_Model_Abstract {
 	 * @param $section the $section to set
 	 * @return Application_Model_Cache
 	 */
-	public function setCreated($created) {
-		$this->created = $created;
+	public function setValidity($created) {
+		$this->validity = $created;
 		return $this;
 	}
 	

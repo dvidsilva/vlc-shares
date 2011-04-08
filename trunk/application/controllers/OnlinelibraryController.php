@@ -27,8 +27,18 @@ class OnlinelibraryController extends X_Controller_Action
 
     public function indexAction()
     {
+    	
         $categories = Application_Model_VideosMapper::i()->fetchCategories();
-
+        
+        // PAGINATION
+        $page = $this->getRequest()->getParam('page', 1);
+        $paginatorHelper = $this->pluginLibrary->helpers()->paginator();
+        $pages = $paginatorHelper->getPages($categories);
+        $categories = $paginatorHelper->getPage($categories, $page);
+        $this->view->pages = $pages;
+		$this->view->page = $page;
+		// END PAGINATION
+		
         $this->view->hosters = array_merge(array('direct-url' => '*NONE*'), X_VlcShares_Plugins::helpers()->hoster()->getHosters());
         $this->view->categories = $categories;
         $this->view->bookmarkletsEnabled = ($this->pluginBookmarklets !== null ); 
@@ -210,6 +220,19 @@ class OnlinelibraryController extends X_Controller_Action
     			$this->_helper->redirector('index');
     		}
     	}
+    	
+    	
+        // PAGINATION
+        $page = $this->getRequest()->getParam('page', 1);
+        $paginatorHelper = $this->pluginLibrary->helpers()->paginator();
+        $pages = $paginatorHelper->getPages($videos);
+        $videos = $paginatorHelper->getPage($videos, $page);
+        $this->view->pages = $pages;
+		$this->view->page = $page;
+		// END PAGINATION
+    	
+    	
+    	
     	$this->view->category = $categoryName;
     	$this->view->videos = $videos;
     	

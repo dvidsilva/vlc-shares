@@ -152,6 +152,18 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 --);
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'paginator.perpage', 
+	'25',
+	'25',
+	'helpers',
+	0,
+	'config_helpers_paginator_perpage_label',
+	'config_helpers_paginator_perpage_desc',
+	NULL
+);
+
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'ffmpeg.enabled', 
 	'1',
 	'1',

@@ -16,12 +16,19 @@ class X_VlcShares_Plugins_Cache extends X_VlcShares_Plugins_Abstract {
 	public function __construct() {
 		
 		$this
+			->setPriority('gen_beforeInit')
 			->setPriority('gen_beforePageBuild', 100)
 			->setPriority('getIndexStatistics')
 			->setPriority('getIndexManageLinks');
 		
 	}	
 		
+	/**
+	 * Initialize cache helper
+	 */
+	public function gen_beforeInit(Zend_Controller_Action $controller) {
+		$this->helpers()->registerHelper('cache', new X_VlcShares_Plugins_Helper_Cache($this));
+	}
 	
 	/**
 	 * Retrieve core statistics
@@ -156,8 +163,7 @@ class X_VlcShares_Plugins_Cache extends X_VlcShares_Plugins_Abstract {
 		
 		$cacheEntry = new Application_Model_Cache();
 		Application_Model_CacheMapper::i()->fetchByUri($this->getCleanUri($controller), $cacheEntry);
-		// validity is in minutes, so validity * 60 = validity in seconds to compare to time()
-		if ( !$cacheEntry->isValid(time() - ((int) $this->config('validity', 60) * 60 ) ) ) {
+		if ( !$cacheEntry->isValid(time() ) ) {
 			
 			// no valid cache entry
 			X_Debug::i("Invalid cache entry. Is new? " . ($cacheEntry->isNew() ? 'yes' : 'no'));
@@ -247,7 +253,7 @@ class X_VlcShares_Plugins_Cache extends X_VlcShares_Plugins_Abstract {
 			Application_Model_CacheMapper::i()->fetchByUri($this->getCleanUri($controller), $cacheEntry);
 			$cacheEntry->setUri($this->getCleanUri($controller))
 				->setContent(serialize($list))
-				->setCreated(time());
+				->setCreated(time() + ($this->config('validity', 60) * 60 ));
 				
 			Application_Model_CacheMapper::i()->save($cacheEntry);
 				
@@ -278,11 +284,51 @@ class X_VlcShares_Plugins_Cache extends X_VlcShares_Plugins_Abstract {
 	
 	public function clearCache() {
 		// should works as a truncate
-		Application_Model_CacheMapper::i()->clearAfter(0);
+		Application_Model_CacheMapper::i()->clearAll();
 	}
 	
 	public function clearInvalid() {
-		Application_Model_CacheMapper::i()->clearAfter(time() - ((int) $this->config('validity', 60) * 60 ));
+		Application_Model_CacheMapper::i()->clearOutdated(time());
 	}
 	
+	/**
+	 * Store an item in cache manually for $validity time
+	 * @param string $key content key for retrieval
+	 * @param string $content
+	 * @param int $validity number of minutes entry will be valid
+	 * @return string
+	 */
+	public function storeItem($key, $content, $validity) {
+		$key = "manual:$key";
+		
+		$cacheEntry = new Application_Model_Cache();
+		
+		Application_Model_CacheMapper::i()->fetchByUri($key, $cacheEntry);
+		$cacheEntry->setUri($key)
+			->setContent($content)
+			->setCreated(time() + ($validity * 60));
+			
+		Application_Model_CacheMapper::i()->save($cacheEntry);
+		
+	}
+
+	/**
+	 * Retrieve an item from the cache using $key
+	 * @param string $key
+	 * @return string
+	 * @throws Exception if no valid item with $key found 
+	 */
+	public function retrieveItem($key) {
+		$key = "manual:$key";
+		
+		$cacheEntry = new Application_Model_Cache();
+		Application_Model_CacheMapper::i()->fetchByUri($key, $cacheEntry);
+		
+		if ( !$cacheEntry->isValid(time()) ) {
+			throw new Exception("Invalid cache key");
+		}
+		
+		return $cacheEntry->getContent();
+		
+	}
 }
