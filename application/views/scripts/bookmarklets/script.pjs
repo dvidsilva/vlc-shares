@@ -277,27 +277,29 @@ function vlcs_bkml_bootstrap() {
 		}
 		
 		for (var id in hosters) {
-			var pattern = hosters[id];
-			var regex = new XRegExp(pattern);
-			var result = jQuery(a).attr('href').match(regex); 
-			if ( result ) {
-				var videoId = null;
-				for (var part in result) {
-					if (part.substr(0, "ID".length) == "ID" ) {
-						if ( typeof(result[part]) != "undefined" ) {
-							videoId = result[part];
-							break;
+			try {
+				var pattern = hosters[id];
+				var regex = new XRegExp(pattern);
+				var result = jQuery(a).attr('href').match(regex); 
+				if ( result ) {
+					var videoId = null;
+					for (var part in result) {
+						if (part.substr(0, "ID".length) == "ID" ) {
+							if ( typeof(result[part]) != "undefined" ) {
+								videoId = result[part];
+								break;
+							}
 						}
 					}
+					if ( videoId == null ) {
+						alert("WTF, i can't find the videoId");
+						return;
+					} 
+					//vlcs_bkml_appendOne(a, id, videoId);
+					//found = true;
+					links.push({'link': a, 'hoster': id, 'id': videoId});
 				}
-				if ( videoId == null ) {
-					alert("WTF, i can't find the videoId");
-					return;
-				} 
-				//vlcs_bkml_appendOne(a, id, videoId);
-				//found = true;
-				links.push({'link': a, 'hoster': id, 'id': videoId});
-			}
+			} catch (e) { /* invalid a link */}
 		}
 	});
 	
