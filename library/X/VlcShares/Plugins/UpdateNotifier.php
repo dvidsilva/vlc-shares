@@ -300,7 +300,7 @@ class X_VlcShares_Plugins_UpdateNotifier extends X_VlcShares_Plugins_Abstract {
 		
 	}
 
-	protected function getLastPlugins() {
+	public function getLastPlugins() {
 		
 		// leggo il valore dell'ultima versione
 		
@@ -356,7 +356,8 @@ class X_VlcShares_Plugins_UpdateNotifier extends X_VlcShares_Plugins_Abstract {
 						'cMax' => (string) $version['cMax'],
 						'update' => (string) $version->update,
 						'download' => (string) $version->download,
-						'changelog' => (string) $version->changelog
+						'changelog' => (string) $version->changelog,
+						'description' => (string) $version->description,
 					);
 					
 					$pluginArray[] = $version;

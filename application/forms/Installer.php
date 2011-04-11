@@ -53,6 +53,7 @@ class Application_Form_Installer extends X_Form
         	'required' => false,
         	'label' => X_Env::_('installer_optionalplugins'),
         	'description' => X_Env::_('installer_optionalplugins_desc'),
+        	'escape' => false,
         ));
         
         

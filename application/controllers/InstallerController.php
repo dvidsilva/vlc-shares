@@ -163,14 +163,29 @@ class InstallerController extends X_Controller_Action
     	
     	$plugins = $this->getRequest()->getParam('plugins', array());
     	
-    	ini_set('max_execution_time', 0);
+    	//ini_set('max_execution_time', 0);
+    	
     	ignore_user_abort(true);
     	
     	if ( is_array($plugins) ) {
     		
+    		/* @var $pluginInstaller X_VlcShares_Plugins_PluginInstaller */
+    		$pluginInstaller = X_VlcShares_Plugins::broker()->getPlugins('plugininstaller');
+    		
     		foreach ( $plugins as $plugin ) {
     			
+    			// allow 30 seconds for each plugin
+    			set_time_limit(30);
+    			
+    			try {
+    				$pluginInstaller->installPlugin($plugin, true);
+    				$this->_helper->flashMessenger(array('type' => 'success', 'text' => X_Env::_('plugin_install_done') . ": $plugin"));
+    			} catch (Exception $e) {
+    				$this->_helper->flashMessenger(array('text' => X_Env::_('plugin_err_installerror').": ".$e->getMessage(), 'type' => 'error'));
+    			}
+    			
     			// download the plugin file
+    			/*
     			$http = new Zend_Http_Client($plugin);
     			$http->setStream(true);
     			
@@ -179,6 +194,8 @@ class InstallerController extends X_Controller_Action
     			if ( $this->_installPlugin($response->getStreamName()) ) {
     				$this->_helper->flashMessenger(array('type' => 'success', 'text' => X_Env::_('plugin_install_done') . ": $plugin"));
     			}
+    			*/
+    			
     		}
     	}
     	
@@ -242,59 +259,20 @@ class InstallerController extends X_Controller_Action
 		
 		try {
 		
-			$client = new Zend_Http_Client('http://vlc-shares.googlecode.com/svn/updates/plugins/INDEX.xml', array(
-				'maxredirects'	=> 10,
-				'timeout'		=> 10
-			));
+			/* @var $updateNotifier X_VlcShares_Plugins_UpdateNotifier */
+			$updateNotifier = X_VlcShares_Plugins::broker()->getPlugins('updatenotifier');
+			$updateNotifier->clearLastCheck();
 			
-			$client->setHeaders(array(
-				'User-Agent: vlc-shares/'.X_VlcShares::VERSION.' firstrunsetup/'.X_VlcShares::VERSION
-			));
-			
-			$response = $client->request();
-			
-			if ( $response->isError() ) {
-				throw new Exception('Invalid manifest');
-			}
-			
-			$xml = new SimpleXMLElement($response->getBody());
-						
-			/*
-			<plugins>
-				<plugin key="PLUGINKEY">
-					<version name="VERSION" type="TYPE" cMin="CORE_MINIMAL" cMax="CORE_MAXIMAL">
-						<update></update>
-						<download></download>
-						<changelog>
-							<![CDATA[
-							]]>
-						</changelog>
-					</version>
-					...
-				</plugin>
-				...
-			</plugins>
-			 */
+			$plugins = $updateNotifier->getLastPlugins();
 	
 			$return = array();
 			
-			foreach ($xml->plugin as $plugin) {
-				
-				$key = (string) $plugin['key'];
+			foreach ($plugins as $key => $versions) {
 				
 				// if a plugin key is already installer, skip it
 				if ( X_VlcShares_Plugins::broker()->isRegistered($key) ) continue;
 				
-				foreach ($plugin->version as $version) {
-					$version = array(
-						'version' => (string)  $version['name'],
-						'type' => (string)  $version['type'],
-						'cMin' => (string) $version['cMin'],
-						'cMax' => (string) $version['cMax'],
-						'update' => (string) $version->update,
-						'download' => (string) $version->download,
-						'changelog' => (string) $version->changelog
-					);
+				foreach ($versions as $version) {
 					
 					// only stable version allowed
 					if ( $version['type'] != 'stable' && $version['type'] != '' ) {
@@ -308,7 +286,7 @@ class InstallerController extends X_Controller_Action
 						continue;
 					}
 					
-					$return[$version['download']] = $key;
+					$return[$version['download']] = "<b>$key</b>" . ($version['description'] != '' ? " - <span class=\"installer-plugin-description\">{$version['description']}</span>" : '');
 					
 					// doesn't continue in versions traversal
 					break;
@@ -325,116 +303,6 @@ class InstallerController extends X_Controller_Action
 		    	
     	
     }
-    
-	private function _installPlugin($filepath) {
-
-		try {
-			// unzip and manifest parse
-			$egg = X_Egg::factory($filepath, APPLICATION_PATH . '/../', APPLICATION_PATH . '/../data/plugin/tmp/', true);
-			
-			$pluginKey = $egg->getKey();
-			
-			// first we must check if key already exists in the db
-			$plugin = new Application_Model_Plugin();
-			Application_Model_PluginsMapper::i()->fetchByKey($pluginKey, $plugin);
-			if ( $plugin->getId() !== null ) {
-				throw new Exception(X_Env::_('plugin_err_installerror_keyexists'). ": $pluginKey");
-			}
-
-			// time to check if plugin support this vlc-shares version
-			$vFrom = $egg->getCompatibilityFrom();
-			$vTo = $egg->getCompatibilityTo();
-			if ( version_compare(X_VlcShares::VERSION_CLEAN, $vFrom, '<')
-					|| ( $vTo !== null && version_compare(X_VlcShares::VERSION_CLEAN, $vTo, '>=')) ) {
-						
-				throw new Exception(X_Env::_('plugin_err_installerror_unsupported'). ": $vFrom - $vTo");
-			}
-			
-			// copy the files: first check if some file exists...
-			$toBeCopied = array();
-			foreach ($egg->getFiles() as $file) {
-				/* @var $file X_Egg_File */
-				if ( !false && file_exists($file->getDestination()) ) {
-					throw new Exception(X_Env::_('plugin_err_installerror_fileexists'). ": {$file->getDestination()}");
-				}
-				
-				if ( !file_exists($file->getSource())) {
-					throw new Exception(X_Env::_('plugin_err_installerror_sourcenotexists'). ": {$file->getSource()}");
-				}
-				
-				$toBeCopied[] = array(
-					'src' => $file->getSource(),
-					'dest' => $file->getDestination() 
-				);
-			}
-			
-			// before copy act, i must be sure to be able to revert changes
-			$plugin = new Application_Model_Plugin();
-			$plugin->setLabel($egg->getLabel())
-				->setKey($pluginKey)
-				->setDescription($egg->getDescription())
-				->setFile($egg->getFile())
-				->setClass($egg->getClass())
-				->setType(Application_Model_Plugin::USER)
-				->setVersion($egg->getVersion());
-				
-			Application_Model_PluginsMapper::i()->save($plugin);
-			
-			// so i must copy uninstall information inside a uninstall dir in data
-			
-			$dest = APPLICATION_PATH . '/../data/plugin/_uninstall/' . $pluginKey;
-			// i have to create the directory
-			if ( !mkdir($dest, 0777, true) ) {
-				throw new Exception(X_Env::_('plugin_err_installerror_uninstalldircreation').": $dest");
-			}
-			if ( !copy($egg->getManifestFile(), "$dest/manifest.xml") ) {
-				throw new Exception(X_Env::_('plugin_err_installerror_uninstallmanifestcopy').": ".$egg->getManifestFile(). " -> $dest/manifest.xml");
-			}
-			
-			$uninstallSql = $egg->getUninstallSQL();
-			if ( $uninstallSql !== null && file_exists($uninstallSql) ) {
-				if ( !copy($uninstallSql, "$dest/uninstall.sql") ) {
-					throw new Exception(X_Env::_('plugin_err_installerror_uninstallsqlcopy').": $dest");
-				}
-			}
-			
-			// ... then copy
-			foreach ($toBeCopied as $copyInfo) {
-				if ( !file_exists(dirname($copyInfo['dest'])) ) {
-					@mkdir(dirname($copyInfo['dest']), 0777, true);
-				}
-				if ( !copy($copyInfo['src'], $copyInfo['dest']) ) {
-					$this->_helper->flashMessenger(array('text' => X_Env::_('plugin_err_installerror_copyerror').": <br/>".$copyInfo['src'].'<br/>'.$copyInfo['dest'], 'type' => 'error'));
-				}
-			}
-			
-			// change database
-			$installSql = $egg->getInstallSQL();
-			if ( $installSql !== null && file_exists($installSql) ) {
-		    	try {
-		    		$dataSql = file_get_contents($installSql);
-		    		if ( trim($dataSql) !== '' ) {
-						$bootstrap = $this->getFrontController()->getParam('bootstrap');
-				    	$db = $bootstrap->getResource('db'); 
-				    	$db->getConnection()->exec($dataSql);
-		    		}
-		    	} catch ( Exception $e ) {
-		    		X_Debug::e("DB Error while installind: {$e->getMessage()}");
-		    		$this->_helper->flashMessenger(X_Env::_('plugin_err_installerror_sqlerror').": {$e->getMessage()}");
-		    	}
-			}
-			$egg->cleanTmp();
-			unlink($filepath);
-			return true;
-		} catch ( Exception $e) {
-			if ( $egg !== null ) $egg->cleanTmp();
-			// delete the uploaded file
-			unlink($filepath);
-			$this->_helper->flashMessenger(array('text' => X_Env::_('plugin_err_installerror').": ".$e->getMessage(), 'type' => 'error'));
-			return false;
-		}
-	}
-    
     
 }
 
