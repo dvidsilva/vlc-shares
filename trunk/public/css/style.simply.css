@@ -743,3 +743,7 @@ a.button.light:hover {
 	color: #333;
 	font-weight: bold;
 }
+
+.installer-plugin-description {
+	font-style: italic;
+}

@@ -82,6 +82,51 @@ $this->layout()->breadcrumb = $breadcrumb
 					</table>
 				</div>
 			</div>
+			<?php if ( is_array($this->installablePlugins) ) : ?>
+			<div class="box">
+				<div class="header">
+					<span class="title"><?php echo X_Env::_('plugin_index_installlisttitle'); ?></span>
+				</div>
+				<div class="content">
+					<table id="plugins-table" class="table">
+						<tr class="header">
+							<th><?php echo X_Env::_('plugin_index_installlist_key'); ?></th>
+							<th width="75%"><?php echo X_Env::_('plugin_index_installlist_description'); ?></th>
+							<th><?php echo X_Env::_('plugin_index_installlist_version'); ?></th>
+							<th width="100px"><?php echo X_Env::_('table_options'); ?></th>
+						</tr>
+						<?php $i = 0; foreach ($this->installablePlugins as $key => $pluginInfo): ?>
+							<tr class="<?php echo $i % 2 ? 'alt' : ''; ?>">
+								<td nowrap="nowrap">
+									<b><?php echo $key; ?></b>
+								</td>
+								<td>
+									<i><?php echo $pluginInfo['description'];?></i>
+								</td>
+								<td nowrap="nowrap"><?php echo $pluginInfo['version']; ?> (<?php echo ($pluginInfo['type'] == '' ? 'stable' : $pluginInfo['type']); ?>)</td>
+								<td nowrap="nowrap">
+									<ul class="inline-menu">
+										<li class="ui-state-default">
+											<a class="ui-icon ui-icon-plusthick" title="<?php echo X_Env::_('plugin_action_install')?>"
+												href="<?php echo $this->url(
+													array(
+														'controller' => 'plugin',
+														'action'	 => 'iconfirm',
+														'key'		 => $key
+													), 'default', true
+												); ?>">
+												<?php echo X_Env::_('plugin_action_install')?>
+											</a>
+										</li>
+										<?php echo X_Env::_('plugin_action_install')?>
+									</ul>
+								</td>
+							</tr>
+						<?php $i++; endforeach; ?>
+					</table>
+				</div>
+			</div>			
+			<?php endif; ?>
 		</div>
 	</div>
 	<div class="column">
