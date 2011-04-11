@@ -306,6 +306,11 @@ class X_VlcShares_Plugins_JDownloader extends X_VlcShares_Plugins_Abstract imple
 	 */
 	public function getModeItems($provider, $location, Zend_Controller_Action $controller) {
 
+		// if provider is FileSystem, JDownload isn't needed for sure
+		if ( X_VlcShares_Plugins::broker()->getPluginClass($provider) == 'X_VlcShares_Plugins_FileSystem' ) {
+			return;
+		}
+		
 		try {
 		
 			/* @var $megavideoHelper X_VlcShares_Plugins_Helper_Megavideo */
@@ -331,7 +336,54 @@ class X_VlcShares_Plugins_JDownloader extends X_VlcShares_Plugins_Abstract imple
 			return new X_Page_ItemList_PItem(array($link));
 				
 		} catch (Exception $e) {
-			X_Debug::i("Location is not provided by Megavideo Helper");
+			
+			// this use the newer hoster api
+			try {
+				
+				switch ($provider) {
+					// special cases
+					
+					case 'onlinelibrary':
+						// hoster/id is stored inside db
+						$exploded = explode('/', $location);
+						$exploded = array_pop($exploded);
+						$video = new Application_Model_Video();
+						Application_Model_VideosMapper::i()->find($exploded, $video);
+						$hoster = $video->getHoster();
+						$videoId = $video->getIdVideo();
+						break;
+						
+						
+					default:
+						// we try to get information by location decoding
+						// many plugins use a /-divided location with last param in the format of HOSTER:VIDEOID
+						$exploded = explode('/', $location);
+						$exploded = array_pop($exploded);
+						$exploded = explode(':', $exploded, 2);
+						
+						@list($hoster, $videoId) = $exploded;
+						break;
+						
+				}
+				
+			
+				
+				// lets search a valid hoster
+				$this->helpers()->hoster()->getHoster($hoster);
+				
+				$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_jdownloader_downloadlink'));
+				$link->setIcon('/images/jdownloader/logo.png')
+					->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+					->setLink(array(
+							'action'	=>	'selection',
+							'pid'		=>	$this->getId()
+						), 'default', false);
+		
+				return new X_Page_ItemList_PItem(array($link));
+				
+			} catch (Exception $e) {
+				X_Debug::i("Location is not provided by a valid plugin/hoster");
+			}
 		}
 	}
 	
@@ -429,9 +481,62 @@ class X_VlcShares_Plugins_JDownloader extends X_VlcShares_Plugins_Abstract imple
 				}
 			}
 			
+			$url = null;
+			
+			try {
+				$url = "http://www.megavideo.com/?v=".$megavideo->getId();
+			} catch (Exception $e) {
+				
+				// TODO please, rewrite this piece of code
+				// it's really a shame
+				
+				// let's try to get the url from the hoster
+				try {
+
+					switch ($provider) {
+						// special cases
+						
+						case 'onlinelibrary':
+							// hoster/id is stored inside db
+							$exploded = explode('/', $location);
+							$exploded = array_pop($exploded);
+							$video = new Application_Model_Video();
+							Application_Model_VideosMapper::i()->find($exploded, $video);
+							$hoster = $video->getHoster();
+							$videoId = $video->getIdVideo();
+							break;
+							
+							
+						default:
+							// we try to get information by location decoding
+							// many plugins use a /-divided location with last param in the format of HOSTER:VIDEOID
+							$exploded = explode('/', $location);
+							$exploded = array_pop($exploded);
+							$exploded = explode(':', $exploded, 2);
+							
+							@list($hoster, $videoId) = $exploded;
+							break;
+							
+					}
+					
+					// lets search a valid hoster
+					$url = $this->helpers()->hoster()->getHoster($hoster)->getHosterUrl($videoId);
+					
+				} catch (Exception $e) {
+					// simply: provider isn't compatible
+				}
+				
+			}
+			
 			try {
 				
-				$jdownloader->addLink("http://www.megavideo.com/?v=".$megavideo->getId());
+				if ( $url === null ) {
+					throw new Exception();
+				}
+				
+				X_Debug::i("Appending {{$url}} to the queue");
+				
+				$jdownloader->addLink($url);
 				$link = new X_Page_Item_PItem($this->getId().'-added', X_Env::_('p_jdownloader_selection_added'));
 				
 			} catch (Zend_Http_Client_Adapter_Exception $e) {
