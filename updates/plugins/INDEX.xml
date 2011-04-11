@@ -153,14 +153,6 @@
 			]]></changelog>
 		</version>
 	</plugin>
-	<plugin key="spaintv">
-		<version name="0.1" type="stable" cMin="0.5.3" cMax="0.6">
-			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_spaintv_0.1.zip</download>
-			<changelog><![CDATA[
-			]]></changelog>
-		</version>
-	</plugin>
 	<plugin key="filmstream">
 		<version name="0.1.1" type="stable" cMin="0.5.3" cMax="0.6">
 			<update />
@@ -179,4 +171,23 @@
 			]]></changelog>
 		</version>
 	</plugin>
+	<!-- Mirrors -->
+	<plugin key="spaintv">
+		<version name="0.2" type="stable" cMin="0.5.3" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_spaintv_0.2.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+		</version>
+	</plugin>
+	<plugin key="spainradio">
+		<version name="0.2" type="stable" cMin="0.5.3" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_spainradio_0.2.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+		</version>
+	</plugin>
+
+
 </plugins>
