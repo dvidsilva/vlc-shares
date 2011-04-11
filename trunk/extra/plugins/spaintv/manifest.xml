@@ -3,7 +3,7 @@
 	<metadata>
 		<label>p_spaintv_plglabel</label>
 		<description>p_spaintv_plgdesc</description>
-		<version>0.1</version>
+		<version>0.2</version>
 		<status>stable</status>
 		<key>spaintv</key>
 		<file>X/VlcShares/Plugins/Spaintv.php</file>
@@ -32,6 +32,14 @@
 			<images>
 				<spaintv>
 					<file>logo.jpg</file>
+					<file>CanalSur.png</file>
+					<file>ExtremaduraTV.png</file>
+					<file>PopularTV.png</file>
+					<file>TVE24.png</file>
+					<file>TVValenciai.png</file>
+					<file>A3Noticias.png</file>
+					<file>BarcelonaTV.png</file>
+					<file>Canal9Valencia.png</file>
 				</spaintv>
 			</images>
 		</public>

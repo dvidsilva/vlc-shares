@@ -8,7 +8,7 @@
 #     															#
 ########## Spaintv Plugin ####################################
 
-Spaintv v0.1
+Spaintv v0.2
 Created by Miguel Angel Pescador Santirso 
 mpescadorsantirso@gmail.com
 
@@ -23,6 +23,9 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.2 ***
+ - Added thumbnails to channels for WiiMC.
 
 *** 0.1 ***
  - Initial version

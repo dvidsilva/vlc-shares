@@ -7,8 +7,8 @@
  */
 class X_VlcShares_Plugins_Spaintv extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.1';
-	const VERSION_CLEAN = '0.1';
+	const VERSION = '0.2';
+	const VERSION_CLEAN = '0.2';
 
 	const C_TVE24 = 'http://24h.rtve.stream.flumotion.com/rtve/24h.flv.m3u';
 	const C_A3Noticias = 'http://199.93.35.37/antena3wmlive-live/canal24h?MSWMExt=.asf';
@@ -30,7 +30,6 @@ class X_VlcShares_Plugins_Spaintv extends X_VlcShares_Plugins_Abstract implement
 		'TV Valencia Internacional' => 'TVValenciai',
 		'Popular TV' => 'PopularTV',
 	);
-	
 	
 	/**
 	 * @var Zend_Http_CookieJar
@@ -137,7 +136,8 @@ class X_VlcShares_Plugins_Spaintv extends X_VlcShares_Plugins_Abstract implement
 				->setLink(array(
 					'l'	=>	X_Env::encode($url),
 					'action' => 'mode',
-				), 'default', false);
+				), 'default', false)
+				->setThumbnail('/vlc-shares/public/images/spaintv/'.$url.'.png');//nueva incorporacion thumbnail.
 				
 			$items->append($item);
 			

@@ -8,7 +8,7 @@
 #     															#
 ########## SpainRadio Plugin ####################################
 
-Spainradio v0.1
+Spainradio v0.2
 Created by Miguel Angel Pescador Santirso 
 mpescadorsantirso@gmail.com
 
@@ -23,6 +23,10 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.2 ***
+ - Added thumbnails for WiiMC.
+ - Add new Radio Channel ("RNE Radio Exterior de España").
 
 *** 0.1 ***
  - Initial version
