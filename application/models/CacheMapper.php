@@ -29,6 +29,7 @@ class Application_Model_CacheMapper extends Application_Model_AbstractMapper {
 			'content'		=> $model->getContent(),
 			'cType'			=> $model->getCType(),
 			'validity'		=> $model->getValidity(),
+			'created'		=> $model->getCreated(),
 		);
 
 		if ($model->isNew()) {
@@ -61,6 +62,7 @@ class Application_Model_CacheMapper extends Application_Model_AbstractMapper {
 			->setContent($row->content)
 			->setCType($row->cType)
 			->setValidity($row->validity)
+			->setCreated($row->created)
 			->setNew(false);
 	}
 	

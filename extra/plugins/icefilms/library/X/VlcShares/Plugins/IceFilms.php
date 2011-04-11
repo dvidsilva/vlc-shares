@@ -8,8 +8,8 @@
  */
 class X_VlcShares_Plugins_IceFilms extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.1';
-	const VERSION_CLEAN = '0.1';
+	const VERSION = '0.2';
+	const VERSION_CLEAN = '0.2';
 	
 	const SORT_MOVIES = 'mov';
 	const SORT_TVSHOWS = 'tvs';
@@ -443,14 +443,41 @@ class X_VlcShares_Plugins_IceFilms extends X_VlcShares_Plugins_Abstract implemen
 			$url .= "&page=$page";
 		}
 		*/
-		
-		$htmlString = $this->_loadPage($url);
+		// cache validity for the request = 15 minutes
+		$htmlString = $this->_loadPage($url, 15);
 
 		
 		$matches = array();
 		if ( preg_match_all($pattern, $htmlString, $matches, PREG_SET_ORDER) ) {
 			X_Debug::i("Threads found: ".count($matches));
-			X_Debug::i("Threads: ".var_export($matches, true));
+			//X_Debug::i("Threads: ".var_export($matches, true));
+			
+			// check for next page before match overwrite
+			$hasNext = $this->helpers()->paginator()->hasNext($matches, $page);
+			$pageCount = $this->helpers()->paginator()->getPages($matches);
+			
+			
+			if ( $this->helpers()->paginator()->hasPrevious($matches, $page) ) {
+
+				$item = new X_Page_Item_PItem('previous-page', X_Env::_('previouspage', $page - 1, $pageCount ));
+				$tmpPage = $page - 1;
+				$item//->setIcon('/images/icons/folder_32.png')
+					->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+					->setCustom(__CLASS__.':location', "$sortType/$subType/$tmpPage")
+					->setLink(array(
+						'l'	=>	X_Env::encode("$sortType/$subType/$tmpPage")
+					), 'default', false);
+					
+				if ( APPLICATION_ENV == 'development' ) {
+					$item->setDescription("$sortType/$subType/$tmpPage");
+				}
+				
+				$items->append($item);
+				
+			}
+			
+			// reduce the matches for this items only
+			$matches = $this->helpers()->paginator()->getPage($matches, $page);
 			
 			foreach ($matches as $thread) {
 				
@@ -478,6 +505,27 @@ class X_VlcShares_Plugins_IceFilms extends X_VlcShares_Plugins_Abstract implemen
 				$items->append($item);
 				
 			}
+			
+			if ( $hasNext ) {
+
+				$item = new X_Page_Item_PItem('next-page', X_Env::_('nextpage', $page + 1, $pageCount));
+				$tmpPage = $page + 1;
+				$item//->setIcon('/images/icons/folder_32.png')
+					->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+					->setCustom(__CLASS__.':location', "$sortType/$subType/$tmpPage")
+					->setLink(array(
+						'l'	=>	X_Env::encode("$sortType/$subType/$tmpPage")
+					), 'default', false);
+					
+				if ( APPLICATION_ENV == 'development' ) {
+					$item->setDescription("$sortType/$subType/$tmpPage");
+				}
+				
+				$items->append($item);
+				
+			}
+			
+			
 			
 		} else {
 			X_Debug::e("Regex failed {{$pattern}}");
@@ -592,9 +640,24 @@ class X_VlcShares_Plugins_IceFilms extends X_VlcShares_Plugins_Abstract implemen
 
 	}
 	
-	
-	private function _loadPage($uri) {
+	/**
+	 * Load an $uri performing an http request (or from cache if possible/allowed)
+	 */
+	private function _loadPage($uri, $validityCache = 0) {
 
+		if ( $validityCache > 0 ) {
+			if ( X_VlcShares_Plugins::broker()->isRegistered('cache') ) {
+				/* @var $cachePlugin X_VlcShares_Plugins_Cache */
+				$cachePlugin = X_VlcShares_Plugins::broker()->getPlugins('cache');
+			}
+			try {
+				X_Debug::i("Retrieving cache entry for {{$uri}}");
+				return $cachePlugin->retrieveItem($uri);
+			} catch (Exception $e) {
+				X_Debug::i("No valid cache entry for $uri");
+			}
+		}
+		
 		X_Debug::i("Loading page $uri");
 		
 		$http = new Zend_Http_Client($uri, array(
@@ -610,6 +673,11 @@ class X_VlcShares_Plugins_IceFilms extends X_VlcShares_Plugins_Abstract implemen
 		
 		$response = $http->request();
 		$htmlString = $response->getBody();
+
+		if ( $validityCache > 0 && $cachePlugin ) {
+			X_Debug::i("Caching page {{$uri}} with validity {{$validityCache}}");
+			$cachePlugin->storeItem($uri, $htmlString, (int) $validityCache);
+		}
 		
 		return $htmlString;
 	}

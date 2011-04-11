@@ -253,7 +253,7 @@ class X_VlcShares_Plugins_Cache extends X_VlcShares_Plugins_Abstract {
 			Application_Model_CacheMapper::i()->fetchByUri($this->getCleanUri($controller), $cacheEntry);
 			$cacheEntry->setUri($this->getCleanUri($controller))
 				->setContent(serialize($list))
-				->setCreated(time() + ($this->config('validity', 60) * 60 ));
+				->setValidity(time() + ($this->config('validity', 60) * 60 ));
 				
 			Application_Model_CacheMapper::i()->save($cacheEntry);
 				
@@ -306,7 +306,8 @@ class X_VlcShares_Plugins_Cache extends X_VlcShares_Plugins_Abstract {
 		Application_Model_CacheMapper::i()->fetchByUri($key, $cacheEntry);
 		$cacheEntry->setUri($key)
 			->setContent($content)
-			->setCreated(time() + ($validity * 60));
+			->setCreated(time())
+			->setValidity(time() + ($validity * 60));
 			
 		Application_Model_CacheMapper::i()->save($cacheEntry);
 		

@@ -3,13 +3,13 @@
 	<metadata>
 		<label>p_icefilms_plglabel</label>
 		<description>p_icefilms_plgdesc</description>
-		<version>0.1</version>
+		<version>0.2</version>
 		<status>stable</status>
 		<key>icefilms</key>
 		<file>X/VlcShares/Plugins/IceFilms.php</file>
 		<class>X_VlcShares_Plugins_IceFilms</class>
 		<compatibility>
-			<from>0.5.3</from>
+			<from>0.5.4</from>
 			<to>0.6</to>
 		</compatibility>
 	</metadata>
