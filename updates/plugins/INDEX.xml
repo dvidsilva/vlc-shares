@@ -6,6 +6,7 @@
 			<download>http://vlc-shares.googlecode.com/files/plugin_youtube_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
+			<description><![CDATA[Allow to watch videos from Youtube (closed caption supported)]]></description>
 		</version>
 		
 		<!-- version 0.1.3 for 0.5.3 --> 
@@ -16,6 +17,7 @@
 			*** 0.1.3 ***
 			 - Fix fetchFormatsNOAPI for new videos
 			]]></changelog>
+			<description><![CDATA[Allow to watch videos from Youtube (closed caption supported)]]></description>
 		</version>
 	</plugin>
 	<plugin key="megavideo">
@@ -27,6 +29,7 @@
 			 - new Megaupload Helper
 			 - replaced megavideo helper with megaupload helper
 			]]></changelog>
+			<description><![CDATA[Allow to watch videos from Megavideo and Megaupload (premium account supported)]]></description>
 		</version>
 	</plugin>
 	<plugin key="allsp">
@@ -38,6 +41,7 @@
 			 - Moved to Extra
 			 - Plugin key changed from southpark to allsp
 			]]></changelog>
+			<description><![CDATA[Watch South Park videos from AllSp.com]]></description>
 		</version>
 	</plugin>
 	<plugin key="animedb">
@@ -50,6 +54,7 @@
 			 - Password field in the configuration form is type="password"
 			 - Cookies resetted on configs change
 			]]></changelog>
+			<description><![CDATA[Allow to watch videos from AnimeDb.tv forum (italian)]]></description>
 		</version>
 	</plugin>
 	<plugin key="animeftw">
@@ -60,6 +65,7 @@
 			*** 0.2.2 ***
 			 - Workaround for wrong config in windows auto installer: moved login page to standard http. This will not require php_openssl enabled for windows users.
 			]]></changelog>
+			<description><![CDATA[Allow to watch videos from AnimeFTW.tv (english)]]></description>
 		</version>
 	</plugin>
 	<plugin key="animeland">
@@ -70,6 +76,7 @@
 			*** 0.2 ***
 			 - Moved to Extra
 			]]></changelog>
+			<description><![CDATA[Allow to watch videos from AnimeLand.it (italian)]]></description>
 		</version>
 	</plugin>
 	<plugin key="dbforever">
@@ -80,6 +87,7 @@
 			*** 0.2 ***
 			 - Moved to Extra
 			]]></changelog>
+			<description><![CDATA[Allow to watch videos from DBForever.net (italian)]]></description>
 		</version>
 	</plugin>
 	<plugin key="jdownloader">
@@ -88,6 +96,7 @@
 			<download>http://vlc-shares.googlecode.com/files/plugin_jdownloader_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
+			<description><![CDATA[Integrate JDownloader inside VLCShares]]></description>
 		</version>
 	</plugin>
 	<plugin key="jigoku">
@@ -98,6 +107,7 @@
 			*** 0.1.1 ***
 			 - Compatibility with VLCShares 0.5.3
 			]]></changelog>
+			<description><![CDATA[Allow to watch videos from Jigoku.it (italian forum with sub-ita anime)]]></description>
 		</version>
 	</plugin>
 	<plugin key="narutoget">
@@ -108,6 +118,7 @@
 			*** 0.2 ***
 			 - Moved to Extra
 			]]></changelog>
+			<description><![CDATA[Allow to watch videos from NarutoGet.com (english)]]></description>
 		</version>
 	</plugin>
 	<plugin key="opfitalia">
@@ -119,6 +130,7 @@
 			 - Compatibility with VLCShares 0.5.3
 			 - Form password is password type
 			]]></changelog>
+			<description><![CDATA[Allow to watch videos from OPFItalia.net (italian)]]></description>
 		</version>
 	</plugin>
 	<plugin key="direttarai">
@@ -127,6 +139,7 @@
 			<download>http://vlc-shares.googlecode.com/files/plugin_direttarai_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
+			<description><![CDATA[Allow to watch Rai live channels (italian TV)]]></description>
 		</version>
 	</plugin>
 	<plugin key="gogocinema">
@@ -135,6 +148,7 @@
 			<download>http://vlc-shares.googlecode.com/files/plugin_gogocinema_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
+			<description><![CDATA[Allow to watch videos from GoGoCinema.com (english)]]></description>
 		</version>
 	</plugin>
 	<plugin key="fsthumbs">
@@ -143,6 +157,7 @@
 			<download>http://vlc-shares.googlecode.com/files/plugin_fsthumbs_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
+			<description><![CDATA[Create and show thumbnails of video in shared folders while browsing]]></description>
 		</version>
 	</plugin>
 	<plugin key="icefilms">
@@ -151,6 +166,7 @@
 			<download>http://vlc-shares.googlecode.com/files/plugin_icefilms_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
+			<description><![CDATA[Allow to watch videos from IceFilms.com (english)]]></description>
 		</version>
 	</plugin>
 	<plugin key="filmstream">
@@ -161,6 +177,7 @@
 *** 0.1.1 ***
  - Fix to films index
 			]]></changelog>
+			<description><![CDATA[Allow to watch videos from Film-Stream.tv (italian)]]></description>
 		</version>
 	</plugin>
 	<plugin key="audioSwitcher">
@@ -169,6 +186,7 @@
 			<download>http://vlc-shares.googlecode.com/files/plugin_audioSwitcher_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
+			<description><![CDATA[Allow to switch audio track while transcoding video]]></description>
 		</version>
 	</plugin>
 	<!-- Mirrors -->
@@ -178,6 +196,7 @@
 			<download>http://vlc-shares.googlecode.com/files/plugin_spaintv_0.2.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
+			<description><![CDATA[Allow to watch Spain TV live channels]]></description>
 		</version>
 	</plugin>
 	<plugin key="spainradio">
@@ -186,8 +205,7 @@
 			<download>http://vlc-shares.googlecode.com/files/plugin_spainradio_0.2.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
+			<description><![CDATA[Allow to listen Spain Radio live channels]]></description>
 		</version>
 	</plugin>
-
-
 </plugins>
