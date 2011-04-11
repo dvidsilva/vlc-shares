@@ -7,8 +7,8 @@
  */
 class X_VlcShares_Plugins_Spainradio extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.1';
-	const VERSION_CLEAN = '0.1';
+	const VERSION = '0.2';
+	const VERSION_CLEAN = '0.2';
 
 	const C_40 = 'http://194.169.201.177:8085/live3.mp3';
 	const C_C100 = 'http://cadena100.cope.stream.flumotion.com/cope/cadena100.asf.asx';
@@ -20,7 +20,8 @@ class X_VlcShares_Plugins_Spainradio extends X_VlcShares_Plugins_Abstract implem
 	const C_RNE4 = 'http://radio1.rtve.stream.flumotion.com/rtve/radio4.mp3.m3u';
 	const C_RNE5 = 'http://radio1.rtve.stream.flumotion.com/rtve/radio5.mp3.m3u';
 	const C_RNEClasica = 'http://radioclasica.rtve.stream.flumotion.com/rtve/radioclasica.mp3.m3u';
-	
+	const C_RNEExterior = 'http://radioexterior.rtve.stream.flumotion.com/rtve/radioexterior.mp3.m3u';
+
 	protected $channels = array(
 		'Los 40 Principales' => '40',
 		'Cadena 100' => 'C100',
@@ -32,8 +33,7 @@ class X_VlcShares_Plugins_Spainradio extends X_VlcShares_Plugins_Abstract implem
 		'RNE Radio 4' => 'RNE4',
 		'RNE Radio 5' => 'RNE5',
 		'RNE Clasica' => 'RNEClasica',
-
-		'Popular TV' => 'PopularTV',
+		'RNE Exterior' => 'RNEExterior',
 	);
 	
 	
@@ -142,7 +142,8 @@ class X_VlcShares_Plugins_Spainradio extends X_VlcShares_Plugins_Abstract implem
 				->setLink(array(
 					'l'	=>	X_Env::encode($url),
 					'action' => 'mode',
-				), 'default', false);
+				), 'default', false)
+				->setThumbnail('/vlc-shares/public/images/spainradio/'.$url.'.png');//new a thumbnail.
 				
 			$items->append($item);
 			

@@ -3,7 +3,7 @@
 	<metadata>
 		<label>p_spainradio_plglabel</label>
 		<description>p_spainradio_plgdesc</description>
-		<version>0.1</version>
+		<version>0.2</version>
 		<status>stable</status>
 		<key>spainradio</key>
 		<file>X/VlcShares/Plugins/Spainradio.php</file>
@@ -32,6 +32,17 @@
 			<images>
 				<spainradio>
 					<file>logo.jpg</file>
+					<file>40.png</file>
+					<file>C100.png</file>
+					<file>CadenaDial.png</file>
+					<file>EuropaFM.png</file>
+					<file>M80.png</file>
+					<file>RNE1.png</file>
+					<file>RNE3.png</file>
+					<file>RNE4.png</file>
+					<file>RNE5.png</file>
+					<file>RNEClasica.png</file>
+					<file>RNEExterior.png</file>
 				</spainradio>
 			</images>
 		</public>
