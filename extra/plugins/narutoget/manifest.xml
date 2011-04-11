@@ -33,6 +33,7 @@
 		<languages>
 			<file>X_VlcShares_Plugins_NarutoGet.en_GB.ini</file>
 			<file>X_VlcShares_Plugins_NarutoGet.it_IT.ini</file>
+			<file>X_VlcShares_Plugins_NarutoGet.es_ES.ini</file>
 		</languages>
 	</files>
 	<database>

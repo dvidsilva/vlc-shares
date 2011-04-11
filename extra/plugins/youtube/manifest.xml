@@ -108,6 +108,7 @@
 		<languages>
 			<file>X_VlcShares_Plugins_Youtube.en_GB.ini</file>
 			<file>X_VlcShares_Plugins_Youtube.it_IT.ini</file>
+			<file>X_VlcShares_Plugins_Youtube.es_ES.ini</file>
 		</languages>
 	</files>
 	<database>

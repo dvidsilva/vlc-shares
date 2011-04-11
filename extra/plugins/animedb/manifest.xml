@@ -38,6 +38,7 @@
 		<languages>
 			<file>X_VlcShares_Plugins_AnimeDb.en_GB.ini</file>
 			<file>X_VlcShares_Plugins_AnimeDb.it_IT.ini</file>
+			<file>X_VlcShares_Plugins_AnimeDb.es_ES.ini</file>
 		</languages>
 	</files>
 	<database>

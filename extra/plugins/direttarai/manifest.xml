@@ -38,6 +38,7 @@
 		<languages>
 			<file>X_VlcShares_Plugins_DirettaRai.en_GB.ini</file>
 			<file>X_VlcShares_Plugins_DirettaRai.it_IT.ini</file>
+			<file>X_VlcShares_Plugins_DirettaRai.es_ES.ini</file>
 		</languages>
 	</files>
 	<database>

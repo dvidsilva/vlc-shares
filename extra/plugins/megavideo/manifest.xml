@@ -86,6 +86,7 @@
 		<languages>
 			<file>X_VlcShares_Plugins_Megavideo.en_GB.ini</file>
 			<file>X_VlcShares_Plugins_Megavideo.it_IT.ini</file>
+			<file>X_VlcShares_Plugins_Megavideo.es_ES.ini</file>
 		</languages>
 	</files>
 	<database>

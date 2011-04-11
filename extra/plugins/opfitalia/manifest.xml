@@ -38,6 +38,7 @@
 		<languages>
 			<file>X_VlcShares_Plugins_OPFItalia.en_GB.ini</file>
 			<file>X_VlcShares_Plugins_OPFItalia.it_IT.ini</file>
+			<file>X_VlcShares_Plugins_OPFItalia.es_ES.ini</file>
 		</languages>
 	</files>
 	<database>
