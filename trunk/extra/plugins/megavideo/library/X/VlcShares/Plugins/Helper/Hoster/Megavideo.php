@@ -95,4 +95,9 @@ class X_VlcShares_Plugins_Helper_Hoster_Megavideo implements X_VlcShares_Plugins
 		
 	}	
 	
+	function getHosterUrl($playableId) {
+		return "http://www.megavideo.com/?v=".substr($playableId, 0, 8);
+	}
+	
+	
 }

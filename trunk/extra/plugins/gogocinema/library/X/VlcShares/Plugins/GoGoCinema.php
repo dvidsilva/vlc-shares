@@ -340,6 +340,16 @@ class X_VlcShares_Plugins_GoGoCinema extends X_VlcShares_Plugins_Abstract implem
 				} catch (Exception $e) {
 					X_Debug::e("Youtube helper isn't installed or enabled: {$e->getMessage()}");
 				}
+				break;
+			default:
+				X_Debug::i("Using new hoster api");
+				try {
+					$hoster = $this->helpers()->hoster()->getHoster($videoType);
+					$return = $hoster->getPlayable($videoId);
+				} catch (Exception $e) {
+					X_Debug::e("Hoster api hasn't a valid handler for {{$videoType}:{$videoId}}: {$e->getMessage()}");
+					$return = false;
+				}
 		}
 		
 		$this->cachedLocation[$location] = $return;
@@ -624,8 +634,9 @@ class X_VlcShares_Plugins_GoGoCinema extends X_VlcShares_Plugins_Abstract implem
 		//X_Debug::i($htmlString);
 		
 		//$megavideoPattern = '/href\=\"http:\/\/megavideo\.com\/\?([^\"]+)\" /';
-		$megavideoPattern = '/<tr bgcolor\=\"#043F6E\"><td>\# ([^\"]+)\<\/td><\/tr><tr><td align\=\"center\"><a style\=\"color\:\#FFFFFF\;\" href\=\"http:\/\/megavideo\.com\/\?([^\"]+)\" target\=\"\_blank\">/';
-		$youtubePattern = '/<tr bgcolor\=\"#043F6E\"><td>\# ([^\"]+)\<\/td><\/tr><tr><td align\=\"center\"><a style\=\"color\:\#FFFFFF\;\" href\=\"http\:\/\/youtube\.com\/watch\?v\=([^\"]+)\" target\=\"\_blank\">/';
+		//$megavideoPattern = '/<tr bgcolor\=\"#043F6E\"><td>\# ([^\"]+)\<\/td><\/tr><tr><td align\=\"center\"><a style\=\"color\:\#FFFFFF\;\" href\=\"http:\/\/megavideo\.com\/\?([^\"]+)\" target\=\"\_blank\">/';
+		//$youtubePattern = '/<tr bgcolor\=\"#043F6E\"><td>\# ([^\"]+)\<\/td><\/tr><tr><td align\=\"center\"><a style\=\"color\:\#FFFFFF\;\" href\=\"http\:\/\/youtube\.com\/watch\?v\=([^\"]+)\" target\=\"\_blank\">/';
+		$globalPattern = '/<tr bgcolor\=\"#043F6E\"><td>\# (?P<label>[^\"]+)\<\/td><\/tr><tr><td align\=\"center\"><a style\=\"color\:\#FFFFFF\;\" href\=\"(?P<link>[^\"]+)\" target\=\"\_blank\">/';
 
 		$movietitlePattern = '/<td class\=\"movietitle\" colspan \= \"3\"><a href\=\"movie\.php\?movie_id=([^\"]+)\" style=\"color\:\#E95C24\;\">([^\"]+)<\/a>/';
 		
@@ -637,7 +648,7 @@ class X_VlcShares_Plugins_GoGoCinema extends X_VlcShares_Plugins_Abstract implem
 		}
 		
 		$matches = array();
-		if ( preg_match_all($megavideoPattern, $htmlString, $matches, PREG_SET_ORDER ) ) {
+		if ( preg_match_all($globalPattern, $htmlString, $matches, PREG_SET_ORDER ) ) {
 			X_Debug::i("Megavideo videos found: ".count($matches));
 			
 			X_Debug::i(var_export($matches, true));
@@ -645,25 +656,37 @@ class X_VlcShares_Plugins_GoGoCinema extends X_VlcShares_Plugins_Abstract implem
 			
 			foreach ($matches as $video) {
 				
-				@list(,$label, $videoId) = $video;
+				//@list(,$label, $videoId) = $video;
+				$label = $video['label'];
+				$link = $video['link'];
 				
-				$label = strip_tags($label);
-				$videoId = self::TYPE_MEGAVIDEO.":$videoId";
-				
-				$item = new X_Page_Item_PItem($this->getId()."-megavideo", "$movieTitle$label");
-				$item->setIcon('/images/icons/file_32.png')
-					->setType(X_Page_Item_PItem::TYPE_ELEMENT)
-					->setCustom(__CLASS__.':location', "$sortType/$subType/$page/$thread/$videoId")
-					->setLink(array(
-						'action'	=> 'mode',
-						'l'	=>	X_Env::encode("$sortType/$subType/$page/$thread/$videoId")
-					), 'default', false);
+				try {
+
+					$hoster = $this->helpers()->hoster()->findHoster($link);
 					
-				if ( APPLICATION_ENV == 'development' ) {
-					$item->setDescription("$sortType/$subType/$page/$thread/$videoId");
+					$label = strip_tags($label). " [".ucfirst($hoster->getId())."]";
+					//$videoId = self::TYPE_MEGAVIDEO.":$videoId";
+					
+					$videoId = "{$hoster->getId()}:{$hoster->getResourceId($link)}";
+					
+					$item = new X_Page_Item_PItem($this->getId()."-{$hoster->getId()}", "$movieTitle$label");
+					$item->setIcon('/images/icons/file_32.png')
+						->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+						->setCustom(__CLASS__.':location', "$sortType/$subType/$page/$thread/$videoId")
+						->setLink(array(
+							'action'	=> 'mode',
+							'l'	=>	X_Env::encode("$sortType/$subType/$page/$thread/$videoId")
+						), 'default', false);
+						
+					if ( APPLICATION_ENV == 'development' ) {
+						$item->setDescription("$sortType/$subType/$page/$thread/$videoId");
+					}
+						
+					$items->append($item);
+					
+				} catch (Exception $e) {
+					// no valid hoster for this link
 				}
-					
-				$items->append($item);
 				
 			}
 			
@@ -672,7 +695,7 @@ class X_VlcShares_Plugins_GoGoCinema extends X_VlcShares_Plugins_Abstract implem
 			X_Debug::i("No megavideo links found");
 		}
 		
-
+		/*
 		$matches = array();
 		if ( preg_match_all($youtubePattern, $htmlString, $matches, PREG_SET_ORDER) ) {
 			X_Debug::i("Youtube videos found: ".count($matches));
@@ -702,6 +725,7 @@ class X_VlcShares_Plugins_GoGoCinema extends X_VlcShares_Plugins_Abstract implem
 			}
 			
 		}
+		*/
 
 	}
 	

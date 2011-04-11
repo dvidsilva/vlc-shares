@@ -138,6 +138,9 @@ class X_VlcShares_Plugins_Helper_Hoster_Veoh implements X_VlcShares_Plugins_Help
 		
 	}
 	
+	function getHosterUrl($playableId) {
+		return "http://www.veoh.com/watch/$playableId";
+	}
 	
 	
 }
