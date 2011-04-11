@@ -49,7 +49,8 @@ This kind of plugins adds new collections inside VLCShares
 *3rd party*
 
 || *Name* || *Key* || *Last Version* || *Compatibility/Requirement* || *Description* ||
-|| *SpainTv* || spaintv || 0.1 || 0.5.3 or later & megavideo plugin 0.2.1 or later|| Adds some spanish tv. Done by Miguel Angel Pescador Santirso (mpescadorsantirso@gmail.com) ||
+|| *SpainTv* || spaintv || 0.2 || 0.5.3 or later || Adds some spanish tv. Done by Miguel Angel Pescador Santirso (mpescadorsantirso@gmail.com) ||
+|| *SpainRadio* || spaintv || 0.2 || 0.5.3 or later || Adds some spanish tv. Done by Miguel Angel Pescador Santirso (mpescadorsantirso@gmail.com) ||
 
 
 ==Management features==
