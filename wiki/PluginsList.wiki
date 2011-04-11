@@ -50,7 +50,7 @@ This kind of plugins adds new collections inside VLCShares
 
 || *Name* || *Key* || *Last Version* || *Compatibility/Requirement* || *Description* ||
 || *SpainTv* || spaintv || 0.2 || 0.5.3 or later || Adds some spanish tv. Done by Miguel Angel Pescador Santirso (mpescadorsantirso@gmail.com) ||
-|| *SpainRadio* || spaintv || 0.2 || 0.5.3 or later || Adds some spanish tv. Done by Miguel Angel Pescador Santirso (mpescadorsantirso@gmail.com) ||
+|| *SpainRadio* || spainradio || 0.2 || 0.5.3 or later || Adds some spanish tv. Done by Miguel Angel Pescador Santirso (mpescadorsantirso@gmail.com) ||
 
 
 ==Management features==
