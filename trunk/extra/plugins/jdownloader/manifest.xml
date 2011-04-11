@@ -42,6 +42,7 @@
 		<languages>
 			<file>X_VlcShares_Plugins_JDownloader.en_GB.ini</file>
 			<file>X_VlcShares_Plugins_JDownloader.it_IT.ini</file>
+			<file>X_VlcShares_Plugins_JDownloader.es_ES.ini</file>
 		</languages>
 	</files>
 	<database>

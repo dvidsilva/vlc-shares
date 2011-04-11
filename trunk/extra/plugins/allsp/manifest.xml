@@ -33,6 +33,7 @@
 		<languages>
 			<file>X_VlcShares_Plugins_AllSp.en_GB.ini</file>
 			<file>X_VlcShares_Plugins_AllSp.it_IT.ini</file>
+			<file>X_VlcShares_Plugins_AllSp.es_ES.ini</file>
 		</languages>
 	</files>
 	<database>

@@ -38,6 +38,7 @@
 		<languages>
 			<file>X_VlcShares_Plugins_Cache.en_GB.ini</file>
 			<file>X_VlcShares_Plugins_Cache.it_IT.ini</file>
+			<file>X_VlcShares_Plugins_Cache.es_ES.ini</file>
 		</languages>
 	</files>
 	<database>

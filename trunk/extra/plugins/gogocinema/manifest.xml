@@ -34,6 +34,7 @@
 		<languages>
 			<file>X_VlcShares_Plugins_GoGoCinema.en_GB.ini</file>
 			<file>X_VlcShares_Plugins_GoGoCinema.it_IT.ini</file>
+			<file>X_VlcShares_Plugins_GoGoCinema.es_ES.ini</file>
 		</languages>
 	</files>
 	<database>
