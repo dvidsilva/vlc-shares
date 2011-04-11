@@ -13,10 +13,16 @@ class Application_Model_Cache extends Application_Model_Abstract {
 	 * @var integer
 	 */
 	protected $validity;
+	/**
+	 * @var integer
+	 */
+	protected $created;
+	
 	
 	function __construct() {
 		$this->new = true;
 		$this->validity = time();
+		$this->created = time();
 	}
 	
 	/**
@@ -33,6 +39,13 @@ class Application_Model_Cache extends Application_Model_Abstract {
 		return $this->content;
 	}
 
+	/**
+	 * @return the $created
+	 */
+	public function getCreated() {
+		return $this->created;
+	}
+	
 	/**
 	 * @return the $value
 	 */
@@ -105,6 +118,15 @@ class Application_Model_Cache extends Application_Model_Abstract {
 	 */
 	public function setValidity($created) {
 		$this->validity = $created;
+		return $this;
+	}
+	
+	/**
+	 * @param $section the $section to set
+	 * @return Application_Model_Cache
+	 */
+	public function setCreated($created) {
+		$this->created = $created;
 		return $this;
 	}
 	
