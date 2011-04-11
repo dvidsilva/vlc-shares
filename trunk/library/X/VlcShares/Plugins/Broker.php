@@ -76,6 +76,9 @@ class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 		}
 	}
 	
+	/**
+	 * Get the class of a pluginId
+	 */
 	public function getPluginClass($pluginId) {
 		if ( !$this->isRegistered($pluginId) ) {
 			throw new Exception("PluginId $pluginId isn't registered");
