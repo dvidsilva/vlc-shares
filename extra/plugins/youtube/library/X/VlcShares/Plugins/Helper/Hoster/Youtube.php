@@ -140,6 +140,11 @@ class X_VlcShares_Plugins_Helper_Hoster_Youtube implements X_VlcShares_Plugins_H
 		} catch (Exception $e) {
 			throw new Exception("Invalid video", self::E_ID_INVALID);
 		}
-	}	
+	}
+
+	function getHosterUrl($playableId) {
+		return "http://www.youtube.com/watch?=$playableId";
+	}
+	
 	
 }

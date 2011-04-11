@@ -53,6 +53,13 @@ interface X_VlcShares_Plugins_Helper_HostInterface {
 	 */
 	function getPlayableInfos($url, $isId = true);
 	
+	/**
+	 * get a hoster site page url from the $playableId
+	 * @param string $playableId
+	 * @return string
+	 */
+	function getHosterUrl($playableId);
+	
 }
 
 ?>

@@ -37,17 +37,24 @@ $this->headTitle()->prepend(X_Env::_('p_onlinelibrary_manage_title'));
 					<?php foreach ($this->videos as $i => $video): ?>
 						<?php /* @var $video Application_Model_Video */ ?>
 						<tr class="<?php echo $i % 2 ? 'alt' : ''; ?>">
-							<td width="100px;" nowrap="nowrap">
-								<img title="<?php echo ucfirst($video->getHoster()); ?> - <?php echo $video->getIdVideo(); ?>" 
-									src="<?php echo $this->baseUrl("/images/icons/hosters/{$video->getHoster()}.png")?>"
-									alt="<?php echo ucfirst($video->getHoster()); ?>"
-									width="16px"
-									height="16px" style="margin-right: 0.1em;" />
-								<?php if ( strlen($video->getIdVideo()) > 11 ): ?>
-									<b><?php echo substr($video->getIdVideo(), 0, 8)."..."; ?></b>
-								<?php else : ?>
-									<b><?php echo $video->getIdVideo(); ?></b>
-								<?php endif; ?>
+							<td width="150px;" nowrap="nowrap">
+								<a class="external" target="_blank" href="<?php
+									try {
+										echo X_VlcShares_Plugins::helpers()->hoster()->getHoster($video->getHoster())->getHosterUrl($video->getIdVideo());
+									} catch (Exception $e) {
+										echo '#invalid';
+									}
+								?>"><img title="<?php echo ucfirst($video->getHoster()); ?> - <?php echo $video->getIdVideo(); ?>" 
+										src="<?php echo $this->baseUrl("/images/icons/hosters/{$video->getHoster()}.png")?>"
+										alt="<?php echo ucfirst($video->getHoster()); ?>"
+										width="16px"
+										height="16px" style="margin-right: 0.1em;" />
+									<?php if ( strlen($video->getIdVideo()) > 11 ): ?>
+										<b><?php echo substr($video->getIdVideo(), 0, 8)."..."; ?></b>
+									<?php else : ?>
+										<b><?php echo $video->getIdVideo(); ?></b>
+									<?php endif; ?>
+								</a>
 							</td>
 							<td>
 								<b><?php echo $video->getTitle(); ?></b>

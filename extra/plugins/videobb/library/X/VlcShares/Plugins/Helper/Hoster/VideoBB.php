@@ -108,6 +108,8 @@ class X_VlcShares_Plugins_Helper_Hoster_VideoBB implements X_VlcShares_Plugins_H
 		
 	}
 	
-	
+	function getHosterUrl($playableId) {
+		return "http://www.videobb.com/video/$playableId";
+	}
 	
 }
