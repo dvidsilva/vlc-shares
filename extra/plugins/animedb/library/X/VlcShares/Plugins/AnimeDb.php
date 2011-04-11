@@ -13,8 +13,8 @@ require_once 'Zend/Dom/Query.php';
  */
 class X_VlcShares_Plugins_AnimeDb extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.1.1';
-	const VERSION_CLEAN = '0.1.1';
+	const VERSION = '0.2';
+	const VERSION_CLEAN = '0.2';
 	
 	/**
 	 * @var Zend_Http_CookieJar
@@ -206,20 +206,19 @@ class X_VlcShares_Plugins_AnimeDb extends X_VlcShares_Plugins_Abstract implement
 		if ( $location == null ) return false;
 		$split = $location != '' ? @explode('/', $location, 4) : array();
 		if ( count($split) == 4 ) {
-			// $split[3] have a megavideo url			
+			// $split[3] have a resource hoster:id			
 			$href = $split[3];
-			if ( strpos($href, 'megavideo') !== false ) {
-				try {
-					/* @var $megavideo X_VlcShares_Plugins_Helper_Megavideo */
-					$megavideo = $this->helpers('megavideo');
-					// if server isn't specified, there is no video
-					if ( $megavideo->setLocation($href)->getServer() ) {
-						return $megavideo->getUrl();
-					}
-				} catch (Exception $e) {
-					X_Debug::e($e->getMessage());
-				}
+
+			// new hoster api
+			
+			@list($hoster, $videoId) = explode(':', $href, 2);
+			
+			try {
+				return $this->helpers()->hoster()->getHoster($hoster)->getPlayable($videoId);
+			} catch (Exception $e) {
+				X_Debug::e("Invalid hoster {{$hoster}}");
 			}
+			
 		}
 		
 		return false;
@@ -494,11 +493,15 @@ class X_VlcShares_Plugins_AnimeDb extends X_VlcShares_Plugins_Abstract implement
 			}
 			$href = $current->getAttribute('href');
 			
-			if ( strpos(strtolower($href), 'megavideo' ) === false ) {
+			try {
+				$hoster = $this->helpers()->hoster()->findHoster($href);
+			} catch ( Exception $e) {
+				// no hoster = no valid href
 				continue;
 			}
 			
-			$label .= ' [Megavideo]';
+			$label .= " [".ucfirst($hoster->getId())."]";
+			$href = "{$hoster->getId()}:{$hoster->getResourceId($href)}";
 			
 			$found = true;
 			
@@ -584,12 +587,18 @@ class X_VlcShares_Plugins_AnimeDb extends X_VlcShares_Plugins_Abstract implement
 				}
 				$href = $current->getAttribute('href');
 				
-				if ( strpos(strtolower($href), 'megavideo' ) === false ) {
+				try {
+					$hoster = $this->helpers()->hoster()->findHoster($href);
+				} catch ( Exception $e) {
+					// no hoster = no valid href
 					continue;
 				}
 				
-				
+				$href = "{$hoster->getId()}:{$hoster->getResourceId($href)}";
+									
 				$label = $label == $title ? $label : $title.' | '.$label;
+
+				$label .= " [".ucfirst($hoster->getId())."]";				
 				
 				$found = true;
 				

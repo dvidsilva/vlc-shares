@@ -19,18 +19,18 @@ var cssUrl = '<?php echo $this->cssUrl."?".time(); ?>';
 var tokenUrl = '<?php echo $this->tokenUrl; ?>';
 
 
-var _lng_p_bookmarklets_addonevideofrompage_title = '<?php echo X_Env::_('p_bookmarklets_addonevideofrompage_title'); ?>';
-var _lng_p_bookmarklets_addonevideofrompage_text = '<?php echo X_Env::_('p_bookmarklets_addonevideofrompage_text'); ?>';
-var _lng_p_bookmarklets_addallvideofrompage_title = '<?php echo X_Env::_('p_bookmarklets_addallvideofrompage_title'); ?>';
-var _lng_p_bookmarklets_addallvideofrompage_text = '<?php echo X_Env::_('p_bookmarklets_addallvideofrompage_text'); ?>';
-var _lng_p_bookmarklets_addallvideofrompage_tableheader_hoster = '<?php echo X_Env::_('p_bookmarklets_addallvideofrompage_tableheader_hoster'); ?>';
-var _lng_p_bookmarklets_addallvideofrompage_tableheader_id = '<?php echo X_Env::_('p_bookmarklets_addallvideofrompage_tableheader_id'); ?>';
-var _lng_p_bookmarklets_addallvideofrompage_tableheader_label = '<?php echo X_Env::_('p_bookmarklets_addallvideofrompage_tableheader_label'); ?>';
-var _lng_p_bookmarklets_but_abort = '<?php echo X_Env::_('p_bookmarklets_but_abort'); ?>';
-var _lng_p_bookmarklets_but_confirm = '<?php echo X_Env::_('p_bookmarklets_but_confirm'); ?>';
-var _lng_p_bookmarklets_but_close = '<?php echo X_Env::_('p_bookmarklets_but_close'); ?>';
-var _lng_p_bookmarklets_label_category = '<?php echo X_Env::_('p_bookmarklets_label_category'); ?>';
-var _lng_p_bookmarklets_label_check = '<?php echo X_Env::_('p_bookmarklets_label_check'); ?>';
+var _lng_p_bookmarklets_addonevideofrompage_title = '<?php echo addslashes(X_Env::_('p_bookmarklets_addonevideofrompage_title')); ?>';
+var _lng_p_bookmarklets_addonevideofrompage_text = '<?php echo addslashes(X_Env::_('p_bookmarklets_addonevideofrompage_text')); ?>';
+var _lng_p_bookmarklets_addallvideofrompage_title = '<?php echo addslashes(X_Env::_('p_bookmarklets_addallvideofrompage_title')); ?>';
+var _lng_p_bookmarklets_addallvideofrompage_text = '<?php echo addslashes(X_Env::_('p_bookmarklets_addallvideofrompage_text')); ?>';
+var _lng_p_bookmarklets_addallvideofrompage_tableheader_hoster = '<?php echo addslashes(X_Env::_('p_bookmarklets_addallvideofrompage_tableheader_hoster')); ?>';
+var _lng_p_bookmarklets_addallvideofrompage_tableheader_id = '<?php echo addslashes(X_Env::_('p_bookmarklets_addallvideofrompage_tableheader_id')); ?>';
+var _lng_p_bookmarklets_addallvideofrompage_tableheader_label = '<?php echo addslashes(X_Env::_('p_bookmarklets_addallvideofrompage_tableheader_label')); ?>';
+var _lng_p_bookmarklets_but_abort = '<?php echo addslashes(X_Env::_('p_bookmarklets_but_abort')); ?>';
+var _lng_p_bookmarklets_but_confirm = '<?php echo addslashes(X_Env::_('p_bookmarklets_but_confirm')); ?>';
+var _lng_p_bookmarklets_but_close = '<?php echo addslashes(X_Env::_('p_bookmarklets_but_close')); ?>';
+var _lng_p_bookmarklets_label_category = '<?php echo addslashes( X_Env::_('p_bookmarklets_label_category')); ?>';
+var _lng_p_bookmarklets_label_check = '<?php echo addslashes(X_Env::_('p_bookmarklets_label_check')); ?>';
 // END PHP references
 
 function vlcs_bkml_showAddOne(hoster, videoId) {
@@ -42,7 +42,7 @@ function vlcs_bkml_showAddOne(hoster, videoId) {
 	
 	$dialog = jQuery(
 			'<div class="vlcs_bkml_wrapper">'+
-				'<a href="javascript:vlcs_bkml_reset(); return false;" id="vlcs_bkml_closebutton">'+
+				'<a href="javascript:vlcs_bkml_reset();" id="vlcs_bkml_closebutton">'+
 					_lng_p_bookmarklets_but_close+
 				'</a>'+
 				'<div class="vlcs_bkml_inner vlcs_bkml_scrollable">'+
@@ -82,7 +82,7 @@ function vlcs_bkml_showAddAll(links) {
 	
 	$dialog = jQuery(
 			'<div class="vlcs_bkml_wrapper" id="vlcs_bkml_addallcontainer">'+
-				'<a href="javascript:vlcs_bkml_reset(); return false;" id="vlcs_bkml_closebutton">'+
+				'<a href="javascript:vlcs_bkml_reset();" id="vlcs_bkml_closebutton">'+
 					_lng_p_bookmarklets_but_close+
 				'</a>'+
 				'<div class="vlcs_bkml_inner vlcs_bkml_scrollable">'+
@@ -245,7 +245,7 @@ function vlcs_bkml_bootstrap() {
 			}
 			
 			if ( videoId == null ) {
-				alert("WTF, i can't find the videoId");
+				alert("I can't find the videoId");
 				return;
 			} 
 			
@@ -292,7 +292,7 @@ function vlcs_bkml_bootstrap() {
 						}
 					}
 					if ( videoId == null ) {
-						alert("WTF, i can't find the videoId");
+						alert("I can't find the videoId");
 						return;
 					} 
 					//vlcs_bkml_appendOne(a, id, videoId);
@@ -307,7 +307,7 @@ function vlcs_bkml_bootstrap() {
 	
 	vlcs_bkml_showNotify(false);
 	
-	console.log("end loop");
+	//console.log("end loop");
 
 	if ( links.length > 0 ) {
 		vlcs_bkml_showAddAll(links);
@@ -322,10 +322,10 @@ function vlcs_bkml_bootstrap() {
 }
 
 function vlcs_bkml_jQuery_init() {
-	console.log("checking for jquery");
+	//console.log("checking for jquery");
 	if ( window.jQuery && window.jQuery.fn.jquery == '1.4.2' ) {
 		jQuery(document).ready(function () {
-			console.log("ready executed");
+			//console.log("ready executed");
 			jQuery.noConflict();
 			jQuery(document).bind('_vlcshares_start', function() {
 				vlcs_bkml_bootstrap();
@@ -337,29 +337,6 @@ function vlcs_bkml_jQuery_init() {
 	}
 } 
 
-function vlcs_bkml_addAll(){
-
-	alert('overloaded submit called');
-	
-	$this = jQuery('#vlcs_bkml_addallform');
-	
-	var params = {};
-	$this
-	.find("input[checked='checked'], input[type='text'], input[type='hidden'], input[type='password'], input[type='submit'], option[selected], textarea")
-	.filter(":enabled")
-	.each(function() {
-		params[ this.name || this.id || this.parentNode.name || this.parentNode.id ] = this.value;
-	});
-	// add wait
-	//jQuery("body").addClass("curWait");
-	
-	jQuery.post($this.attr("action"), params, function(response){
-		// remove wait
-		//jQuery("body").removeClass("curWait");
-		vlcs_bkml_ajaxSubmitCallBack(response);
-		
-	}, 'jsonp');
-}
 
 //include jquery if not loaded yet
 if(!(window.jQuery && window.jQuery.fn.jquery == '1.4.2')) {
