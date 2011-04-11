@@ -23,6 +23,9 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 | Changelog
 \==========---
 
+*** 0.2 ***
+ - Hoster api support (multi-hoster allowed)
+
 *** 0.1.1 ***
  - Added a new experimental link scaper submitted by Valerio Moretti
  - Password field in the configuration form is type="password"
