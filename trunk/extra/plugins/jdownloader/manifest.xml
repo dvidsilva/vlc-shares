@@ -3,13 +3,13 @@
 	<metadata>
 		<label>p_jdownloader_plglabel</label>
 		<description>p_jdownloader_plgdesc</description>
-		<version>0.1</version>
+		<version>0.2</version>
 		<status>stable</status>
 		<key>jdownloader</key>
 		<file>X/VlcShares/Plugins/JDownloader.php</file>
 		<class>X_VlcShares_Plugins_JDownloader</class>
 		<compatibility>
-			<from>0.5.3</from>
+			<from>0.5.4</from>
 			<to>0.6</to>
 		</compatibility>
 	</metadata>

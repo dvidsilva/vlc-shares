@@ -2,8 +2,8 @@
 
 class X_VlcShares_Plugins_FilmStream extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.1.1';
-	const VERSION_CLEAN = '0.1.1';
+	const VERSION = '0.2';
+	const VERSION_CLEAN = '0.2';
 	
 	const TYPE_MOVIES = 'movies';
 	const TYPE_TVSHOWS = 'tv';
