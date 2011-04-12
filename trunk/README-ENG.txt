@@ -8,7 +8,7 @@
 #     															#
 #################################################################
 
-VLC-SHARES v0.5.4alpha1 - 26/03/2011
+VLC-SHARES v0.5.4alpha2 - 12/04/2011
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
