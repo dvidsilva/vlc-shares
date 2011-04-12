@@ -30,7 +30,7 @@ class X_VlcShares_Plugins_Helper_Hoster_Megaupload implements X_VlcShares_Plugin
 		$matches = array();
 		if ( preg_match(self::PATTERN, $url, $matches ) ) {
 			if ( $matches['ID'] != '' ) {
-				return substr($matches['ID_1'], 0, 8);
+				return substr($matches['ID'], 0, 8);
 			}
 			X_Debug::e("No id found in {{$url}}", self::E_ID_NOTFOUND);
 			throw new Exception("No id found in {{$url}}");
