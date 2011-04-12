@@ -4,10 +4,17 @@ class X_VlcShares_Plugins_Helper_Hoster_Veetle implements X_VlcShares_Plugins_He
 
 	const ID = 'veetle';
 	// http://www.veetle.com/index.php/channel/view#4cd067497c1bd
-	const PATTERN = '/http\:\/\/((www\.)?)veetle\.com\/index\.php\/channel\/view\#(?P<ID>[A-Za-z0-9]+)/';
+	const PATTERN = '/http\:\/\/((www\.)?)veetle\.com\/index\.php\/([^\#]*)#(?P<ID>[A-Za-z0-9]+)/';
 	
 	private $info_cache = array();
 	
+	private $serverIp = '77.67.108.152';
+	
+	function __construct($serverIp = null) {
+		if ( $serverIp != null ) {
+			$this->serverIp = $serverIp;
+		}
+	}
 	
 	/**
 	 * give the hoster id
@@ -56,7 +63,8 @@ class X_VlcShares_Plugins_Helper_Hoster_Veetle implements X_VlcShares_Plugins_He
 			$url = $this->getResourceId($url);
 		}
 		// or http://77.67.109.208/flv/
-		return "http://77.67.108.152/flv/$url";
+		//return "http://77.67.108.152/flv/$url";
+		return "http://{$this->serverIp}/flv/$url";
 	}
 	
 	/**
@@ -86,7 +94,7 @@ class X_VlcShares_Plugins_Helper_Hoster_Veetle implements X_VlcShares_Plugins_He
 		$http = new Zend_Http_Client("http://www.veetle.com/index.php/channel/ajaxInfo/" . $url,
 			array(
 				'headers' => array(
-					'User-Agent' => "vlc-shares/".X_VlcShares::VERSION." veetle/".X_VlcShares_Plugins_VideoBB::VERSION
+					'User-Agent' => "vlc-shares/".X_VlcShares::VERSION." veetle/".X_VlcShares_Plugins_Veetle::VERSION
 				)
 			)
 		);

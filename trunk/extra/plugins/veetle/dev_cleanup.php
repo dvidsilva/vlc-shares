@@ -22,6 +22,9 @@ $neededDirectories = array(
  * of dev_bootstrap.php file
  */
 $neededLinks = array(
+	$basePath.'/public/images/veetle/' => APPLICATION_PATH.'/../public/images/veetle',
 	$basePath.'/public/images/icons/hosters/veetle.png' => APPLICATION_PATH.'/../public/images/icons/hosters/veetle.png',
+	$basePath.'/languages/X_VlcShares_Plugins_Veetle.en_GB.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_Veetle.en_GB.ini',
+	$basePath.'/languages/X_VlcShares_Plugins_Veetle.it_IT.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_Veetle.it_IT.ini',
 	//$basePath.'/languages/myfile.txt' => APPLICATION_PATH.'/../languages/myfile.txt', // <--- THIS IS AN EXAMPLE FOR FILES
 );

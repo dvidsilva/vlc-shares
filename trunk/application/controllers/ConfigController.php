@@ -8,7 +8,7 @@ class ConfigController extends X_Controller_Action {
 	 * 
 	 * @var Application_Form_AutoConfigs
 	 */
-	private $configForm = null;
+	private static $configForm = null;
 	
     /**
      * Show configs page
@@ -132,6 +132,10 @@ class ConfigController extends X_Controller_Action {
     				$this->_helper->redirector($redirect[1], $redirect[0]);
     				
     			} else {
+    				
+		    		$ns = new Zend_Session_Namespace('vlc-shares::config');
+		    		$ns->errors = true;
+		    		$ns->data = $this->getRequest()->getPost();
 	    			$this->_forward('index');
     			}
     			
@@ -148,18 +152,24 @@ class ConfigController extends X_Controller_Action {
 	
     private function _initConfigsForm($section, $namespace, $configs = array(), $posts = null) {
     	
-    	if ( $this->configForm === null ) {
-	    	$this->configForm = new Application_Form_AutoConfigs($configs);
+    	if ( self::$configForm === null ) {
+	    	self::$configForm = new Application_Form_AutoConfigs($configs);
 	    	
-	    	$this->configForm->setAction($this->_helper->url->url(array('action' => 'save', 'controller' => 'config'), 'default', false));
+	    	self::$configForm->setAction($this->_helper->url->url(array('action' => 'save', 'controller' => 'config'), 'default', false));
 	    	
 	    	if ( $posts !== null && is_array($posts)  ) {
-	    		$this->configForm->isValid($posts);
+	    		self::$configForm->setDefaults($posts);
 	    	}
 	    	
-	    	foreach ($this->configForm->getElements() as $key => $element) {
+	    	foreach (self::$configForm->getElements() as $key => $element) {
 	    		// plugins prepare known elements
-	    		X_VlcShares_Plugins::broker()->prepareConfigElement($section, $namespace, $key, $element, $this->configForm, $this);
+	    		X_VlcShares_Plugins::broker()->prepareConfigElement($section, $namespace, $key, $element, self::$configForm, $this);
+	    	}
+
+	    	if ( /*self::$configForm->isErrors() && */$posts !== null && is_array($posts)  ) {
+	    		// reset errors
+	    		//self::$configForm->setErrors(array());
+	    		self::$configForm->isValid($posts);
 	    	}
 	    	
     	}
@@ -170,7 +180,7 @@ class ConfigController extends X_Controller_Action {
     	}
     	*/
 
-    	return $this->configForm;
+    	return self::$configForm;
     }
     
     
