@@ -8,7 +8,7 @@
 #     															#
 ########## JDownloader Plugin ###################################
 
-JDownloader v0.1
+JDownloader v0.2
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -23,6 +23,9 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.2 ***
+ - Added support for new hoster api (multi-hoster support enabled)
 
 *** 0.1 ***
  - Initial version

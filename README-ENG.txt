@@ -25,7 +25,7 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 | Changelog
 \==========---
 
-*** 0.5.4alpha1 (26/3/2011) ***
+*** 0.5.4alpha2 (12/4/2011) ***
  - Authetication features
  - build script improved
  - robots.txt
@@ -33,6 +33,12 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
  - rules for magic_quotes and register_globals in htaccess and system tests
  - audio quality for Android LQ improved (ab=20 -> ab=64)
  - Android LQ is the new default profile for android devices
+ - New hoster helper
+ - New bookmarklets
+ - Global Online library introduced with multi-hoster support (this one replace the Megavideo Library)
+ - New set of plugins for many hosters (megavideo, megaupload, youtube, videobb, 4shared, veoh, veetle)
+ - Older plugins updated for new hoster api where needed
+ - Pagination helper
 
 *** 0.5.3 (23/02/2011) ***
  - Some fixes to object interfaces of X_Vlc_... objects

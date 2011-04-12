@@ -3,13 +3,13 @@
 	<metadata>
 		<label>p_filmstream_plglabel</label>
 		<description>p_filmstream_plgdesc</description>
-		<version>0.1.1</version>
+		<version>0.2</version>
 		<status>stable</status>
 		<key>filmstream</key>
 		<file>X/VlcShares/Plugins/FilmStream.php</file>
 		<class>X_VlcShares_Plugins_FilmStream</class>
 		<compatibility>
-			<from>0.5.3</from>
+			<from>0.5.4</from>
 			<to>0.6</to>
 		</compatibility>
 	</metadata>
