@@ -84,7 +84,7 @@ class X_VlcShares_Plugins_Helper_Hoster_DailyMotion implements X_VlcShares_Plugi
 			)
 		);
 		$http->setCookieJar(true);
-		$http->getCookieJar()->addCookie(new Zend_Http_Cookie('family_filter', 'off', 'http://www.dailymotion.com'));
+		$http->getCookieJar()->addCookie(new Zend_Http_Cookie('family_filter', 'off', 'www.dailymotion.com'));
 		
 		$datas = $http->request()->getBody();
 
@@ -99,13 +99,13 @@ class X_VlcShares_Plugins_Helper_Hoster_DailyMotion implements X_VlcShares_Plugi
 		$sequence = urldecode($matches['sequence']);
 		
 		$matches = array();
-		if ( !preg_match('/videotitle\=(?P<title>.*)\&videotype/', $sequence, $matches)  ) {
+		if ( !preg_match('/videotitle\=(?P<title>[^&]+)&/', $sequence, $matches)  ) {
 			$title = "";
 		}
 		$title = urldecode($matches['title']);
 
 		$matches = array();
-		if ( !preg_match('/\"videoDescription\"\:\"(?P<description>.*)\"\,\"videoTags/', $sequence, $matches)  ) {
+		if ( !preg_match('/\"videoDescription\"\:\"(?P<description>[^\"]*)\"/', $sequence, $matches)  ) {
 			$description = '';
 		}
 		$description = urldecode($matches['description']);
@@ -121,10 +121,10 @@ class X_VlcShares_Plugins_Helper_Hoster_DailyMotion implements X_VlcShares_Plugi
 		$thumbnail = "http://www.dailymotion.com/thumbnail/320x240/video/$url";
 		
 		$matches = array();
-		if ( !preg_match('/\"sdURL\"\:\"(?P<video>.*)\"', $sequence, $matches)  ) {
+		if ( !preg_match('/\"sdURL\"\:\"(?P<video>[^\"]+)\"/', $sequence, $matches)  ) {
 			$video = '';
 		}
-		$video = $matches['video'];
+		$video = stripslashes($matches['video']);
 		
 		$infos = array(
 			'title' => $title,
