@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <vs-manifest type="plugin">
 	<metadata>
-		<label>p_veetle_plglabel</label>
-		<description>p_veetle_plgdesc</description>
+		<label>p_dailymotion_plglabel</label>
+		<description>p_dailymotion_plgdesc</description>
 		<version>0.1</version>
 		<status>stable</status>
-		<key>veetle</key>
-		<file>X/VlcShares/Plugins/Veetle.php</file>
-		<class>X_VlcShares_Plugins_Veetle</class>
+		<key>dailymotion</key>
+		<file>X/VlcShares/Plugins/DailyMotion.php</file>
+		<class>X_VlcShares_Plugins_DailyMotion</class>
 		<compatibility>
 			<from>0.5.4</from>
 			<to>0.6</to>
@@ -18,10 +18,10 @@
 			<X>
 				<VlcShares>
 					<Plugins>
-						<file>Veetle.php</file>
+						<file>DailyMotion.php</file>
 						<Helper>
 							<Hoster>
-								<file>Veetle.php</file>
+								<file>DailyMotion.php</file>
 							</Hoster>
 						</Helper>
 					</Plugins>
@@ -29,19 +29,17 @@
 			</X>
 		</library>
 		<languages>
-			<file>X_VlcShares_Plugins_Veetle.en_GB.ini</file>
-			<file>X_VlcShares_Plugins_Veetle.it_IT.ini</file>
+			<file>X_VlcShares_Plugins_DailyMotion.en_GB.ini</file>
+			<file>X_VlcShares_Plugins_DailyMotion.it_IT.ini</file>
+			<file>X_VlcShares_Plugins_DailyMotion.es_ES.ini</file>
 		</languages>
 		<public>
 			<images>
 				<icons>
 					<hosters>
-						<file>veetle.png</file>
+						<file>dailymotion.png</file>
 					</hosters>
 				</icons>
-				<veetle>
-					<file>logo.jpg</file>
-				</veetle>
 			</images>
 		</public>
 	</files>
