@@ -52,6 +52,20 @@ class X_VlcShares_Plugins_Auth extends X_VlcShares_Plugins_Abstract {
 					X_Debug::i("Skipping auth, it should be the local vlc");
 					return;
 				}
+			} elseif ( $this->helpers()->devices()->isWiimc() && $this->helpers()->devices()->isWiimcBeforeVersion('1.1.6')) {
+				// wiimc <= 1.1.5 send 2 different user-agent string
+				// for browsing mode and video mode
+				// so i have care about this
+				// TODO remove this when 1.1.5 an older will be deprecated
+				
+				// anyway i take care only of vanilla wiimc based on ios58. custom version
+				// not supported
+				$useragent = "{$_SERVER['HTTP_USER_AGENT']} (IOS58)";
+				// try to add " (ISO58)" to the useragent and check again
+				if ( Application_Model_AuthSessionsMapper::i()->fetchByIpUserAgent($_SERVER['REMOTE_ADDR'], $useragent) ) {
+					X_Debug::i("Workaround for WIIMC user-agent-incongruence");
+					return;
+				}
 			}
 			 	
 			X_Debug::w("Auth required, redirecting to login");
