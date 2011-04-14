@@ -26,6 +26,8 @@ class X_Vlc {
 	
 	private $_initialized = false;
 	
+	private $_pipe = false;
+	
 	/**
 	 * 
 	 * @var Zend_Config
@@ -100,6 +102,17 @@ class X_Vlc {
 	public function spawn($args = array()) {
 		
 		$this->lazyInit();
+
+		// vlcpath quotes moved here from adapters
+		
+		try {
+			$pathString = ((string) $this->getPipe()) . ' | ' . '"'.trim($this->_conf_vlcPath,'"').'"';
+		} catch (Exception $e) {
+			// ignore pipe is not setted
+			// just use the normal path
+			$pathString = '"'.trim($this->_conf_vlcPath,'"').'"';
+		}
+		
 		
 		if ( is_array($args) ) {
 			// aggiungo agli argomenti registrati
@@ -114,12 +127,13 @@ class X_Vlc {
 			// cancello gli argomenti
 			$this->_registredArgs = array();
 			// elimino i restanti placeholder
-			$vlcArgs = preg_replace('/{%\w+%}/', '', $vlcArgs);	
+			$vlcArgs = preg_replace('/{%\w+%}/', '', $vlcArgs);
+			
 			// invio all'adapter che provvedera' per il resto
-			return $this->adapter->spawn($this->_conf_vlcPath, $vlcArgs);
+			return $this->adapter->spawn($pathString, $vlcArgs);
 		} elseif (is_string($args)) {
 			// se e' una stringa, la sostituisco a quella delle opzioni
-			return $this->adapter->spawn($this->_conf_vlcPath, $args);
+			return $this->adapter->spawn($pathString, $args);
 		}
 	}
 
@@ -128,6 +142,19 @@ class X_Vlc {
 		$this->lazyInit();
 		
 		return call_user_func_array(array($this->adapter, $name), $argv);
+	}
+	
+	public function setPipe($pipe) {
+		$this->_pipe = $pipe;
+		return $this;
+	}
+	
+	public function getPipe() {
+		if ($this->_pipe !== false ) {
+			return $this->_pipe;
+		} else {
+			throw new Exception("No pipe defined");
+		}
 	}
 	
 	/**

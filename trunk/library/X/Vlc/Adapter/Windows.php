@@ -20,7 +20,8 @@ class X_Vlc_Adapter_Windows extends X_Vlc_Adapter {
 		X_Env::debug(__METHOD__);
 		$args = $this->interfaceCheck($args);
 		if ( !$this->isRunning() ) {
-			$vlcPath = '"'.trim($vlcPath,'"').'"';
+			// moved in wrapper
+			//$vlcPath = '"'.trim($vlcPath,'"').'"';
 			// qui devo semplicemente aggiungere la roba passata da configurazione
 			//$args .= " --daemon --pidFile=\"$this->pidFile\"";
 			X_Env::execute("$vlcPath $args", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_BACKGROUND);
