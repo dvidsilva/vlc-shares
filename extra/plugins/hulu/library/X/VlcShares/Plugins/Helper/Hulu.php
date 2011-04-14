@@ -81,6 +81,8 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 		}
 		if ( $this->_fetched === false ) {
 			
+
+			// ported code form http://gitorious.org/get-flash-videos-plugins/gfv-plugins/blobs/raw/release/Hulu.pm
 			
 			$http = $this->getHttpClient("http://www.hulu.com/watch/{$this->_location}");
 			
