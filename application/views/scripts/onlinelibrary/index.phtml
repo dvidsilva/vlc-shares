@@ -4,8 +4,12 @@
 <?php 
 $menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
 $this->layout()->subNavigator =	$menu
-	->addLinkRoute(X_Env::_('p_onlinelibrary_manage_add_new_entry'), "onlinelibrary", "add")
-	//->addButton(X_Env::_('p_onlinelibrary_bookmarklets_title'), "javascript:showModal('bookmarklets'); return false;" )
+	->addLinkRoute(X_Env::_('p_onlinelibrary_manage_add_new_entry'), "onlinelibrary", "add");
+if ( $this->rtmpEnabled ) {
+$this->layout()->subNavigator	
+	->addLinkRoute(X_Env::_('p_onlinelibrary_manage_add_new_rtmp'), "onlinelibrary", "addrtmp");
+}
+$this->layout()->subNavigator
 	->addLinkRoute(X_Env::_('p_onlinelibrary_manage_options'), "config", "index", array('key' => 'onlinelibrary', 'r' => X_Env::encode('onlinelibrary:index')));
 	
 $breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));

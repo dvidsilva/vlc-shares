@@ -77,7 +77,7 @@ class X_Vlc {
 				X_Debug::w("Commander: no selection");
 			}
 			
-			$this->_conf_vlcArgs = $options->get('args', "--play-and-exit {%source%} --sout=\"#{%profile%}:{%output%}\" --sout-keep {%subtitles%} {%audio%} {%filters%}");
+			$this->_conf_vlcArgs = $options->get('args', "{%source%} --play-and-exit --sout=\"#{%profile%}:{%output%}\" --sout-keep {%subtitles%} {%audio%} {%filters%}");
 			$this->_conf_vlcPath = $options->get('path', "vlc");
 		
 			$this->_initialized = true;
@@ -150,7 +150,7 @@ class X_Vlc {
 	}
 	
 	public function getPipe() {
-		if ($this->_pipe !== false ) {
+		if ($this->_pipe !== false && ((string) $this->_pipe) !== '' ) {
 			return $this->_pipe;
 		} else {
 			throw new Exception("No pipe defined");

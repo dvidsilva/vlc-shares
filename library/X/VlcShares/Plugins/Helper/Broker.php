@@ -44,6 +44,11 @@ class X_VlcShares_Plugins_Helper_Broker {
 	 * @var X_VlcShares_Plugins_Helper_Hoster
 	 */
 	private $hoster;
+
+	/**
+	 * @var X_VlcShares_Plugins_Helper_RtmpDump
+	 */
+	private $rtmpdump;
 	
 	private $_helpers = array();
 	
@@ -62,6 +67,7 @@ class X_VlcShares_Plugins_Helper_Broker {
 		$this->stream = new X_VlcShares_Plugins_Helper_Stream($options->get('stream', new Zend_Config(array())));
 		$this->paginator = new X_VlcShares_Plugins_Helper_Paginator($options->get('paginator', new Zend_Config(array())));
 		$this->hoster = new X_VlcShares_Plugins_Helper_Hoster();
+		$this->rtmpdump = new X_VlcShares_Plugins_Helper_RtmpDump($options->get('rtmpdump', new Zend_Config(array())));
 		
 		$this->registerHelper('mediainfo', $this->mediainfo, true)
 			->registerHelper('language', $this->language, true)
@@ -69,7 +75,8 @@ class X_VlcShares_Plugins_Helper_Broker {
 			->registerHelper('devices', $this->devices, true)
 			->registerHelper('stream', $this->stream, true)
 			->registerHelper('paginator', $this->paginator, true)
-			->registerHelper('hoster', $this->hoster, true);
+			->registerHelper('hoster', $this->hoster, true)
+			->registerHelper('rtmpdump', $this->rtmpdump, true);
 	}
 	
 	/**
@@ -107,6 +114,12 @@ class X_VlcShares_Plugins_Helper_Broker {
 	 * @return X_VlcShares_Plugins_Helper_Hoster
 	 */
 	public function hoster() { return $this->hoster; }
+	
+	/**
+	 * @return X_VlcShares_Plugins_Helper_RtmpDump
+	 */
+	public function rtmpdump() { return $this->rtmpdump; }
+	
 	
 	/**
 	 * Register a new helper in the list

@@ -19,8 +19,20 @@ class X_Vlc_Adapter_Linux extends X_Vlc_Adapter {
 		$args = $this->interfaceCheck($args);
 		if ( !$this->isRunning() ) {
 			// qui devo semplicemente aggiungere la roba passata da configurazione
-			$args .= " --daemon --pidfile=\"$this->pidFile\"";
-			X_Env::execute("$vlcPath $args", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_BACKGROUND);
+			try {
+				//> /dev/null 2>&1 & pidof vlc > /tmp/vlcLock.pid
+				X_Vlc::getLastInstance()->getPipe(); 
+				
+				// if we are in piped mode, i cannot use daemon mode,
+				// i have to switch to pidof
+
+				$args .= " > /dev/null 2>&1 & pidof vlc > \"{$this->pidFile}\"";
+				// trying with normal background mode
+				X_Env::execute("$vlcPath $args", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_BACKGROUND_SPECIAL);
+			} catch (Exception $e) {
+				$args .= " --daemon --pidfile=\"$this->pidFile\"";
+				X_Env::execute("$vlcPath $args", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_BACKGROUND);
+			}
 		}
 	}
 

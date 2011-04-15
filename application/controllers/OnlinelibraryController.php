@@ -39,10 +39,50 @@ class OnlinelibraryController extends X_Controller_Action
 		$this->view->page = $page;
 		// END PAGINATION
 		
+		$this->view->rtmpEnabled = X_VlcShares_Plugins::helpers()->rtmpdump()->isEnabled();
+		
         $this->view->hosters = array_merge(array('direct-url' => '*NONE*'), X_VlcShares_Plugins::helpers()->hoster()->getHosters());
         $this->view->categories = $categories;
         $this->view->bookmarkletsEnabled = ($this->pluginBookmarklets !== null ); 
         $this->view->messages = $this->_helper->flashMessenger->getMessages();
+    }
+    
+    public function addrtmpAction() {
+    	
+        $form    = new Application_Form_VideoRtmp();
+		$form->setAction($this->_helper->url('savertmp'));
+		
+		$this->view->form = $form;
+    	
+    }
+    
+    public function savertmpAction() {
+
+        $form    = new Application_Form_VideoRtmp();
+		$form->setAction($this->_helper->url('savertmp'));
+		
+    	if (  $form->isValid($this->getRequest()->getPost()) ) {
+    		
+    		$values = $form->getValues();
+    		$params = array();
+    		foreach ($values as $key => $value) {
+    			if ( $value == 'true') {
+    				$params[$key] = true;
+    			} elseif ( $value != '' ) {
+    				$params[$key] = $value;
+    			}
+    		}
+    		
+    		$url = X_RtmpDump::buildUri($params);
+    		
+    		$this->_forward('add', 'onlinelibrary', 'default', array(
+    			'rtmp' => $url
+    		));
+    		
+    	} else {
+			$this->view->form = $form;
+    	}    	
+    	
     }
     
     public function addAction() {
@@ -50,18 +90,25 @@ class OnlinelibraryController extends X_Controller_Action
         $form    = new Application_Form_Video();
 		$form->setAction($this->_helper->url('add'));
 		
+		$rtmp = $this->getRequest()->getParam('rtmp', false);
+		
 		try {
 			$_hosters = X_VlcShares_Plugins::helpers()->hoster()->getHosters();
-			$hosters = array('direct-url' => 'direct-url');
-			foreach ($_hosters as $idHoster => $pattern) {
-				$hosters[$idHoster] = $idHoster;
+			if ( $rtmp === false ) {
+				$hosters = array('direct-url' => 'direct-url');
+				foreach ($_hosters as $idHoster => $pattern) {
+					$hosters[$idHoster] = $idHoster;
+				}
+			} else {
+				$hosters = array('direct-url' => 'direct-url (rtmp)');
+				$form->idVideo->setValue($rtmp);
 			}
 			$form->hoster->setMultiOptions($hosters);
 		} catch (Exception $e) {}
 		
 		$isAjax = $request->getParam('isAjax', false);
         
-        if ($this->getRequest()->isPost()) {
+        if ( $rtmp === false && $this->getRequest()->isPost()) {
             if ($form->isValid($request->getPost())) {
 
                 $video = new Application_Model_Video();

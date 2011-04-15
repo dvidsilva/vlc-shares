@@ -39,6 +39,15 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	1
 );
 
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'rtmpdump',
+	'X_VlcShares_Plugins_RtmpDump', 
+	'X/VlcShares/Plugins/RtmpDump.php',
+	'p_rtmpdump_plglabel',
+	'p_rtmpdump_plgdesc',
+	1,
+	1
+);
 
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
 	'profiles',
