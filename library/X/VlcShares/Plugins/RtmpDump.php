@@ -19,8 +19,17 @@ class X_VlcShares_Plugins_RtmpDump extends X_VlcShares_Plugins_Abstract {
 		if ( X_Env::startWith($source, "rtmpdump://") ) {
 			X_Debug::i("Source is a dummy uri for rtmpdump forwarding. Setting pipe");
 			// parsing rtmpdump params from the uri and overriding the quiet param to be sure it's ok for the pipe
-			$vlc->setPipe(X_RtmpDump::getInstance()->parseUri($source)->setQuiet(true)->setStreamPort('8081')/*->setLive(true)*/);
-			$vlc->registerArg('source', '- --play-and-stop');
+			if ( X_Env::isWindows() ) {
+				X_Env::execute(
+					(string) X_RtmpDump::getInstance()->parseUri($source)->setQuiet(true)->setStreamPort('8081'), 
+					X_Env::EXECUTE_OUT_NONE,
+					X_Env::EXECUTE_PS_BACKGROUND
+				);
+				$vlc->registerArg('source', '--play-and-stop');
+			} else {
+				$vlc->setPipe(X_RtmpDump::getInstance()->parseUri($source)->setQuiet(true)->setStreamPort('8081')/*->setLive(true)*/);
+				$vlc->registerArg('source', '- --play-and-stop');
+			}
 			$vlc->registerArg('profile', '');
 			$vlc->registerArg('output', '');
 			
