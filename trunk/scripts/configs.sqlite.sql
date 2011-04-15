@@ -76,8 +76,8 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'args', 
-	'--play-and-exit {%source%} --sout="#{%profile%}:{%output%}" --sout-keep {%subtitles%} {%audio%} {%filters%}',
-	'--play-and-exit {%source%} --sout="#{%profile%}:{%output%}" --sout-keep {%subtitles%} {%audio%} {%filters%}',
+	'{%source%} --play-and-exit --sout="#{%profile%}:{%output%}" --sout-keep {%subtitles%} {%audio%} {%filters%}',
+	'{%source%} --play-and-exit --sout="#{%profile%}:{%output%}" --sout-keep {%subtitles%} {%audio%} {%filters%}',
 	'vlc',
 	0,
 	'config_vlc_args_label',
@@ -185,3 +185,24 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	NULL
 );
 
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'rtmpdump.enabled', 
+	'1',
+	'1',
+	'helpers',
+	3,
+	'config_helpers_rtmpdump_enabled_label',
+	'config_helpers_rtmpdump_enabled_desc',
+	NULL
+);
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'rtmpdump.path', 
+	'/usr/sbin/rtmpgw',
+	'/usr/sbin/rtmpgw',
+	'helpers',
+	0,
+	'config_helpers_rtmpdump_path_label',
+	'config_helpers_rtmpdump_path_desc',
+	NULL
+);

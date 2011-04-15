@@ -179,7 +179,7 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract implement
 				'{%SERVER_NAME%}'
 			),array(
 				$_SERVER['SERVER_ADDR'],
-				$_SERVER['HTTP_HOST']
+				strstr($_SERVER['HTTP_HOST'], ':') ? strstr($_SERVER['HTTP_HOST'], ':') : $_SERVER['HTTP_HOST']
 			), $outputLink
 		);
 		

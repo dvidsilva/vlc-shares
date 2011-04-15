@@ -14,6 +14,7 @@ class X_Env {
 	const EXECUTE_OUT_IMPLODED = 3;
 	const EXECUTE_PS_WAIT = 0;
 	const EXECUTE_PS_BACKGROUND = 1;
+	const EXECUTE_PS_BACKGROUND_SPECIAL = 2;
 	
 	private static $_isWindows = null;
 	private static $_psExec = null;
@@ -49,7 +50,7 @@ class X_Env {
 		
 		$output = array();
 		$lastLine = '';
-		if ( $spawnType == self::EXECUTE_PS_BACKGROUND ) {
+		if ( $spawnType == self::EXECUTE_PS_BACKGROUND || $spawnType == self::EXECUTE_PS_BACKGROUND_SPECIAL ) {
 			if ( self::isWindows() ) {
 				// su windows leggo quanto tornato perche puo servire per il pid
 				//$command = /*self::_psExec().*/$command;
@@ -58,7 +59,9 @@ class X_Env {
 				$lastLine = $WshShell->Run($command, 0,false); 
 			} else {
 				// su linux ignoro semplicemente l'output
-				$command = trim($command).' > /dev/null 2>&1';
+				if ( $spawnType == self::EXECUTE_PS_BACKGROUND ) {
+					$command = trim($command).' > /dev/null 2>&1';
+				}
 				X_Debug::i("Executing: $command");
 				$lastLine = exec($command, $output);
 			}

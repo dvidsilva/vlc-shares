@@ -43,7 +43,7 @@ class InstallerController extends X_Controller_Action
     	try {
     		$form->lang->setMultiOptions($languages);
     		$form->setDefault('lang', $lang !== false ? "$lang.ini" : 'en_GB.ini');
-    		$form->setDefault('auth', 1);
+    		$form->setDefault('auth', 0);
     	} catch (Exception $e) {
     		// WTF?
     	}
