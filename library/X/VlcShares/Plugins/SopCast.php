@@ -245,7 +245,7 @@ class X_VlcShares_Plugins_SopCast extends X_VlcShares_Plugins_Abstract implement
 		
 		foreach ( $this->helpers()->paginator()->getPage($groups, $page) as $group ) {
 			$item = new X_Page_Item_PItem($this->getId().'-'.$group['id'], $group['title']);
-			$item//->setIcon('/images/icons/hosters/veetle.png')
+			$item->setIcon('/images/icons/folder_32.png')
 				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
 				->setCustom(__CLASS__.':location', "$page/{$group['id']}")
 				->setLink(array(
