@@ -348,13 +348,11 @@ class X_VlcShares_Plugins_Veetle extends X_VlcShares_Plugins_Abstract implements
 	 * Load an $uri performing an http request (or from cache if possible/allowed)
 	 */
 	private function _loadPage($uri, $validityCache = 0) {
-
+		$cachePlugin = null;
 		if ( $validityCache > 0 ) {
-			if ( X_VlcShares_Plugins::broker()->isRegistered('cache') ) {
+			try {
 				/* @var $cachePlugin X_VlcShares_Plugins_Cache */
 				$cachePlugin = X_VlcShares_Plugins::broker()->getPlugins('cache');
-			}
-			try {
 				X_Debug::i("Retrieving cache entry for {{$uri}}");
 				return $cachePlugin->retrieveItem($uri);
 			} catch (Exception $e) {
@@ -378,7 +376,7 @@ class X_VlcShares_Plugins_Veetle extends X_VlcShares_Plugins_Abstract implements
 		$response = $http->request();
 		$htmlString = $response->getBody();
 
-		if ( $validityCache > 0 && $cachePlugin ) {
+		if ( $validityCache > 0 && !is_null($cachePlugin) ) {
 			X_Debug::i("Caching page {{$uri}} with validity {{$validityCache}}");
 			$cachePlugin->storeItem($uri, $htmlString, (int) $validityCache);
 		}
