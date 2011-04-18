@@ -17,6 +17,7 @@ class X_VlcShares_Plugins_Veetle extends X_VlcShares_Plugins_Abstract implements
 			->setPriority('preGetModeItems')
 			->setPriority('prepareConfigElement')
 			->setPriority('getIndexManageLinks')
+			->setPriority('preRegisterVlcArgs')
 			;
 		
 	}
@@ -32,7 +33,7 @@ class X_VlcShares_Plugins_Veetle extends X_VlcShares_Plugins_Abstract implements
 		
 	}
 
-/**
+	/**
 	 * @see X_VlcShares_Plugins_ResolverInterface::resolveLocation
 	 * @param string $location
 	 * @return string real address of a resource
@@ -267,6 +268,34 @@ class X_VlcShares_Plugins_Veetle extends X_VlcShares_Plugins_Abstract implements
 		}
 	}
 	
+	/**
+	 * Set the source param into vlc params
+	 * 
+	 * @param X_Vlc $vlc vlc wrapper object
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function preRegisterVlcArgs(X_Vlc $vlc, $provider, $location, Zend_Controller_Action $controller) {
+	
+		// this plugin inject params only if this is the provider
+		if ( $provider != $this->getId() ) return;
+
+		// i need to register source as first, because subtitles plugin use source
+		// for create subfile
+		
+		X_Debug::i('Plugin triggered');
+		
+		$location = $this->resolveLocation($location);
+		
+		if ( $location !== null ) {
+			// TODO adapt to newer api when ready
+			$vlc->registerArg('source', "\"$location\"");			
+		} else {
+			X_Debug::e("No source o_O");
+		}
+	
+	}	
 	
 	/**
 	 * Add multioptions for server ip list
