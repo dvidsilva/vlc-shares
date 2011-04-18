@@ -10,12 +10,21 @@
 		</version>
 		
 		<!-- version 0.1.3 for 0.5.3 --> 
-		<version name="0.1.3" type="stable" cMin="0.5.3" cMax="0.6">
+		<version name="0.1.3" type="stable" cMin="0.5.3" cMax="0.5.4">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_youtube_0.1.3.zip</download>
 			<changelog><![CDATA[
 			*** 0.1.3 ***
 			 - Fix fetchFormatsNOAPI for new videos
+			]]></changelog>
+			<description><![CDATA[Allow to watch videos from Youtube (closed caption supported)]]></description>
+		</version>
+		<version name="0.2" type="beta" cMin="0.5.3" cMax="0.6">
+			<update />
+			<download>http://www.ximarx.ilbello.com/vlc-shares/plugin_youtube_0.2.zip</download>
+			<changelog><![CDATA[
+			*** 0.2 ***
+			 - hoster api
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from Youtube (closed caption supported)]]></description>
 		</version>
