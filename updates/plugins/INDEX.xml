@@ -242,7 +242,7 @@
 		</version>
 	</plugin>
 	<plugin key="myp2p">
-		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
+		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://www.ximarx.ilbello.com/vlc-shares/plugin_myp2p_0.1.zip</download>
 			<changelog><![CDATA[
