@@ -206,3 +206,25 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	'config_helpers_rtmpdump_path_desc',
 	NULL
 );
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'sopcast.enabled', 
+	'1',
+	'1',
+	'helpers',
+	3,
+	'config_helpers_sopcast_enabled_label',
+	'config_helpers_sopcast_enabled_desc',
+	NULL
+);
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'sopcast.path', 
+	'/usr/bin/sp-sc',
+	'/usr/bin/sp-sc',
+	'helpers',
+	0,
+	'config_helpers_sopcast_path_label',
+	'config_helpers_sopcast_path_desc',
+	NULL
+);

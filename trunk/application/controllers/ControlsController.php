@@ -86,6 +86,14 @@ class ControlsController extends X_Controller_Action {
     	// bottom links
 		$pageItems->merge(X_VlcShares_Plugins::broker()->postGetControlItems($this));
 		
+		// filter out items (parental-control / hidden file / system dir / custom controls)
+		foreach ($pageItems->getItems() as $key => $item) {
+			$results = X_VlcShares_Plugins::broker()->filterControlItems($item, $this);
+			if ( $results != null && in_array(false, $results) ) {
+				$pageItems->remove($item);
+			}
+		}
+		
 		
 		// trigger for page creation
 		X_VlcShares_Plugins::broker()->gen_afterPageBuild($pageItems, $this);
@@ -117,6 +125,18 @@ class ControlsController extends X_Controller_Action {
 		
 		
     	$pageItems = new X_Page_ItemList_PItem();
+    	
+    	$done = new X_Page_Item_PItem('core-opdone', X_Env::_('controls_done'));
+    	$done->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+    		->setLink(array(
+					'controller'	=> 'controls',
+					'action'		=>	'control', // i want to be sure that fake buttons forward to main action to avoid multiple seek in time
+					'pid'			=>	null, // no pid auto url
+					'a'				=>	null, // no a for auto url
+					'param'			=>	null,
+				), 'default', false);
+    	$pageItems->append($done);
+    	
     	
     	// links on top
     	$pageItems->merge(X_VlcShares_Plugins::broker()->preGetExecuteItems($pid, $a, $this));
