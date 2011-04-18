@@ -23,6 +23,7 @@ class X_VlcShares_Plugins_RedirectControls extends X_VlcShares_Plugins_Abstract 
 
 	private $redirectCond_Away = array(
 		'controls/control',
+		'controls/execute'
 	);
 	
 	function __construct() {

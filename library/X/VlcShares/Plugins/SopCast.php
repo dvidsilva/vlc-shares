@@ -1,14 +1,14 @@
 <?php 
 
 
-class X_VlcShares_Plugins_RtmpDump extends X_VlcShares_Plugins_Abstract {
+class X_VlcShares_Plugins_SopCast extends X_VlcShares_Plugins_Abstract {
 	
 	function __construct() {
 		$this->setPriority('gen_beforeInit');
 	}
 	
 	public function gen_beforeInit(Zend_Controller_Action $controller) {
-		if ( $this->helpers()->rtmpdump()->isEnabled() ) {
+		if ( $this->helpers()->sopcast()->isEnabled() ) {
 			$this->setPriority('preSpawnVlc', 99)
 				->setPriority('preGetControlItems')
 				->setPriority('getControlItems')
@@ -27,20 +27,24 @@ class X_VlcShares_Plugins_RtmpDump extends X_VlcShares_Plugins_Abstract {
 		// remove quotes, if present
 		$source = trim($source, '"');
 		
-		if ( X_Env::startWith($source, "rtmpdump://") ) {
-			X_Debug::i("Source is a dummy uri for rtmpdump forwarding. Setting pipe");
-			// parsing rtmpdump params from the uri and overriding the quiet param to be sure it's ok for the pipe
+		if ( X_Env::startWith($source, "sop://") ) {
+			X_Debug::i("Source is a dummy uri for sopcast forwarding. Setting pipe");
+			// spawning sopcast
 			if ( X_Env::isWindows() ) {
 				X_Env::execute(
-					(string) X_RtmpDump::getInstance()->parseUri($source)->setQuiet(true)->setStreamPort('8081'), 
+					(string) X_SopCast::getInstance()->setUri($source), 
 					X_Env::EXECUTE_OUT_NONE,
 					X_Env::EXECUTE_PS_BACKGROUND
 				);
-				$vlc->registerArg('source', '--play-and-stop');
 			} else {
-				$vlc->setPipe(X_RtmpDump::getInstance()->parseUri($source)->setQuiet(true)->setStreamPort('8081')/*->setLive(true)*/);
-				$vlc->registerArg('source', '- --play-and-stop');
+				X_Env::execute(
+					(string) X_SopCast::getInstance()->setUri($source) . " > /dev/null 2>&1 &", 
+					X_Env::EXECUTE_OUT_NONE,
+					X_Env::EXECUTE_PS_BACKGROUND_SPECIAL
+				);
 			}
+			
+			$vlc->registerArg('source', '--play-and-stop');
 			$vlc->registerArg('profile', '');
 			$vlc->registerArg('output', '');
 			
@@ -66,7 +70,7 @@ class X_VlcShares_Plugins_RtmpDump extends X_VlcShares_Plugins_Abstract {
 		$return = new X_Page_ItemList_PItem();
 		
 		
-		$outputLink = "http://{%SERVER_NAME%}:8081/";
+		$outputLink = "http://{%SERVER_NAME%}:8902/tv.asf";
 		$outputLink = str_replace(
 			array(
 				'{%SERVER_IP%}',
@@ -89,9 +93,9 @@ class X_VlcShares_Plugins_RtmpDump extends X_VlcShares_Plugins_Abstract {
 			->setIcon('/images/icons/stop.png')
 			->setLink(array(
 				'controller'		=>	'controls',
-				'action'	=>	'execute',
-				'a'			=>	'stop',
-				'pid'		=>	$this->getId(),
+				'action'			=>	'execute',
+				'a'					=>	'stop',
+				'pid'				=>	$this->getId(),
 			), 'default', false);
 		$return->append($item);
 		
@@ -100,7 +104,7 @@ class X_VlcShares_Plugins_RtmpDump extends X_VlcShares_Plugins_Abstract {
 		
 	}
 	
-	
+
 	public function preGetControlItems(Zend_Controller_Action $controller) {
 		
 		$location = X_Env::decode($controller->getRequest()->getParam('l', ''));
@@ -113,7 +117,7 @@ class X_VlcShares_Plugins_RtmpDump extends X_VlcShares_Plugins_Abstract {
 				$providerObj = X_VlcShares_Plugins::broker()->getPlugins($provider);
 				if ( $providerObj instanceof X_VlcShares_Plugins_ResolverInterface ) {
 					$source = $providerObj->resolveLocation($location);
-					if ( X_Env::startWith($source, 'rtmpdump://') ) {
+					if ( X_Env::startWith($source, 'sop://') ) {
 						
 						// adding priority for overloaded controls
 						// and to filter out old ones
@@ -156,7 +160,7 @@ class X_VlcShares_Plugins_RtmpDump extends X_VlcShares_Plugins_Abstract {
 			return false;
 		} elseif ($key == 'outputs') {
 			
-			$outputLink = "http://{%SERVER_NAME%}:8081/";
+			$outputLink = "http://{%SERVER_NAME%}:8902/tv.asf";
 			$outputLink = str_replace(
 				array(
 					'{%SERVER_IP%}',
@@ -173,8 +177,8 @@ class X_VlcShares_Plugins_RtmpDump extends X_VlcShares_Plugins_Abstract {
 			X_Debug::i("Item key not filtered: $key");
 		}
 		
-	}	
-
+	}
+	
 	/**
 	 * Execute the shutdown action 
 	 * 
@@ -187,6 +191,7 @@ class X_VlcShares_Plugins_RtmpDump extends X_VlcShares_Plugins_Abstract {
 		// the trigger isn't for this plugin
 		//if ( $this->getId() != $pid ) return;
 		
+		
 		$location = X_Env::decode($controller->getRequest()->getParam('l', ''));
 		$provider = $controller->getRequest()->getParam('p', '');
 		
@@ -195,7 +200,7 @@ class X_VlcShares_Plugins_RtmpDump extends X_VlcShares_Plugins_Abstract {
 				$providerObj = X_VlcShares_Plugins::broker()->getPlugins($provider);
 				if ( $providerObj instanceof X_VlcShares_Plugins_ResolverInterface ) {
 					$source = $providerObj->resolveLocation($location);
-					if ( !X_Env::startWith($source, 'rtmpdump://') ) {
+					if ( !X_Env::startWith($source, 'sop://') ) {
 						// ignore it, it's not provided by sopcast
 						return;
 					}
@@ -215,14 +220,14 @@ class X_VlcShares_Plugins_RtmpDump extends X_VlcShares_Plugins_Abstract {
 		} else {
 			X_Debug::e("Invalid action $action");
 		}
-				
+		
 		//$controller->getRequest()->setControllerName('controls')->setActionName('control')->setDispatched(false);
 		
 	}	
 
 	private function _action_stop(X_Vlc $vlc, $param) {
 		$vlc->forceKill();
-		X_RtmpDump::getInstance()->forceKill();
+		X_SopCast::getInstance()->forceKill();
 		sleep(1); // wait here so i will get "no vlc running" when i'll try later
 	}
 	

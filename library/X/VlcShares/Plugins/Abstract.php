@@ -513,6 +513,20 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 */
 	public function postGetControlItems(Zend_Controller_Action $controller) {}	
 
+	/**
+	 * Check if the controls item should be filtered out
+	 * If return is false, the item will be discarded at 100%
+	 * If return is true, isn't sure that the item will be added
+	 * 'cause another plugin can prevent this
+	 * 
+	 * Plugins who check per-item acl or blacklist should hook here
+	 * 
+	 * @param X_Page_Item_PItem $item
+	 * @param Zend_Controller_Action $controller
+	 * @return boolean true if item is ok, false if item should be discarded
+	 */
+	public function filterControlItems(X_Page_Item_PItem $item, Zend_Controller_Action $controller) {}	
+	
 	//=== END OF Controls:control ===//
 	
 	//=== Triggered in Controls:execute ===//

@@ -204,7 +204,7 @@ class X_VlcShares_Plugins_Controls extends X_VlcShares_Plugins_Abstract {
 			X_Debug::e("Invalid action $action");
 		}
 		
-		$controller->getRequest()->setControllerName('controls')->setActionName('control')->setDispatched(false);
+		//$controller->getRequest()->setControllerName('controls')->setActionName('control')->setDispatched(false);
 		
 	}
 	

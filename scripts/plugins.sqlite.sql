@@ -50,6 +50,16 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 );
 
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'sopcast',
+	'X_VlcShares_Plugins_SopCast', 
+	'X/VlcShares/Plugins/SopCast.php',
+	'p_sopcast_plglabel',
+	'p_sopcast_plgdesc',
+	1,
+	1
+);
+
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
 	'profiles',
 	'X_VlcShares_Plugins_Profiles', 
 	'X/VlcShares/Plugins/Profiles.php',
