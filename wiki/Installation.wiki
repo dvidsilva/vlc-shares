@@ -1,0 +1,6 @@
+#summary Installation procedures
+
+= Introduction =
+
+This is an index of all available installation procedures
+
