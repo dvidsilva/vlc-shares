@@ -11,7 +11,6 @@ class X_VlcShares_Plugins_RtmpDump extends X_VlcShares_Plugins_Abstract {
 		if ( $this->helpers()->rtmpdump()->isEnabled() ) {
 			$this->setPriority('preSpawnVlc', 99)
 				->setPriority('preGetControlItems')
-				->setPriority('getControlItems')
 				->setPriority('execute');
 			
 			$this->helpers()->hoster()->registerHoster(new X_VlcShares_Plugins_Helper_Hoster_SopCast());
