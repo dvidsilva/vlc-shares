@@ -107,4 +107,6 @@ e uno alla directory della libreria Zend Framework in `/opt/vlc-shares/library`
 sudo ln -s /usr/share/php/libzend-framework-php/Zend /opt/vlc-shares/library/Zend
 }}}
 
-== Installazione di SopCast (Opzionale) ==
+== Installazione di Sop Cast (Opzionale) ==
+
+== Installazione di RTMPDump (Opzionale) ==
