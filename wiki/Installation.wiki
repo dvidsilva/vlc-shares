@@ -1,10 +1,12 @@
 #summary Installation procedures
+#labels Phase-Deploy
 
 This is an index of all available installation procedures. Old guides are available in english only. From version 0.5.4, guides are available in italian too.
 
 
 || *VERSION* || *OS* || *ENGLISH* || *ITALIAN* ||
-|| *0.5* || Windows || [InstallationWindows] || _not available_ ||
-|| *0.5* || Linux (deb based) || [InstallationLinux] || _not available_ ||
 || *0.5.4* || Windows || [InstallationWindows054en] || [InstallationWindows054it] ||
 || *0.5.4* || Ubuntu 10.10 || [InstallationUbuntu054en] || [InstallationUbuntu054it] ||
+|| *0.5* || Windows || [InstallationWindows] || _not available_ ||
+|| *0.5* || Linux (deb based) || [InstallationLinux] || _not available_ ||
+
