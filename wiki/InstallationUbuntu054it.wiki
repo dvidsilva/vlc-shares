@@ -1,0 +1,16 @@
+#summary Guida all'installazione di VLCShares 0.5.4 su Ubuntu
+#labels Phase-Deploy
+
+= Introduzione =
+
+Questa guida permette di installare VLCShares 0.5.4 in un sistema Ubuntu 10.10. 
+
+<wiki:toc max_depth="6" />
+
+= Metodo 1: installazione automatica =
+
+
+
+= Metodo 2: installazione manuale =
+
+
