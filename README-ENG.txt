@@ -8,14 +8,14 @@
 #     															#
 #################################################################
 
-VLC-SHARES v0.5.4alpha2 - 12/04/2011
+VLC-SHARES v0.5.4beta1 - 18/04/2011
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
 All content of this file is released using
 GPL v3 (http://www.gnu.org/licenses/gpl.html)
 
-Vlc-share allow you to browse all files in your multimedia collection,
+Vlc-shares allow you to browse all files in your multimedia collection,
 select one of them and start the stream (with transcoding) through vlc.
 All of this through WiiMc (and the onlinemedia tab)
 
@@ -25,7 +25,7 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 | Changelog
 \==========---
 
-*** 0.5.4alpha2 (12/4/2011) ***
+*** 0.5.4beta1 (18/4/2011) ***
  - Authetication features
  - build script improved
  - robots.txt
@@ -36,9 +36,16 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
  - New hoster helper
  - New bookmarklets
  - Global Online library introduced with multi-hoster support (this one replace the Megavideo Library)
- - New set of plugins for many hosters (megavideo, megaupload, youtube, videobb, 4shared, veoh, veetle)
+ - New set of plugins for many hosters (megavideo, megaupload, youtube, videobb, 4shared, veoh, veetle, dailymotion, sopcast)
  - Older plugins updated for new hoster api where needed
  - Pagination helper
+ - RTMPDump integrated (without transcoding, so it doesn't work for android devices)
+ - SopCast integrated
+ - New plugin for MyP2P.eu
+ - Online installation of plugins without have to download them first through plugin installer
+ - A short (english only) plugin description is available in the installation page
+ - Partial translation for es_ES language available
+ - Some live TV channels (working through rtmpdump) added in Online Library (for testing)
 
 *** 0.5.3 (23/02/2011) ***
  - Some fixes to object interfaces of X_Vlc_... objects

@@ -187,6 +187,7 @@ class X_VlcShares_Plugins_PluginInstaller extends X_VlcShares_Plugins_Abstract {
 		    	} catch ( Exception $e ) {
 		    		X_Debug::e("DB Error while installind: {$e->getMessage()}");
 		    		$this->_helper->flashMessenger(X_Env::_('plugin_err_installerror_sqlerror').": {$e->getMessage()}");
+		    		//throw $e;
 		    	}
 			}
 			$egg->cleanTmp();

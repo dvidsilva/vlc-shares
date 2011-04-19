@@ -129,7 +129,7 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 );
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'filterExt.valid', 'avi|mkv|mpg|mpeg|mov|3gp|mp4|mp3|mp2|ts|mpv|mpa|mpgv|mpga|divx|dvx|flv', 'avi|mkv|mpg|mpeg|mov|3gp|mp4|mp3|mp2|ts|mpv|mpa|mpgv|mpga|divx|dvx|flv', 'plugins', 0, 'p_filterext_conf_valid_label', 'p_filterext_conf_valid_desc',	'');
+	'filterExt.valid', 'avi|mkv|mpg|mpeg|mov|3gp|mp4|mp3|mp2|ts|mpv|mpa|mpgv|mpga|divx|dvx|flv|wmv|wma', 'avi|mkv|mpg|mpeg|mov|3gp|mp4|mp3|mp2|ts|mpv|mpa|mpgv|mpga|divx|dvx|flv|wmv|wma', 'plugins', 0, 'p_filterext_conf_valid_label', 'p_filterext_conf_valid_desc',	'');
 
 
 
@@ -273,7 +273,7 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'streaminfo.show.title', '1', '1', 'plugins', 3, 'p_streaminfo_conf_showtitle_label', 'p_streaminfo_conf_showtitle_desc', '');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'streaminfo.show.time', '0', '0', 'plugins', 3, 'p_streaminfo_conf_showtime_label', 'p_streaminfo_conf_showtime_desc', '');
+	'streaminfo.show.time', '1', '1', 'plugins', 3, 'p_streaminfo_conf_showtime_label', 'p_streaminfo_conf_showtime_desc', '');
 
 	
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
@@ -346,7 +346,7 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 );
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'updatenotifier.autocheck.delay','3','3',
+	'updatenotifier.autocheck.delay','1','1',
 	'plugins',0,'p_updatenotifier_conf_autocheckdelay_label','p_updatenotifier_conf_autocheckdelay_desc','');
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
