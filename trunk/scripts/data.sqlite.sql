@@ -17,27 +17,27 @@ INSERT INTO plg_filesystem_shares (label, path) VALUES
 	
 INSERT INTO plg_profiles (label, arg) VALUES
 	('Hq',
-	'transcode{venc=ffmpeg,vcodec=mp2v,vb=4000,scale=.5,width=640,fps=25,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}'
+	'transcode{venc=ffmpeg,vcodec=mp2v,vb=4000,scale=.5,width=640,fps=25,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay,audio-sync}'
 	);	
 	
 INSERT INTO plg_profiles (label, arg) VALUES
 	('Mq',
-	'transcode{venc=ffmpeg,vcodec=mp2v,vb=3000,scale=.5,width=640,fps=25,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}'
+	'transcode{venc=ffmpeg,vcodec=mp2v,vb=3000,scale=.5,width=640,fps=25,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay,audio-sync}'
 	);
 	
 INSERT INTO plg_profiles (label, arg) VALUES
 	('Lq',
-	'transcode{venc=ffmpeg,vcodec=mp2v,vb=2000,scale=.5,width=640,fps=25,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}'
+	'transcode{venc=ffmpeg,vcodec=mp2v,vb=2000,scale=.5,width=640,fps=25,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay,audio-sync}'
 	);
 	
 INSERT INTO plg_profiles (label, arg, cond_formats) VALUES
 	('AVC/ACC safe profile',
-	'transcode{venc=ffmpeg,vcodec=mp2v,vb=1000,scale=.5,width=640,fps=25,soverlay}',
+	'transcode{venc=ffmpeg,vcodec=mp2v,vb=1000,scale=.5,width=640,fps=25,soverlay,audio-sync}',
 	'h264+aac');
 
 INSERT INTO plg_profiles (label, arg, cond_devices, weight) VALUES
 	('Android Phone (HQ)',
-	'transcode{vcodec=h264,venc=x264{no-cabac,level=12,vbv-maxrate=384,vbv-bufsize=1000,keyint=75,ref=3,bframes=0},width=320,height=180,acodec=mp4a,ab=64,vb=384}',
+	'transcode{vcodec=h264,venc=x264{no-cabac,level=12,vbv-maxrate=384,vbv-bufsize=1000,keyint=75,ref=3,bframes=0},width=320,height=180,acodec=mp4a,ab=64,vb=384,audio-sync}',
 	1,
 	0);
 
@@ -50,7 +50,7 @@ INSERT INTO plg_profiles (label, arg, cond_devices, weight) VALUES
 	
 INSERT INTO plg_profiles (label, arg, cond_devices, weight) VALUES
 	('Android Phone (LQ)',
-	'transcode{vcodec=mp4v,vb=400,fps=25,scale=0.5,acodec=mp4a,ab=64,channels=2}',
+	'transcode{vcodec=mp4v,vb=400,fps=25,scale=0.5,acodec=mp4a,ab=64,channels=2,audio-sync}',
 	1,
 	1);
 	
