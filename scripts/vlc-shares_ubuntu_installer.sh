@@ -1,10 +1,5 @@
 #!/bin/bash
 
-set -e
-
-#JUMP=$1
-JUMP=0
-
 # All temporary files will be downloaded inside this directory
 TMPDIR="/tmp/vlc-shares-installer"
 # vlc-shares will be installed here
@@ -45,6 +40,51 @@ FILE_VLCSHARES_CORE="${TMPDIR}/vlc-shares.zip"
 # download url filename about vlc-shares http configs
 DDL_VLCSHARES_APACHECONF="http://vlc-shares.googlecode.com/svn-history/r494/trunk/scripts/apacheconf_ubuntu1010.conf"
 FILE_VLCSHARES_APACHECONF="${TMPDIR}/vlc-shares.conf"
+
+
+JUMP=$1
+UNINSTALL=0
+
+if [ $JUMP ]; then
+	if [ ! $(echo "$JUMP" | grep -E "^[0-9]+$") ]; then
+		if [ $JUMP = "uninstall" ]; then
+			UNINSTALL=1
+		else
+			UNINSTALL=0
+			JUMP=0
+		fi
+	fi
+else
+	JUMP=0
+fi
+
+############ UNINSTALL
+
+if [ $UNINSTALL -eq 1 ]; then
+	
+	echo ---------- Removing apache configs ---------- 
+	sudo rm -i /etc/apache2/conf.d/vlc-shares.conf
+	
+	echo ---------- Removing vlc-shares core files ---
+	sudo rm -RI "${DESTDIR}/vlc-shares/"
+	
+	echo ---------- Removing link in /var/www/ -------
+	sudo rm -i /var/www/vlc-shares
+	
+	echo ---------- Cleaning temp files --------------
+	sudo rm -Ri $TMPDIR
+	
+	echo ---------------------------------------------
+	echo
+	echo
+	echo VLCShares removed. Bye
+	exit;
+	
+fi
+
+############ ENDUNINSTALL
+
+set -e
 
 if [ $JUMP -lt 1 ]; then
 
