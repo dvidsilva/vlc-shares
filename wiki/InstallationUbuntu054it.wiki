@@ -109,4 +109,19 @@ sudo ln -s /usr/share/php/libzend-framework-php/Zend /opt/vlc-shares/library/Zen
 
 == Installazione di Sop Cast (Opzionale) ==
 
+L'installazione di Sop Cast richiede l'aggiunta del repository PPA PPA [https://launchpad.net/~jason-scheunemann/+archive/ppa ppa:jason-scheunemann/ppa].
+
+Tramite un Terminale, digitate in sequenza
+{{{
+sudo apt-add-repository ppa:jason-scheunemann/ppa
+sudo apt-get update
+sudo apt-get instal sp-auth
+}}}
+
 == Installazione di RTMPDump (Opzionale) ==
+
+RTMPDump è compreso nei repository ufficiali di Ubuntu 10.10. Per installarlo basta quindi digitare nel terminale
+
+{{{
+sudo apt-get install rtmpdump
+}}}
