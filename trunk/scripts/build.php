@@ -23,6 +23,7 @@ Zend_Loader_Autoloader::getInstance()->registerNamespace('X_');
 require_once 'pclzip.php';
 
 $coreInclude = array(
+	APPLICATION_PATH.'/../robots.txt',
 	APPLICATION_PATH.'/../README-ENG.txt',
 	APPLICATION_PATH.'/../application',
 	APPLICATION_PATH.'/../languages',
