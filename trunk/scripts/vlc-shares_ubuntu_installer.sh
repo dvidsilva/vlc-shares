@@ -156,6 +156,7 @@ if [ $JUMP -lt 4 ]; then
 	echo ---------- Unpacking vlc-shares core --------
 	
 	sudo unzip $FILE_VLCSHARES_CORE -d $DESTDIR
+	sudo ln -s /usr/share/php/libzend-framework-php/Zend "${DESTDIR}/vlc-shares/library/Zend"
 fi
 
 if [ $JUMP -lt 5 ]; then

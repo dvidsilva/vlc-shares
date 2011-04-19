@@ -27,7 +27,6 @@ class X_VlcShares_Plugins_SopCast extends X_VlcShares_Plugins_Abstract implement
 				// general sopcast support triggers
 				->setPriority('preSpawnVlc', 99)
 				->setPriority('preGetControlItems')
-				->setPriority('getControlItems')
 				->setPriority('execute');
 			
 			$this->helpers()->hoster()->registerHoster(new X_VlcShares_Plugins_Helper_Hoster_SopCast());
