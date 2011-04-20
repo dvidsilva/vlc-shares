@@ -35,11 +35,6 @@
          *  [PluginsList#Anime_Db Anime Db]
          *  [PluginsList#OPFItalia OPFItalia]
          *  [PluginYoutube Youtube]
-   * [UpdateProcedure Update Procedure]
-      *  [UpdateProcedure#Automatic_Procedure Automatic Procedure]
-      *  [UpdateProcedure#Manual_Procedure Manual Procedure]
-         *  [UpdateProcedure#0.5_and_0.5.1beta4_->_0.5.1 From 0.5 (or 0.5.1beta4) to 0.5.1]
-         *  [UpdateProcedure#0.5.1_->_0.5.2 From 0.5.1 to 0.5.2]
    * [PluginsAPI Plugins Development]
      * [PluginsAPI#System_Architecture System Architecture]
          * [PluginsAPI#Plugins_System Plugins System]
@@ -48,5 +43,8 @@
              * [PluginsAPI#Inputs_and_Outputs Inputs and Outputs]
              * [PluginsAPI#Plugins_Preferences Plugin Preferences]
          * [PluginsAPI#Plugins_Helpers Plugins Helpers]
-     * [HowToNewPlugin How to create a new plugin]
-         * [HowToNewPlugin#Version_0.5.1 for version 0.5.1]
+     * How to create a new plugin
+         * [HowToNewPlugin#Version_0.5.1 ... for version 0.5.1]
+         * ...for version 0.5.4
+             * [HowToNewPlugin054En English]
+             * [HowToNewPlugin054It Italiano]
