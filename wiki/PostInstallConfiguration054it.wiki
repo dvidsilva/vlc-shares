@@ -148,7 +148,27 @@ La lista dei plugin disponibili, con una breve descrizione, è disponibile [Plug
 
 == Autenticazione Utente ==
 
-*TODO*
+L'autenticazione utente è stata introdotta con VLCShares 0.5.4 al fine di aiutare giu utenti che intendono utilizzare VLCShares installandolo su una macchina condivisa o con accesso diretto dall'esterno.
+
+Per tutti gli altri casi, si consiglia di utilizzare normalmente VLCShares con le funzionalità di autenticazione disattivate.
+
+E' possibile attivare o disattivare l'autenticazione utente cliccando sul pulsante `Attivo/Disattivato` che è posto nella lista dei plugin sulla destra della pagina di configurazione (raggiungibile tramite * http://localhost/vlc-shares/configs *).
+
+[https://lh3.googleusercontent.com/_U6HIkh_ODAo/Ta6tes_uhyI/AAAAAAAAAIY/TqQFxhH_FhQ/s800/configs_authoff.png]
+
+L'autenticazione utente agisce in questo modo: per poter utilizzare tutti i servizi messi a disposizione da VLCShares l'utente deve identificarsi. Può farlo utilizzando Username e Password da un qualsiasi dispositivo con un web browser.
+
+Per tutti gli altri dispositivi, come WIIMC ad esempio, è necessario utilizzare un URL speciale chiamato *URL Login Diretto*.
+
+Ogni utente per il quale questa tipologia di autenticazione sia attiva, può conoscere il proprio `URL Login Diretto` andando nella pagina di gestione degli account utenti.
+
+[https://picasaweb.google.com/lh/photo/a8eppb3amyNJ4e0weOeIRpQcgAM_hV8aasQj0QleA50?feat=directlink https://lh3.googleusercontent.com/_U6HIkh_ODAo/Ta8B6cEmE_I/AAAAAAAAAIo/t9GJzOHyg_A/s400/user_accounts.png]
+
+Per potersi autenticare, è sufficiente quindi collegarsi all'*URL Login Diretto*. VLCShares terrà traccia dell'IP e dello User-Agent utilizzato dal dispositivo e consentirà l'accesso per 24 ore dal momento dell'autenticazione. Oltre questo tempo limite sarà necessario eseguire una nuova autenticazione utilizzando lo stesso URL.
+
+Nel caso in cui venga cambiata la password dell'account, verrà anche modificato l'`URL Login Diretto`.
+
+*Attenzione*: la modalità di antenticazione tramite `URL Login Diretto` è potenzialmente poco sicura perchè consentirebbe l'accesso a VLCShares a tutti i dispositivi che condividono lo stesso IP e lo stesso User-Agent del dispositivo autenticato. E' quindi da considerarsi come un sistema estremo da utilizzare semplicemente nei casi in cui il normale tipo di autenticazione non possibile (ad esempio con WiiMC).
 
 == Attivazione debug log ==
 
