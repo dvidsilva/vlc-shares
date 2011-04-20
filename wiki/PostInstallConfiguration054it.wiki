@@ -13,7 +13,7 @@ Questa guida permette di completare l'installazione di VLCShares ed eseguire la 
 
 Subito dopo l'installazione, dobbiamo procedere alla procedura di preparazione del primo avvio.
 
-Aprite il vostro browser (VLCShares è compatibile con `Chrome 6+`, `Firefox 2+` e `Internet Explorer 9+`) all'indirizzo *http://localhost/vlc-shares*
+Aprite il vostro browser (VLCShares è compatibile con `Chrome 6+`, `Firefox 2+` e `Internet Explorer 9+`) all'indirizzo * http://localhost/vlc-shares *
 
 Vi verrà presentata un'interfaccia come quella nell'immagine sotto:
 
