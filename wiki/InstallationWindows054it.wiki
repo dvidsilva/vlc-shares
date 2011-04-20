@@ -144,20 +144,73 @@ Aggiungete, se mancante, la `V` vicino ai seguenti moduli:
    * `php_curl`
    * `php_mcrypt` (se presente)
 
-Al termine delle modifiche cliccate su OK
+Al termine delle modifiche cliccate su Applica (Apply) e poi su Chiudi
 
 == Installazione dei file ==
 
 Terminata la fase preparatoria, possiamo passare alla vera installazione di VLCShares. Scaricate l'archivio per l'installazione manuale di VLCShares [http://vlc-shares.googlecode.com/files/vlc-shares_0.5.4.zip tramite questo link]
 
+Decomprimete il contenuto nell'archivio all'interno della directory di `EASYPHP` (verrà creata automaticamente la cartella `vlc-shares/`).
+
 == Installazione di Zend Framework ==
+
+Scaricate Zend Framework (versione 1.10.6 o successiva): potete usare [http://framework.zend.com/releases/ZendFramework-1.10.6/ZendFramework-1.10.6-minimal.zip questo link diretto per la versione 1.10.6] oppure andare all'indice delle release e scaricare la versione che preferite [http://framework.zend.com/download/latest tramite questo link] (è sufficiente la versione `Minimal Package`).
+
+Decomprimete il contenuto dell'archivio in una posizione facilmente raggiungibile, ad esempio il desktop.
+
+Spostate la directory `library/Zend` all'interno della directory `EASYPHP\vlc-shares\library\`.
+
+Dopo lo spostamento, dovreste ottenere un risultato come questo:
+
+{{{
+EASYPHP/
+   |--- apache/
+   |--- conf_files/
+   |--- ...
+   |--- vlc-shares/
+   |        |--- application/
+   |        |--- library/
+   |        |       |--- Zend/
+   |        |       |      |--- Acl/
+   |        |       |      |--- ...
+   |        |       |--- X
+   |        |       |--- ...
+   |        |--- ...
+   |--- ...
+}}}
+
 
 = Installazione software di terze parti =
 
+VLCShares utilizza altro software per poter funzionare. In questa fase procederemo all'installazione delle applicazioni necessarie per rendere operative alcune funzionalità. Nello specifico:
+   * *VLC*: consente di usufruire delle funzionalità di transcodifica dei filmati
+   * *FFMPEG*: viene utilizzato per ottenere informazioni sui video (come il formato e il tipo delle traccie contenute) e per la generazione dei file di anteprima. Funzioni come "Sottotitoli integrati", "Tracce audio multiple" e "Selezione automatica del profilo di transcodifica" sono disponibili solo se FFMPEG è installato e correttamente configurato.
+   * *SOPCAST*: viene utilizzato per poter visualizzare i canali trasmessi tramite il protocollo SOP.
+   * *RTMPDUMP*: viene utilizzato per poter visualizzare gli streaming di tipo RTMP, solitamente trasmissioni live.
+
 == Installazione di VLC ==
+
+Scaricate il file di installazione di VLC dal [http://www.videolan.org/vlc/ sito ufficiale] e seguite le informazioni a schermo. E' sempre consigliata l'ultima versione disponibile. 
 
 == Installazione di FFMpeg ==
 
+Scaricate FFMPEG per Windows (versione static build) http://ffmpeg.arrozcru.org/autobuilds/ffmpeg-latest-mingw32-static.7z.
+
+Decomprimetela in una posizione a vostra scelta (l'importante è che vi ricordiate dove).
+
 == Installazione di Sop Cast (Opzionale) ==
 
+Scaricate l'ultima versione di Sop Cast disponibile dal [sito ufficiale http://www.sopcast.org/download]. Procedete all'installazione seguendo le informazioni a schermo
+
 == Installazione di RTMPDump (Opzionale) ==
+
+Scaricate l'ultima versione di RTMPDump per Windows disponibile dal [sito ufficiale http://rtmpdump.mplayerhq.hu/download].
+
+Attualmente l'ultima versione disponibile è la 2.3 disponibile tramite [http://rtmpdump.mplayerhq.hu/download/rtmpdump-2.3-windows.zip questo indirizzo]. Con l'introduzione del protocollo di autenticazione di Tipo 9 da parte di Adobe, alcuni link potrebbero non essere visibili affatto (quelli che richiedono esclusivamente questa versione dell'autenticazioni) o essere visualizzabili solo con una versione precedente alla 2.1d (a causa di un bug in RTMPDump). Nel caso alcuni stream vi diano problemi, provate quindi ad utilizzare la versione 2.1d prima di abbandonare ogni speranza in attesa che RTMPDump introduca il supporto al nuovo tipo di antenticazione. 
+
+Decomprimete il contenuto dell'archivio scaricato in una posizione a vostra scelta (l'importante è che vi ricordiate dove).
+
+
+= E dopo? =
+
+Al termine procedete con l'ultimazione dell'installazione tramite il browser seguendo la guida alla configurazione.
