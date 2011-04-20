@@ -213,4 +213,4 @@ Decomprimete il contenuto dell'archivio scaricato in una posizione a vostra scel
 
 = E dopo? =
 
-Al termine procedete con l'ultimazione dell'installazione tramite il browser seguendo la guida alla configurazione.
+Al termine procedete con l'ultimazione dell'installazione tramite il browser seguendo [PostInstallConfiguration054it la guida alla configurazione].
