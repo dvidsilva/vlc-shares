@@ -1,14 +1,131 @@
-#summary One-sentence summary of this page.
+#summary VLCShares 0.5.4 installation guide for Ubuntu
 #labels Phase-Deploy
 
 = Introduction =
 
-Add your content here.
+This guide help you to install VLCShares 0.5.4 on Ubuntu 10.10. 
+
+<wiki:toc max_depth="6" />
+
+= Method 1: automatic installation =
+
+== Notes ==
+
+You will be asked to install RTMPDump and SopCast in the installation procedure. SopCast will be installed using the PPA repository [https://launchpad.net/~jason-scheunemann/+archive/ppa ppa:jason-scheunemann/ppa]. If you don't want to use this repository, reply No.
+
+== Procedure ==
+
+Open a Terminal (Applications->Accessories->Terminal) and write inside it:
+
+{{{
+wget http://vlc-shares.googlecode.com/files/vlc-shares_0.5.4_ubuntu-installer.sh
+}}}
+
+After download is completed, type in the Terminal (allowing execution):
+
+{{{
+chmod a+x vlc-shares_0.5.4_ubuntu-installer.sh
+}}}
+
+After that, start the installation typing:
+
+{{{
+./vlc-shares_0.5.4_ubuntu-installer.sh
+}}}
+
+Follow on-screen instructions. On operation completed, move on [PostInstallConfiguration054En post installation guide].
 
 
-= Details =
+= Method 2: manual installation =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+== Requirements installation ==
+
+Open a Terminal (Applications->Accessories->Terminal) and type inside it:
+
+{{{
+sudo apt-get update && sudo apt-get install apache2 libapache2-mod-php5 php5 zend-framework zend-framework-bin vlc php5-sqlite php5-mcrypt php5-cli vlc ffmpeg libavcodec-extra-52 libavcodec-unstripped-52
+}}}
+
+== Apache configuration ==
+
+Enable `mod_rewrite` typing:
+
+{{{
+sudo a2enmod rewrite
+}}}
+
+After that type in sequence:
+
+{{{
+cd /etc/apache2/conf.d/
+sudo wget -O vlc-shares.conf http://vlc-shares.googlecode.com/svn-history/r494/trunk/scripts/apacheconf_ubuntu1010.conf
+sudo chmod 644 vlc-shares.conf
+}}}
+
+Let's do a Apache service restart
+
+{{{
+sudo /etc/init.d/apache2 restart
+}}}
+
+== File installation ==
+
+Move inside the `/opt` directory, typing
+
+{{{
+cd /opt
+}}}
+
+and download the VLCShares manual installation package:
+
+{{{
+sudo wget -O vlc-shares.zip http://vlc-shares.googlecode.com/files/vlc-shares_0.5.4.zip
+}}}
+
+Now, unpack it
+
+{{{
+unzip vlc-shares.zip -d .
+}}}
+
+and fix the permission of the directory created right now:
+
+{{{
+sudo chown www-data:www-data -R vlc-shares/
+sudo chmod 777 -R vlc-shares/
+}}}
+
+Create a symbolic link to the folder `/opt/vlc-shares/public/` into `/var/www` with this command
+
+{{{
+sudo ln -s /opt/vlc-shares/public /var/www/vlc-shares
+}}}
+
+and one to the Zend Framework library in `/opt/vlc-shares/library` typing 
+
+{{{
+sudo ln -s /usr/share/php/libzend-framework-php/Zend /opt/vlc-shares/library/Zend
+}}}
+
+== Sop Cast installation (optional) ==
+
+Sop Cast installation uses the PPA repository [https://launchpad.net/~jason-scheunemann/+archive/ppa ppa:jason-scheunemann/ppa]. If you don't want to use this repository, search for another source of Sop Cast and move to the next step.
+
+Tramite un Terminale, digitate in sequenza
+{{{
+sudo apt-add-repository ppa:jason-scheunemann/ppa
+sudo apt-get update
+sudo apt-get instal sp-auth
+}}}
+
+== RTMPDump installation (optional) ==
+
+RTMPDump is available to install from official Ubuntu universe repository. To install it, just type
+
+{{{
+sudo apt-get install rtmpdump
+}}}
+
+== After that... ==
+
+Move on the [PostInstallConfiguration054En post installation guide].
