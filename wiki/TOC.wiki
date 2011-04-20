@@ -1,13 +1,25 @@
 #labels Phase-Support
    * [Home ↑ Home]
    * [Installation Installation]
-      * [InstallationWindows Installation for Windows System]
-      * [InstallationLinux Installation for Linux System]
-         * [InstallationLinux#Ubuntu_10.10 Ubuntu 10.10]
-         * [InstallationLinux#Fedora Fedora]
-   * [VLCSharesConfiguration Configuration Tips]
-      *  [AndroidDeviceConfiguration Android devices configuration]
-      *  [WiimcConfiguration Wiimc configuration]
+      * == Windows ==
+         * [InstallationWindows Version 0.5]
+         * == Version 0.5.4 ==
+            * [InstallationWindows054en English]
+            * [InstallationWindows054it Italiano]
+      * == Linux ==
+         * [InstallationLinux Version 0.5]
+            * [InstallationLinux#Ubuntu_10.10 Ubuntu 10.10]
+            * [InstallationLinux#Fedora Fedora]
+         * == Version 0.5.4 ==
+            * [InstallationWindows054en English]
+            * [InstallationWindows054it Italiano]
+   * [Configuration Configuration]
+         * == Version 0.5.4 ==
+            * [PostInstallConfiguration054en English]
+            * [PostInstallConfiguration054it Italiano]
+   * [DevicesConfiguration Device Configuration]
+      *  [AndroidDeviceConfiguration Android Phones]
+      *  [WiimcConfiguration Wiimc]
    * [PluginsList Plugins]
       *  [PluginsList#Plugin_Installer Plugin Installer]
       *  [PluginsList#Plugins_List Available plugins list]
