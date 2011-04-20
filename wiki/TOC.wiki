@@ -51,6 +51,6 @@
    * FAQ
      * [FaqEn English]
      * [FaqIt Italiano]
-   * `Troubleshotting`
+   * Troubleshotting
      * [TroubleshottingEn English]
      * [ThrobleshottingIt Italiano]
