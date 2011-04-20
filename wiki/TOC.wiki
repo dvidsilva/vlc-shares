@@ -17,7 +17,7 @@
          * Version 0.5.4
             * [PostInstallConfiguration054En English]
             * [PostInstallConfiguration054It Italiano]
-   * [DevicesConfiguration Device Configuration]
+   * Device Configuration
       *  [AndroidDeviceConfiguration Android Phones]
       * Wiimc
          * [WiimcConfigurationEn English]
