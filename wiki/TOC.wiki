@@ -3,23 +3,25 @@
    * [Installation Installation]
       * *Windows*
          * [InstallationWindows Version 0.5]
-         * *Version 0.5.4*
-            * [InstallationWindows054en English]
-            * [InstallationWindows054it Italiano]
-      * *Ubuntu (or Linux)*
+         * Version 0.5.4
+            * [InstallationWindows054En English]
+            * [InstallationWindows054It Italiano]
+      * Ubuntu (or Linux)
          * [InstallationLinux Version 0.5]
             * [InstallationLinux#Ubuntu_10.10 Ubuntu 10.10]
             * [InstallationLinux#Fedora Fedora]
-         *  *Version 0.5.4*
-            * [InstallationUbuntu054en English]
-            * [InstallationUbuntu054it Italiano]
+         *  Version 0.5.4
+            * [InstallationUbuntu054En English]
+            * [InstallationUbuntu054It Italiano]
    * [Configuration Configuration]
-         * *Version 0.5.4*
-            * [PostInstallConfiguration054en English]
-            * [PostInstallConfiguration054it Italiano]
+         * Version 0.5.4
+            * [PostInstallConfiguration054En English]
+            * [PostInstallConfiguration054It Italiano]
    * [DevicesConfiguration Device Configuration]
       *  [AndroidDeviceConfiguration Android Phones]
-      *  [WiimcConfiguration Wiimc]
+      * WiiMc
+         * [WiimcConfigurationEn English]
+         * [WiimcConfigurationIn Italiano]
    * [PluginsList Plugins]
       *  [PluginsList#Plugin_Installer Plugin Installer]
       *  [PluginsList#Plugins_List Available plugins list]
