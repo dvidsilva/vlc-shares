@@ -5,8 +5,7 @@ This is an index of all available installation procedures. Old guides are availa
 
 
 || *VERSION* || *OS* || *ENGLISH* || *ITALIAN* ||
-|| *0.5.4* || Windows || [InstallationWindows054en] || [InstallationWindows054it] ||
-|| *0.5.4* || Ubuntu 10.10 || [InstallationUbuntu054en] || [InstallationUbuntu054it] ||
+|| *0.5.4* || Windows || [InstallationWindows054En] || [InstallationWindows054It] ||
+|| *0.5.4* || Ubuntu 10.10 || [InstallationUbuntu054En] || [InstallationUbuntu054It] ||
 || *0.5* || Windows || [InstallationWindows] || _not available_ ||
 || *0.5* || Linux (deb based) || [InstallationLinux] || _not available_ ||
-
