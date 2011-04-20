@@ -21,7 +21,7 @@
       *  [AndroidDeviceConfiguration Android Phones]
       * Wiimc
          * [WiimcConfigurationEn English]
-         * [WiimcConfigurationIn Italiano]
+         * [WiimcConfigurationIt Italiano]
    * [PluginsList Plugins]
       *  [PluginsList#Plugin_Installer Plugin Installer]
       *  [PluginsList#Plugins_List Available plugins list]
