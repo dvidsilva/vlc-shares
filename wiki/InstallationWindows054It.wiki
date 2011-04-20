@@ -200,11 +200,11 @@ Decomprimetela in una posizione a vostra scelta (l'importante è che vi ricordia
 
 == Installazione di Sop Cast (Opzionale) ==
 
-Scaricate l'ultima versione di Sop Cast disponibile dal [sito ufficiale http://www.sopcast.org/download]. Procedete all'installazione seguendo le informazioni a schermo
+Scaricate l'ultima versione di Sop Cast disponibile dal [http://www.sopcast.org/download sito ufficiale]. Procedete all'installazione seguendo le informazioni a schermo
 
 == Installazione di RTMPDump (Opzionale) ==
 
-Scaricate l'ultima versione di RTMPDump per Windows disponibile dal [sito ufficiale http://rtmpdump.mplayerhq.hu/download].
+Scaricate l'ultima versione di RTMPDump per Windows disponibile dal [http://rtmpdump.mplayerhq.hu/download sito ufficiale].
 
 Attualmente l'ultima versione disponibile è la 2.3 disponibile tramite [http://rtmpdump.mplayerhq.hu/download/rtmpdump-2.3-windows.zip questo indirizzo]. Con l'introduzione del protocollo di autenticazione di Tipo 9 da parte di Adobe, alcuni link potrebbero non essere visibili affatto (quelli che richiedono esclusivamente questa versione dell'autenticazioni) o essere visualizzabili solo con una versione precedente alla 2.1d (a causa di un bug in RTMPDump). Nel caso alcuni stream vi diano problemi, provate quindi ad utilizzare la versione 2.1d prima di abbandonare ogni speranza in attesa che RTMPDump introduca il supporto al nuovo tipo di antenticazione. 
 
@@ -213,4 +213,4 @@ Decomprimete il contenuto dell'archivio scaricato in una posizione a vostra scel
 
 = E dopo? =
 
-Al termine procedete con l'ultimazione dell'installazione tramite il browser seguendo [PostInstallConfiguration054it la guida alla configurazione].
+Al termine procedete con l'ultimazione dell'installazione tramite il browser seguendo [PostInstallConfiguration054It la guida alla configurazione].
