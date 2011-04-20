@@ -1,20 +1,20 @@
 #labels Phase-Support
    * [Home ↑ Home]
    * [Installation Installation]
-      * == Windows ==
+      * *Windows*
          * [InstallationWindows Version 0.5]
          * == Version 0.5.4 ==
             * [InstallationWindows054en English]
             * [InstallationWindows054it Italiano]
-      * == Linux ==
+      * *Ubuntu (or Linux)*
          * [InstallationLinux Version 0.5]
             * [InstallationLinux#Ubuntu_10.10 Ubuntu 10.10]
             * [InstallationLinux#Fedora Fedora]
-         * == Version 0.5.4 ==
+         *  *Version 0.5.4*
             * [InstallationWindows054en English]
             * [InstallationWindows054it Italiano]
    * [Configuration Configuration]
-         * == Version 0.5.4 ==
+         * *Version 0.5.4*
             * [PostInstallConfiguration054en English]
             * [PostInstallConfiguration054it Italiano]
    * [DevicesConfiguration Device Configuration]
