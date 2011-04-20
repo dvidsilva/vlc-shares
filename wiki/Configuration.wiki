@@ -4,4 +4,4 @@
 This is an index of all available configuration procedures. 
 
 || *VERSION* || *OS* || *ENGLISH* || *ITALIAN* ||
-|| *0.5.4* || Both || [PostInstallConfiguration054en] || [PostInstallConfiguration054it] ||
+|| *0.5.4* || Both || [PostInstallConfiguration054En] || [PostInstallConfiguration054It] ||
