@@ -11,14 +11,146 @@ Questa guida permette di completare l'installazione di VLCShares ed eseguire la 
 
 == Preparazione del primo avvio ==
 
+Subito dopo l'installazione, dobbiamo procedere alla procedura di preparazione del primo avvio.
+
+Aprite il vostro browser (VLCShares è compatibile con `Chrome 6+`, `Firefox 2+` e `Internet Explorer 9+`) all'indirizzo *http://localhost/vlc-shares*
+
+Vi verrà presentata un'interfaccia come quella nell'immagine sotto:
+
+[https://picasaweb.google.com/lh/photo/yR7FDSu1uLAYcUYZDCT_dZQcgAM_hV8aasQj0QleA50?feat=directlink https://lh6.googleusercontent.com/_U6HIkh_ODAo/Ta6oEqfFFYI/AAAAAAAAAIU/47FBy46Gh-E/s400/installation.png]
+
+Compilate i campi:
+
+   * scegliendo la lingua preferita fra quelle in lista
+   * indicando se attivare o meno le funzionalità di autenticazione _(se non è prettamente necessario è consigliabile lasciarle disabilitate)_
+   * specificando username e password per l'utente predefinito _(anche se l'autenticazione è disabilitata, è necessario impostare l'utente predefinito)_
+   * scegliendo se e quali plugin aggiuntivi si vogliono automaticamente installare durante il primo avvio _(sarà possibile installarne altri tramite il Plugin Installer in una fase successiva)_. Questa funzionalità richiede un collegamento ad internet attivo.
+
+Cliccate sul pulsante per continuare l'installazione. Potrebbe essere necessario qualche secondo se sono stati selezionati alcuni plugin opzionali (verranno scaricati da questo sito e installati automaticamente). Non abbiate fretta.
+
+Al termine vi verrà presentata la pagina delle configurazioni.
+
 == Configurazione dei percorsi ==
+
+Procediamo alla configurazione dei percorsi ai file eseguibili di VLC, FFMPEG, SOPCAST e RTMPDUMP che abbiamo installato nelle fasi precedenti.
+
+[https://picasaweb.google.com/lh/photo/qY6XTT8zXjW7gUQA6w9yJ5QcgAM_hV8aasQj0QleA50?feat=directlink https://lh5.googleusercontent.com/_U6HIkh_ODAo/Ta6tfK0iwyI/AAAAAAAAAIg/HTY0Qg5l8Wc/s400/configs_basic.png]
+
+*Nota*: _se siete utenti Ubuntu ed avete seguito la guida all'installazione presente su questo sito, potete anche saltare queste fasi in quanto i percorsi predefiniti sono gia validi. Non c'è da cambiare altro._
+
+
+
+=== Percorso di VLC ===
+
+Cliccate sul pulsante `Browse` alla destra di `Percorso VLC`. Navigate all'interno della struttura delle vostre directory fino a selezionare il file eseguibile di VLC.
+
+*Attenzione*: dovete cliccare sul link "`[Seleziona]`" posto a destra della riga del file per poterlo selezionare.
+
+Se siete utenti Windows, solitamente il percorso predefinito di VLC è:
+
+{{{
+C:\Program Files\VideoLan\Vlc\vlc.exe
+}}}
+
+In alternativa alla navigazione, potete anche scrivere direttamente il percorso all'interno del campo. In questo caso, assicuratevi di aggiungere anche il nome del file, non solo la directory che lo contiene. 
+
+Lo ripeto ancora una volta visto che sembra essere un errore comune: *assicuratevi di aver selezionato il file eseguibile corretto (e non soltanto il percorso alla directory)*
+
+|| Esempio *valido* || {{{C:\Program Files\VideoLan\Vlc\vlc.exe}}} || 
+|| Esempio *NON valido* || {{{C:\Program Files\VideoLan\Vlc\}}} ||
+
+
+=== Percorso di FFMPEG ===
+
+Cliccate sul pulsante `Browse` alla destra di `Percorso FFMPEG`. Navigate all'interno della struttura delle vostre directory fino a selezionare il file eseguibile di FFMPEG.
+
+*Attenzione*: dovete cliccare sul link "`[Seleziona]`" posto a destra della riga del file per poterlo selezionare.
+
+Se siete utenti Windows, solitamente il file `ffmpeg.exe` si trova all'interno della directory `\bin\`. Ad esempio:
+
+{{{
+C:\Program Files\FFMpeg\bin\ffmpeg.exe
+}}}
+
+In alternativa alla navigazione, potete anche scrivere direttamente il percorso all'interno del campo. In questo caso, assicuratevi di aggiungere anche il nome del file, non solo la directory che lo contiene. 
+
+Lo ripeto ancora una volta visto che sembra essere un errore comune: *assicuratevi di aver selezionato il file eseguibile corretto (e non soltanto il percorso alla directory)*
+
+|| Esempio *valido* || {{{C:\Program Files\FFMpeg\bin\ffmpeg.exe}}} || 
+|| Esempio *NON valido* || {{{C:\Program Files\FFMpeg\bin\}}} ||
+
+
+=== Percorso di RTMPDUMP ===
+
+Cliccate sul pulsante `Browse` alla destra di `Percorso RTMPDump`. Navigate all'interno della struttura delle vostre directory fino a selezionare il file eseguibile `rtmpgw` di RTMPDump.
+
+*Attenzione*: dovete cliccare sul link "`[Seleziona]`" posto a destra della riga del file per poterlo selezionare.
+
+*Attenzione*: il file necessario a VLCShares è il file `rtmpgw` (`rtmpgw.exe` per gli utenti Windows) contenuto nell'archivio di RTMPDump
+
+Ad esempio:
+
+{{{
+C:\Program Files\RTMPDump\rtmpgw.exe
+}}}
+
+In alternativa alla navigazione, potete anche scrivere direttamente il percorso all'interno del campo. In questo caso, assicuratevi di aggiungere anche il nome del file, non solo la directory che lo contiene. 
+
+Lo ripeto ancora una volta visto che sembra essere un errore comune: *assicuratevi di aver selezionato il file eseguibile corretto (e non soltanto il percorso alla directory)*
+
+|| Esempio *valido* || {{{C:\Program Files\RTMPDump\rtmpgw.exe}}} || 
+|| Esempio *NON valido* || {{{C:\Program Files\RTMPDump\}}} ||
+
+
+=== Percorso di SOPCAST ===
+
+Cliccate sul pulsante `Browse` alla destra di `Percorso SOPCAST`. Navigate all'interno della struttura delle vostre directory fino a selezionare il file eseguibile di SOPCAST.
+
+*Attenzione*: dovete cliccare sul link "`[Seleziona]`" posto a destra della riga del file per poterlo selezionare.
+
+Se siete utenti Windows, solitamente il percorso predefinito di SOPCAST è: 
+
+{{{
+C:\Program Files\SopCast\SopCast.exe
+}}}
+
+Se siete utenti Ubuntu (o linux), solitamente il file eseguibile di SopCast è:
+
+{{{
+/usr/bin/sp-sc
+}}}
+
+In alternativa alla navigazione, potete anche scrivere direttamente il percorso all'interno del campo. In questo caso, assicuratevi di aggiungere anche il nome del file, non solo la directory che lo contiene. 
+
+Lo ripeto ancora una volta visto che sembra essere un errore comune: *assicuratevi di aver selezionato il file eseguibile corretto (e non soltanto il percorso alla directory)*
+
+|| Esempio *valido* || {{{C:\Program Files\SopCast\SopCast.exe}}} || 
+|| Esempio *NON valido* || {{{C:\Program Files\SopCast\}}} ||
+
 
 = Fasi opzionali =
 
 == Installazione dei plugin aggiuntivi ==
 
+*TODO*
+
 == Autenticazione Utente ==
+
+*TODO*
 
 == Attivazione debug log ==
 
-== Test diagnostici ==
+Questa procedura consente di attivare il debug log con il massimo livello di dettaglio.
+
+Entrate nella pagina di configurazione di VLCShares (http://localhost/vlc-shares/configs)
+
+Visualizzate le `Configurazioni Avanzate`.
+
+Impostate:
+   * *`Debug log attivo`* su *`Si`*
+   * *`Livello debug`* su `*Tutto*`.
+
+Cliccate su `Salva`.
+
+[https://picasaweb.google.com/lh/photo/VyZXLyI-CU_00DEbT6o2IJQcgAM_hV8aasQj0QleA50?feat=directlink https://lh5.googleusercontent.com/_U6HIkh_ODAo/Ta6te03jLqI/AAAAAAAAAIc/XHQ6Q8nDjYg/s400/configs_debugon.png]
+ 
