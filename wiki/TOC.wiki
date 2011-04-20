@@ -11,8 +11,8 @@
             * [InstallationLinux#Ubuntu_10.10 Ubuntu 10.10]
             * [InstallationLinux#Fedora Fedora]
          *  *Version 0.5.4*
-            * [InstallationWindows054en English]
-            * [InstallationWindows054it Italiano]
+            * [InstallationUbuntu054en English]
+            * [InstallationUbuntu054it Italiano]
    * [Configuration Configuration]
          * *Version 0.5.4*
             * [PostInstallConfiguration054en English]
