@@ -1,0 +1,30 @@
+#summary Guida all'installazione di VLCShares 0.5.4 su Windows
+#labels Phase-Deploy
+
+= Introduzione =
+
+Questa guida permette di installare VLCShares 0.5.4 in un sistema Windows supportato.
+
+<wiki:toc max_depth="6" />
+
+= Metodo 1: installazione automatica =
+
+== Note ==
+
+== Procedura ==
+
+= Metodo 2: installazione manuale =
+
+== Installazione dei requisiti ==
+
+== Configurazione di Apache ==
+
+== Installazione dei file ==
+
+= Installazione software di terze parti =
+
+== Installazione di FFMpeg ==
+
+== Installazione di Sop Cast (Opzionale) ==
+
+== Installazione di RTMPDump (Opzionale) ==
