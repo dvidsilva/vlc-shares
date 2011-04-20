@@ -11,7 +11,19 @@ Questa guida permette di installare VLCShares 0.5.4 in un sistema Windows suppor
 
 == Note ==
 
+L'installer per Windows di VLCShares è basato sull'installer di EasyPHP 5.3.3i, le uniche modifiche apportate riguardano alcune configurazioni relative al server Apache e Php. Se volete maggiori dettagli sulle modifiche apportate, leggete le istruzioni presentate nel *`Metodo 2`*.
+
 == Procedura ==
+
+Eseguite il download del [http://vlc-shares.googlecode.com/files/vlc-shares_0.5.4_installer.exe file di installazione di VLCShares 0.5.4].
+
+Una volta completato il download, avviate il file appena scaricato e seguite le indicazioni a schermo. Durante o all'inizio dell'installazione verranno richiesti `Privilegi Amministrativi` (su Windows Vista e Windows 7 con UAC attivo).
+
+Al termine dell'installazione, potrebbe essere presentato un avviso del Windows Firewall relativo al servizio Apache (come nell'immagine sotto)
+
+http://www.dsl.uow.edu.au/~sk33/pub/php5-2.png
+
+Cliccate sul pulsante "Sblocca"
 
 = Metodo 2: installazione manuale =
 
