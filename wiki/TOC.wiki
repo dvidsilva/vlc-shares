@@ -3,7 +3,7 @@
    * [Installation Installation]
       * *Windows*
          * [InstallationWindows Version 0.5]
-         * == Version 0.5.4 ==
+         * *Version 0.5.4*
             * [InstallationWindows054en English]
             * [InstallationWindows054it Italiano]
       * *Ubuntu (or Linux)*
