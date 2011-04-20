@@ -1,0 +1,24 @@
+#summary Guida alla configurazione post installazione
+#labels Phase-Deploy
+
+= Introduzione =
+
+Questa guida permette di completare l'installazione di VLCShares ed eseguire la configurazione preliminare consigliata.
+
+<wiki:toc max_depth="6" />
+
+= Operazioni necessarie =
+
+== Preparazione del primo avvio ==
+
+== Configurazione dei percorsi ==
+
+= Fasi opzionali =
+
+== Installazione dei plugin aggiuntivi ==
+
+== Autenticazione Utente ==
+
+== Attivazione debug log ==
+
+== Test diagnostici ==
