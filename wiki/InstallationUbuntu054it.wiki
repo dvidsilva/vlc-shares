@@ -33,7 +33,7 @@ Avviate quindi l'installazione:
 ./vlc-shares_0.5.4_ubuntu-installer.sh
 }}}
 
-Seguite le informazioni a schermo. Al termine procedete con l'ultimazione dell'installazione tramite il browser.
+Seguite le informazioni a schermo. Al termine procedete con l'ultimazione dell'installazione tramite il browser seguendo [PostInstallConfiguration054it la guida alla configurazione].
 
 
 = Metodo 2: installazione manuale =
@@ -125,3 +125,7 @@ RTMPDump è compreso nei repository ufficiali di Ubuntu 10.10. Per installarlo b
 {{{
 sudo apt-get install rtmpdump
 }}}
+
+== Al termine... ==
+
+Procedete con l'ultimazione dell'installazione tramite il browser seguendo [PostInstallConfiguration054it la guida alla configurazione].
