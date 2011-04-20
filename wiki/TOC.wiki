@@ -19,7 +19,7 @@
             * [PostInstallConfiguration054It Italiano]
    * [DevicesConfiguration Device Configuration]
       *  [AndroidDeviceConfiguration Android Phones]
-      * WiiMc
+      * Wiimc
          * [WiimcConfigurationEn English]
          * [WiimcConfigurationIn Italiano]
    * [PluginsList Plugins]
