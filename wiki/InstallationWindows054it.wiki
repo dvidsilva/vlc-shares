@@ -25,6 +25,8 @@ http://www.dsl.uow.edu.au/~sk33/pub/php5-2.png
 
 Cliccate sul pulsante "Sblocca"
 
+Procedete quindi con la fase: [#Installazione_software_di_terze_parti installazione del software di terze parti]
+
 = Metodo 2: installazione manuale =
 
 == Installazione dei requisiti ==
