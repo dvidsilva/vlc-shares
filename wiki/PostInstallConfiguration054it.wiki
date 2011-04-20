@@ -132,7 +132,19 @@ Lo ripeto ancora una volta visto che sembra essere un errore comune: *assicurate
 
 == Installazione dei plugin aggiuntivi ==
 
-*TODO*
+[https://picasaweb.google.com/lh/photo/J3oN3UfaBs8IJwq-oSG4OJQcgAM_hV8aasQj0QleA50?feat=directlink https://lh5.googleusercontent.com/_U6HIkh_ODAo/Ta63WoPs1PI/AAAAAAAAAIk/0ngjpldnX1A/s400/plugin_installer.png]
+
+=== Installazione automatica ===
+
+Dalla versione 0.5.4 è possibile installare i plugin ufficiali in maniera totalmente automatica. Per farlo basta aprire la pagina del `Plugin Installer` di VLCShares (disponibile all'indirizzo * http://localhost/vlc-shares/plugin *) e selezionare un plugin dalla lista cliccando sul pulsante `[+] Installa`.
+
+=== Installazione manuale ===
+
+La vecchia modalità di installazione manuale è sempre supportata e non ha subito cambiamenti.
+
+Per installare un nuovo plugin basta eseguire l'upload del file del plugin tramite il form disponibile sulla destra della pagina.
+
+La lista dei plugin disponibili, con una breve descrizione, è disponibile [PluginsList#Plugins_List in questa pagina].
 
 == Autenticazione Utente ==
 
