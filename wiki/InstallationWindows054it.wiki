@@ -25,17 +25,136 @@ http://www.dsl.uow.edu.au/~sk33/pub/php5-2.png
 
 Cliccate sul pulsante "Sblocca"
 
-Procedete quindi con la fase: [#Installazione_software_di_terze_parti installazione del software di terze parti]
+Procedete quindi con la fase [#Installazione_software_di_terze_parti installazione del software di terze parti]
 
 = Metodo 2: installazione manuale =
 
+== Note ==
+
+Questa guida prevede l'installazione di EasyPHP (versione 5.3.3i, ma dovrebbe funzionare anche con le successive) come base per l'utilizzo di VLCShares.
+
 == Installazione dei requisiti ==
 
-== Configurazione di Apache ==
+Eseguite il download di una versione di EasyPHP dal sito ufficiale: http://www.easyphp.org/download.php. *(Si consiglia il download della versione 5.3.3i in quanto questa guida è redatta per quella versione, ma una qualsiasi versione successiva dovrebbe funzionare altrettanto bene con questa guida)*
+
+Completate l'installazione seguendo le istruzioni a schermo.
+
+== Configurazione di Apache e PHP ==
+
+Fate doppio click sull'icona di EasyPHP nella SysTray (le icone in basso a destra, nella barra di Windows) per far apparire la finestra principale di EasyPHP.
+
+http://technology.ohmygoh.com/wp-content/uploads/2009/08/easyphp_changeport.jpg
+
+Cliccate sulla `E`->`Configuration`->`Apache` come in figura.
+
+Si aprirà un editor di testo (di default Notepad) con all'interno il contenuto del file `Httpd.conf`, il file di configurazione di Apache appunto.
+
+Cercate la riga:
+
+{{{
+Listen 127.0.0.1:80
+}}}
+
+e modificatela in
+
+{{{
+Listen 0.0.0.0:80
+}}}
+
+Cercate poi la riga:
+
+{{{
+#LoadModule rewrite_module modules/mod_rewrite.so
+}}}
+
+e modificatela (togliendo il cancelletto) in
+
+{{{
+LoadModule rewrite_module modules/mod_rewrite.so
+}}}
+
+Cercate poi
+
+{{{
+<IfModule alias_module>
+    #
+    # Redirect: Allows you to tell clients about documents that used to 
+    # exist in your server's namespace, but do not anymore. The client 
+    # will make a new request for the document at its new location.
+    # Example:
+    # Redirect permanent /foo http://localhost/bar
+}}}
+
+e aggiungete subito dopo queste righe:
+
+{{{
+
+	# VLCSHARES MODULE
+	Alias /vlc-shares "${path}/vlc-shares/public"
+	<Directory "${path}/vlc-shares">
+		Options FollowSymLinks Indexes
+		AllowOverride All
+		Order allow,deny
+		allow from all
+	</Directory>
+}}}
+
+Il risultato finale dovrebbe essere questo:
+
+{{{
+
+<IfModule alias_module>
+    #
+    # Redirect: Allows you to tell clients about documents that used to 
+    # exist in your server's namespace, but do not anymore. The client 
+    # will make a new request for the document at its new location.
+    # Example:
+    # Redirect permanent /foo http://localhost/bar
+
+	# VLCSHARES MODULE
+	Alias /vlc-shares "${path}/vlc-shares/public"
+	<Directory "${path}/vlc-shares">
+		Options FollowSymLinks Indexes
+		AllowOverride All
+		Order allow,deny
+		allow from all
+	</Directory>
+
+}}}
+
+Salvate il file e chiudete l'editor di testo.
+
+Nel caso in cui abbiate difficoltà nella modifica del file httpd.conf potete procedere al download di una versione del file gia modificata per la versione di EasyPHP 5.3.3i e sostituirla alla vostra. Scaricate il file http://vlc-shares.googlecode.com/files/httpd_0.5.4.conf, rinominatelo in `httpd.conf` e sovrascrivete il file presente nella directory `EASYPHP\conf_files\httpd.conf`.
+
+
+Procediamo quindi con la configurazione di PHP.
+
+Sempre dalla finestra principale di EasyPHP, cliccate su `E`->`Configuration`->`PHP Extension`
+
+Si aprirà una finestra con l'elenco delle estensioni di PHP attive (come nell'immagine sotto)
+
+http://2.bp.blogspot.com/_jGEuU1zFjq8/R_ZZdbfEJhI/AAAAAAAAAKE/pbZeAbu8_Xg/s320/EasyPHP+curl.JPG
+
+Aggiungete, se mancante, la `V` vicino ai seguenti moduli:
+
+   * `php_pdo_sqlite`
+   * `php_openssl`
+   * `php_sqlite`
+   * `php_sqlite3`
+   * `php_curl`
+   * `php_mcrypt` (se presente)
+
+Al termine delle modifiche cliccate su OK
 
 == Installazione dei file ==
 
+Terminata la fase preparatoria, possiamo passare alla vera installazione di VLCShares. Scaricate l'archivio per l'installazione manuale di VLCShares [http://vlc-shares.googlecode.com/files/vlc-shares_0.5.4.zip tramite questo link]
+
+== Installazione di Zend Framework ==
+
 = Installazione software di terze parti =
+
+== Installazione di VLC ==
 
 == Installazione di FFMpeg ==
 
