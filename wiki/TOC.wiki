@@ -1,7 +1,7 @@
 #labels Phase-Support
    * [Home ↑ Home]
    * [Installation Installation]
-      * *Windows*
+      * Windows
          * [InstallationWindows Version 0.5]
          * Version 0.5.4
             * [InstallationWindows054En English]
