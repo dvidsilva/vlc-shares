@@ -188,9 +188,9 @@
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from GoGoCinema.com (english)]]></description>
 		</version>
-		<version name="0.2" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.2" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://www.ximarx.ilbello.com/vlc-shares/plugin_gogocinema_0.2.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_gogocinema_0.2.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from GoGoCinema.com (english)]]></description>
