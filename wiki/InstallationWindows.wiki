@@ -1,5 +1,5 @@
 #summary Installation tutorial for vlc-shares 0.5 for Windows
-#labels Phase-Support,Featured,Phase-Deploy
+#labels Phase-Support,Deprecated,Phase-Deploy
 
 = Introduction =
 
