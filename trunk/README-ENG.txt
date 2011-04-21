@@ -49,6 +49,7 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
  - A short (english only) plugin description is available in the installation page
  - Partial translation for es_ES language available
  - Some live TV channels (working through rtmpdump) added in Online Library (for testing)
+ - VLCShares main url is changed from http://IPADDRESS/vlc-shares/public to http://IPADDRESS/vlc-shares/ 
 
 *** 0.5.3 (23/02/2011) ***
  - Some fixes to object interfaces of X_Vlc_... objects

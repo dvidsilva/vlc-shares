@@ -36,6 +36,10 @@ class X_VlcShares_Plugins_RtmpDump extends X_VlcShares_Plugins_Abstract {
 					X_Env::EXECUTE_PS_BACKGROUND
 				);
 				$vlc->registerArg('source', '--play-and-stop');
+				
+				// Sleep here ~= 10 seconds waiting for rtmpgw init
+				sleep(10);
+				
 			} else {
 				$vlc->setPipe(X_RtmpDump::getInstance()->parseUri($source)->setQuiet(true)->setStreamPort('8081')/*->setLive(true)*/);
 				$vlc->registerArg('source', '- --play-and-stop');
