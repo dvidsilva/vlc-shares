@@ -48,9 +48,6 @@
          * ...for version 0.5.4
              * [HowToNewPlugin054En English]
              * [HowToNewPlugin054It Italiano]
-   * FAQ
-     * [FaqEn English]
-     * [FaqIt Italiano]
-   * Troubleshotting
-     * [TroubleshottingEn English]
-     * [ThrobleshottingIt Italiano]
+   * FAQ/Troubleshotting
+     * [FaqTroubleshottingEn English]
+     * [FaqTroubleshottingIt Italiano]
