@@ -8,7 +8,7 @@
 
 == Cosa fa di preciso VLCShares? ==
 
-VLCShares è una interfaccia web per VLC, consente di navigare attraverso risorse di diverso tipo tramite i vari plugin, e di rendere fruibili queste risorse (solitamente video, ma non necessariamente) a diversi tipi di dispositivi.
+VLCShares è una interfaccia web per VLC, consente di navigare attraverso risorse di diverso tipo, tramite i vari plugin, e di renderle fruibili  a diversi tipi di dispositivi.
 
 == Quali sono i dispositivi supportati? ==
 
