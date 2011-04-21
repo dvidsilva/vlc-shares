@@ -8,7 +8,7 @@
 #     															#
 ########## Megavideo Plugin #####################################
 
-Megavideo v0.2.1
+Megavideo v0.3
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -22,6 +22,10 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.3 ***
+ - Megavideo library replaced by Online library (vlc-shares 0.5.4+)
+ - adapted for the new Hoster api
 
 *** 0.2.1 ***
  - new Megaupload Helper
