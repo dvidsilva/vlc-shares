@@ -39,6 +39,7 @@ Name: "{commondesktop}\VLCShares"; Filename: "{app}\EasyPHP-5.3.3.exe"; Tasks: d
 
 [UninstallDelete]
 Type: files; Name: "{app}\UpFile.tmp"
+Type: files; Name: "{app}\vlc-shares\*"
 Type: files; Name: "{app}\tmp\*"
 Type: files; Name: "{app}\mysql\data\ib_logfile0"
 Type: files; Name: "{app}\mysql\data\ib_logfile1"

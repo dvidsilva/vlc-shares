@@ -382,6 +382,9 @@ class X_VlcShares_Plugins_SopCast extends X_VlcShares_Plugins_Abstract implement
 				);
 			}
 			
+			// Sleep here ~= 15 seconds waiting for sopcast init
+			sleep(15);
+			
 			$vlc->registerArg('source', '--play-and-stop');
 			$vlc->registerArg('profile', '');
 			$vlc->registerArg('output', '');
