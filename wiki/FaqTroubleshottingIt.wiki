@@ -1,0 +1,6 @@
+#summary FAQ e Risoluzione di problemi comuni
+#labels Phase-Support
+
+<wiki:toc max_depth="6" />
+
+Add your content here.
