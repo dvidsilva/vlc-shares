@@ -1,5 +1,5 @@
 #summary Installation procedures
-#labels Phase-Deploy
+#labels Phase-Deploy,Featured
 
 This is an index of all available installation procedures. Old guides are available in english only. From version 0.5.4, guides are available in italian too.
 
