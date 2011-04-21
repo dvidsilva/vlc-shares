@@ -87,7 +87,7 @@ Se volete provare ad aggirare il blocco, usate la modalità transcodificata e ut
 Per poter installare i plugin aggiuntivi, è necessario che VLCShares abbia permessi in lettura e scrittura su tutti i suoi file. Dalla versione 0.5.4, usando l'installer per Windows i permessi dovrebbere essere impostati automaticamente. Nel caso questo non succeda o state usando una versione manuale, potete usare questi semplici passi per correggere il problema:
 
    # Aprire risorse del computer ed andare nella directory di installazione di vlc-shares (solitamente C\Program Files (x86)\VLCShares\)
-   # Cliccate con il tasto destro sulla cartella www e selezionate "Proprietà"
+   # Cliccate con il tasto destro sulla cartella  `vlc-shares\` (o `www\vlc-shares\` se usate VLCShares 0.5.3 o precedenti) e selezionate "Proprietà"
    # Cliccate sul tab Sicurezza (nella parte alta della finestra che si è aperta), ottenendo una finestra simile a questa: http://www.blogsdna.com/wp-content/uploads/2009/01/windows-7-files-and-folder-security-tab.png
    # Cliccate sul pulsante "Modifica"
    # Selezionate l'utente "Users (Windows\Users)" o una sua eventuale traduzione italiana "Utenti (Windows\Users)"
