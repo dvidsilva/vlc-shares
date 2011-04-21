@@ -8,7 +8,7 @@
 #     															#
 ########## Youtube Plugin #######################################
 
-Youtube v0.1.3
+Youtube v0.2
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -22,6 +22,9 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.2 ***
+ - New hoster api
 
 *** 0.1.3 ***
  - Fix fetchFormatsNOAPI for new videos
