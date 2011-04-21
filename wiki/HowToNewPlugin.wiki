@@ -1,5 +1,5 @@
 #summary How to create a plugin for VLCShares
-#labels Phase-Implementation,Featured
+#labels Phase-Implementation
 
 =Introduction=
 
@@ -284,8 +284,6 @@ Give a look at the images below and you will see the truth :P
 http://vlc-shares.googlecode.com/svn/wiki/images/api_dashboard.png
 
 http://vlc-shares.googlecode.com/svn/wiki/images/api_collections.png
-
-
 
 
 
