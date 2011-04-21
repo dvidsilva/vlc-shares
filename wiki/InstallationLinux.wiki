@@ -1,5 +1,5 @@
 #summary Installation tutorial for vlc-shares 0.5 for Linux
-#labels Phase-Deploy,Featured
+#labels Phase-Deploy,Deprecated
 
 = Introduction =
 
