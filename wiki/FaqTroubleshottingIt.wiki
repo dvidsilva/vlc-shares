@@ -79,7 +79,7 @@ Mi dispiace, lamentati con Megavideo per il loro blocco dopo 72 minuti di vision
 
 == Wiimc: perchè non posso andare avanti e indietro? ==
 
-WiiMC ha disabilitato la possibilità di spostarsi avanti e indietro negli stream Http (quelli usati da VLCShares). Devo ammettere inoltre che condivido la loro politica in quanto spesso, spostarti avanti e indietro bloccava il blocco della riproduzione. Non sempre è possibile il seeking.
+WiiMC ha disabilitato la possibilità di spostarsi avanti e indietro negli stream Http (quelli usati da VLCShares). Devo ammettere inoltre che condivido la loro politica in quanto, spesso, spostarti avanti e indietro portava al blocco della riproduzione. Non sempre è possibile il seeking.
 Se volete provare ad aggirare il blocco, usate la modalità transcodificata e utilizzate i controlli di riproduzione di VLCShares per andare avanti e indietro.
 
 == Problemi di permessi su Windows Vista/7 ==
