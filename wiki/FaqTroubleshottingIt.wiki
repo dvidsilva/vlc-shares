@@ -88,8 +88,7 @@ Per poter installare i plugin aggiuntivi, è necessario che VLCShares abbia perm
 
    # Aprire risorse del computer ed andare nella directory di installazione di vlc-shares (solitamente C\Program Files (x86)\VLCShares\)
    # Cliccate con il tasto destro sulla cartella www e selezionate "Proprietà"
-   # Cliccate sul tab Sicurezza (nella parte alta della finestra che si è aperta), ottenendo una finestra simile a questa:
-http://www.blogsdna.com/wp-content/uploads/2009/01/windows-7-files-and-folder-security-tab.png
+   # Cliccate sul tab Sicurezza (nella parte alta della finestra che si è aperta), ottenendo una finestra simile a questa: http://www.blogsdna.com/wp-content/uploads/2009/01/windows-7-files-and-folder-security-tab.png
    # Cliccate sul pulsante "Modifica"
    # Selezionate l'utente "Users (Windows\Users)" o una sua eventuale traduzione italiana "Utenti (Windows\Users)"
    # Mettete la V su "Permetti" in corrispondenza della riga "Controllo completo" (o qualcosa di analogo, non ricordo la traduzione italiana. I ogni caso è il primo della lista)
