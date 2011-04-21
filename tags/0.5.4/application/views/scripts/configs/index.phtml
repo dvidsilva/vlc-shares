@@ -1,0 +1,133 @@
+<!-- application/views/scripts/manage/configs.phtml -->
+<?php
+// prepare decoration
+/*
+$dg = $this->form->getDisplayGroups ();
+foreach ( $dg as $g ) {
+	// @var $g Zend_Form_DisplayGroup
+	if ( $g->getName() == 'buttons' ) {
+		$g->setDecorators ( array (
+			'FormElements', 
+			array ('HtmlTag', array ('tag' => 'div', 'class' => 'span-11 box last', 'align' => 'center')
+		)));
+	} else {
+		$g->setDecorators ( array (
+			'FormElements', 
+			'Fieldset', 
+			array ('HtmlTag', array ('tag' => 'div', 'class' => 'span-11 box last')
+		)));
+	}
+}
+*/
+
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLink(X_Env::_('configs_showadvaced'), "javascript:toggleAdvanced();");
+
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLabel(X_Env::_('configs_title'));
+
+
+?>
+<?php $this->headScript()->appendFile($this->baseUrl("/js/manage/configs.js")); ?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
+		var showAdvLabel = "<?php echo X_Env::_('configs_showadvaced'); ?>";
+		var applyLabel = "<?php echo X_Env::_('apply'); ?>";
+	<?php $this->headScript()->captureEnd(); ?>
+<?php $this->headTitle()->prepend(X_Env::_('configs_title')); ?>
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<div class="unit columns on-3">
+	<div class="elastic column span-2">
+		<div class="container">
+			<!-- CONFIGS BOX -->
+			<div class="box">
+				<div class="header">
+					<span class="title"><?php echo X_Env::_('configs_title'); ?></span>
+				</div>
+				<div class="content">
+					<?php echo $this->form; ?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="column">
+		<div class="container">
+			<!-- CONFIGS BOX -->
+			<div class="box">
+				<div class="header">
+					<span class="title"><?php echo X_Env::_('configs_plugins_title'); ?></span>
+				</div>
+				<div class="content">
+					<?php foreach ($this->plugins as $i => $plugin ):?>
+						<?php /* @var $plugin Application_Model_Plugin */ ?>
+						<div class="unit configs-plugin-row">
+							<div class="container">
+								<div class="columns on-2 same-height">
+									<div class="elastic column">
+										<div class="container">
+											<p title="<?php echo X_Env::_($plugin->getDescription()); ?>">
+												<b><?php echo X_Env::_($plugin->getLabel()) ?></b>
+												<br/>
+												<i><?php echo $plugin->getKey(); ?></i>
+											</p>
+										</div>
+									</div>
+									<div class="fixed column" style="max-width: 50%">
+										<div class="container">
+											<?php echo X_Env::_('config_plugins_status_'.(((int)$plugin->isEnabled()) * 1)); ?>
+											<?php if ( $plugin->getType() != Application_Model_Plugin::SYSTEM ): ?>
+												<span style="display: inline-block;" class="ui-state-default">
+													<?php if ( $plugin->isEnabled() ): ?>
+														<a href="<?php echo $this->url(array(
+															'controller' => 'configs',
+															'action' => 'disable',
+															'pluginId' => $plugin->getId(),
+															'csrf' => $this->csrf
+														), 'default', true); ?>" class="ui-icon ui-icon-refresh" title="<?php echo X_Env::_('disable'); ?>"><?php echo X_Env::_('disable'); ?></a>
+													<?php else: ?>
+														<a href="<?php echo $this->url(array(
+															'controller' => 'configs',
+															'action' => 'enable',
+															'pluginId' => $plugin->getId(),
+															'csrf' => $this->csrf
+														), 'default', true); ?>" class="ui-icon ui-icon-refresh" title="<?php echo X_Env::_('enable'); ?>"><?php echo X_Env::_('enable'); ?></a>
+													<?php endif; ?>
+												</span>
+											<?php endif; ?>
+											<?php if ( $plugin->getType() == Application_Model_Plugin::USER ): ?>
+												<span style="display: inline-block;" class="ui-state-default">
+														<a href="<?php echo $this->url(array(
+															'controller' => 'plugin',
+															'action' => 'uconfirm',
+															'key' => $plugin->getKey(),
+														), 'default', true); ?>" class="ui-icon ui-icon-trash" title="<?php echo X_Env::_('uninstall'); ?>"><?php echo X_Env::_('uninstall'); ?></a>
+												</span>
+											<?php endif; ?>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</div>
+	</div>	
+</div>

@@ -1,0 +1,116 @@
+<!-- application/views/scripts/onlinelibrary/category.phtml -->
+<?php $this->headScript()->appendFile($this->baseUrl("/js/onlinelibrary/script.js")); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/onlinelibrary/style.css')); ?>
+<?php 
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+/*
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('megavideo_manage_add_new_entry'), "megavideo", "add")
+	//->addButton(X_Env::_('megavideo_bookmarklets_title'), "javascript:showModal('bookmarklets'); return false;" )
+	->addLinkRoute(X_Env::_('megavideo_manage_options'), "config", "index", array('key' => 'megavideo', 'r' => X_Env::encode('megavideo:index')));
+*/
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLinkRoute(X_Env::_('p_onlinelibrary_manage_title'), 'onlinelibrary', 'index')
+	->addLabel(X_Env::_('p_onlinelibrary_manage_categorytitle',$this->category));
+	
+	
+$this->headTitle()->prepend($this->category);
+$this->headTitle()->prepend(X_Env::_('p_onlinelibrary_manage_title'));
+?>
+
+<div class="unit">
+	<div class="container">
+		<div class="box" id="onlinelibrary-videos">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('p_onlinelibrary_manage_categorytitle',$this->category) ?></span>
+			</div>
+			<div class="content">
+				<table class="table">
+					<tr class="header">
+						<th nowrap="nowrap"><?php echo X_Env::_('p_onlinelibrary_videostable_header_id')?></th>
+						<th><?php echo X_Env::_('p_onlinelibrary_videostable_header_namedesc')?></th>
+						<th><?php echo X_Env::_('table_options')?></th>
+					</tr>
+					<?php foreach ($this->videos as $i => $video): ?>
+						<?php /* @var $video Application_Model_Video */ ?>
+						<tr class="<?php echo $i % 2 ? 'alt' : ''; ?>">
+							<td width="150px;" nowrap="nowrap">
+								<a class="external" target="_blank" href="<?php
+									try {
+										echo X_VlcShares_Plugins::helpers()->hoster()->getHoster($video->getHoster())->getHosterUrl($video->getIdVideo());
+									} catch (Exception $e) {
+										echo '#invalid';
+									}
+								?>"><img title="<?php echo ucfirst($video->getHoster()); ?> - <?php echo $video->getIdVideo(); ?>" 
+										src="<?php echo $this->baseUrl("/images/icons/hosters/{$video->getHoster()}.png")?>"
+										alt="<?php echo ucfirst($video->getHoster()); ?>"
+										width="16px"
+										height="16px" style="margin-right: 0.1em;" />
+									<?php if ( strlen($video->getIdVideo()) > 11 ): ?>
+										<b><?php echo substr($video->getIdVideo(), 0, 8)."..."; ?></b>
+									<?php else : ?>
+										<b><?php echo $video->getIdVideo(); ?></b>
+									<?php endif; ?>
+								</a>
+							</td>
+							<td>
+								<b><?php echo $video->getTitle(); ?></b>
+								<?php if ( $video->getDescription() ): ?>
+									<p><?php echo $video->getDescription(); ?></p>
+								<?php endif; ?>
+							</td>
+							<td width="100px">
+								<ul class="inline-menu">
+									<?php if ( $video->getThumbnail() ) : ?>
+										<li class="ui-state-default onlinelibrary-preview-parent">
+											<a class="ui-icon ui-icon-zoomin onlinelibrary-thumb-preview" href="<?php echo $video->getThumbnail(); ?>">P</a>
+											<img src="<?php echo $video->getThumbnail(); ?>" />
+										</li>
+									<?php endif; ?>
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-pencil" href="<?php echo $this->url(array(
+											'controller' => 'onlinelibrary',
+											'action' => 'modify',
+											'id' => $video->getId(),
+										), 'default', true); ?>">R</a>
+									</li>
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-trash" href="<?php echo $this->url(array(
+											'controller' => 'onlinelibrary',
+											'action' => 'delete',
+											'type' => 'video',
+											'id' => $video->getId(),
+										), 'default', true); ?>">E</a>
+									</li>
+								</ul>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</table>
+				<?php if ( $this->pages > 1 ) : ?>
+					<center>
+						<ul class="paginator">
+							<?php for ($i = 1; $i <= $this->pages; $i++ ): ?>
+								<li>
+									<?php if ( $i != $this->page ) : ?>
+										<a href="<?php echo $this->url(array(
+											'controller' => 'onlinelibrary',
+											'action'	=> 'category',
+											'id'		=> X_Env::encode($this->category),
+											'page'	=> ($i == 1 ? null : $i)
+										),'default', true)?>"><?php echo $i; ?></a>
+									<?php else: ?>
+										<?php echo $i; ?>
+									<?php endif;?>
+								</li>
+							<?php endfor; ?>
+						</ul>
+					</center>
+				<?php endif; ?>						
+			</div>
+		</div>
+	</div>
+</div>

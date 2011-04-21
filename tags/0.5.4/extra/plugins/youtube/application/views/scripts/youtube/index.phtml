@@ -1,0 +1,84 @@
+<!-- application/views/scripts/youtube/index.phtml -->
+<?php
+
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLabel(X_Env::_('p_youtube_title'));
+
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLink(X_Env::_('p_youtube_account_new'), 'javascript:youtube_newaccount();' )
+	->addLink(X_Env::_('p_youtube_category_new'), 'javascript:youtube_newcategory();')
+	->addLink(X_Env::_('p_youtube_video_new'), 'javascript:youtube_newvideo();')
+	->addLinkRoute(X_Env::_('p_youtube_options'), 'config', 'index', array(
+		'key' => 'youtube',
+		'r'	=> X_Env::encode('youtube:index')
+	))
+	;
+	
+?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/youtube/style.css')); ?>
+<?php $this->headScript()->appendFile($this->baseUrl("/js/youtube/index.js")); ?>
+<?php $this->headTitle()->prepend(X_Env::_('p_youtube_title')); ?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
+	var redirectUrl = "<?php echo X_Env::encode('youtube:index'); ?>";
+<?php $this->headScript()->captureEnd(); ?> 
+
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<div id="p_youtube_framecontainer"></div>
+
+<div class="unit columns on-3">
+	<div class="elastic column span-2">
+		<div class="container" id="p_youtube_categories">
+			<div class="box">
+				<div class="header">
+					<div class="title"><?php echo X_Env::_('p_youtube_categories_title'); ?></div>
+				</div>
+				<div class="content">
+					<?php foreach ($this->categories as $category): ?>
+						<?php /* @var $category Application_Model_YoutubeCategory */ ?>
+						<div class="p_youtube_category" id="idCategory-<?php echo $category->getId()?>" style="background: url('<?php echo $this->baseUrl($category->getThumbnail() ? $category->getThumbnail() : '/images/youtube/no-thumbnail.png');?>') no-repeat center center; background-size: 100% auto;">
+							<span class="label"><a href="<?php echo $this->url(array('controller' => 'youtube', 'action' => 'category', 'idCategory' => $category->getId() ), 'default'); ?>"><?php echo $category->getLabel()?></a></span>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="column">
+		<div class="container" id="p_youtube_accounts">
+			<div class="box">
+				<div class="header">
+					<div class="title"><?php echo X_Env::_('p_youtube_accounts_title'); ?></div>
+				</div>
+				<div class="content">
+					<?php foreach ($this->accounts as $account): ?>
+						<div id="idAccount-<?php echo $account->getId(); ?>" class="p_youtube_account">
+							<img class="thumbnail" src="<?php echo $account->getThumbnail() ? $account->getThumbnail() :  $this->baseUrl('/images/youtube/no-thumbnail.png' );?>" />
+							<a href="<?php echo $this->url(array('controller'=>'youtube','action'=>'daccount','idAccount'=>$account->getId()), 'default', true);?>"><img class="button" src="<?php echo $this->baseUrl('/images/msg_error.png');?>" /></a>
+							<span class="label"><?php echo $account->getLabel(); ?></span>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

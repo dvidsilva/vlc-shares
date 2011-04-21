@@ -1,0 +1,153 @@
+<!-- application/views/scripts/youtube/category.phtml -->
+<?php
+/* @var $form Application_Form_YoutubeCategory */
+$form = $this->form; 
+
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLink(X_Env::_('p_youtube_video_new'), 'javascript:youtube_newvideo();')
+	->addLinkRoute(X_Env::_('p_youtube_category_delete'), 'youtube', 'dcategory', array(
+		'idCategory' => $this->category->getId()
+	))
+	->addLinkRoute(X_Env::_('back'), 'youtube', 'index')
+	;
+
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLinkRoute(X_Env::_('p_youtube_title'), 'youtube', 'index')
+	->addLabel(X_Env::_('p_youtube_title_category'));
+
+
+?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/youtube/style.css')); ?>
+<?php $this->headScript()->appendFile($this->baseUrl("/js/youtube/category.js")); ?>
+<?php $this->headTitle()->prepend(X_Env::_('p_youtube_title_category')); ?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
+	var p_youtube_delete_category_confirm = "<?php echo X_Env::_('p_youtube_delete_category_confirm'); ?>";
+<?php $this->headScript()->captureEnd(); ?>
+
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<div class="unit" id="p_youtube_framecontainer"></div>
+
+<div class="unit columns on-3 same-height" id="p_youtube_categoryform">
+	<div class="elastic column span-2">
+		<div class="container full-height">
+			<div class="box full-height" >
+				<div class="header">
+					<span class="title"><?php echo X_Env::_('p_youtube_form_categorydetails')?></span>
+				</div>
+				<div class="content">
+					<?php if ( $form instanceof X_Form ):?>
+						<?php echo $form; ?>
+					<?php elseif ( $form instanceof Zend_Form ):?>
+						<form class="zend_form" action="<?php echo $form->getAction()?>" method="<?php echo $form->getMethod()?>" enctype="<?php echo $form->getEnctype();?>">
+							<div class="row">
+								<div class="label">
+									<label for="label"><?php echo $form->label->getLabel(); ?></label>
+								</div>
+								<div class="field"><?php echo $form->label ?></div>
+							</div>
+							<div class="row">
+								<div class="label">
+									<label for="thumbselect"><?php echo $form->thumbselect->getLabel(); ?></label>
+								</div>
+								<div class="field"><?php echo $form->thumbselect ?></div>
+							</div>
+							<div class="row">
+								<div class="label">
+									<label for="thumbnail"><?php echo $form->thumbnail->getLabel(); ?></label>
+								</div>
+								<div class="field"><?php echo $form->thumbnail ?></div>
+							</div>
+							<div class="row">
+								<center>
+									<?php echo $form->id; ?>
+									<?php echo $form->csrf; ?>
+									<?php echo $form->submit; ?>
+									<?php //echo $form->abort; ?>
+									<?php echo X_Env::_('or'); ?> 
+									<a href="<?php echo $this->url(array('controller'=>'youtube','action'=>"index"), 'default', true); ?>"><?php echo X_Env::_('abort')?></a>
+								</center>
+							</div>
+						</form>
+					<?php else: ?>
+						<?php echo $form; ?>
+					<?php endif; ?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="column">
+		<div class="container">
+			<div id="p_youtube_thumbnailpreview" style="display:none"></div>		
+		</div>
+	</div>
+</div>
+
+<div class="unit">
+	<div class="container">
+		<div class="box">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('p_youtube_category_videolist')?></span>
+			</div>
+			<div class="content">
+				<?php if (count($this->videos)): ?>
+					<table class="table">
+						<tr class="header">
+							<th width="100px;"><?php echo X_Env::_('p_youtube_categorytable_header_preview')?></th>
+							<th><?php echo X_Env::_('p_youtube_categorytable_header_namedesc')?></th>
+							<th width="100px;"><?php echo X_Env::_('table_options')?></th>
+						</tr>
+						<?php foreach ($this->videos as $i => $video): ?>
+							<?php /* @var $video Application_Model_YoutubeVideo */ ?>
+							<tr class="<?php echo $i % 2 ? 'alt' : ''; ?>">
+								<td>
+									<a href="http://www.youtube.com/watch?v=<?php echo $video->getIdYoutube(); ?>">
+										<img class="preview" src="<?php echo $video->getThumbnail(); ?>" />
+									</a>
+								</td>
+								<td>
+									<a rel="external" href="http://www.youtube.com/watch?v=<?php echo $video->getIdYoutube(); ?>">
+										<b><?php echo $video->getLabel(); ?></b>
+									</a>
+									<?php if ( $video->getDescription() ): ?>
+										<p><?php echo $video->getDescription(); ?></p>
+									<?php endif; ?>
+								</td>
+								<td>
+									<ul class="inline-menu">
+										<li class="ui-state-default">
+											<a class="ui-icon ui-icon-trash" href="<?php echo $this->url(array(
+												'controller' => 'youtube',
+												'action' => 'dvideo',
+												'idVideo' => $video->getId(),
+											), 'default', true); ?>">E</a>
+										</li>
+									</ul>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					</table>
+				<?php else: ?>
+					<h4 align="center"><?php echo X_Env::_('p_youtube_videos_novideo'); ?></h4>
+				<?php endif; ?>
+			</div>
+		</div>
+	</div>
+</div>

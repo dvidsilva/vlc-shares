@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vs-manifest type="plugin">
+	<metadata>
+		<label>p_audioswitcher_plglabel</label>
+		<description>p_audioswitcher_plgdesc</description>
+		<version>0.1</version>
+		<status>stable</status>
+		<key>audioSwitcher</key>
+		<file>X/VlcShares/Plugins/AudioSwitcher.php</file>
+		<class>X_VlcShares_Plugins_AudioSwitcher</class>
+		<compatibility>
+			<from>0.5.1</from>
+			<to>0.5.4</to>
+		</compatibility>
+	</metadata>
+	<files>
+		<library>
+			<X>
+				<VlcShares>
+					<Plugins>
+						<file>AudioSwitcher.php</file>
+					</Plugins>
+				</VlcShares>
+			</X>
+		</library>
+		<languages>
+			<file>X_VlcShares_Plugins_AudioSwitcher.en_GB.ini</file>
+			<file>X_VlcShares_Plugins_AudioSwitcher.it_IT.ini</file>
+			<file>X_VlcShares_Plugins_AudioSwitcher.es_ES.ini</file>
+		</languages>
+	</files>
+	<database>
+		<install>install.sql</install>
+		<uninstall>uninstall.sql</uninstall> 
+	</database>
+</vs-manifest>

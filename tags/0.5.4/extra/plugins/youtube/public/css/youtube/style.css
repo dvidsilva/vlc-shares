@@ -1,0 +1,190 @@
+@CHARSET "UTF-8";
+
+.p_youtube_account img.thumbnail {
+	width: 32px;
+	height: 32px;
+	padding: 2px;
+	margin: 1px;
+	float: left;
+	border: 1px solid lightgray;
+}
+
+.p_youtube_account img.button {
+	max-width: 16px;
+	max-height: 16px;
+	float: right;
+	margin: 4px;
+	margin-top: 8px;
+	padding: 3px;
+	border: 1px solid lightgray;
+}
+
+.p_youtube_account img.button:hover {
+	cursor: pointer;
+}
+
+.p_youtube_account span.label {
+	padding: 4px;
+	display: block;
+	line-height: 24px;
+	padding-left: 40px;
+	margin: 4px;
+	vertical-align: middle;
+	font-size: 14px;
+	font-weight: bold;
+	text-shadow: 0 1px 1px rgba(255, 255, 255, .6);
+}
+
+.p_youtube_account {
+	border: 1px solid lightgray;
+	margin: 3px 0px;
+	background: white url(../../images/gradient.png) repeat-x 0 -110px;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .4);
+	-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, .4);
+}
+
+.p_youtube_category .label {
+	display: block;
+	text-align: center;
+	background: black url(../../images/gradient.png) repeat-x 0 -110px;
+	opacity: 0.9;
+	word-wrap: break-word;
+	overflow: hidden;
+	font-size: 16px;
+	font-variant: small-caps;
+	min-height: 30px;
+	max-height: 138px;
+	overflow: hidden;
+	vertical-align: middle;
+	padding: 2px;
+	border-radius: 0px 0px 10px 10px;
+	-webkit-border-radius: 0px 0px 10px 10px;
+	-moz-border-radius: 0px 0px 10px 10px;
+	-webkit-box-shadow: 0 3px 3px rgba(0, 0, 0, .4);
+	-moz-box-shadow: 0 3px 3px rgba(0, 0, 0, .4);
+}
+
+.p_youtube_category:hover {
+	opacity: 1;
+	cursor: pointer;
+}
+
+.p_youtube_category .label a {
+	color: white;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.p_youtube_category {
+	display: inline-block;
+	width: 144px;
+	height: 138px;
+	margin-bottom: 5px;
+	vertical-align: top;
+	opacity: 0.8;
+	border: 1px solid #7d7d7d;
+}
+/*
+#p_youtube_framecontainer .zend_form .label, #p_youtube_categoryform .zend_form .label {
+	width: 250px;
+	display: inline-block;
+	padding-top: 8px;
+	vertical-align: top;
+	text-align: right;
+	padding-right: 8px;
+}
+
+#p_youtube_framecontainer .zend_form .field, #p_youtube_categoryform .zend_form .field {
+	display: inline-block;
+	width: 400px;
+}
+
+#p_youtube_framecontainer .zend_form .field .description, #p_youtube_categoryform .zend_form .field .description {
+	display: block;
+	font-style: italic;
+}
+*/
+
+#p_youtube_thumbnailpreview, #p_youtube_thumbnailpreview_video {
+	/*float: right;*/
+	width: 180px;
+	height: 180px;
+	padding: 5px;
+	margin: 10px;
+	/*border: 1px solid black;*/
+	background: #7d7d7d url(../../images/gradient.png) repeat-x 0 -110px;
+	/*background: #7d7d7d url(../../images/grid.png);*/
+	vertical-align: middle;
+	text-align: center;
+	border-radius: 0.5em;
+	line-height: 180px;
+	-webkit-border-radius: 0.5em;
+	-moz-border-radius: 0.5em;
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+}
+
+#p_youtube_thumbnailpreview img, #p_youtube_thumbnailpreview_video .image {
+	vertical-align: middle;
+	max-width: 175px;
+	max-height: 175px;
+}
+
+.p_youtube_videos {
+	position: relative;
+}
+
+.p_youtube_video {
+	width: 650px;
+	margin-bottom: 15px;
+	background: #7d7d7d url(../../images/gradient.png) repeat-x 0 -110px;
+	padding: 10px;
+	-webkit-border-radius: 0.5em;
+	-moz-border-radius: 0.5em;
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+	position: relative;
+}
+
+.p_youtube_video .image {
+	display: none;
+}
+
+#p_youtube_thumbnailpreview_video {
+	position: absolute;
+	z-index: 2;
+	display: none;
+	background: #ddd url(../../images/grid.png);
+}
+
+.p_youtube_video .quickactionbox {
+	position: absolute;
+	top: -10px;
+	right: 0px;
+	background: black url(../../images/grid.png);
+}
+
+.p_youtube_video .label {
+	font-size: 14px;
+	font-weight: bold;
+	text-shadow: 0 1px 1px rgba(255, 255, 255, .6);
+}
+
+.p_youtube_video .description {
+	color: #e7e5e5;
+	max-height: 80px;
+	overflow: auto;
+}
+
+img.preview {
+	width: 100px;
+	vertical-align: top;
+}
+
+#content table tr td p {
+	max-height: 8em;
+	overflow: auto;
+}

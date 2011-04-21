@@ -1,0 +1,105 @@
+<!-- application/views/scripts/fsthumbs/index.phtml -->
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/fsthumbs/style.css')); ?>
+<?php 
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('p_fsthumbs_actions_removeall'), "fsthumbs", "delete", array('type' => 'all'))
+	->addLinkRoute(X_Env::_('p_fsthumbs_actions_removeorphan'), "fsthumbs", "delete", array('type' => 'orphan'))
+	->addLinkRoute(X_Env::_('p_fsthumbs_actions_removeover'), "fsthumbs", "delete", array('type' => 'over'))
+	//->addButton(X_Env::_('megavideo_bookmarklets_title'), "javascript:showModal('bookmarklets'); return false;" )
+	->addLinkRoute(X_Env::_('p_fsthumbs_manage_options'), "config", "index", array('key' => 'fsthumbs', 'r' => X_Env::encode('fsthumbs:index')));
+	
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLabel(X_Env::_('p_fsthumbs_manage_title'));
+	
+	
+$this->headTitle()->prepend(X_Env::_('p_fsthumbs_manage_title'));
+
+?>
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+
+<div class="unit">
+	<div class="container">
+		<div class="box">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('p_fsthumbs_manage_title')?></span>
+			</div>
+			<div class="content">
+				<table class="table" id="fsthumbs-table">
+					<tr class="header">
+						<th><?php echo X_Env::_('p_fsthumbs_thumbstable_header_path')?></th>
+						<th width="100px"><?php echo X_Env::_('p_fsthumbs_thumbstable_header_created')?></th>
+						<th width="100px"><?php echo X_Env::_('p_fsthumbs_thumbstable_header_size')?></th>
+						<th><?php echo X_Env::_('p_fsthumbs_thumbstable_header_status')?></th>
+						<th width="100px"><?php echo X_Env::_('table_options')?></th>
+					</tr>
+					<?php foreach ($this->thumbs as $i => $thumb): ?>
+						<?php /* @var $thumb Application_Model_FsThumb */ ?>
+						<tr class="<?php echo $i % 2 ? 'alt' : ''; ?>">
+							<td>
+								<b><?php echo $thumb->getPath() ?></b>
+							</td>
+							<td><?php echo date('d/m/Y',$thumb->getCreated()) ;?></td>
+							<td><?php echo X_VlcShares_Plugins_FsThumbs::formatSize($thumb->getSize()) ;?></td>
+							<td>
+								<i><?php echo !file_exists($thumb->getPath()) ? X_Env::_('p_tsthumbs_thumb_orphan') : X_Env::_('p_tsthumbs_thumb_ok') ?></i>
+							</td>
+							<td>
+								<ul class="inline-menu">
+									<li class="ui-state-default fsthumbs-preview-parent">
+										<a class="ui-icon ui-icon-zoomin fsthumbs-thumb-preview" href="<?php echo $this->baseUrl($thumb->getUrl()); ?>">P</a>
+										<img src="<?php echo $this->baseUrl($thumb->getUrl()); ?>" />
+									</li>
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-trash" href="<?php echo $this->url(array(
+											'controller' => 'fsthumbs',
+											'action' => 'delete',
+											'path' => X_Env::encode($thumb->getPath()),
+											'csrf' => $this->csrf
+										), 'default', true); ?>">D</a>
+									</li>
+								</ul>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</table>
+				<?php if ( $this->pages > 1 ) : ?>
+					<center>
+						<ul class="paginator">
+							<?php for ($i = 1; $i <= $this->pages; $i++ ): ?>
+								<li>
+									<?php if ( $i != $this->page ) : ?>
+										<a href="<?php echo $this->url(array(
+											'controller' => 'fsthumbs',
+											'action'	=> 'index',
+											'page'	=> ($i == 1 ? null : $i)
+										),'default', true)?>"><?php echo $i; ?></a>
+									<?php else: ?>
+										<?php echo $i; ?>
+									<?php endif;?>
+								</li>
+							<?php endfor; ?>
+						</ul>
+					</center>
+				<?php endif; ?>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,49 @@
+@CHARSET "UTF-8";
+
+.fsthumbs-preview-parent {
+	position: relative;
+}
+
+.fsthumbs-preview-parent > img {
+	display:none;
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	z-index: 100;
+	padding: 1em;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+	background-color: black;
+	border: 1px solid gray;
+}
+
+.fsthumbs-preview-parent:hover > img {
+	display: block;
+}
+
+.paginator {
+	align: right;
+	list-style-type: none;
+	display: inline-block;
+	background-color: #D5D8DB;
+	border-radius: 8px;
+	
+	padding: 0.5em;
+}
+
+.paginator li {
+	border: 1px solid #999;
+	background-color: #EAEAEA;
+	width: 1em;
+	color: #666;
+	padding: 0.5em;
+	display: inline-block;
+	margin-right: 0.1em;
+	margin-bottom: 0.1em;
+}
+
+.paginator li a {
+	color: #333;
+	font-weight: bold;
+}

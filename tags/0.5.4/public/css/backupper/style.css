@@ -1,0 +1,5 @@
+@CHARSET "UTF-8";
+
+form input[type="submit"] {
+	margin-top: 1em;
+}

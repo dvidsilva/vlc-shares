@@ -1,0 +1,69 @@
+<!-- application/views/scripts/plugin/index.phtml -->
+<?php 
+
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLink(X_Env::_('abort'), "javascript:window.history.back(-1);")
+	;
+	
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLinkRoute(X_Env::_('plugin_title'), 'plugin', 'index')
+	->addLabel(X_Env::_('plugin_iconfirm_title'));
+
+?>
+<?php //$this->headScript()->appendFile($this->baseUrl("/js/plugin/index.js")); ?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
+<?php $this->headScript()->captureEnd(); ?>
+<?php $this->headTitle()->prepend(X_Env::_('plugin_iconfirm_title')); ?>
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+
+<div class="unit">
+	<div class="container horizontal-center" style="width: 800px">
+		<div class="box">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('plugin_iconfirm_maintitle'); ?></span>
+			</div>
+			<div class="content">
+				<p><?php echo X_Env::_('plugin_iconfirm_maindesc'); ?></p>
+				<!-- 
+				<div class="box">
+					<div class="header">
+						<span class="title"><?php echo X_Env::_('plugin_iconfirm_confirmtitle'); ?></span>
+					</div>
+					<div class="content">
+					 -->
+						<dl>
+							<dt><b><?php echo X_Env::_('plugin_iconfirm_pluginkey'); ?></b></dt>
+							<dd><?php echo X_Env::_($this->pluginKey); ?></dd>
+							<dt><b><?php echo X_Env::_('plugin_iconfirm_plugindesc'); ?></b></dt>
+							<dd><?php echo X_Env::_($this->plugin['description']); ?></dd>
+							<dt><b><?php echo X_Env::_('plugin_iconfirm_pluginversion'); ?></b></dt>
+							<dd><?php echo $this->plugin['version']; ?> (<?php echo ($this->plugin['type'] == '' ? 'stable' : $this->plugin['type']); ?>)</dd>
+							<dt><b><?php echo X_Env::_('plugin_iconfirm_downloadurl'); ?></b></dt>
+							<dd><?php echo X_Env::_($this->plugin['download']); ?></dd>
+						</dl>
+						<?php echo $this->form; ?>
+						<!-- 
+					</div>
+				</div> -->
+			</div>
+		</div>
+	</div>
+</div>

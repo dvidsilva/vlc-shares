@@ -1,0 +1,78 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Browse</title>
+	<?php $this->headScript()->prependFile($this->baseUrl("/js/jquery-ui-1.8.4.custom.min.js")); ?>
+	<?php $this->headScript()->prependFile($this->baseUrl("/js/jquery-1.4.2.min.js")); ?>
+	<?php $this->headScript()->prependFile($this->baseUrl('/js/console.js')); ?>
+	<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
+		var baseUrl = "<?php echo $this->baseUrl(); ?>";
+	<?php $this->headScript()->captureEnd(); ?>
+	<?php //$this->headLink()->appendStylesheet($this->baseUrl('/css/blueprint/screen.css'), 'screen, projection'); ?>
+	<?php //$this->headLink()->appendStylesheet($this->baseUrl('/css/blueprint/ie.css'), 'screen, projection', 'IE'); ?>
+	<?php //$this->headLink()->appendStylesheet($this->baseUrl('/css/blueprint/print.css'), 'print'); ?>
+	<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/smoothness/jquery-ui-1.8.4.custom.css')); ?>
+	<?php //$this->headLink()->appendStylesheet($this->baseUrl('/css/style.css')); ?>
+	<?php echo $this->headTitle(); ?> 
+	<?php echo $this->headScript(); ?> 
+	<?php echo $this->headLink(); ?>	
+	<?php echo $this->headStyle(); ?>
+	<style type="text/css">
+		body {
+			background-color: transparent;
+		}
+		p {
+			margin: 0em;
+			padding: 0em;
+		}
+		ul {
+			max-height: 80%;
+			overflow: auto;
+			margin: 0em 0.3em;
+			padding: 0.2em;
+		}
+		li {
+			padding: 3px;
+		}
+		li.tic {
+			background-color: #B3CCF9;
+		}
+		li.tac {
+			background-color: #90B6F9;
+		}
+		a {
+			font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+	<p align="center">
+		<input style="width: 99%" type="text" disabled="disabled" readonly="readonly" value="<?php echo $this->path?>" />
+	</p>
+	<div>
+		<ul>
+			<?php foreach (@$this->items as $i => $item): ?>
+				<li class="<?php echo $item['type'];?> <?php echo $i % 2 == 0 ? 'tic' : 'tac'; ?>">
+					<span>
+						<?php if ( $item['type'] == 'folder'): ?>
+							<a href="<?php echo $item['href']; ?>">
+								<?php echo $item['label']; ?>
+							</a>
+							<?php if ( $this->filter == 'folder' && $item['label'] != '../' ): ?>
+								<a href="javascript:parent.<?php echo "{$this->callback}('".str_replace('\\', '\\\\', $item['path'])."')"; ?>;" style="float: right;">
+									[<?php echo X_Env::_('select'); ?>]
+								</a>
+							<?php endif; ?>
+						<?php else: ?>
+							<?php echo $item['label']; ?>
+							<a href="javascript:parent.<?php echo "{$this->callback}('".str_replace('\\', '\\\\', $item['path'])."')"; ?>;" style="float: right;">
+								[<?php echo X_Env::_('select'); ?>]
+							</a>
+						<?php endif;?>
+					</span>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+	</div>
+</body>
+</html>

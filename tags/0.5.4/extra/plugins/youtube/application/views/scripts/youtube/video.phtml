@@ -1,0 +1,76 @@
+<!-- application/views/scripts/youtube/category.phtml -->
+<?php
+/* @var $form Application_Form_YoutubeCategory */
+$form = $this->form;
+
+
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLinkRoute(X_Env::_('p_youtube_title'), 'youtube', 'index')
+	->addLabel(X_Env::_('p_youtube_title_video'));
+
+
+?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/youtube/style.css')); ?>
+<?php //$this->headScript()->appendFile($this->baseUrl("/js/youtube/video.js")); ?>
+<?php $this->headTitle()->prepend(X_Env::_('p_youtube_title')); ?>
+<?php $this->headTitle()->prepend(X_Env::_('p_youtube_title_video')); ?>
+
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+
+<div class="unit">
+	<div class="container" id="p_youtube_videoform">
+		<div class="box">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('p_youtube_form_videodetails')?></span>
+			</div>
+			<div class="content">
+				<?php if ($form instanceof X_Form) : ?>
+					<?php echo $form; ?>
+				<?php elseif ( $form instanceof Zend_Form ):?>
+					<form class="zend_form" action="<?php echo $form->getAction()?>" method="<?php echo $form->getMethod()?>" enctype="<?php echo $form->getEnctype();?>">
+						<div class="row">
+							<div class="label">
+								<label for="label"><?php echo $form->idYoutube->getLabel(); ?></label>
+							</div>
+							<div class="field"><?php echo $form->idYoutube ?></div>
+						</div>
+						<div class="row">
+							<div class="label">
+								<label for="label"><?php echo $form->idCategory->getLabel(); ?></label>
+							</div>
+							<div class="field"><?php echo $form->idCategory ?></div>
+						</div>
+						<div class="row">
+							<center>
+								<?php echo $form->csrf; ?>
+								<?php echo $form->submit; ?>
+								<?php //echo $form->abort; ?>
+								<?php echo X_Env::_('or'); ?> 
+								<a href="<?php echo $this->url(array('controller'=>'youtube','action'=>"index"), 'default', true); ?>"><?php echo X_Env::_('abort')?></a>
+							</center>
+						</div>
+					</form>
+				<?php else: ?>
+					<?php echo $form; ?>
+				<?php endif; ?>			
+			</div>
+		</div>
+	</div>
+</div>

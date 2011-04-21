@@ -1,0 +1,30 @@
+<!-- application/views/scripts/manage/status.phtml -->
+<?php 
+$v_statusLinks = $this->statusLinks->getItems();
+?>
+<?php if (count($v_statusLinks) ) : ?>
+<ul>
+	<?php foreach ($v_statusLinks as $statusLink): ?>
+		<li>
+			<?php /* @var $statusLink X_Page_Item_StatusLink */ ?>
+			<?php if ( $statusLink->getType() == X_Page_Item_StatusLink::TYPE_BUTTON ) : ?>
+				<a href="<?php echo $statusLink->isUrl() ? $statusLink->getLink() :
+					$this->url($statusLink->getLink(), $statusLink->getRoute(), $statusLink->isReset()) 
+				?>" class="button <?php echo $statusLink->isHighlight() ? 'light' : '' ?>">
+					<?php echo $statusLink->getLabel(); ?>
+				</a>
+			<?php elseif ( $statusLink->getType() == X_Page_Item_StatusLink::TYPE_LABEL ) : ?>
+				<span class="label <?php echo $statusLink->isHighlight() ? 'highlight' : '' ?>">
+					<?php echo $statusLink->getLabel(); ?>
+				</span>
+			<?php elseif ( $statusLink->getType() == X_Page_Item_StatusLink::TYPE_LINK ) : ?>
+				<a href="<?php echo $statusLink->isUrl() ? $statusLink->getLink() :
+					$this->url($statusLink->getLink(), $statusLink->getRoute(), $statusLink->isReset()) 
+				?>" class="link <?php echo $statusLink->isHighlight() ? 'highlight' : '' ?>">
+					<?php echo $statusLink->getLabel(); ?>
+				</a>
+			<?php endif; ?>
+		</li>
+	<?php endforeach; ?>
+</ul>
+<?php endif; ?>

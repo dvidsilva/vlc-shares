@@ -1,0 +1,94 @@
+<!-- application/views/scripts/filesystem/index.phtml -->
+<?php 
+
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('p_outputs_output_new'), "outputs", "add");
+	;
+	
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLabel(X_Env::_('p_outputs_title'));
+
+?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/outputs/style.css')); ?>
+<?php $this->headScript()->appendFile($this->baseUrl("/js/outputs/index.js")); ?>
+<?php $this->headTitle()->prepend(X_Env::_('p_outputs_title')); ?>
+
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+
+<div class="unit">
+	<div class="container">
+		<div class="box">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('p_outputs_title'); ?></span>
+			</div>
+			<div class="content">
+				<table class="table" id="outputs-table">
+					<tr class="header">
+						<th><?php echo X_Env::_('p_outputs_header_label'); ?></th>
+						<th><?php echo X_Env::_('p_outputs_header_link'); ?></th>
+						<th><?php echo X_Env::_('p_outputs_header_args'); ?></th>
+						<th><?php echo X_Env::_('p_outputs_header_device'); ?></th>
+						<th><?php echo X_Env::_('p_profiles_header_priority'); ?></th>
+						<th><?php echo X_Env::_('table_options'); ?></th>
+					</tr>
+					<?php foreach ( $this->outputs as $i => $output): ?>
+						<?php /* @var $profile Application_Model_Output */?>
+						<tr class="<?php echo $i % 2 ? 'alt' : ''?>" id="outputId-<?php echo $output->getId(); ?>">
+							<td><b><?php echo $output->getLabel() ?></b></td>
+							<td style="word-break: break-all"><?php echo $output->getLink() ?></td>
+							<td style="overflow: auto; max-width: 33%"><pre style="font-size: small;"><?php echo X_Env::codeFormat($output->getArg()); ?></pre></td>
+							<td><?php echo @$this->devices[$output->getCondDevices()]; ?></td>
+							<td><?php echo $output->getWeight() ?></td>
+							<td>
+								<ul class="inline-menu">
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-pencil"
+										title="<?php echo X_Env::_('edit')?>" 
+										href="<?php echo $this->url(array(
+											'controller' => 'outputs',
+											'action' => 'edit',
+											'id' => $output->getId(),
+										), 'default', true); ?>">R</a>
+									</li>
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-trash"
+										title="<?php echo X_Env::_('remove')?>"
+										href="<?php echo $this->url(array(
+											'controller' => 'outputs',
+											'action' => 'remove',
+											'id' => $output->getId(),
+										), 'default', true); ?>">E</a>
+									</li>
+								</ul>								
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="formbox" class="span-10 last hidden box" style="display: none; position: absolute; z-index: 100;">
+	<h3><?php echo X_Env::_('p_outputs_newoutput_title'); ?></h3>
+	<?php echo $this->form; ?>
+</div>

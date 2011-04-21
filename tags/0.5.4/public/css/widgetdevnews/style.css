@@ -1,0 +1,19 @@
+@CHARSET "UTF-8";
+
+#widgetdevnews {
+	max-height: 125px;
+}
+
+#widgetdevnews .gfc-resultsbox-visible {
+	max-height: 100px;
+	overflow-y: auto;
+	padding: 0.1em 1em;
+}
+
+#widgetdevnews .gfc-tabHeader {
+	font-size: 14px;
+}
+
+#widgetdevnews .gfc-tabhActive {
+	font-weight: bold;
+}

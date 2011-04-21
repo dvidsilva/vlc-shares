@@ -1,0 +1,30 @@
+<!-- application/views/scripts/manage/applications.phtml -->
+<?php 
+
+/* @var $v_manageLinks X_Page_ItemList_ManageLink */
+$v_manageLinks = $this->manageLinks;
+
+foreach ($v_manageLinks->getItems() as $manageLink) {
+	/* @var $manageLink X_Page_Item_ManageLink */
+	// only plugin with custom controller goes in topnav
+		
+	if ( !$manageLink->isUrl() && $manageLink->getLinkController() != 'config' ) {
+		if ( $manageLink->getLinkController() == $this->actualController ) {
+			$manageLink->setHighlight(true);
+		}
+		$pluginTopNav[] = $manageLink;
+	}
+}
+
+?>
+
+<div class="columns same-height">
+	<?php foreach ($pluginTopNav as $manageLink): ?>
+		<div class="fixed column" style="width: 64px;">
+			<div class="container">
+				<?php echo $this->xApplicationButton($manageLink); ?>
+			</div>
+		</div>
+	<?php endforeach; ?>
+	<div class="elastic column"></div>
+</div>

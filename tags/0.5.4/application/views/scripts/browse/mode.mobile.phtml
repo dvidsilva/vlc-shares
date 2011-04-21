@@ -1,0 +1,69 @@
+<!-- application/views/scripts/index/collections.mobile.phtml -->
+<?php
+/* @var $v_items X_Page_ItemList_PItem */
+$v_items = $this->items; 
+?>
+<?php $this->headScript()->appendFile($this->baseUrl("/js/mobile/mode.js")); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/mobile/mode.css'), 'screen'); ?> 
+<?php $this->headTitle()->prepend(X_Env::_('p_mobilerenderer_browse_mode')); ?>
+
+<div id="site_header">
+	<a href="<?php echo $this->url(array('controller' => 'index', 'action' => 'collections'), 'default', true); ?>" id="usc_mobile">VLC Shares</a>
+	<?php if ( $this->parentLocation !== false ) :?>
+		<a href="<?php echo $this->url(array('controller' => 'browse', 'action' => 'share', 'l' => ( $this->parentLocation === null ? null : X_Env::encode($this->parentLocation)), 'p' => $this->provider), 'default', true); ?>" id="app_icon">
+			<img src="<?php echo $this->baseUrl('/images/mobile/back.png'); ?>" />
+		</a>
+	<?php else: ?>
+		<a href="javascript:history.back();" id="app_icon">
+			<img src="<?php echo $this->baseUrl('/images/mobile/back.png'); ?>" />
+		</a>
+	<?php endif; ?>
+	<?php if ( $this->providerName != '' ) :?>
+		<h1 class="site_title"><?php echo X_Env::_("p_{$this->providerName}_collectionindex"); ?></h1>
+	<?php else: ?>
+		<h1 class="site_title"><?php echo X_Env::_('p_mobilerenderer_noprovider_mode'); ?></h1>
+	<?php endif; ?>
+</div>
+<div id="wrapper">
+	<h2><?php echo $this->locationRaw; ?></h2>
+	<ul class="items">
+		<!-- 
+		<li class="item">
+			<img src="http://uscnews.usc.edu/assets_c/2010/10/no smoking-thumb-65x65-27066.jpg"	alt="" />
+			<p class="title"><a href="/news/story.php?id=42666">USC Hospitals Go Smoke Free Today</a></p>
+			<p class="date">October 1, 2010</p>
+			<a href="/news/story.php?id=42666" class="button"></a>
+			<div class="clear"></div>
+		</li>
+		-->
+		<?php $preOption = true; ?>
+		<?php foreach ($v_items->getItems() as $i => $item):?>
+			<?php /* @var $item X_Page_Item_PItem */ ?>
+			<?php if ( $item->getKey() == 'core-separator' ) { $preOption = false; continue; }?>
+			<li class="item <?php echo $preOption ? 'play' : 'option'; ?>">
+				<?php if ( $item->getIcon() != null ): ?>
+					<img src="<?php echo $this->baseUrl($item->getIcon()); ?>"	alt="" width="32px" height="32px" />
+				<?php elseif ($preOption) : ?>
+					<img src="<?php echo $this->baseUrl('/images/mobile/play.png'); ?>" width="32px" height="32px" alt="" />
+				<?php endif; ?>
+				<p class="title"><a href="<?php echo $item->isUrl() ? $item->getLink() : $this->url($item->getLink(), $item->getRoute(), $item->isReset()) ; ?>"><?php echo $item->getLabel(); ?></a></p>
+				<?php if ( $item->getDescription() != null ): ?>
+					<p class="date"><?php echo $item->getDescription(); ?></p>
+				<?php endif; ?>
+				<a href="<?php echo $item->isUrl() ? $item->getLink() : $this->url($item->getLink(), $item->getRoute(), $item->isReset()) ; ?>" class="button"></a>
+				<?php if (!$preOption): ?>
+					<ul class="items"></ul>
+				<?php endif; ?>
+				<div class="clear"></div>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<div id="footer"> 
+	<ul> 
+		<li><a id="feedback" href="http://code.google.com/p/vlc-shares/"><?php echo X_Env::_('p_mobilerenderer_footerproject')?></a></li> 
+		<li><a id="uscHome" href="<?php echo $this->url(array('controller' => 'manage', 'action' => 'index' ), 'default', true);?>"><?php echo X_Env::_('p_mobilerenderer_footermanage'); ?></a></li> 
+		<li><a href="<?php echo $this->url(array('controller' => 'index', 'action' => 'collections' ), 'default', true);?>"><?php echo X_Env::_('p_mobilerenderer_footerindex')?></a></li> 
+	</ul> 
+</div>
+

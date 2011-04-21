@@ -1,0 +1,42 @@
+<!-- application/views/scripts/installer/index.phtml -->
+<?php 
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	//->addLabel(X_Env::_('Dashboard'))
+	->addLabel(X_Env::_('installer_title'));
+?>
+<?php //$this->headLink()->appendStylesheet($this->baseUrl('/css/installer/style.css')); ?>
+<?php $this->headScript()->appendFile($this->baseUrl("/js/installer/index.js")); ?>
+<?php $this->headTitle()->prepend(X_Env::_('installer_title')); ?>
+
+<?php if ( count($this->messages) ) :?>
+<div class="unit" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<div class="unit columns full-height">
+	<div class="column">
+		<div class="container vertical-center horizontal-center" id="error" style="width: 960px;">
+			<div class="box">
+				<div class="header">
+					<span class="title"><?php echo X_Env::_('installer_title'); ?></span>
+				</div>
+				<div class="content">
+					<h2 class="fieldset-header"><?php echo X_Env::_('installer_subtitle')?></h2>
+					<p><?php echo X_Env::_('installer_greetings')?></p>
+					<?php echo $this->form; ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

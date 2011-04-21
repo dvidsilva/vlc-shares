@@ -1,0 +1,48 @@
+<?php ob_start(); ?>
+<?php
+/*
+ * $plx <- X_Plx
+ * $plxItems <- array(X_Plx_Item)
+ * 
+ */
+/* @var $plx X_Plx */
+/* @var $plxItems array */
+?>
+<html>
+<head>
+	<title><?php echo $plx->getTitle();?></title>
+</head>
+<body>
+	<h1><?php echo $plx->getTitle(); ?></h1>
+	<p><i><?php echo $plx->getDescription(); ?></i></p>
+	<?php if ( $showRaw ) : ?>
+		<pre><?php echo $plx->getHeader(); ?></pre>
+	<?php endif; ?>
+	<dl>
+		<dt><a href="javascript:history.back();"><?php echo X_Env::_('up_1_level');?></a></dt>
+		<dd><?php echo X_Env::_('up_1_level_desc');?></dd>
+		<?php foreach ( $plxItems as $item) : ?>
+			<dt <?php echo (X_Env::startWith($item->getName(), '-) ') ? 'style="font-weight: bold"' : '' ) ?> >
+				<?php if ( $showThumbs && $item->getThumb() != null ) :?>
+					<br />
+					<img alt="<?php echo $item->getName()?>" src="<?php echo $item->getThumb(); ?>" height="100px" /><br />
+				<?php endif; ?>
+				<a href="<?php echo $item->getURL(); ?>"><?php echo $item->getName(); ?></a>
+			</dt>
+			<?php if ( $item->getDescription() != '' || $showRaw ):?>
+				<dd>
+					<?php echo $item->getDescription(); ?>
+					<?php if ( $showRaw ):?>
+						<pre><?php echo $item; ?></pre>
+					<?php endif; ?>
+				</dd>
+			<?php endif; ?>
+		<?php endforeach; ?>
+	</dl>
+	
+</body>
+</html>
+<?php 
+$output = ob_get_clean();
+return $output;  
+?>
