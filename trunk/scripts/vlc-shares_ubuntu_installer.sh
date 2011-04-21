@@ -33,8 +33,7 @@ RTMPDUMPPPA=""
 RTMPDUMP_REQS="rtmpdump"
 
 # download url, hashes and filename about vlc-shares core package
-DDL_VLCSHARES_CORE="http://vlc-shares.googlecode.com/files/vlc-shares_0.5.4beta1.zip"
-DDL_VLCSHARES_CORE_MD5="b9a75117c068ffcb6b9756490e004470"
+DDL_VLCSHARES_CORE="http://vlc-shares.googlecode.com/files/vlc-shares_0.5.4.zip"
 FILE_VLCSHARES_CORE="${TMPDIR}/vlc-shares.zip"
 
 # download url filename about vlc-shares http configs
