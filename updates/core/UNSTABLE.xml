@@ -1,8 +1,11 @@
-<version name="0.5.4" type="beta1">
+<version name="0.5.4" type="stable">
 	<update></update>
-	<download>http://vlc-shares.googlecode.com/files/vlc-shares_0.5.4beta1.zip</download>
+	<download>http://vlc-shares.googlecode.com/files/vlc-shares_0.5.4.zip</download>
 	<changelog><![CDATA[
-*** 0.5.4beta1 (18/4/2011) ***
+*** 0.5.4 (22/4/2011) ***
+ - Automatic installer for Ubuntu 10.10
+ - Automatic installer for Windows: permissions fixed
+ - Documentation updates in the wiki 
  - Authetication features
  - build script improved
  - robots.txt
@@ -23,7 +26,8 @@
  - A short (english only) plugin description is available in the installation page
  - Partial translation for es_ES language available
  - Some live TV channels (working through rtmpdump) added in Online Library (for testing)
-		]]>
+ - VLCShares main url is changed from http://IPADDRESS/vlc-shares/public to http://IPADDRESS/vlc-shares/
+ 		]]>
 	</changelog>
 </version>
 

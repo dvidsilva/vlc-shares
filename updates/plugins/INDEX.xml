@@ -19,9 +19,9 @@
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from Youtube (closed caption supported)]]></description>
 		</version>
-		<version name="0.2" type="beta" cMin="0.5.3" cMax="0.6">
+		<version name="0.2" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://www.ximarx.ilbello.com/vlc-shares/plugin_youtube_0.2.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_youtube_0.2.zip</download>
 			<changelog><![CDATA[
 			*** 0.2 ***
 			 - hoster api
@@ -40,9 +40,9 @@
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from Megavideo and Megaupload (premium account supported)]]></description>
 		</version>
-		<version name="0.3" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.3" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://www.ximarx.ilbello.com/vlc-shares/plugin_megavideo_0.3.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_megavideo_0.3.zip</download>
 			<changelog><![CDATA[
 			*** 0.3 ***
 			 - new Hoster api supported
@@ -75,9 +75,9 @@
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from AnimeDb.tv forum (italian)]]></description>
 		</version>
-		<version name="0.2" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.2" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://www.ximarx.ilbello.com/vlc-shares/plugin_animedb_0.2.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_animedb_0.2.zip</download>
 			<changelog><![CDATA[
 			*** 0.2 ***
 			 - multihoster supported
@@ -127,9 +127,9 @@
 			]]></changelog>
 			<description><![CDATA[Integrate JDownloader inside VLCShares]]></description>
 		</version>
-		<version name="0.2" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.2" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://www.ximarx.ilbello.com/vlc-shares/plugin_jdownloader_0.2.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_jdownloader_0.2.zip</download>
 			<changelog><![CDATA[
 			*** 0.2 ***
 			 - allow to append videos from all hosters in the download queue
@@ -213,9 +213,9 @@
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from IceFilms.com (english)]]></description>
 		</version>
-		<version name="0.2" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.2" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://www.ximarx.ilbello.com/vlc-shares/plugin_icefilms_0.2.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_icefilms_0.2.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from IceFilms.com (english)]]></description>
@@ -231,9 +231,9 @@
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from Film-Stream.tv (italian)]]></description>
 		</version>
-		<version name="0.2" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.2" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://www.ximarx.ilbello.com/vlc-shares/plugin_filmstream_0.2.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_filmstream_0.2.zip</download>
 			<changelog><![CDATA[
 			*** 0.1.1 ***
 			 - multihoster support
@@ -251,9 +251,9 @@
 		</version>
 	</plugin>
 	<plugin key="myp2p">
-		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://www.ximarx.ilbello.com/vlc-shares/plugin_myp2p_0.1.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_myp2p_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch live TV channels and sports events from MyP2P.eu]]></description>
@@ -280,63 +280,63 @@
 	</plugin>
 	<!-- Hosters -->
 	<plugin key="4shared">
-		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://www.ximarx.ilbello.com/vlc-shares/plugin_4shared_0.1.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_4shared_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch 4shared videos]]></description>
 		</version>
 	</plugin>
 	<plugin key="dailymotion">
-		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://www.ximarx.ilbello.com/vlc-shares/plugin_dailymotion_0.1.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_dailymotion_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch dailymotion videos]]></description>
 		</version>
 	</plugin>
 	<plugin key="movshare">
-		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://www.ximarx.ilbello.com/vlc-shares/plugin_movshare_0.1.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_movshare_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch movshare videos]]></description>
 		</version>
 	</plugin>
 	<plugin key="veetle">
-		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://www.ximarx.ilbello.com/vlc-shares/plugin_veetle_0.1.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_veetle_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch veetle channels]]></description>
 		</version>
 	</plugin>
 	<plugin key="veoh">
-		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://www.ximarx.ilbello.com/vlc-shares/plugin_veoh_0.1.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_veoh_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch veoh videos]]></description>
 		</version>
 	</plugin>
 	<plugin key="videobb">
-		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://www.ximarx.ilbello.com/vlc-shares/plugin_videobb_0.1.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_videobb_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videobb channels]]></description>
 		</version>
 	</plugin>
 	<plugin key="vimeo">
-		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://www.ximarx.ilbello.com/vlc-shares/plugin_vimeo_0.1.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_vimeo_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch vimeo videos]]></description>
