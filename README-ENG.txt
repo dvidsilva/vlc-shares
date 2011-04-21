@@ -8,7 +8,7 @@
 #     															#
 #################################################################
 
-VLC-SHARES v0.5.4beta1 - 18/04/2011
+VLC-SHARES v0.5.4 - 22/04/2011
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -25,7 +25,10 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 | Changelog
 \==========---
 
-*** 0.5.4beta1 (18/4/2011) ***
+*** 0.5.4 (22/4/2011) ***
+ - Automatic installer for Ubuntu 10.10
+ - Automatic installer for Windows: permissions fixed
+ - Documentation updates in the wiki 
  - Authetication features
  - build script improved
  - robots.txt
