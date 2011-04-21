@@ -118,7 +118,7 @@ class Application_Form_Configs extends X_Form
         $this->addElement('reset', 'abort', array(
         	//'onClick'	=> 'javascript:history.back()',
             'ignore'   => true,
-            'label'    => X_Env::_('configs_form_abort'),
+            'label'    => X_Env::_('configs_form_reset'),
         	//'decorators' => array('ViewHelper')
         ));
  
