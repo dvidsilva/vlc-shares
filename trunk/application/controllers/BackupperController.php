@@ -114,7 +114,7 @@ class BackupperController extends X_Controller_Action
     			$data['metadata'] = array(
     				'version'	=> X_VlcShares::VERSION,
     				'created'	=> date('d/m/Y H:i:s'),
-    				'decrypt'	=> 'backupper_decodevalues_0_5_3'
+    				'decrypt'	=> 'backupper_decodevalues_0_5_5'
     			);
     			
     			$data['plugins'] = $items;
@@ -158,11 +158,36 @@ class BackupperController extends X_Controller_Action
     		$this->_helper->redirector('index', 'backupper');
     	}
 	    	
-    	$data = file_get_contents(APPLICATION_PATH . "/../data/backupper/$file");
+    	//$data = file_get_contents(APPLICATION_PATH . "/../data/backupper/$file");
     	
     	//@$data['plugins'] = array_map('backupper_decodevalues_0_5_3', $data['plugins']);
     	
-		$backup = new Zend_Config_Xml($data);
+		//$backup = new Zend_Config_Xml($data);
+		
+    	try {
+    		/* @var $backuppedData Zend_Config_Xml */
+    		$backup = new Zend_Config_Xml(APPLICATION_PATH . "/../data/backupper/$file");
+    		
+    		$decryptFunction = $backup->metadata->get('decrypt', false);
+    		
+    		if ( $decryptFunction !== false ) { 
+    			if ( function_exists($decryptFunction) ) {
+		   			$arrayBackuppedData = $backup->toArray();
+	    			$arrayBackuppedData['plugins'] = array_map($decryptFunction, $arrayBackuppedData['plugins']);
+    			} else {
+    				throw new Exception("Unknown decryption function: $decryptFunction");
+    			}
+    			$backup = new Zend_Config($arrayBackuppedData);
+    		}
+    		
+    		
+    	} catch (Exception $e) {
+    		X_Debug::e("Error while restoring: {$e->getMessage()}");
+    		$this->_helper->flashMessenger(array('text' => X_Env::_('p_backupper_err_malformedrestorefile'), 'type' => 'error' ));
+    		$this->_helper->redirector('index', 'backupper');
+    	}
+		
+		
 		
 		try {
 			
@@ -219,13 +244,13 @@ class BackupperController extends X_Controller_Action
     			if ( $decryptFunction !== false ) { 
     				if ( function_exists($decryptFunction) ) {
 		    			$arrayBackuppedData = $backuppedData->toArray();
-	    				$arrayBackuppedData['plugins'] = array_map('backupper_decodevalues_0_5_3', $arrayBackuppedData['plugins']);
+	    				$arrayBackuppedData['plugins'] = array_map($decryptFunction, $arrayBackuppedData['plugins']);
     				} else {
     					throw new Exception("Unknown decryption function: $decryptFunction");
     				}
+    				$backuppedData = new Zend_Config($arrayBackuppedData);
     			}
     			
-    			$backuppedData = new Zend_Config($arrayBackuppedData);
     			
     		} catch (Exception $e) {
     			X_Debug::e("Error while restoring: {$e->getMessage()}");
@@ -322,12 +347,33 @@ class BackupperController extends X_Controller_Action
 if ( !function_exists('backupper_encodevalues') ) {
 	function backupper_encodevalues($value) {
 		if ( is_array($value) ) {
+			$_changed = array();
 			foreach ($value as $k => $v) {
-				$value[$k] = backupper_encodevalues($v);
+				if ( preg_match('/^[^a-z].*/i', $k) > 0 ) {
+					$k = "_$k";
+				}
+				$_changed[$k] = backupper_encodevalues($v);
 			}
-			return $value;
+			return $_changed;
 		} else {
 			return base64_encode($value);
+		}
+	}
+}
+
+if ( !function_exists('backupper_decodevalues_0_5_5') ) {
+	function backupper_decodevalues_0_5_5($value) {
+		if ( is_array($value) ) {
+			$_changed = array();
+			foreach ($value as $k => $v) {
+				if ( X_Env::startWith($k, '_') ) {
+					$k = substr($k, 1);
+				}
+				$_changed[$k] = backupper_decodevalues_0_5_5($v);
+			}
+			return $_changed;
+		} else {
+			return base64_decode($value);
 		}
 	}
 }

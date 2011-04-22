@@ -472,7 +472,7 @@ class X_VlcShares_Plugins_OnlineLibrary extends X_VlcShares_Plugins_Abstract imp
 				->setThumbnail(@$modelInfo['thumbnail'])
 				;
 			// i don't set id, or db adapter will try to update old data that i cleaned
-			Application_Model_MegavideoMapper::i()->save($model);
+			Application_Model_VideosMapper::i()->save($model);
 		}
 		
 		return X_Env::_('p_onlinelibrary_backupper_restoreditems', count($items['videos']));
