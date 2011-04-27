@@ -11,8 +11,8 @@ require_once 'Zend/Dom/Query.php';
  */
 class X_VlcShares_Plugins_Jigoku extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.1.1';
-	const VERSION_CLEAN = '0.1.1';
+	const VERSION = '0.1.2';
+	const VERSION_CLEAN = '0.1.2';
 	
 	public function __construct() {
 		$this->setPriority('gen_beforeInit')
@@ -342,8 +342,13 @@ class X_VlcShares_Plugins_Jigoku extends X_VlcShares_Plugins_Abstract implements
 		$htmlString = $this->_loadPage($indexUrl);
 		$dom = new Zend_Dom_Query($htmlString);
 		
+		$tLetter = $letter;
+		if ( $tLetter == '0-9' ) {
+			$tLetter = "s$tLetter";
+		}
+		
 		// fetch all threads inside the table
-		$results = $dom->queryXpath('//table[@id="streaming_elenco"]//a[@name="' . $letter . '"][text()!=""]/ancestor::table[@id="streaming_elenco"]/tr[@class!="header"]/td[@class="serie"]/a');
+		$results = $dom->queryXpath('//table[@class="streaming_elenco"]//td[@id="' . $tLetter . '"][@class="lettera"][text()!=""]/ancestor::table[@class="streaming_elenco"]//tr[position() > 1]//td[@class="serie"]/a');
 		
 		X_Debug::i("Threads found: ".$results->count());
 		
@@ -390,7 +395,7 @@ class X_VlcShares_Plugins_Jigoku extends X_VlcShares_Plugins_Abstract implements
 		$dom = new Zend_Dom_Query($htmlString);
 		
 		// xpath index stars from 1
-		$results = $dom->queryXpath('//div[@class="elenco"]//tr[@class!="header"]//td[@class="serie"]/a');
+		$results = $dom->queryXpath('//div[@class="elenco"]//td[@class="serie"]/a');
 		
 		X_Debug::i("Links found: ".$results->count());
 		
