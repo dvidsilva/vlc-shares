@@ -8,7 +8,7 @@
 #     															#
 ########## Jigoku.it Plugin #####################################
 
-Jigoky.it v0.1.1
+Jigoky.it v0.1.2
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -22,6 +22,9 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.1.2 ***
+ - Fixed plugin for new Jigoku.it layout
 
 *** 0.1.1 ***
  - Compatibility with VLCShares 0.5.3
