@@ -138,12 +138,12 @@
 		</version>
 	</plugin>
 	<plugin key="jigoku">
-		<version name="0.1.1" type="stable" cMin="0.5" cMax="0.6">
+		<version name="0.1.2" type="stable" cMin="0.5" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_jigoku_0.1.1.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_jigoku_0.1.2.zip</download>
 			<changelog><![CDATA[
-			*** 0.1.1 ***
-			 - Compatibility with VLCShares 0.5.3
+			*** 0.1.2 ***
+			 - Fixed plugin for new Jigoku.it layout
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from Jigoku.it (italian forum with sub-ita anime)]]></description>
 		</version>
