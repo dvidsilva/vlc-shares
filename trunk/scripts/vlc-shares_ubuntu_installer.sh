@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#Installer for vlc-shares on ubuntu 11.04
+
 # All temporary files will be downloaded inside this directory
 TMPDIR="/tmp/vlc-shares-installer"
 # vlc-shares will be installed here
@@ -19,7 +21,6 @@ REQS="\
 	vlc \
 	ffmpeg \
 	libavcodec-extra-52 \
-	libavcodec-unstripped-52 \
 "
 
 # sopcast related
@@ -37,7 +38,7 @@ DDL_VLCSHARES_CORE="http://vlc-shares.googlecode.com/files/vlc-shares_0.5.4.zip"
 FILE_VLCSHARES_CORE="${TMPDIR}/vlc-shares.zip"
 
 # download url filename about vlc-shares http configs
-DDL_VLCSHARES_APACHECONF="http://vlc-shares.googlecode.com/svn-history/r494/trunk/scripts/apacheconf_ubuntu1010.conf"
+DDL_VLCSHARES_APACHECONF="http://vlc-shares.googlecode.com/svn-history/r570/trunk/scripts/apacheconf_ubuntu1104.conf"
 FILE_VLCSHARES_APACHECONF="${TMPDIR}/vlc-shares.conf"
 
 
@@ -159,8 +160,9 @@ if [ $JUMP -lt 4 ]; then
 fi
 
 if [ $JUMP -lt 5 ]; then
-	echo ---------- Linking vlc-shares in doc root ---
-	sudo ln -s "${DESTDIR}/vlc-shares/public" /var/www/vlc-shares
+	# Link not needed anymore, Alias in httpd conf
+	#echo ---------- Linking vlc-shares in doc root ---
+	#sudo ln -s "${DESTDIR}/vlc-shares/public" /var/www/vlc-shares
 fi
 
 if [ $JUMP -lt 6 ]; then
