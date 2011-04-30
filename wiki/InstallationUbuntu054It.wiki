@@ -3,7 +3,7 @@
 
 = Introduzione =
 
-Questa guida permette di installare VLCShares 0.5.4 in un sistema Ubuntu 10.10. 
+Questa guida permette di installare VLCShares 0.5.4 in un sistema Ubuntu 10.10 e 11.04. 
 
 <wiki:toc max_depth="6" />
 
@@ -17,8 +17,14 @@ Durante l'installazione vi verrà richiesto se procedere anche all'installazione
 
 Aprite una Terminale (Applicationi->Accessori->Terminale) e digitate all'interno:
 
+*Per Ubuntu 10.10*:
 {{{
 wget http://vlc-shares.googlecode.com/files/vlc-shares_0.5.4_ubuntu-installer.sh
+}}}
+
+*Per Ubuntu 11.04*:
+{{{
+wget -O vlc-shares_0.5.4_ubuntu-installer.sh http://vlc-shares.googlecode.com/files/vlc-shares_0.5.4_ubuntu-11.04-installer.sh
 }}}
 
 Attendete il termine del download e scrivete per dare permessi di esecuzione:
@@ -58,9 +64,22 @@ quindi digitate in sequenza nel terminale
 
 {{{
 cd /etc/apache2/conf.d/
+}}}
+
+e
+
+*For Ubuntu 10.10*:
+{{{
 sudo wget -O vlc-shares.conf http://vlc-shares.googlecode.com/svn-history/r494/trunk/scripts/apacheconf_ubuntu1010.conf
 sudo chmod 644 vlc-shares.conf
 }}}
+
+*For Ubuntu 11.04*:
+{{{
+sudo wget -O vlc-shares.conf http://vlc-shares.googlecode.com/svn-history/r570/trunk/scripts/apacheconf_ubuntu1104.conf
+sudo chmod 644 vlc-shares.conf
+}}}
+
 
 Procedete quindi con un riavvio di Apache
 
@@ -95,13 +114,13 @@ sudo chown www-data:www-data -R vlc-shares/
 sudo chmod 777 -R vlc-shares/
 }}}
 
-Create un link simbolico alla directory `/opt/vlc-shares/public/` in `/var/www` con il comando
+*Solo gli utenti Ubuntu 10.10* devono anche creare un link simbolico alla directory `/opt/vlc-shares/public/` in `/var/www` con il comando
 
 {{{
 sudo ln -s /opt/vlc-shares/public /var/www/vlc-shares
 }}}
 
-e uno alla directory della libreria Zend Framework in `/opt/vlc-shares/library`
+Createne uno anche alla directory della libreria Zend Framework in `/opt/vlc-shares/library`
 
 {{{
 sudo ln -s /usr/share/php/libzend-framework-php/Zend /opt/vlc-shares/library/Zend
