@@ -39,6 +39,7 @@ $pluginsIncludes = array(
 
 // include path for Helpers
 $helpersIncludes = array(
+	$basePath.'/library/X/VlcShares/Plugins/Helper/AnimeFTW.php',
 );
 
 /* @var $runtimeConfigs Zend_Config */
@@ -51,6 +52,7 @@ if ( isset($runtimeConfigs->plugins->animeftw ) ) {
 			'configs' => array(
 				'auth.username' => $runtimeConfigs->plugins->animeftw->auth->username,
 				'auth.password' => $runtimeConfigs->plugins->animeftw->auth->password,
+				'sitescraper.enabled' => $runtimeConfigs->plugins->animeftw->sitescraber->enabled,
 			)
 		)
 	);

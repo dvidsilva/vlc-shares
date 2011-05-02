@@ -7,14 +7,16 @@ require_once 'Zend/Dom/Query.php';
 
 
 /**
- * Add animeftw.tv site as a video source
+ * Add animeftw.tv site as a video source, using rest api
+ * 
+ * @version 0.3
  * @author ximarx
  *
  */
 class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.2.2';
-	const VERSION_CLEAN = '0.2.2';
+	const VERSION = '0.3';
+	const VERSION_CLEAN = '0.3';
 	
 	const BASE_URL = 'http://www.animeftw.tv/';
 	const PAGE_LOGIN = 'http://www.animeftw.tv/login';
@@ -22,6 +24,8 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 	const PAGE_MOVIES = 'http://www.animeftw.tv/movies';
 	const PAGE_OAV = 'http://www.animeftw.tv/ovas';
 	
+	const TYPE_SERIES_PERLETTER = 'videospletter';
+	const TYPE_SERIES_PERGENRE = 'videospgenre';
 	const TYPE_SERIES = 'videos';
 	const TYPE_MOVIES = 'movies';
 	const TYPE_OAV = 'ovas';
@@ -51,6 +55,10 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 	 */
 	function gen_beforeInit(Zend_Controller_Action $controller) {
 		$this->helpers()->language()->addTranslation(__CLASS__);
+		$this->helpers()->registerHelper('animeftw', new X_VlcShares_Plugins_Helper_AnimeFTW(array(
+			'username' => $this->config('auth.username', ''),
+			'password' => $this->config('auth.password', ''),
+		)));
 	}
 	
 	/**
@@ -60,7 +68,6 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 	public function getCollectionsItems(Zend_Controller_Action $controller) {
 		
 		X_Debug::i("Plugin triggered");
-		
 		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_animeftw_collectionindex'));
 		$link->setIcon('/images/animeftw/logo.jpg')
 			->setDescription(X_Env::_('p_animeftw_collectionindex_desc'))
@@ -284,54 +291,83 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 			return false;	
 		}
 		
-		//@list($epId, $epName) = explode(':', $href, 2);
+		$return = false;;
 		
-		// i have to fetch the streaming page :(
-		
-		$baseUrl = $this->config('base.url', self::BASE_URL);
-		$baseUrl .= "$type/$thread/$href";
-		$htmlString = $this->_loadPage($baseUrl, true);
-		
-		$return = false;
-		
-		// <param name=\"src\" value=\"([^\"]*)\" \/>
-		
-		if ( preg_match('/<param name=\"src\" value=\"([^\"]*)\" \/>/', $htmlString, $match) ) {
-			// link = match[1]
+		if ( $type == self::TYPE_SERIES_PERGENRE || $type == self::TYPE_SERIES_PERLETTER ) {
 			
-			$linkUrl = $match[1];
-			
-			if ( strpos($linkUrl, 'megavideo') !== false ) {
-			
-				@list(, $megavideoID) = explode('/v/', $linkUrl, 2);
-				
-				X_Debug::i("Megavideo ID: $megavideoID");
-				
-				try {
-					/* @var $megavideo X_VlcShares_Plugins_Helper_Megavideo */
-					$megavideo = $this->helpers('megavideo');
-					// if server isn't specified, there is no video
-					//$megavideo->setLocation($megavideoID);
-					if ( $megavideo->setLocation($megavideoID)->getServer() ) {
-						$return = $megavideo->getUrl();
-					}
-				} catch (Exception $e) {
-					X_Debug::e($e->getMessage());
-				}
-				
+			if ( $this->config('proxy.enabled', true) ) {
+						
+				// X_Env::routeLink should be deprecated, but now is the best option
+				$return = X_Env::routeLink('animeftw','proxy2', array(
+					'id' => X_Env::encode($href),
+				));
 			} else {
-				// files in videos2.animeftw.tv require a valid referer page to be watched
-				// and animeftw controller does the magic trick
-				if ( /*strpos($linkUrl, 'videos2.animeftw.tv') !== false && */ $this->config('proxy.enabled', true) ) {
 					
-					// X_Env::routeLink should be deprecated, but now is the best option
-					$linkUrl = X_Env::routeLink('animeftw','proxy', array(
-						'v' => X_Env::encode($linkUrl),
-						'r' => X_Env::encode($baseUrl) // baseUrl is the page containing the link
-					));
-				}
 				
-				$return = $linkUrl;
+				// $href is the video id
+				try {
+					/* @var $helper X_VlcShares_Plugins_Helper_AnimeFTW */
+					$helper = $this->helpers('animeftw');
+					$episode = $helper->getEpisode($href);
+				
+					if ( @$episode['url'] != '' ) {
+						$return = $episode['url'];
+					}
+					
+				} catch (Exception $e) {
+					
+				}
+			}
+			
+		} else {
+		
+			// i have to fetch the streaming page :(
+			
+			$baseUrl = $this->config('base.url', self::BASE_URL);
+			$baseUrl .= "$type/$thread/$href";
+			$htmlString = $this->_loadPage($baseUrl, true);
+			
+			
+			
+			// <param name=\"src\" value=\"([^\"]*)\" \/>
+			
+			if ( preg_match('/<param name=\"src\" value=\"([^\"]*)\" \/>/', $htmlString, $match) ) {
+				// link = match[1]
+				
+				$linkUrl = $match[1];
+				
+				if ( strpos($linkUrl, 'megavideo') !== false ) {
+				
+					@list(, $megavideoID) = explode('/v/', $linkUrl, 2);
+					
+					X_Debug::i("Megavideo ID: $megavideoID");
+					
+					try {
+						/* @var $megavideo X_VlcShares_Plugins_Helper_Megavideo */
+						$megavideo = $this->helpers('megavideo');
+						// if server isn't specified, there is no video
+						//$megavideo->setLocation($megavideoID);
+						if ( $megavideo->setLocation($megavideoID)->getServer() ) {
+							$return = $megavideo->getUrl();
+						}
+					} catch (Exception $e) {
+						X_Debug::e($e->getMessage());
+					}
+					
+				} else {
+					// files in videos2.animeftw.tv require a valid referer page to be watched
+					// and animeftw controller does the magic trick
+					if ( /*strpos($linkUrl, 'videos2.animeftw.tv') !== false && */ $this->config('proxy.enabled', true) ) {
+						
+						// X_Env::routeLink should be deprecated, but now is the best option
+						$linkUrl = X_Env::routeLink('animeftw','proxy', array(
+							'v' => X_Env::encode($linkUrl),
+							'r' => X_Env::encode($baseUrl) // baseUrl is the page containing the link
+						));
+					}
+					
+					$return = $linkUrl;
+				}
 			}
 		}
 		
@@ -445,16 +481,50 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 
 	private function _fetchClassification(X_Page_ItemList_PItem $items, $type) {
 		
-		$lets = 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z';
-		$lets = explode(',', $lets);
+		if ( $type == self::TYPE_SERIES || $type == self::TYPE_SERIES_PERLETTER ) {
 		
-		foreach ( $lets as $l ) {
-			$item = new X_Page_Item_PItem($this->getId()."-$type-$l", $l);
+			$lets = 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z';
+			$lets = explode(',', $lets);
+			
+			foreach ( $lets as $l ) {
+				$item = new X_Page_Item_PItem($this->getId()."-$type-$l", $l);
+				$item->setIcon('/images/icons/folder_32.png')
+					->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+					->setCustom(__CLASS__.':location', "$type/$l")
+					->setLink(array(
+						'l'	=>	X_Env::encode("$type/$l")
+					), 'default', false);
+					
+				$items->append($item);
+			}
+			
+			
+		} elseif ( $type == self::TYPE_SERIES_PERGENRE ) {
+			
+			/* @var $helper X_VlcShares_Plugins_Helper_AnimeFTW */
+			$helper = $this->helpers('animeftw');
+			$genres = $helper->getGenres();
+
+			foreach ( $genres as $genre => $count ) {
+				if ( $genre == '' ) continue;
+				$item = new X_Page_Item_PItem($this->getId()."-$type-$genre", X_Env::_('p_animeftw_genre', $genre, $count ));
+				$item->setIcon('/images/icons/folder_32.png')
+					->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+					->setCustom(__CLASS__.':location', "$type/$genre")
+					->setLink(array(
+						'l'	=>	X_Env::encode("$type/$genre")
+					), 'default', false);
+					
+				$items->append($item);
+			}
+			
+		} else {
+			$item = new X_Page_Item_PItem($this->getId()."-$type-_", '_');
 			$item->setIcon('/images/icons/folder_32.png')
 				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
-				->setCustom(__CLASS__.':location', "$type/$l")
+				->setCustom(__CLASS__.':location', "$type/_")
 				->setLink(array(
-					'l'	=>	X_Env::encode("$type/$l")
+					'l'	=>	X_Env::encode("$type/_")
 				), 'default', false);
 				
 			$items->append($item);
@@ -464,46 +534,123 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 	
 	private function _fetchType(X_Page_ItemList_PItem $items) {
 		
-		// series
-		$item = new X_Page_Item_PItem($this->getId()."-series", X_Env::_('p_animeftw_typeseries'));
+		
+		$item = new X_Page_Item_PItem($this->getId()."-seriesperletter", X_Env::_('p_animeftw_typeseries_perletter'));
 		$item->setIcon('/images/icons/folder_32.png')
 			->setType(X_Page_Item_PItem::TYPE_CONTAINER)
-			->setCustom(__CLASS__.':location', self::TYPE_SERIES)
+			->setCustom(__CLASS__.':location', self::TYPE_SERIES_PERLETTER)
 			->setLink(array(
-				'l'	=>	X_Env::encode(self::TYPE_SERIES)
+				'l'	=>	X_Env::encode(self::TYPE_SERIES_PERLETTER)
 			), 'default', false);
 			
 		$items->append($item);
 		
-		// movies
-		$item = new X_Page_Item_PItem($this->getId()."-movies", X_Env::_('p_animeftw_typemovies'));
+
+		$item = new X_Page_Item_PItem($this->getId()."-seriespergenre", X_Env::_('p_animeftw_typeseries_pergenre'));
 		$item->setIcon('/images/icons/folder_32.png')
 			->setType(X_Page_Item_PItem::TYPE_CONTAINER)
-			->setCustom(__CLASS__.':location', self::TYPE_MOVIES.'/_')
+			->setCustom(__CLASS__.':location', self::TYPE_SERIES_PERGENRE)
 			->setLink(array(
-				'l'	=>	X_Env::encode(self::TYPE_MOVIES.'/_')
+				'l'	=>	X_Env::encode(self::TYPE_SERIES_PERGENRE)
 			), 'default', false);
 			
 		$items->append($item);
+
 		
-		// oav
-		$item = new X_Page_Item_PItem($this->getId()."-oav", X_Env::_('p_animeftw_typeoav'));
-		$item->setIcon('/images/icons/folder_32.png')
-			->setType(X_Page_Item_PItem::TYPE_CONTAINER)
-			->setCustom(__CLASS__.':location', self::TYPE_OAV)
-			->setLink(array(
-				'l'	=>	X_Env::encode(self::TYPE_OAV)
-			), 'default', false);
+		if ( $this->config('sitescraper.enabled', false) ) {
 			
-		$items->append($item);
+			$item = new X_Page_Item_PItem($this->getId()."-series", X_Env::_('p_animeftw_typeseries'));
+			$item->setIcon('/images/icons/folder_32.png')
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+				->setCustom(__CLASS__.':location', self::TYPE_SERIES)
+				->setLink(array(
+					'l'	=>	X_Env::encode(self::TYPE_SERIES)
+				), 'default', false);
+				
+			$items->append($item);
+				
+		
+			// movies
+			$item = new X_Page_Item_PItem($this->getId()."-movies", X_Env::_('p_animeftw_typemovies'));
+			$item->setIcon('/images/icons/folder_32.png')
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+				->setCustom(__CLASS__.':location', self::TYPE_MOVIES.'/_')
+				->setLink(array(
+					'l'	=>	X_Env::encode(self::TYPE_MOVIES.'/_')
+				), 'default', false);
+				
+			$items->append($item);
+			
+			// oav
+			$item = new X_Page_Item_PItem($this->getId()."-oav", X_Env::_('p_animeftw_typeoav'));
+			$item->setIcon('/images/icons/folder_32.png')
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+				->setCustom(__CLASS__.':location', self::TYPE_OAV)
+				->setLink(array(
+					'l'	=>	X_Env::encode(self::TYPE_OAV)
+				), 'default', false);
+				
+			$items->append($item);
+			
+		}
 	}
 	
+	private function _fetchThreadsAPI(X_Page_ItemList_PItem $items, $type, $filter) {
+		
+		/* @var $helper X_VlcShares_Plugins_Helper_AnimeFTW */
+		$helper = $this->helpers('animeftw');
+		
+		$series = $helper->getAnime($filter);
+		
+		
+		foreach ($series as $serie) {
+			
+			/*
+			
+			$serie = array(
+				'id' => trim((string) $serie->id),
+				'label' => trim((string) $serie->seriesName),
+				'romaji' => trim((string) $serie->romaji),
+				'description' => trim(strip_tags((string) $series->description )),
+				'thumbnail' => trim((string) $serie->image),
+				'episodes' => trim((string) $serie->episodes),
+				'movies' => trim((string) $serie->movies),
+				'href' => value
+			);
+			 */
+			
+			$item = new X_Page_Item_PItem($this->getId()."-$type-{$serie['id']}", X_Env::_('p_animeftw_serie', $serie['label'], $serie['romaji'], $serie['episodes'], $serie['movies']  ));
+			$item->setIcon('/images/icons/folder_32.png')
+				->setThumbnail($serie['thumbnail'])
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER )
+				->setCustom(__CLASS__.':location', "$type/$filter/{$serie['href']}")
+				->setLink(array(
+					'l'	=>	X_Env::encode("$type/$filter/{$serie['href']}"),
+				), 'default', false);
+				
+			if ( APPLICATION_ENV == 'development' ) {
+				$item->setDescription("$type/$filter/{$serie['href']}");
+			} else {
+				$item->setDescription($serie['description']);
+			}
+				
+			$items->append($item);
+			
+			
+		}
+		
+	}
 	
 	private function _fetchThreads(X_Page_ItemList_PItem $items, $type, $letter) {
 		
 		X_Debug::i("Fetching threads for $type/$letter");
 
 		switch ($type) {
+			case self::TYPE_SERIES_PERGENRE:
+			case self::TYPE_SERIES_PERLETTER:
+				$this->_fetchThreadsAPI($items, $type, $letter);
+				return;
+				
 			case self::TYPE_SERIES:
 				$indexUrl = $this->config('index.series.url', self::PAGE_SERIES);
 				// more info for xpath: http://www.questionhub.com/StackOverflow/3428104
@@ -570,10 +717,58 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 		
 	}	
 	
+	private function _fetchVideosAPI(X_Page_ItemList_PItem $items, $type, $filter, $href) {
+		
+		/* @var $helper X_VlcShares_Plugins_Helper_AnimeFTW */
+		$helper = $this->helpers('animeftw');
+		
+		$episodes = $helper->getEpisodes($href);
+		
+		
+		foreach ($episodes as $episode) {
+			
+			/*
+			
+			$episode = array(
+				'id' => trim((string) $episodeNode->id),
+				'epnumber' => trim((string) $episodeNode->epnumber),
+				'label' => trim((string) $episodeNode->name),
+				'movie' => false,
+				'type' => trim((string) $episodeNode->type),
+				'url' => trim((string) $episodeNode->videolink),
+				'thumbnail' => ''
+			);
+			 */
+			
+			$item = new X_Page_Item_PItem($this->getId()."-$type-{$episode['id']}", X_Env::_('p_animeftw_episode', $episode['label'], $episode['epnumber'], ($episode['movie'] ? X_Env::_('p_animeftw_ismovie') : '' ) ) );
+			$item->setIcon("/images/animeftw/file_{$episode['type']}.png")
+				->setThumbnail($episode['thumbnail'] != '' ? $episode['thumbnail'] : null )
+				->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+				->setCustom(__CLASS__.':location', "$type/$filter/$href/{$episode['id']}")
+				->setLink(array(
+					'l'	=>	X_Env::encode("$type/$filter/$href/{$episode['id']}"),
+					'action' => 'mode'
+				), 'default', false);
+				
+			if ( APPLICATION_ENV == 'development' ) {
+				$item->setDescription("$type/$filter/$href/{$episode['id']}");
+			}
+				
+			$items->append($item);
+			
+			
+		}
+		
+	}
+	
 	
 	private function _fetchVideos(X_Page_ItemList_PItem $items, $type, $letter, $thread) {
 		
 		X_Debug::i("Fetching videos for $type/$letter/$thread");
+		
+		if ( $type == self::TYPE_SERIES_PERGENRE || $type == self::TYPE_SERIES_PERLETTER ) {
+			return $this->_fetchVideosAPI($items, $type, $letter, $thread);
+		}
 		
 		$baseUrl = $this->config('base.url', self::BASE_URL);
 		

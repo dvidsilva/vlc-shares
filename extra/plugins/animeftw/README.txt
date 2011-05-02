@@ -8,7 +8,7 @@
 #     															#
 ########## AnimeFTW.tv Plugin ####################################
 
-AnimeFTW.tv v0.2.1
+AnimeFTW.tv v0.3
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -22,6 +22,9 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.3 ***
+ - The plugin use the new Rest API
 
 *** 0.2.1 ***
  - Password field in config page is type="password"

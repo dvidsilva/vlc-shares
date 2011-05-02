@@ -3,13 +3,13 @@
 	<metadata>
 		<label>p_animeftw_plglabel</label>
 		<description>p_animeftw_plgdesc</description>
-		<version>0.2.2</version>
+		<version>0.3</version>
 		<status>stable</status>
 		<key>animeftw</key>
 		<file>X/VlcShares/Plugins/AnimeFTW.php</file>
 		<class>X_VlcShares_Plugins_AnimeFTW</class>
 		<compatibility>
-			<from>0.5.1</from>
+			<from>0.5.4</from>
 			<to>0.6</to>
 		</compatibility>
 	</metadata>
@@ -23,6 +23,9 @@
 			<X>
 				<VlcShares>
 					<Plugins>
+						<Helper>
+							<file>AnimeFTW.php</file>						
+						</Helper>
 						<file>AnimeFTW.php</file>
 					</Plugins>
 				</VlcShares>
@@ -32,6 +35,8 @@
 			<images>
 				<animeftw>
 					<file>logo.jpg</file>
+					<file>file_mkv.png</file>
+					<file>file_divx.png</file>
 				</animeftw>
 			</images>
 		</public>

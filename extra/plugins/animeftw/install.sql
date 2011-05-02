@@ -21,6 +21,8 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 --	'animeftw.hide.useragent', '1', '1', 'plugins', 3, 'p_animeftw_conf_hideuseragent_label', 'p_animeftw_conf_hideuseragent_desc',	'');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'animeftw.proxy.enabled', '1', '1', 'plugins', 3, 'p_animeftw_conf_proxyenabled_label', 'p_animeftw_conf_proxyenabled_desc',	'');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'animeftw.sitescraper.enabled', '0', '0', 'plugins', 3, 'p_animeftw_conf_sitescraperenabled_label', 'p_animeftw_conf_sitescraperenabled_desc',	'');
 	
 UPDATE plugins SET enabled=1 WHERE key = "animeftw";
 
