@@ -23,6 +23,60 @@ class AnimeftwController extends X_Controller_Action
 			$this->plugin = X_VlcShares_Plugins::broker()->getPlugins('animeftw');
 		}
 	}
+
+	function proxy2Action() {
+		
+		// time to get params from get
+		/* @var $request Zend_Controller_Request_Http */
+		$request = $this->getRequest();
+		
+		if ( !$this->plugin->config('proxy.enabled', true) ) {
+			throw new Exception(X_Env::_('p_animeftw_err_proxydisabled'));
+		}
+
+		// this action is so special.... no layout or viewRenderer
+		$this->_helper->viewRenderer->setNoRender();
+		$this->_helper->layout->disableLayout();
+		
+		$id = $request->getParam('id', false); // video file url
+		
+		if ( $id === false ) {
+			throw new Exception(X_Env::_('p_animeftw_err_invalidrequest'));
+			return;
+		}
+		$id = X_Env::decode($id);
+		
+		
+		ignore_user_abort(false);
+		
+		// $href is the video id
+		
+		/* @var $helper X_VlcShares_Plugins_Helper_AnimeFTW */
+		$helper = X_VlcShares_Plugins::helpers()->helper('animeftw');
+		$episode = $helper->getEpisode($id);
+	
+		$videoUrl = $episode['url'];
+		
+		
+		while ( ob_get_level() != 0 )
+			ob_end_clean();
+		
+		$userAgent = 'User-Agent: vlc-shares/'.X_VlcShares::VERSION.' animeftw/'.X_VlcShares_Plugins_AnimeFTW::VERSION; 
+		
+		$opts = array('http' =>
+			array(
+				'header'  => array(
+					"User-Agent: $userAgent",
+				)
+			)
+		);
+
+		$context  = stream_context_create($opts);
+		// readfile open a file and send it directly to output buffer
+		readfile($videoUrl, false, $context);
+					
+	}
+	
 	
 	function proxyAction() {
 		
