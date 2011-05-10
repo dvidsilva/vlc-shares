@@ -87,12 +87,21 @@
 		</version>
 	</plugin>
 	<plugin key="animeftw">
-		<version name="0.2.2" type="stable" cMin="0.5" cMax="0.6">
+		<version name="0.2.2" type="stable" cMin="0.5" cMax="0.5.4">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_animeftw_0.2.2.zip</download>
 			<changelog><![CDATA[
 			*** 0.2.2 ***
 			 - Workaround for wrong config in windows auto installer: moved login page to standard http. This will not require php_openssl enabled for windows users.
+			]]></changelog>
+			<description><![CDATA[Allow to watch videos from AnimeFTW.tv (english)]]></description>
+		</version>
+		<version name="0.3" type="stable" cMin="0.5.4" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_animeftw_0.3.zip</download>
+			<changelog><![CDATA[
+			*** 0.3 ***
+			 - The plugin uses the new Rest API
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from AnimeFTW.tv (english)]]></description>
 		</version>
