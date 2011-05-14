@@ -3,13 +3,13 @@
 	<metadata>
 		<label>p_jigoku_plglabel</label>
 		<description>p_jigoku_plgdesc</description>
-		<version>0.1.2</version>
+		<version>0.1.3</version>
 		<status>stable</status>
 		<key>jigoku</key>
 		<file>X/VlcShares/Plugins/Jigoku.php</file>
 		<class>X_VlcShares_Plugins_Jigoku</class>
 		<compatibility>
-			<from>0.5.1</from>
+			<from>0.5.4</from>
 			<to>0.6</to>
 		</compatibility>
 	</metadata>

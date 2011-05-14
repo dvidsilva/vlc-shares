@@ -7,8 +7,8 @@
  */
 class X_VlcShares_Plugins_JDownloader extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION_CLEAN = '0.2';
-	const VERSION = '0.2';
+	const VERSION_CLEAN = '0.2.1';
+	const VERSION = '0.2.1';
 	
 	public function __construct() {
 		$this
@@ -30,9 +30,10 @@ class X_VlcShares_Plugins_JDownloader extends X_VlcShares_Plugins_Abstract imple
 		$this->helpers()->language()->addTranslation(__CLASS__);
 		
 		$helper_conf = new Zend_Config(array(
-			'ip' => $this->config('remoteapi.ip', '192.168.1.1'),
+			'ip' => $this->config('remoteapi.ip', 'localhost'),
 			'port' => $this->config('remoteapi.port', '10025'),
 			'timeout' => $this->config('request.timeout', '1'),
+			'nightly' => $this->config('version.isnightly', false)
 		)); 
 		
 		$this->helpers()->registerHelper('jdownloader', new X_VlcShares_Plugins_Helper_JDownloader($helper_conf));
@@ -382,7 +383,28 @@ class X_VlcShares_Plugins_JDownloader extends X_VlcShares_Plugins_Abstract imple
 				return new X_Page_ItemList_PItem(array($link));
 				
 			} catch (Exception $e) {
-				X_Debug::i("Location is not provided by a valid plugin/hoster");
+				X_Debug::i("Location is not provided by a valid plugin/hoster. Try direct download");
+				
+				// last chance: allow to start download from the resolveLocation
+				
+				$pObj = X_VlcShares_Plugins::broker()->getPlugins($provider);
+				if ( $pObj instanceof X_VlcShares_Plugins_ResolverInterface ) {
+					$url = $pObj->resolveLocation($location);
+					if ( X_Env::startWith($url, "http://") || X_Env::startWith($url, "https://") ) {
+						$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_jdownloader_downloadlink_location', $url));
+						$link->setIcon('/images/jdownloader/logo.png')
+							->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+							->setLink(array(
+									'action'	=>	'selection',
+									'pid'		=>	$this->getId()
+								), 'default', false);
+				
+						return new X_Page_ItemList_PItem(array($link));
+					} else {
+						X_Debug::i("Location isn't http or https");
+					}
+				}
+				
 			}
 		}
 	}
@@ -524,6 +546,16 @@ class X_VlcShares_Plugins_JDownloader extends X_VlcShares_Plugins_Abstract imple
 					
 				} catch (Exception $e) {
 					// simply: provider isn't compatible
+					// trying direct download
+					$pObj = X_VlcShares_Plugins::broker()->getPlugins($provider);
+					if ( $pObj instanceof X_VlcShares_Plugins_ResolverInterface ) {
+						$url = $pObj->resolveLocation($location);
+						if ( !X_Env::startWith($url, "http://") && !X_Env::startWith($url, "https://") ) {
+							// not valid, revert changes
+							$url = null;
+						}
+					}
+						
 				}
 				
 			}

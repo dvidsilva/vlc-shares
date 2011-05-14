@@ -11,8 +11,8 @@ require_once 'Zend/Dom/Query.php';
  */
 class X_VlcShares_Plugins_Jigoku extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.1.2';
-	const VERSION_CLEAN = '0.1.2';
+	const VERSION = '0.1.3';
+	const VERSION_CLEAN = '0.1.3';
 	
 	public function __construct() {
 		$this->setPriority('gen_beforeInit')
@@ -238,13 +238,7 @@ class X_VlcShares_Plugins_Jigoku extends X_VlcShares_Plugins_Abstract implements
 				X_Debug::i("Megavideo ID: $megavideoID");
 				
 				try {
-					/* @var $megavideo X_VlcShares_Plugins_Helper_Megavideo */
-					$megavideo = $this->helpers('megavideo');
-					// if server isn't specified, there is no video
-					//$megavideo->setLocation($megavideoID);
-					if ( $megavideo->setLocation($megavideoID)->getServer() ) {
-						$return = $megavideo->getUrl();
-					}
+					$return = $this->helpers()->hoster()->findHoster($linkUrl)->getPlayable($megavideoID, true);
 				} catch (Exception $e) {
 					X_Debug::e($e->getMessage());
 				}
