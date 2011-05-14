@@ -219,7 +219,11 @@ class X_Env {
 					$args = func_get_args();
 					array_shift($args);
 					// remove warning output
-					$return = @vsprintf($return, $args);
+					if ( $message != $return ) {
+						$return = @vsprintf($return, $args);
+					} else {
+						$return = "#($return, ".implode(', ', $args).")";
+					}
 				}
 				return $return;
 			}

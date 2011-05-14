@@ -8,7 +8,7 @@
 #     															#
 ########## Jigoku.it Plugin #####################################
 
-Jigoky.it v0.1.2
+Jigoky.it v0.1.3
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -23,6 +23,9 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 | Changelog
 \==========---
 
+*** 0.1.3 ***
+ - Hosters support introduced (compatible with real debrid)
+ 
 *** 0.1.2 ***
  - Fixed plugin for new Jigoku.it layout
 

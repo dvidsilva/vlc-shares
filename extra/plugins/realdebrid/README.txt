@@ -6,16 +6,23 @@
 #    \  /  | |____| |____      ____) | | | | (_| | | |  __|__ \ #
 #     \/   |______|\_____|    |_____/|_| |_|\__,_|_|  \___|___/ #
 #     															#
-########## AnimeFTW.tv Plugin ####################################
+########## RealDebrid Plugin ####################################
 
-AnimeFTW.tv v0.3
-Created by Francesco Capozzo (Ximarx)
+RealDebrid v0.1
+Created by Francesco Capozzo (ximarx)
 ximarx@gmail.com
 
 All content of this file is released using
 GPL v3 (http://www.gnu.org/licenses/gpl.html)
 
-Allows to watch videos from AnimeFTW.tv site. Require a valid (free) user account to fetch contents.
+Allow to use premium account of real debrid for many hosters and add basic support (no info autofetching)
+for (even without hoster plugin installed):
+ - 4Shares
+ - Megaporn
+ - Megaupload
+ - Megavideo
+ - RapidShare
+ - VideoBB
 
 For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 
@@ -23,16 +30,5 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 | Changelog
 \==========---
 
-*** 0.3 ***
- - The plugin uses the new Rest API
-
-*** 0.2.1 ***
- - Password field in config page is type="password"
- - Cookie reset on configs change
-
-*** 0.2 ***
- - fixed auth problems with video in server1 forcing proxy method to all videos
- - removed hide user-agent config and user-agent locked to vlc-shares/VERSION animeftw/VERSION
-
 *** 0.1 ***
- - Initial version
+ - initial version

@@ -56,6 +56,7 @@ if ( isset($runtimeConfigs->plugins->jdownloader ) ) {
 				'request.timeout' => $runtimeConfigs->plugins->jdownloader->request->timeout,
 				'download.enabled' => $runtimeConfigs->plugins->jdownloader->download->enabled,
 				'statistics.enabled' => $runtimeConfigs->plugins->jdownloader->statistics->enabled,
+				'version.isnightly' => $runtimeConfigs->plugins->jdownloader->version->isnightly,
 			)
 		)
 	);

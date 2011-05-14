@@ -6,15 +6,15 @@
  */
 class X_VlcShares_Plugins_Helper_JDownloader extends X_VlcShares_Plugins_Helper_Abstract {
 	
-	const VERSION_CLEAN = '0.2';
-	const VERSION = '0.2';
+	const VERSION_CLEAN = '0.2.1';
+	const VERSION = '0.2.1';
 	
 	private $options;
 	
 	function __construct(Zend_Config $options = null) {
 		
 		if ($options == null) {
-			$options = new Zend_Config ( array ('ip' => 'localhost', 'port' => '10025', 'timeout' => '1' ) );
+			$options = new Zend_Config ( array ('ip' => 'localhost', 'port' => '10025', 'timeout' => '1', 'nightly' => false ) );
 		}
 		$this->options = $options;
 		
@@ -26,7 +26,11 @@ class X_VlcShares_Plugins_Helper_JDownloader extends X_VlcShares_Plugins_Helper_
 	 */
 	public function getDownloads() {
 		
-		$data = $this->sendRawCommand(self::CMD_GET_DOWNLOADS_ALL_LIST);
+		if ( $this->options->get('nightly', false) ) {
+			$data = $this->sendRawCommand("/get/downloads/all/list");
+		} else {
+			$data = $this->sendRawCommand(self::CMD_GET_DOWNLOADS_ALL_LIST);
+		}
 		// time to parse xml
 		
 		// WHILE NOT DOWNLOADING
@@ -50,7 +54,12 @@ class X_VlcShares_Plugins_Helper_JDownloader extends X_VlcShares_Plugins_Helper_
 		 */
 		
 		$xml = new Zend_Dom_Query($data);
-		$result = $xml->queryXpath('//package');
+		
+		if ( $this->options->get('nightly', false) ) {
+			$result = $xml->queryXpath('//packages');
+		} else {
+			$result = $xml->queryXpath('//package');
+		}
 		
 		$packages = array();
 		
@@ -101,8 +110,37 @@ class X_VlcShares_Plugins_Helper_JDownloader extends X_VlcShares_Plugins_Helper_
 		if ( is_array($link) ) {
 			$link = implode(' ', $link);
 		}
+		$oldAutoadding = null;
+		$oldAutostarting = null;
+		if ( $this->options->get('nightly', false) ) {
+			
+			$oldAutoadding = trim($this->sendRawCommand('/grabber/isset/startafteradding'));
+			if ( ($oldAutoadding == 'true' && $grabber == false) ||  ($oldAutoadding == 'false' && $grabber == true) ) {
+				$oldAutoadding = null;
+			} else {
+				$this->sendRawCommand('/set/grabber/autoadding/%s', (!$grabber ? 'true' : 'false'));
+			}
+			
+			$oldAutostarting = trim($this->sendRawCommand('/grabber/isset/autoadding'));
+			if ( ($oldAutostarting == 'true' && $autostart == true) || ($oldAutostarting == 'false' && $autostart == true) ) {
+				$oldAutostarting = null;
+			} else {
+				$this->sendRawCommand('/set/grabber/startafteradding/%s', ($autostart ? 'true' : 'false'));
+			}
+			
+		}
 		$link = urlencode($link);
 		$return = $this->sendRawCommand(self::CMD_ACTION_ADD_LINKS__GRABBERBOOL_STARTBOOL_LINKS, ($grabber ? 1 : 0), ($autostart ? 1 : 0), $link);
+		
+		if ( $oldAutoadding !== null ) {
+			$this->sendRawCommand('/set/grabber/autoadding/%s', $oldAutoadding);
+		}
+		
+		if ( $oldAutostarting !== null ) {
+			$this->sendRawCommand('/set/grabber/startafteradding/%s', $oldAutostarting);
+		}
+		
+		
 	}
 	
 
