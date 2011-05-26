@@ -1,4 +1,3 @@
-
 -- scripts/data.sqlite.sql
 --
 -- You can begin populating the database with the following SQL statements.
@@ -40,6 +39,13 @@ INSERT INTO plg_profiles (label, arg, cond_devices, weight) VALUES
 	'transcode{vcodec=h264,venc=x264{no-cabac,level=12,vbv-maxrate=384,vbv-bufsize=1000,keyint=75,ref=3,bframes=0},width=320,height=180,acodec=mp4a,ab=64,vb=384}',
 	1,
 	0);
+
+INSERT INTO plg_profiles (label, arg, cond_devices, weight) VALUES
+	('Android Phone (HQ Alternative)',
+	'transcode{vcodec=h264,venc=x264{no-cabac,keyint=75,ref=3,bframes=0},width=800,vb=1200,profile=baseline,level=1.2,acodec=mp4a,ab=160,channels=2}',
+	1,
+	0);
+
 
 --INSERT INTO plg_profiles (label, arg, cond_devices, cond_formats) VALUES
 --	('Android Phone (AVC/AAC)',
