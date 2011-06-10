@@ -3,8 +3,8 @@
 
 class X_VlcShares_Plugins_Veetle extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-    const VERSION = '0.1';
-    const VERSION_CLEAN = '0.1';
+    const VERSION = '0.1.1';
+    const VERSION_CLEAN = '0.1.1';
 	
     const CHANNELS_INDEX = "http://www.veetle.com/iphone-channel-listing-cross-site.js";
     
@@ -29,7 +29,7 @@ class X_VlcShares_Plugins_Veetle extends X_VlcShares_Plugins_Abstract implements
 	public function gen_beforeInit(Zend_Controller_Action $controller) {
 		
 		$this->helpers()->language()->addTranslation(__CLASS__);
-		$this->helpers()->hoster()->registerHoster(new X_VlcShares_Plugins_Helper_Hoster_Veetle($this->config('server.ip', '77.67.108.152')));
+		$this->helpers()->hoster()->registerHoster(new X_VlcShares_Plugins_Helper_Hoster_Veetle($this->config('server.ip', '213.254.245.212')));
 		
 	}
 
@@ -315,8 +315,7 @@ class X_VlcShares_Plugins_Veetle extends X_VlcShares_Plugins_Abstract implements
 			case 'plugins_veetle_server_ip':
 				if ( $element instanceof Zend_Form_Element_Select ) {
 					$element->setMultiOptions(array(
-						'77.67.108.152' => '77.67.108.152',
-						'77.67.109.208' => '77.67.109.208'
+						'213.254.245.212' => '213.254.245.212'
 					));
 				}
 				break;

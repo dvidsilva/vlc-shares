@@ -8,7 +8,7 @@
 #     															#
 ########## Jigoku.it Plugin #####################################
 
-Jigoky.it v0.1.3
+Jigoku.it v0.1.3
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 

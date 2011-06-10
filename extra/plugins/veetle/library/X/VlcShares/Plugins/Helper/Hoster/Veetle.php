@@ -8,7 +8,7 @@ class X_VlcShares_Plugins_Helper_Hoster_Veetle implements X_VlcShares_Plugins_He
 	
 	private $info_cache = array();
 	
-	private $serverIp = '77.67.108.152';
+	private $serverIp = '213.254.245.212';
 	
 	function __construct($serverIp = null) {
 		if ( $serverIp != null ) {
