@@ -8,14 +8,14 @@
 #     															#
 ########## Veetle Plugin #################################
 
-Vettle v0.1
+Vettle v0.1.1
 Created by Francesco Capozz (ximarx)
 ximarx@gmail.com
 
 All content of this file is released using
 GPL v3 (http://www.gnu.org/licenses/gpl.html)
 
-Allows to watch live channels from Vettle (LD feed only)
+Allows to watch live channels from Vettle (Flashenabled feed only)
 
 For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 
@@ -23,6 +23,9 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 | Changelog
 \==========---
 
+*** 0.1.1 ***
+ - Stream ip updated
+ 
 *** 0.1 ***
  - initial version
 
