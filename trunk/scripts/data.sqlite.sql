@@ -31,7 +31,7 @@ INSERT INTO plg_profiles (label, arg) VALUES
 	
 INSERT INTO plg_profiles (label, arg, cond_formats) VALUES
 	('AVC/ACC safe profile',
-	'transcode{venc=ffmpeg,vcodec=mp2v,vb=1000,scale=.5,width=640,fps=25,soverlay}',
+	'transcode{venc=ffmpeg,vcodec=mp2v,vb=3000,scale=.5,width=640,fps=25,soverlay}',
 	'h264+aac');
 
 INSERT INTO plg_profiles (label, arg, cond_devices, weight) VALUES
