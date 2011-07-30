@@ -8,7 +8,7 @@
 #     															#
 ########## Jigoku.it Plugin #####################################
 
-Jigoku.it v0.1.3
+Jigoku.it v0.1.4
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -22,6 +22,10 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.1.4 ***
+ - Last updates category
+ - Support for direct link to file
 
 *** 0.1.3 ***
  - Hosters support introduced (compatible with real debrid)

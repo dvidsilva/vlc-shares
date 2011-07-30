@@ -11,8 +11,8 @@ require_once 'Zend/Dom/Query.php';
  */
 class X_VlcShares_Plugins_Jigoku extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.1.3';
-	const VERSION_CLEAN = '0.1.3';
+	const VERSION = '0.1.4';
+	const VERSION_CLEAN = '0.1.4';
 	
 	public function __construct() {
 		$this->setPriority('gen_beforeInit')
@@ -231,6 +231,8 @@ class X_VlcShares_Plugins_Jigoku extends X_VlcShares_Plugins_Abstract implements
 			$current = $results->current();
 			$linkUrl = $current->nodeValue;
 			
+			X_Debug::i("Link url: {{$linkUrl}}");
+			
 			if ( strpos($linkUrl, 'megavideo') !== false ) {
 			
 				@list(, $megavideoID) = explode('/v/', $linkUrl, 2);
@@ -242,6 +244,36 @@ class X_VlcShares_Plugins_Jigoku extends X_VlcShares_Plugins_Abstract implements
 				} catch (Exception $e) {
 					X_Debug::e($e->getMessage());
 				}
+				
+			} elseif ( $linkUrl == "/js/mediaplayer/player.swf" ) {
+				// direct link, nice
+				
+				X_Debug::i("Direct link mode");
+				
+				$navCurrent = $current->parentNode->nextSibling;
+				
+				while ( $navCurrent != null ) {
+					
+					/* @var $navCurrent DOMElement */
+					//  no text nodes or comments
+					if ( $navCurrent instanceof DOMElement ) {
+						if ( ((string) $navCurrent->nodeName) == "param" ) {
+							if ( $navCurrent->hasAttribute('name') && $navCurrent->getAttribute("name") == "flashvars" ) {
+								$flashvars = $navCurrent->getAttribute("value");
+								$parsed = array();
+								parse_str($flashvars, $parsed);
+								X_Debug::i("Parsed string: ".var_export($parsed, true));
+								
+								$return = $parsed['file'];
+								
+								break;
+							}
+						}
+					}
+						
+					$navCurrent = $navCurrent->nextSibling;
+				}
+				
 			}
 		}
 		
@@ -311,11 +343,15 @@ class X_VlcShares_Plugins_Jigoku extends X_VlcShares_Plugins_Abstract implements
 	
 	private function _fetchClassification(X_Page_ItemList_PItem $items) {
 		
-		$lets = '0-9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z';
+		$lets = 'ultimi-episodi,0-9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z';
 		$lets = explode(',', $lets);
 		
 		foreach ( $lets as $l ) {
 			$item = new X_Page_Item_PItem($this->getId()."-$l", strtoupper($l));
+			if ( $l == "ultimi-episodi" ) {
+				// translate ultimi-episodi... special case
+				$item->setLabel(X_Env::_('p_jigoku_lastupdates'));
+			}
 			$item->setIcon('/images/icons/folder_32.png')
 				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
 				->setCustom(__CLASS__.':location', "$l")
@@ -328,9 +364,57 @@ class X_VlcShares_Plugins_Jigoku extends X_VlcShares_Plugins_Abstract implements
 	}
 	
 	
+	private function _fetchLastUpdates(X_Page_ItemList_PItem $items, $letter) {
+		
+		$indexUrl = $this->config('base.url', 'http://www.jigoku.it/anime-streaming/');
+		$indexUrl .= "$letter/";
+		$htmlString = $this->_loadPage($indexUrl);
+		$dom = new Zend_Dom_Query($htmlString);
+		
+		$results = $dom->queryXpath('//div[@class="elenco_lista"]//a');
+		
+		X_Debug::i("Threads found: ".$results->count());
+		
+		for ( $i = 0; $i < $results->count(); $i++, $results->next()) {
+		
+			$current = $results->current();
+			 
+			$label = $current->textContent;
+		
+			$href = $current->getAttribute('href');
+			// href has format: /anime-streaming/$NEEDEDVALUE/
+			// so i trim / from the bounds and then i get the $NEEDEDVALUE
+			@list(,$href) = explode('/', trim($href, '/'));
+			
+			// WARNING: base64 encoding of "d.php?" expose / char <.< 
+			
+			$item = new X_Page_Item_PItem($this->getId()."-$label", $label);
+			$item->setIcon('/images/icons/folder_32.png')
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+				->setCustom(__CLASS__.':location', "$letter/$href")
+				->setLink(array(
+					'l'	=>	X_Env::encode("$letter/$href")
+				), 'default', false);
+				
+			if ( APPLICATION_ENV == 'development' ) {
+				$item->setDescription("$letter/$href");
+			}
+				
+			$items->append($item);
+			
+			
+		}
+		
+	}
+	
 	private function _fetchThreads(X_Page_ItemList_PItem $items, $letter) {
 		
 		X_Debug::i("Fetching threads for $letter");
+
+		if ( $letter == 'ultimi-episodi' ) {
+			return $this->_fetchLastUpdates($items, $letter);
+		}
+		
 		
 		$indexUrl = $this->config('base.url', 'http://www.jigoku.it/anime-streaming/');
 		$htmlString = $this->_loadPage($indexUrl);
