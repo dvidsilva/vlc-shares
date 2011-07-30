@@ -6,7 +6,7 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 	const VERSION_CLEAN = '0.1';
 	const VERSION = '0.1';
 	
-	const HULU_PLAYER = 'http://www.hulu.com/player.swf';
+	const HULU_PLAYER = 'http://download.hulu.com/huludesktop.swf';
 	
 	static private $KEYS_PID = array(
       '6fe8131ca9b01ba011e9b0f5bc08c1c9ebaf65f039e1592d53a30def7fced26c',
@@ -30,7 +30,9 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 	
 	static private $KEYS_PLAYER = 'yumUsWUfrAPraRaNe2ru2exAXEfaP6Nugubepreb68REt7daS79fase9haqar9sa';
 	
-	static private $KEYS_V = '713434170&np=1';
+	static private $KEYS_V = '850037518';
+	
+	static private $HMAC = 'f6daaa397d51f568dd068709b0ce8e93293e078f7dfc3b40dd8c32d36d2b3ce1';
 	
 	static private $KEYS_FP = 'Genuine Adobe Flash Player 001';
 	
@@ -89,6 +91,8 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 			$response = $http->request();
 			$datas = $response->getBody();
 			
+			//echo "<b>DATA1</b><pre>".print_r(htmlentities($datas), true)."</pre><br/>";
+			
 			$pageUrl = str_replace('.com:80/', '.com/', $http->getUri(true));
 			
 			$matches = array();
@@ -99,12 +103,18 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 			$content_id = $matches['content_id'];
 			
 			// fetch information about the player, required by rtmp
-			list($swfsize, $swfhash, $swfUrl) = $this->getPlayerData();
+			//list($swfsize, $swfhash, $swfUrl) = $this->getPlayerData();
 			
+			//$http->setHeaders('Host', 'r.hulu.com');
 			
 			$http->setUri("http://r.hulu.com/videos?content_id=$content_id");
 			
 			$datas = $http->request()->getBody();
+			
+			//$http->setHeaders('Host', null);
+			
+
+			echo "<b>DATA2</b><pre>".print_r(htmlentities($datas), true)."</pre><br/>";
 			
 			$xml = new SimpleXMLElement($datas);
 			
@@ -115,7 +125,9 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 			
 			$pid = $this->decodePid( (string) $xml->video->pid[0]);
 			
-			$title = $xml->video->title[0];
+			echo "<b>Decoded Pid</b><pre>$pid</pre><br/>";
+			
+			$title = (string) $xml->video->title[0];
 			
 			if ( $xml->video->{'media-type'} == "TV" ) {
 			    $show_name      = $xml->video->show->name[0];
@@ -138,20 +150,75 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 			
 			$auth = md5($pid.self::$KEYS_PLAYER);
 			
-			$http->setUri("http://s.hulu.com/select.ashx?pid=$pid&auth=$auth&v=".self::$KEYS_V);
+			echo "<b>AUTH</b><pre>$auth</pre><br/>";
+			
+			//echo "<b>REQUEST</b><pre>http://s.hulu.com/select.ashx?pid=$pid&auth=$auth&v=".self::$KEYS_V."</pre><br/>";
+			
+			//$http->setUri("http://s.hulu.com/select.ashx?pid=$pid&auth=$auth&v=".self::$KEYS_V);
+			
+			$now = (int) time();
+			
+			$parameters = array(
+				'video_id' => $pid,
+				'v' => self::$KEYS_V,
+				'ts' => ((string) $now),
+				'np' => '1',
+				'vp' =>'1',
+				'pp' => 'Desktop',
+				'dp_id' => 'Hulu',
+				'region' => 'US',
+				'language' => 'en'
+			);
+			$newUri = "http://s.hulu.com/select?video_id=%video_id%&v=%v%&ts=%ts%&np=%np%&vp=%vp%&pp=%pp%&dp_id=%dp_id%&region=%region%&language=%language%&bcs=%bcs%";
+			
+			$parameters['bcs'] = $this->signParameters($parameters);
+			
+			foreach ($parameters as $key => $value) {
+				$newUri = str_replace("%$key%", $value, $newUri);
+			}
+			
+			echo "<b>REQUEST</b><pre>$newUri</pre><br/>";
+			
+			$http->setUri($newUri);
+			
+			$datas = $http->request()->getBody();
+			
+			echo "<b>DATA3</b><pre>".print_r(htmlentities($datas), true)."</pre><br/>";
 			
 			$datas = $this->decodeSmil($http->request()->getBody());
+			
+			echo "<b>DATA4</b><pre>".print_r(nl2br(htmlentities($datas)), true)."</pre><br/>";
 			
 			$xml = new SimpleXMLElement($datas);
 			
 			//$vids = $xml->body->switch[1]->video[0];
-			$vid = $xml->body->switch[1]->video[0];
+			$vid = $xml->body->switch[1]->video[1];
 			
-	        $stream = $vid['stream'];
-	        $server = $vid['server'];
-	        $token = $vid['token'];
-	        $cdn = $vid['cdn'];
+			echo "<b>VIDEOS</b><pre>".print_r($vid, true)."</pre><br/>";
+			
+			
+			// ported code: http://code.google.com/p/bluecop-xbmc-repo/source/browse/trunk/plugin.video.hulu/resources/lib/stream_hulu.py?spec=svn157&r=157
+			
+			
+	        $stream = (string) $vid['stream'][0];
+	        $server = (string) $vid['server'][0];
+	        $token = (string) $vid['token'][0];
+	        $cdn = (string) $vid['cdn'][0];
 	        
+	        $hostname = "";
+	        $appName = "";
+	        $protocol = "";
+	        
+	        $pattern = '/^(?P<protocol>[a-zA-z]+:\/\/)(?P<hostname>[^\/]+)\/(?P<appname>.*)$/';
+	        
+	        $matches = array();
+	        if ( preg_match($pattern, $server, $matches ) ) {
+	        	$protocol = $matches['protocol'];
+	        	$hostname = $matches['hostname'];
+	        	$appName = $matches['appname'];
+	        }
+	        
+			/*	        
 	        $matches = array();
 	        if ( preg_match('#^rtmpe?://[^/]+/#', $server, $matches) ) {
 	        	$app = substr($server, strlen($matches[0]));
@@ -160,6 +227,30 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 			$app = "$app?$token";
 			$rtmp = "$server?$token";
 	        $playpath = (string) $stream;
+	        */
+	        
+	        // rtmp params based on cdn
+	        
+	        switch ($cdn) {
+	        	case 'level3': 
+	        		$appName .= "?sessionid=sessionId&$token";
+	        		$stream = substr($stream, 0, -4); // remove .mp4
+	        		break;
+
+	        	case 'limelight': 
+	        		$appName .= "?sessionid=sessionId&$token";
+	        		$stream = substr($stream, 0, -4); // remove .mp4
+	        		$server = "$server?$token";
+	        		break;
+	        		
+	        	case 'akamai': 
+	        		$appName .= "?sessionid=sessionId&$token";
+	        		$server = "$server?$token";
+	        		break;
+	        	default :;
+	        	
+	        }
+	        
 			
 			$this->_fetched = array(
 				// general info
@@ -172,17 +263,38 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 				'content_id' => $content_id,
 				'pid' => $pid,
 				'needProxy' => $needProxy,
+
+				// rtmp
+				'stream' => $stream,
+				'server' => $server,
+				'token' => $token,
+				'cdn' => $cdn,
+			
+				'hostname' => $hostname,
+				'protocol' => $protocol,
+				'appName' => $appName,
+				'pageUrl' => self::HULU_PLAYER,
+				'swfUrl' => self::HULU_PLAYER,
 			
 				// rtmp specific
-				'rtmp' => $rtmp,
-				'app' => $app,
-				'playpath' => $playpath,
-				'pageUrl' => $pageUrl,
-				'swfsize' => $swfsize,
-				'swfhash' => $swfhash,
-				'swfUrl' => $swfUrl,
+				
+				//'pageUrl' => $pageUrl,
+				//'swfsize' => $swfsize,
+				//'swfhash' => $swfhash,
+				//'swfUrl' => $swfUrl,
 				//'smil' => $datas
+				
 			);
+			
+			$this->_fetched['url'] = X_RtmpDump::buildUri(array(
+				'rtmp' => $server,
+				'app' => $appName,
+				'playpath' => $stream,
+				'swfUrl' => self::HULU_PLAYER,
+				'pageUrl' => self::HULU_PLAYER,
+				'swfVfy' => self::HULU_PLAYER,
+				'socks' => '24.30.7.103:1705'
+			));
 			
 			$this->_cachedSearch[$this->_location] = $this->_fetched;
 			
@@ -201,7 +313,11 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 		$splitted = split('/~/', $pid);
 		
 		if ( count($splitted) == 1 ) {
-			return $splitted[0];
+			if ( X_Env::startWith($splitted[0], "NO_MORE_RELEASES_PLEASE_" ) ) {
+				return substr($splitted[0], strlen("NO_MORE_RELEASES_PLEASE_"));
+			} else {
+				return $splitted[0];
+			}
 		}
 		
 		// TODO pid decoding
@@ -209,7 +325,7 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 		my $cipher = Crypt::Rijndael->new(pack("H*", $data[1]));
 		my $tmp = $cipher->decrypt(pack("H*", $data[0]));
 		*/
-		$tmp = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, pack("H*", $splitted[1]), $splitted[0], MCRYPT_MODE_ECB);
+		$tmp = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, @pack("H*", $splitted[1]), $splitted[0], MCRYPT_MODE_ECB);
 		
 		foreach (self::$KEYS_PID as $key) {
 			/*
@@ -220,11 +336,20 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 			
 			// if ($unencrypted_pid =~ /[0-9A-Za-z_-]{32}/) {
 			if ( preg_match('/[0-9A-Za-z_-]{32}/', $unencrypted_pid)) {
-				return $unencrypted_pid;
+				if ( X_Env::startWith($unencrypted_pid, "NO_MORE_RELEASES_PLEASE_" ) ) {
+					return substr($unencrypted_pid, strlen("NO_MORE_RELEASES_PLEASE_"));
+				} else {
+					return $unencrypted_pid;
+				}
 			}
 		}
+
+		if ( X_Env::startWith($pid, "NO_MORE_RELEASES_PLEASE_" ) ) {
+			return substr($pid, strlen("NO_MORE_RELEASES_PLEASE_"));
+		} else {
+			return $pid;
+		}
 		
-		return $pid;
 	}
 	
 	protected function decodeSmil($encrypted_smil) {
@@ -254,10 +379,10 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 		    my $ecb = Crypt::Rijndael->new(pack("H*", @{$key}[0]));
 		    my $unaes = $ecb->decrypt($encrypted_data);
 			 */
-			$uneas = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, pack("H*", $key), $encrypted_data, MCRYPT_MODE_ECB);
+			$uneas = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, @pack("H*", $key), $encrypted_data, MCRYPT_MODE_ECB);
 			
 			// my $xorkey = pack("Z*", @{$key}[1]);
-			$xorkey = pack("a*", $iv);
+			$xorkey = @pack("a*", $iv);
 			
 			// $xorkey = substr($xorkey, 0, 16);
 			$xorkey = substr($xorkey, 0, 16);
@@ -319,6 +444,20 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 		);
 	}
 	
+	private function signParameters($params) {
+		
+		$sorted = $params;
+		ksort($sorted);
+		
+		$imploded = '';
+		foreach ($sorted as $key => $value) {
+			$imploded .= "$key$value";
+		}
+		
+		return hash_hmac('md5', $imploded, self::$HMAC);
+		
+	}
+	
 	/**
 	 * @return Zend_Http_Client
 	 */
@@ -336,6 +475,25 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 			);
 			// enable cookies
 			$this->http->setCookieJar(true);
+			
+			$this->http->setAdapter("Zend_Http_Client_Adapter_Proxy");
+			$this->http->setConfig(array(
+				//'proxy_host' => "141.219.252.132",
+				//'proxy_port' => '3128'
+				
+				//'proxy_host' => '131.179.150.72',
+				//'proxy_port' => '3128',
+				
+				//'proxy_host' => '129.82.12.188',
+				//'proxy_port' => '3128',
+				
+				//'proxy_host' => '130.49.221.40',
+				//'proxy_port' => '3128',
+				
+				'proxy_host' => '174.143.244.103',
+				'proxy_port' => '3128'
+			
+			));
 			
 		}
 		if ( $url !== null ) {

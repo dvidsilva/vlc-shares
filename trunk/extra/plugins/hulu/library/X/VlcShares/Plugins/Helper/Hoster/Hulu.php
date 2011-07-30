@@ -79,7 +79,7 @@ class X_VlcShares_Plugins_Helper_Hoster_Hulu implements X_VlcShares_Plugins_Help
 		$http = new Zend_Http_Client("http://www.dailymotion.com/video/" . $url,
 			array(
 				'headers' => array(
-					'User-Agent' => "vlc-shares/".X_VlcShares::VERSION." dailymotion/".X_VlcShares_Plugins_DailyMotion::VERSION
+					'User-Agent' => "vlc-shares/".X_VlcShares::VERSION." hulu/".X_VlcShares_Plugins_Hulu::VERSION
 				)
 			)
 		);
