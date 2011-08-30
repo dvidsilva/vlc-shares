@@ -1,3 +1,4 @@
+DELETE FROM configs WHERE `key` LIKE 'animedb.%';
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'animedb.auth.username', '', '', 'plugins', 0, 'p_animedb_conf_authusername_label', 'p_animedb_conf_authusername_desc', '');

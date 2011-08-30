@@ -362,7 +362,7 @@ class X_VlcShares_Plugins_AnimeDb extends X_VlcShares_Plugins_Abstract implement
 		$dom = new Zend_Dom_Query($htmlString);
 		
 		// xpath index stars from 1
-		$results = $dom->queryXpath('//div[@class="blockrow"]/div[@class="forumbits"][1]/div[@class="forumrow"]//h2[@class="forumtitle"]//a');
+		$results = $dom->queryXpath('//div[@class="forumbits"][1]//div[@class="forumrow"]//h2[@class="forumtitle"]//a');
 		
 		X_Debug::i("Lists found: ".$results->count());
 		
