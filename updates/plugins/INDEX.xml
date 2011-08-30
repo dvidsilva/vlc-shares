@@ -75,13 +75,12 @@
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from AnimeDb.tv forum (italian)]]></description>
 		</version>
-		<version name="0.2" type="stable" cMin="0.5.4" cMax="0.6">
+		<version name="0.2.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_animedb_0.2.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_animedb_0.2.1.zip</download>
 			<changelog><![CDATA[
 			*** 0.2 ***
-			 - multihoster supported
-			 - pagination supported
+			 - fix
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from AnimeDb.tv forum (italian)]]></description>
 		</version>
