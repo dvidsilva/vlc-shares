@@ -13,8 +13,8 @@ require_once 'Zend/Dom/Query.php';
  */
 class X_VlcShares_Plugins_AnimeDb extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.2';
-	const VERSION_CLEAN = '0.2';
+	const VERSION = '0.2.1';
+	const VERSION_CLEAN = '0.2.1';
 	
 	/**
 	 * @var Zend_Http_CookieJar
