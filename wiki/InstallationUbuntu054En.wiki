@@ -24,7 +24,7 @@ wget http://vlc-shares.googlecode.com/files/vlc-shares_0.5.4_ubuntu-installer.sh
 
 *For Ubuntu 11.04*:
 {{{
-wget -O vlc-shares_0.5.4_ubuntu-installer.sh http://vlc-shares.googlecode.com/files/vlc-shares_0.5.4_ubuntu-11.04-installer.sh
+wget -O vlc-shares_0.5.4_ubuntu-installer.sh http://vlc-shares.googlecode.com/files/vlc-shares_0.5.4_ubuntu-11.04-installer-2.sh
 }}}
 
 
