@@ -8,7 +8,7 @@
 #     															#
 ########## AnimeDb.tv Plugin ####################################
 
-AnimeDb.tv v0.1.1
+AnimeDb.tv v0.2.1
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -22,6 +22,9 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.2.1 ***
+ - Fix for a little page layout change
 
 *** 0.2 ***
  - Hoster api support (multi-hoster allowed)
