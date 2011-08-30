@@ -161,7 +161,7 @@ fi
 
 if [ $JUMP -lt 5 ]; then
 	# Link not needed anymore, Alias in httpd conf
-	#echo ---------- Linking vlc-shares in doc root ---
+	echo ---------- Linking vlc-shares in doc root ---
 	#sudo ln -s "${DESTDIR}/vlc-shares/public" /var/www/vlc-shares
 fi
 
