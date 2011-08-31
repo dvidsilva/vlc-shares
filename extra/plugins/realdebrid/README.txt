@@ -8,7 +8,7 @@
 #     															#
 ########## RealDebrid Plugin ####################################
 
-RealDebrid v0.1
+RealDebrid v0.1.1
 Created by Francesco Capozzo (ximarx)
 ximarx@gmail.com
 
@@ -29,6 +29,9 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.1.1 ***
+ - Megaupload hoster allows links of type megaupload.com/?d=
 
 *** 0.1 ***
  - initial version

@@ -8,20 +8,23 @@
 #     															#
 ########## Megavideo Plugin #####################################
 
-Megavideo v0.3
+Megavideo v0.3.1
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
 All content of this file is released using
 GPL v3 (http://www.gnu.org/licenses/gpl.html)
 
-Allows to watch videos from Jigoku.it
+Allows to watch videos from Megavideo
 
 For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 
 /==========---
-| Changelog
+| Changelogrequest
 \==========---
+
+*** 0.3.1 ***
+ - Megaupload helper allows two kind of pattern: megavideo.com/?d= and megaupload.com/?d=
 
 *** 0.3 ***
  - Megavideo library replaced by Online library (vlc-shares 0.5.4+)
