@@ -360,7 +360,7 @@
 			<download>http://vlc-shares.googlecode.com/files/plugin_realdebrid_0.1.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
-			<description><![CDATA[Allow to use premium account of real debrid for many hosters]]></description>
+			<description><![CDATA[*USE IT ONLY IF YOU HAVE A PREMIUM ACCOUNT* Allow to use premium account of real debrid for many hosters]]></description>
 		</version>
 	</plugin>
 </plugins>
