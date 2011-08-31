@@ -8,8 +8,8 @@
  */
 class X_VlcShares_Plugins_IceFilms extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.2';
-	const VERSION_CLEAN = '0.2';
+	const VERSION = '0.2.1';
+	const VERSION_CLEAN = '0.2.1';
 	
 	const SORT_MOVIES = 'mov';
 	const SORT_TVSHOWS = 'tvs';
@@ -223,7 +223,10 @@ class X_VlcShares_Plugins_IceFilms extends X_VlcShares_Plugins_Abstract implemen
 		$split = $location != '' ? @explode('/', $location, 6) : array();
 		@list($sortType, $subType, $page, $serie, $thread, $linkTypeId) = $split;
 		
-		@list($videoType, $videoId) = @explode(':', $linkTypeId, 2);
+		//@list($videoType, $videoId) = @explode(':', $linkTypeId, 2);
+		//@list($videoId, $secret) = @explode(':', $linkTypeId, 2);
+		$videoType = 'unk';
+		$videoId = $linkTypeId;
 		
 		//@list($letter, $thread, $href) = explode('/', $location, 3);
 
@@ -233,37 +236,20 @@ class X_VlcShares_Plugins_IceFilms extends X_VlcShares_Plugins_Abstract implemen
 			$this->cachedLocation[$location] = false;
 			return false;	
 		}
+		
+		// need to get the real id for the video
+		
+		$realLink = $this->_getRealId($videoId, $thread);
 
 		$return = false;
-		switch ($videoType) {
-			
-			case self::TYPE_MEGAVIDEO:
-				try {
-					/* @var $megavideoHelper X_VlcShares_Plugins_Helper_Megavideo */
-					$megavideoHelper = $this->helpers('megavideo');
-					
-					X_Debug::i("Megavideo ID: $videoId");
-					if ( $megavideoHelper->setLocation($videoId)->getServer() ) {
-						$return = $megavideoHelper->getUrl();
-					}
-				} catch (Exception $e) {
-					X_Debug::e("Megavideo helper isn't installed or enabled: {$e->getMessage()}");
-				}
-				break;
-				
-			case self::TYPE_MEGAUPLOAD:				
-				try {
-					/* @var $megauploadHelper X_VlcShares_Plugins_Helper_Megaupload */
-					$megauploadHelper = $this->helpers('megaupload');
-					
-					X_Debug::i("Megaupload ID: $videoId");
-					if ( $megauploadHelper->setMegauploadLocation($videoId)->getServer() ) {
-						$return = $megauploadHelper->getUrl();
-					}
-				} catch (Exception $e) {
-					X_Debug::e("Megaupload helper isn't installed or enabled: {$e->getMessage()}");
-				}
-				break;
+		
+		/* @var $hosterHelper X_VlcShares_Plugins_Helper_Hoster */
+		$hosterHelper = $this->helpers('hoster');
+		
+		try {
+			$return = $hosterHelper->findHoster($realLink)->getPlayable($realLink, false);
+		} catch ( Exception $e ) {
+			X_Debug::e("Hoster exception: {$e->getMessage()}");
 		}
 		
 		$this->cachedLocation[$location] = $return;
@@ -587,9 +573,11 @@ class X_VlcShares_Plugins_IceFilms extends X_VlcShares_Plugins_Abstract implemen
 		
 		//$htmlString = str_replace(array("\n", "\r", "\t", chr(0xC2), chr(0xA0), chr(157)), '', $htmlString);
 		
-		//X_Debug::i($htmlString);
+		X_Debug::i($htmlString);
 		$catPattern = '/(*ANY)<div class\=ripdiv><b>([^\<]+)<\/b>/';
-		$urlPatten = '/url\=http\:\/\/www.megaupload.com\/\?d\=([^\&]+)&([^\>]+)>([^\<]+)</';
+		//$urlPattern = '/url\=http\:\/\/www.megaupload.com\/\?d\=([^\&]+)&([^\>]+)>([^\<]+)</';
+		$urlPattern = '/onclick\=\\\'go\(([0-9]+)\)\\\'\>([^\<]+)</';
+		
 		
 		$matches = array();
 		$links = array();
@@ -598,23 +586,26 @@ class X_VlcShares_Plugins_IceFilms extends X_VlcShares_Plugins_Abstract implemen
 				//$links[$matches[1][$i][0]] = array();
 				$catLabel = $matches[1][$i][0];
 				if ( array_key_exists($i+1, $matches[0]) ) {
-					if ( !preg_match_all($urlPatten, substr($htmlString, $matches[0][$i][1], $matches[0][$i+1][1] - $matches[0][$i][1] ), $lMatches, PREG_SET_ORDER) ) {
-						X_Debug::e("Pattern failure: {$urlPatten}");
+					if ( !preg_match_all($urlPattern, substr($htmlString, $matches[0][$i][1], $matches[0][$i+1][1] - $matches[0][$i][1] ), $lMatches, PREG_SET_ORDER) ) {
+						X_Debug::e("Pattern failure: {$urlPattern}");
 						continue;
 					}
 				} else {
-					if ( !preg_match_all($urlPatten, substr($htmlString, $matches[0][$i][1]), $lMatches, PREG_SET_ORDER) ) {
-						X_Debug::e("Pattern failure: {$urlPatten}");
+					if ( !preg_match_all($urlPattern, substr($htmlString, $matches[0][$i][1]), $lMatches, PREG_SET_ORDER) ) {
+						X_Debug::e("Pattern failure: {$urlPattern}");
 						continue;
 					}
 				}
-				X_Debug::i(var_export($lMatches, true));
+				//X_Debug::i(var_export($lMatches, true));
 				
 				foreach ($lMatches as $lm) {
-					@list(, $muId, , $label) = $lm;
+					//@list(, $muId, , $label) = $lm;
+					@list(, $muId, $label) = $lm;
+					// $muId now is a videoId of Icefilms
 					
 					$label = "$label ($catLabel) [Megaupload]";
-					$videoId = self::TYPE_MEGAUPLOAD.":$muId";
+					//$videoId = self::TYPE_MEGAUPLOAD.":$muId";
+					$videoId = $muId;
 					
 					$item = new X_Page_Item_PItem($this->getId()."-megaupload", "$label");
 					$item->setIcon('/images/icons/file_32.png')
@@ -680,6 +671,107 @@ class X_VlcShares_Plugins_IceFilms extends X_VlcShares_Plugins_Abstract implemen
 		}
 		
 		return $htmlString;
+	}
+	
+	private function _getRealId($fakeId, $t) {
+		
+
+		try {
+			/* @var $cacheHelper X_VlcShares_Plugins_Helper_Cache */
+			$cacheHelper = X_VlcShares_Plugins::helpers()->helper('cache');
+			
+			$response = $cacheHelper->retrieveItem("icefilms::$t,$fakeId");
+			X_Debug::i("Valid cache entry found: $response");
+			return $response;
+			
+		} catch (Exception $e) {
+			// no cache plugin or no entry in cache, it's the same
+			X_Debug::i("Cache disabled or no valid entry found");
+		}
+
+		
+		// hover check
+		$m = rand(100, 300) * -1;
+		// time check
+		$s = rand(5, 50);
+		
+		
+		$http = new Zend_Http_Client("http://www.icefilms.info/membersonly/components/com_iceplayer/video.php?h=374&w=631&vid=$t&img=", array (
+			'maxredirects'	=> $this->config('request.maxredirects', 10),
+			'timeout'		=> $this->config('request.timeout', 25)
+		));
+		
+		// first request, set the cookies
+		$htmlString = $http->setCookieJar(true)->request()->getBody();
+		
+		//$captchaPattern = '/name\=captcha value\=([^\>]+)/';
+		//$secretPattern = '/name\=secret value\=([^\>]+)/';
+		$secretPattern = '/f\.lastChild\.value=\"([^\']+)\",a/';
+		//$iqsPattern = '/name\=iqs value\=([^\>]+)/';
+		
+		$sec = array();
+		if ( preg_match($secretPattern, $htmlString, $sec) ) {
+			if ( count($sec) ) {
+				$sec = $sec[1];
+			} else {
+				X_Debug::w("Secret string not found");
+				$sec = '';
+			}
+		} else {
+			X_Debug::e("Secret pattern failed {{$secretPattern}}");
+			$sec = '';
+		}
+		
+		
+		
+		$http->setUri('http://www.icefilms.info/membersonly/components/com_iceplayer/video.phpAjaxResp.php');
+		
+		$http->setHeaders(array(
+			'User-Agent: Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.215 Safari/535.1',
+			'Content-type:application/x-www-form-urlencoded',
+			'Origin: http://www.icefilms.info',
+			"Referer: http://www.icefilms.info/membersonly/components/com_iceplayer/video.php?h=374&w=631&vid=$t&img="
+		));
+		
+		$http->setMethod(Zend_Http_Client::POST)
+			->setParameterPost('id', $fakeId)
+			->setParameterPost('s', $s)
+			->setParameterPost('iqs', '')
+			->setParameterPost('url', '')
+			->setParameterPost('m', $m)
+			->setParameterPost('cap', '')
+			->setParameterPost('sec', $sec)
+			->setParameterPost('t', $t);
+
+		//X_Debug::i("Cookies: ".$http->getCookieJar()->getAllCookies(Zend_Http_CookieJar::COOKIE_STRING_CONCAT));
+		
+		
+		$response = $http->request()->getBody();
+		
+		//X_Debug::i("Request: ".$http->getLastRequest());
+		//X_Debug::i("Response: ".$http->getLastResponse()->getBody());
+		
+		
+		X_Debug::i("Raw: $response");
+		
+		$response = trim(urldecode(substr($response, strlen('/membersonly/components/com_iceplayer/GMorBMlet.php?url='))), '&');
+		
+		X_Debug::i("Filtered: $response");
+		
+		try {
+			/* @var $cacheHelper X_VlcShares_Plugins_Helper_Cache */
+			$cacheHelper = X_VlcShares_Plugins::helpers()->helper('cache');
+			
+			$cacheHelper->storeItem("icefilms::$t,$fakeId", $response, 15); // store for the next 15 min
+			
+			X_Debug::i("Value stored in cache for 15 min: {key = icefilms::$t,$fakeId, value = $response}");
+			
+		} catch (Exception $e) {
+			// no cache plugin, next time i have to repeat the request
+		}
+		
+		return $response;
+		
 	}
 	
 	private function disableCache() {

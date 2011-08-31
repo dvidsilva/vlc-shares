@@ -3,7 +3,7 @@
 class X_VlcShares_Plugins_Helper_Hoster_RealDebridMegaupload extends X_VlcShares_Plugins_Helper_Hoster_RealDebridAbstract {
 	
 	const ID = 'megaupload-realdebrid';
-	const PATTERN = '/http\:\/\/((www\.)?)megavideo\.com\/\?d\=(?P<ID>[A-Za-z0-9]+)/';
+	const PATTERN = '/http\:\/\/((www\.)?)(megavideo|megaupload)\.com\/\?d\=(?P<ID>[A-Za-z0-9]+)/';
 	
 	/**
 	 * give the hoster id

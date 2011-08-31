@@ -8,7 +8,7 @@
 #     															#
 ########## IceFilms.info Plugin #################################
 
-IceFilms v0.2
+IceFilms v0.2.1
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -22,6 +22,9 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.2.1 ***
+ - fix for the new video page layout
 
 *** 0.2 ***
  - added pagination for entries

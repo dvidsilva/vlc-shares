@@ -3,8 +3,8 @@
 
 class X_VlcShares_Plugins_RealDebrid extends X_VlcShares_Plugins_Abstract {
 		
-	const VERSION_CLEAN = '0.1';
-	const VERSION = '0.1';
+	const VERSION_CLEAN = '0.1.1';
+	const VERSION = '0.1.1';
 	
 	private $hosters = array(
 		// replace-id => with class

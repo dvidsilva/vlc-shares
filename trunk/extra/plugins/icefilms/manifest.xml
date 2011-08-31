@@ -3,7 +3,7 @@
 	<metadata>
 		<label>p_icefilms_plglabel</label>
 		<description>p_icefilms_plgdesc</description>
-		<version>0.2</version>
+		<version>0.2.1</version>
 		<status>stable</status>
 		<key>icefilms</key>
 		<file>X/VlcShares/Plugins/IceFilms.php</file>
