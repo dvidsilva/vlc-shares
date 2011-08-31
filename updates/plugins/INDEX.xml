@@ -40,13 +40,12 @@
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from Megavideo and Megaupload (premium account supported)]]></description>
 		</version>
-		<version name="0.3" type="stable" cMin="0.5.4" cMax="0.6">
+		<version name="0.3.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_megavideo_0.3.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_megavideo_0.3.1.zip</download>
 			<changelog><![CDATA[
 			*** 0.3 ***
-			 - new Hoster api supported
-			 - Megavideo library removed
+			 - Megaupload links megaupload.com/?d= supported
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from Megavideo and Megaupload (premium account supported)]]></description>
 		</version>
@@ -226,9 +225,9 @@
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from IceFilms.com (english)]]></description>
 		</version>
-		<version name="0.2" type="stable" cMin="0.5.4" cMax="0.6">
+		<version name="0.2.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_icefilms_0.2.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_icefilms_0.2.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from IceFilms.com (english)]]></description>
@@ -356,9 +355,9 @@
 		</version>
 	</plugin>
 	<plugin key="realdebrid">
-		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
+		<version name="0.1.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_realdebrid_0.1.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_realdebrid_0.1.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to use premium account of real debrid for many hosters]]></description>
