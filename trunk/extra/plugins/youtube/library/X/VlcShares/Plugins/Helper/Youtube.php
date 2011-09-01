@@ -5,8 +5,8 @@ require_once 'Zend/Gdata/YouTube.php';
 
 class X_VlcShares_Plugins_Helper_Youtube extends X_VlcShares_Plugins_Helper_Abstract {
 
-	const VERSION = '0.2';
-	const VERSION_CLEAN = '0.2';
+	const VERSION = '0.2.1';
+	const VERSION_CLEAN = '0.2.1';
 	
 	const ITEMS_PER_PAGE = 50;
 	
@@ -318,25 +318,36 @@ class X_VlcShares_Plugins_Helper_Youtube extends X_VlcShares_Plugins_Helper_Abst
 			
 			$htmlString = $response->getBody();
 			
-			$start = strpos($htmlString, 'swfHTML');
+			//$start = strpos($htmlString, 'swfHTML');
+			$start = strpos($htmlString, 'url_encoded_fmt_stream_map=');
 			
 			if ( $start !== false) {
 				// reduce string (for old page format)
-				$htmlString = substr($htmlString, $start, 16384); // 16384 has been taken from wiimc menu.ccp
+				//$htmlString = substr($htmlString, $start, 16384); // 16384 has been taken from wiimc menu.ccp
+				$end = strpos($htmlString, '&amp;watermark', $start);
+				if ( $end !== false ) {
+					$htmlString = substr($htmlString, $start, $end);
+				} else {
+					$htmlString = substr($htmlString, $start, 16384); // 16384 has been taken from wiimc menu.ccp
+				}
 			}
 			
 			$matches = array();
 			
-			preg_match_all('/(\\d+)%7C(http.*?)(%2C|&|%7C%7C)/', $htmlString, $matches, PREG_SET_ORDER);
+			//preg_match_all('/(\\d+)%7C(http.*?)(%2C|&|%7C%7C)/', $htmlString, $matches, PREG_SET_ORDER);
+			
+			preg_match_all('/url%3D(?P<url>.*?)%26quality(.*?)%26itag%3D(?P<fmt>\\d+)%2C/', $htmlString, $matches, PREG_SET_ORDER);
 			
 			//X_Debug::i("Preg digest: ".print_r($matches, true));
 			
 			$formats = array();
 			
 			foreach ($matches as $match) {
-				@list(, $format, $link,  ) = $match;
+				//@list(, $format, $link,  ) = $match;
+				$format = $match['fmt'];
+				$link = $match['url'];
 				if ( !array_key_exists($format, $formats) ) {
-					$formats[$format] = urldecode($link);
+					$formats[$format] = urldecode(urldecode(urldecode($link)));
 				}
 			}
 			
