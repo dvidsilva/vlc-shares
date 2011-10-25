@@ -2,8 +2,8 @@
 
 class X_VlcShares_Plugins_FilmStream extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.2';
-	const VERSION_CLEAN = '0.2';
+	const VERSION = '0.2.1';
+	const VERSION_CLEAN = '0.2.1';
 	
 	const TYPE_MOVIES = 'movies';
 	const TYPE_TVSHOWS = 'tv';
@@ -541,7 +541,7 @@ class X_VlcShares_Plugins_FilmStream extends X_VlcShares_Plugins_Abstract implem
 						} else {
 							$labelNode = $IdNode->nextSibling;
 						}
-						if ( trim($labelNode->nodeValue) == '' ) $labelNode = $labelNode->parentNode;
+						if ( is_object($labelNode) && trim($labelNode->nodeValue) == '' ) $labelNode = $labelNode->parentNode;
 						
 						$resourceId = str_replace('/', ':', substr( $IdNode->getAttribute('href'), strlen(self::URL_BASE), -1 ) );
 						
@@ -552,9 +552,12 @@ class X_VlcShares_Plugins_FilmStream extends X_VlcShares_Plugins_Abstract implem
 							continue;
 						}
 						
-						$resourceLabel = trim($labelNode->nodeValue);
+						$resourceLabel = trim(@$labelNode->nodeValue);
+						if ( $resourceLabel == '' ) {
+							$resourceLabel = $currentRes->nodeValue;
+						}
 						$resourceDescription = null;
-						$resourceThumbnail = ($IdNode->firstChild != null ? $IdNode->firstChild->getAttribute('src') : null );
+						$resourceThumbnail = (($IdNode->firstChild != null && !($IdNode->firstChild instanceof DOMText)) ? $IdNode->firstChild->getAttribute('src') : null );
 					} else {
 						$resourceId = str_replace('/', ':', substr( $currentRes->getAttribute('href'), strlen(self::URL_BASE), -1 ) );
 						$resourceLabel = trim($currentRes->nodeValue);
@@ -762,4 +765,3 @@ class X_VlcShares_Plugins_FilmStream extends X_VlcShares_Plugins_Abstract implem
 	}
 	
 }
-

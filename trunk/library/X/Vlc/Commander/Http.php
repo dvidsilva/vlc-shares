@@ -23,7 +23,7 @@ class X_Vlc_Commander_Http extends X_Vlc_Commander {
 		$port = $this->options->commander->http->get('port', '8080');
 		$this->http_host = $host;
 		$this->http_port = $port;
-		$this->http_timeout = (int) $this->options->commander->http->get('timeout', 1);
+		$this->http_timeout = (int) $this->options->commander->http->get('timeout', 5);
 		$this->http_command = str_replace(array('{%host%}', '{%port%}'), array($host, $port), $this->http_command);
 		
 	}

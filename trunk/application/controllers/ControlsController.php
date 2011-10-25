@@ -127,7 +127,8 @@ class ControlsController extends X_Controller_Action {
     	$pageItems = new X_Page_ItemList_PItem();
     	
     	$done = new X_Page_Item_PItem('core-opdone', X_Env::_('controls_done'));
-    	$done->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+    	$done->setCustom('vlc_still_alive', $this->vlc->isRunning())
+    		->setType(X_Page_Item_PItem::TYPE_ELEMENT)
     		->setLink(array(
 					'controller'	=> 'controls',
 					'action'		=>	'control', // i want to be sure that fake buttons forward to main action to avoid multiple seek in time

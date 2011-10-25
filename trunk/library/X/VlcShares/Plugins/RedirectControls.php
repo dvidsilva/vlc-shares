@@ -50,14 +50,16 @@ class X_VlcShares_Plugins_RedirectControls extends X_VlcShares_Plugins_Abstract 
 		
 		X_Debug::i("Plugin triggered for: {$query}");
 		
-		if ( array_search($query, $this->redirectCond_To) !== false && $vlc->isRunning() ) {
+		$isRunning = $vlc->isRunning();
+		
+		if ( array_search($query, $this->redirectCond_To) !== false && $isRunning ) {
 			$controller->getRequest()->setControllerName('controls')->setActionName('control')->setDispatched(false);
 			X_Debug::i("Redirect to controls/control");
-		} elseif ( array_search($query, $this->redirectCond_Away) !== false && !$vlc->isRunning() ) {
+		} elseif ( array_search($query, $this->redirectCond_Away) !== false && !$isRunning ) {
 			X_Debug::i("Redirect to index/collections");
 			$controller->getRequest()->setControllerName('index')->setActionName('collections')->setDispatched(false);
 		} else {
-			//X_Debug::i("No redirection: vlc is running? " . ($vlc->isRunning() ? 'Yes' : 'No'));
+			X_Debug::i("No redirection: vlc is running? " . ($isRunning ? 'Yes' : 'No'));
 		}
 		
 	}

@@ -16,8 +16,10 @@ class X_VlcShares_Plugins_MobileRenderer extends X_VlcShares_Plugins_Abstract {
 	}
 	
 	public function gen_afterPageBuild(X_Page_ItemList_PItem $items, Zend_Controller_Action $controller) {
-		// even if forced.enabled, don't build the page if the device is wiimc
-		if ( $this->helpers()->devices()->isWiimc() || ( !((bool) $this->config('forced.enabled', false)) && !$this->helpers()->devices()->isAndroid() )) return;
+		if ( !$this->_forceRendering ) { 
+			// even if forced.enabled, don't build the page if the device is wiimc
+			if ( $this->helpers()->devices()->isWiimc() || ( !((bool) $this->config('forced.enabled', false)) && !$this->helpers()->devices()->isAndroid() )) return;
+		}
 		
 		X_Debug::i("Plugin triggered");
 
@@ -82,6 +84,13 @@ class X_VlcShares_Plugins_MobileRenderer extends X_VlcShares_Plugins_Abstract {
 		return new X_Page_ItemList_ManageLink(array($link));
 		
 	}
+	
+		// bad hack for autooptions
+	private $_forceRendering = false;
+	public function forceRendering($force = true) {
+		$this->_forceRendering = $force;
+	}
+	
 	
 }
 

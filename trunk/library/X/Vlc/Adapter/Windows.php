@@ -25,8 +25,8 @@ class X_Vlc_Adapter_Windows extends X_Vlc_Adapter {
 			// qui devo semplicemente aggiungere la roba passata da configurazione
 			//$args .= " --daemon --pidFile=\"$this->pidFile\"";
 			X_Env::execute("$vlcPath $args", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_BACKGROUND);
-         // wait 2 seconds before check for process (WORKAROUND for slow PCs: they take a while to spawn it)
-			sleep(2);
+         // wait 3 seconds before check for process (WORKAROUND for slow PCs: they take a while to spawn it)
+			sleep(3);
 			$result = X_Env::execute("tasklist /FO CSV /FI \"imagename eq vlc.exe\"", X_Env::EXECUTE_OUT_ARRAY, X_Env::EXECUTE_PS_WAIT);
 			$pid = 0;
 			X_Debug::i(print_r($result, true));
