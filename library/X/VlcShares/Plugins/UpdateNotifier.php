@@ -63,7 +63,7 @@ class X_VlcShares_Plugins_UpdateNotifier extends X_VlcShares_Plugins_Abstract {
 		}
 		
 		if ( count($updates['plugins']) ) {
-			$link = new X_Page_Item_PItem("{$this->getId()}-coreupdate", X_Env::_('p_updatenotifier_collectionindex_plugins', count($updates['plugins'])));
+			$link = new X_Page_Item_PItem("{$this->getId()}-pluginsupdate", X_Env::_('p_updatenotifier_collectionindex_plugins', count($updates['plugins'])));
 			$link->setIcon('/images/updatenotifier/logo.png')
 				->setDescription(X_Env::_('p_updatenotifier_collectionindex_plugins_desc'))
 				->setType(X_Page_Item_PItem::TYPE_ELEMENT)

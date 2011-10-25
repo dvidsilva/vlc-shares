@@ -402,3 +402,24 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	1,
 	1
 );
+
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'autooptions',
+	'X_VlcShares_Plugins_AutoOptions', 
+	'X/VlcShares/Plugins/AutoOptions.php',
+	'p_autooptions_plglabel',
+	'p_autooptions_plgdesc',
+	1,
+	1
+);
+
+
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'webkitrenderer',
+	'X_VlcShares_Plugins_WebkitRenderer', 
+	'X/VlcShares/Plugins/WebkitRenderer.php',
+	'p_webkitrenderer_plglabel',
+	'p_webkitrenderer_plgdesc',
+	1,
+	1
+);

@@ -2,7 +2,8 @@
 --
 -- You can begin populating the database with the following SQL statements.
  
-    
+-- DEFAULT SHARES
+
 INSERT INTO plg_filesystem_shares (label, path ) VALUES
 	('Root windows',
 	'C:\'
@@ -13,6 +14,9 @@ INSERT INTO plg_filesystem_shares (label, path) VALUES
 	('Root linux',
 	'/'
 	);
+	
+	
+-- PROFILES
 	
 INSERT INTO plg_profiles (label, arg) VALUES
 	('Hq',
@@ -59,7 +63,19 @@ INSERT INTO plg_profiles (label, arg, cond_devices, weight) VALUES
 	'transcode{vcodec=mp4v,vb=400,fps=25,scale=0.5,acodec=mp4a,ab=64,channels=2}',
 	1,
 	1);
+
+INSERT INTO plg_profiles (label, arg) VALUES
+	('FLV/MP3',
+	'transcode{vcodec=FLV1,acodec=mp3,vb=200,deinterlace,fps=25,samplerate=44100,ab=32}'
+	);
+
+INSERT INTO plg_profiles (label, arg) VALUES
+	('H264/MP3',
+	'transcode{vcodec=h264,vb=200,deinterlace,ab=32,fps=25,width=256,height=192,acodec=mp3,samplerate=44100}'
+	);
 	
+	
+-- OUTPUTS
 	
 INSERT INTO plg_outputs (label, arg, link, cond_devices) VALUES
 	('Http stream on 8081',
@@ -84,7 +100,18 @@ INSERT INTO plg_outputs (label, arg, link, cond_devices) VALUES
 	'rtp{mp4a-latm,sdp=rtsp://0.0.0.0:5554/android.sdp}',
 	'rtsp://{%SERVER_NAME%}:5554/android.sdp',
 	1);
+
+INSERT INTO plg_outputs (label, arg, link, cond_devices) VALUES
+	('HTTP mux FLV',
+	'std{access=http,mux=ffmpeg{mux=flv},dst=:8081/stream.flv}',
+	'http://{%SERVER_NAME%}:8081/stream.flv',
+	NULL);
 	
+INSERT INTO plg_outputs (label, arg, link, cond_devices) VALUES
+	('HTTP h264',
+	'std{access=http{mime=video/x-flv},mux=ffmpeg{mux=flv},dst=:8081/stream}',
+	'http://{%SERVER_NAME%}:8081/stream',
+	NULL);
 	
 -- ONLINE LIBRARY CHANNELS --
 
@@ -102,7 +129,16 @@ INSERT INTO "videos" VALUES(NULL,'rtmpdump://stream/?rtmp=rtmp%3A%2F%2Ffms5.visi
 INSERT INTO "videos" VALUES(NULL,'rtmpdump://stream/?rtmp=rtmp%3A%2F%2F95.211.73.3%2Flive%2F&live=1&playpath=22.sdp&quiet=1','direct-url','International Live Channels','ESPN','','');
 INSERT INTO "videos" VALUES(NULL,'mms://live1.wm.skynews.servecast.net/skynews_wmlz_live300k','direct-url','International Live Channels','SkyNews','','');
 INSERT INTO "videos" VALUES(NULL,'mms://verytangy-673-404284.wm.llnwd.net/verytangy_673-404284?e=1298596415&h=5289c5089ac9ce222b74349884966dc9&startTime=1298596405&userId=13194&portalId=5&portal=5&channelId=2627&ppvId=19848&mark=7817&source=box&epgType=live','direct-url','International Live Channels','BBC News','','');
-	
+
+
+-- AUTOOPTIONS
+
+INSERT INTO plg_autooptions_devices VALUES 
+	(1, "WiiMC", "/WiiMC/i", 0, 1, 2, "X_VlcShares_Plugins_WiimcPlxRenderer", 0);
+INSERT INTO plg_autooptions_devices VALUES 
+	(2, "Qualsiasi", "/.*/", 0, 1, 2, "X_VlcShares_Plugins_WebkitRenderer", 0);
+
+
 	
 	
 	

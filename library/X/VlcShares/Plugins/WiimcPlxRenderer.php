@@ -106,7 +106,11 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 	}
 	
 	public function gen_afterPageBuild(X_Page_ItemList_PItem $list, Zend_Controller_Action $controller) {
-		if ( !((bool) $this->config('forced.enabled', false)) && !$this->helpers()->devices()->isWiimc() ) return;
+		
+		// force Rendering win over everythings
+		if ( !$this->_forceRendering ) {
+			if ( !((bool) $this->config('forced.enabled', false)) && !$this->helpers()->devices()->isWiimc() ) return;
+		} 
 		
 		X_Debug::i("Plugin triggered");
 
@@ -258,6 +262,12 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 		} catch (Exception $e) {
 			X_Debug::w("Unable to disable viewRenderer or Layout: {$e->getMessage()}");
 		}
+	}
+
+	// bad hack for autooptions
+	private $_forceRendering = false;
+	public function forceRendering($force = true) {
+		$this->_forceRendering = $force;
 	}
 	
 }

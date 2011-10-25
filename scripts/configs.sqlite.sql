@@ -120,8 +120,8 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'commander.http.timeout', 
-	'1',
-	'1',
+	'5',
+	'5',
 	'vlc',
 	0,
 	'config_vlc_commander_http_timeout_label',

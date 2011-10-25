@@ -34,6 +34,8 @@ class X_Vlc_Adapter_Linux extends X_Vlc_Adapter {
 				X_Env::execute("$vlcPath $args", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_BACKGROUND);
 			}
 		}
+		// halt execution for 2-3 seconds. Slow pc took some time to spawn the process. This could create some problem
+		sleep(3);
 	}
 
 	/**
