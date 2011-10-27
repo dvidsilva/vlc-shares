@@ -1,0 +1,88 @@
+<!-- application/views/scripts/outputs/edit.phtml -->
+<?php 
+
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('back'), "devices", "index");
+	;
+	
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLinkRoute(X_Env::_('p_devices_title'), 'devices', 'index')
+	->addLabel(X_Env::_('p_devices_neweditdevice_title', $this->device ? $this->device->getLabel() : X_Env::_('p_devices_name_new')));
+
+?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/outputs/style.css')); ?>
+<?php //$this->headScript()->appendFile($this->baseUrl("/js/profiles/index.js")); ?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::APPEND); ?>
+	$(function(){
+		$('#devices-lastdevices select').change(function () {
+			if ( $(this).find(':selected').size() ) {
+				$('#devices-lastdevices button').attr('disabled', false);
+			} else {
+				$('#devices-lastdevices button').attr('disabled', 'disabled');
+			}
+		});
+		$('#devices-lastdevices button').click(function () {
+			var value = $('#devices-lastdevices select :selected').val();
+			$('#pattern').val(value);
+			$('#exact-1').attr('checked', true)		
+		});
+		$('#devices-lastdevices select').trigger('change');
+	});
+<?php $this->headScript()->captureEnd(); ?>
+
+<?php $this->headTitle()->prepend(X_Env::_('p_outputs_neweditoutput_title')); ?>
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<div class="unit columns on-2">
+	<div class="elastic column">
+		<div class="container">
+			<div class="box">
+				<div class="header">
+					<span class="title"><?php echo X_Env::_('p_devices_neweditdevicetitle'); ?></span>
+				</div>
+				<div class="content">
+					<div class="container">
+						<?php echo $this->form; ?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="fixed column" style="width: 400px">
+		<div class="container">
+			<div class="box" id="devices-lastdevices">
+				<div class="header">
+					<span class="title"><?php echo X_Env::_('p_devices_lastdevice_useragent')?></span>
+				</div>
+				<div class="content">
+					<p><?php echo X_Env::_('p_devices_lastdevice_useragent_desc')?></p>
+					<?php if ($this->lastdevices ) : ?>
+						<select size="10" style="max-width: 350px">
+							<?php foreach ($this->lastdevices as $lastdevice) : ?>
+								<option value="<?php echo $lastdevice?>" title="<?php echo $lastdevice?>" ><?php echo ($lastdevice == $_SERVER['HTTP_USER_AGENT'] ? "-&gt; $lastdevice</b>" : $lastdevice );?></option>
+							<?php endforeach; ?>
+						</select>
+						<button>&lt; <?php echo X_Env::_('p_devices_copyinpattern'); ?></button>
+					<?php endif; ?>
+				</div>
+			</div>
+		</div>
+	</div>	
+</div>

@@ -10,9 +10,94 @@ class X_VlcShares_Plugins_Helper_Devices extends X_VlcShares_Plugins_Helper_Abst
 	const DEVICE_IPAD = 3;
 	const DEVICE_VLC = 4;
 	const DEVICE_PC = 100;
+
+	/**
+	 * @var Application_Model_Device|false|null
+	 */
+	private $device = null;
 	
-	function __construct() {
+	/**
+	 * 
+	 * @var Zend_Config
+	 */
+	private $options = null;
+	
+	function __construct(Zend_Config $options) {
+		
 		X_Debug::i("User agent: {$_SERVER['HTTP_USER_AGENT']}");
+		$this->options = $options;
+		
+	}
+	
+	/**
+	 * Get device features
+	 * 
+	 * @return Application_Model_Device
+	 */
+	public function getDevice() {
+		if ( $this->device === null ) {
+			
+			$this->device = false;
+			$devices = Application_Model_DevicesMapper::i()->fetchAll();
+			
+			/* @var Application_Model_Device $device */
+			foreach ($devices as $device) {
+				// if exact do an == comparison
+				if ( ($device->isExact() && $device->getPattern() == $_SERVER['HTTP_USER_AGENT'])
+					// otherwise a regex match
+						|| (!$device->isExact() && preg_match($device->getPattern(), $_SERVER['HTTP_USER_AGENT'] ) > 0 ) ) {
+					
+					// valid $device found;
+					$this->device = $device;
+					break;
+						
+				} // false + 0 matches
+			}
+			
+			
+			if ( $this->device === false ) {
+				// load things from default
+				
+				$this->device = new Application_Model_Device();
+				if ( X_VlcShares_Plugins::broker()->isRegistered('wiimc') ) {
+					$this->device->setGuiClass($this->options->get('gui', 'X_VlcShares_Plugins_WiimcPlxRenderer' ));
+				} else {
+					$this->device->setGuiClass($this->options->get('gui', 'X_VlcShares_Plugins_WebkitRenderer' ));
+				}
+				
+				$this->device->setIdProfile($this->options->get('profile', 1))
+					->setIdOutput(1) // FIXME remove this after profiles+outputs
+					->setLabel("Unknown device")
+					;
+			}
+		}
+		
+		return $this->device;
+	}	
+	
+	/**
+	 * @return string
+	 */
+	public function getDefaultDeviceGuiClass() {
+		return $this->getDevice()->getGuiClass();
+	}
+	
+	/**
+	 * @return int
+	 */
+	public function getDefaultDeviceIdProfile() {
+		return $this->getDevice()->getIdProfile();
+	}
+	
+	/**
+	 * @return int
+	 */
+	public function getDefaultDeviceIdOutput() {
+		return $this->getDevice()->getIdOutput();
+	}
+	
+	public function getDeviceLabel() {
+		return $this->getDevice()->getLabel();
 	}
 	
 	/**
@@ -135,5 +220,6 @@ class X_VlcShares_Plugins_Helper_Devices extends X_VlcShares_Plugins_Helper_Abst
 		else
 			return self::DEVICE_PC;
 	}
+	
 	
 }

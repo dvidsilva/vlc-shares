@@ -8,7 +8,7 @@ require_once ('X/VlcShares/Plugins/ResolverDisplayableInterface.php');
  * @author ximarx
  *
  */
-class X_VlcShares_Plugins_MobileRenderer extends X_VlcShares_Plugins_Abstract {
+class X_VlcShares_Plugins_MobileRenderer extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_RendererInterface {
 
 	function __construct() {
 		$this->setPriority('gen_afterPageBuild')
@@ -16,10 +16,13 @@ class X_VlcShares_Plugins_MobileRenderer extends X_VlcShares_Plugins_Abstract {
 	}
 	
 	public function gen_afterPageBuild(X_Page_ItemList_PItem $items, Zend_Controller_Action $controller) {
+		/*
 		if ( !$this->_forceRendering ) { 
 			// even if forced.enabled, don't build the page if the device is wiimc
 			if ( $this->helpers()->devices()->isWiimc() || ( !((bool) $this->config('forced.enabled', false)) && !$this->helpers()->devices()->isAndroid() )) return;
 		}
+		*/
+		if ( !$this->isDefaultRenderer() ) return;
 		
 		X_Debug::i("Plugin triggered");
 
@@ -85,11 +88,37 @@ class X_VlcShares_Plugins_MobileRenderer extends X_VlcShares_Plugins_Abstract {
 		
 	}
 	
-		// bad hack for autooptions
+	/*====================
+	 RendererInterface
+	 =====================*/
+	function getName() {
+		return X_Env::_('p_mobilerenderer_interfacename');
+	}
+	
+	function getDescription() {
+		return X_Env::_('p_mobilerenderer_interfacedescription');
+	}
+	
+	function getRequiredFeatures() {
+		return array(
+			self::FEATURES_STANDALONEPLAYER,
+			self::FEATURES_HTML,
+			self::FEATURES_JS,
+			self::FEATURES_IMAGES,
+			self::FEATURES_STANDALONEPLAYER,
+			self::FEATURES_SMALLSCREEN,
+		);
+	}
+	
+	// bad hack for autooptions
 	private $_forceRendering = false;
-	public function forceRendering($force = true) {
+	public function setDefaultRenderer($force = true) {
 		$this->_forceRendering = $force;
 	}
+	public function isDefaultRenderer() {
+		return $this->_forceRendering;
+	}
+	
 	
 	
 }
