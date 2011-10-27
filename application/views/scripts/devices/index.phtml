@@ -1,0 +1,134 @@
+<!-- application/views/scripts/filesystem/index.phtml -->
+<?php 
+
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('p_devices_device_new'), "devices", "add");
+	;
+	
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLabel(X_Env::_('p_devices_title'));
+
+?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/devices/style.css')); ?>
+<?php $this->headScript()->appendFile($this->baseUrl("/js/devices/index.js")); ?>
+<?php $this->headTitle()->prepend(X_Env::_('p_devices_title')); ?>
+
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<div class="unit">
+	<div class="container">
+		<div class="box">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('p_devices_useragent')?></span>
+			</div>
+			<div class="content">
+				<div class="unit columns same-height">
+					<div class="column elastic"><?php echo X_Env::_('p_devices_test_device')?>: <?php echo $this->formSelect('test_device', $_SERVER['HTTP_USER_AGENT'] , array('style' => "max-width: 700px; overflow: hidden;"), $this->lastdevices); ?></div>
+					<div class="column fixed" style="width: 240px">
+						<button id="test"><?php echo X_Env::_('p_devices_testbutton'); ?></button>
+						<button id="test-reset"><?php echo X_Env::_('p_devices_testresetbutton'); ?></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="unit">
+	<div class="container">
+		<div class="box">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('p_devices_title'); ?></span>
+			</div>
+			<div class="content">
+				<table class="table" id="devices-table">
+					<tr class="header">
+						<th colspan="2"><?php echo X_Env::_('p_devices_header_label'); ?></th>
+						<th colspan="5"><?php echo X_Env::_('p_devices_header_regex'); ?></th>
+						<th colspan="2"><?php echo X_Env::_('p_devices_header_profile'); ?></th>
+						<th colspan="2"><?php echo X_Env::_('p_devices_header_output'); ?></th>
+						<th colspan="2"><?php echo X_Env::_('p_devices_header_gui'); ?></th>
+						<th colspan="2"><?php echo X_Env::_('table_options'); ?></th>
+					</tr>
+					<?php foreach ( $this->devices as $i => $device): ?>
+						<?php /* @var $device Application_Model_Device */?>
+						<tr class="<?php echo $i % 2 ? 'alt' : ''?>" id="deviceId-<?php echo $device->getId(); ?>">
+							<td colspan="2"><b><?php echo $device->getLabel() ?></b></td>
+							<td colspan="5" abbr="<?php echo $device->getPattern(); ?>">
+								<div>
+								<?php echo (!$device->isExact() ? 'Regex: ' : '') . $device->getPattern(); ?>
+								</div>
+							</td>
+							<td colspan="2">
+								<?php echo ( @$this->profiles[$device->getIdProfile()] ? $this->profiles[$device->getIdProfile()] : '<i>- Invalid -</i>');  ?>
+							</td>
+							<td colspan="2">
+								<?php echo ( @$this->outputs[$device->getIdOutput()] ? $this->outputs[$device->getIdOutput()] : '<i>- Invalid -</i>');  ?>
+							</td>
+							<td colspan="2"><?php echo  @$this->guis[$device->getGuiClass()]; ?></td>
+							<td colspan="2">
+								<ul class="inline-menu">
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-pencil"
+										title="<?php echo X_Env::_('edit')?>" 
+										href="<?php echo $this->url(array(
+											'controller' => 'devices',
+											'action' => 'edit',
+											'id' => $device->getId(),
+										), 'default', true); ?>">R</a>
+									</li>
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-trash"
+										title="<?php echo X_Env::_('remove')?>"
+										href="<?php echo $this->url(array(
+											'controller' => 'devices',
+											'action' => 'remove',
+											'id' => $device->getId(),
+										), 'default', true); ?>">E</a>
+									</li>
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-arrowthick-1-n"
+										title="<?php echo X_Env::_('moveup')?>"
+										href="<?php echo $this->url(array(
+											'controller' => 'devices',
+											'action' => 'up',
+											'id' => $device->getId(),
+										), 'default', true); ?>">E</a>
+									</li>
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-arrowthick-1-s"
+										title="<?php echo X_Env::_('movedown')?>"
+										href="<?php echo $this->url(array(
+											'controller' => 'devices',
+											'action' => 'down',
+											'id' => $device->getId(),
+										), 'default', true); ?>">E</a>
+									</li>
+								</ul>								
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+

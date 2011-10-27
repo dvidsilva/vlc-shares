@@ -133,10 +133,10 @@ INSERT INTO "videos" VALUES(NULL,'mms://verytangy-673-404284.wm.llnwd.net/veryta
 
 -- AUTOOPTIONS
 
-INSERT INTO plg_autooptions_devices VALUES 
-	(1, "WiiMC", "/WiiMC/i", 0, 1, 2, "X_VlcShares_Plugins_WiimcPlxRenderer", 0);
-INSERT INTO plg_autooptions_devices VALUES 
-	(2, "Qualsiasi", "/.*/", 0, 1, 2, "X_VlcShares_Plugins_WebkitRenderer", 0);
+INSERT INTO plg_devices VALUES 
+	(1, "WiiMC", "/WiiMC/i", 0, 1, 2, "X_VlcShares_Plugins_WiimcPlxRenderer", "", 0);
+INSERT INTO plg_devices VALUES 
+	(2, "Qualsiasi", "/.*/", 0, 1, 2, "X_VlcShares_Plugins_WebkitRenderer", "", 0);
 
 
 	

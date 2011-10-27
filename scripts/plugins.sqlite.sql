@@ -404,11 +404,11 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 );
 
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
-	'autooptions',
-	'X_VlcShares_Plugins_AutoOptions', 
-	'X/VlcShares/Plugins/AutoOptions.php',
-	'p_autooptions_plglabel',
-	'p_autooptions_plgdesc',
+	'devices',
+	'X_VlcShares_Plugins_Devices', 
+	'X/VlcShares/Plugins/Devices.php',
+	'p_devices_plglabel',
+	'p_devices_plgdesc',
 	1,
 	1
 );

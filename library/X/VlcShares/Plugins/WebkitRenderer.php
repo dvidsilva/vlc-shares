@@ -155,7 +155,9 @@ class X_VlcShares_Plugins_WebkitRenderer extends X_VlcShares_Plugins_Abstract im
 			self::FEATURES_IMAGES,
 			self::FEATURES_ADWORDS,
 			self::FEATURES_STANDALONEPLAYER,
-			self::FEATURES_FLASH
+			self::FEATURES_FLASH,
+			self::FEATURES_SMALLSCREEN,
+			self::FEATURES_BIGSCREEN
 		);
 	}
 	

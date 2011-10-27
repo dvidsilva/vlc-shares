@@ -41,12 +41,13 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract implement
 		$outputId = $controller->getRequest()->getParam($this->getId(), false);
 		
 		// search for the output in db
-		if ( $outputId !== false ) {
-			$output = new Application_Model_Output();
-			Application_Model_OutputsMapper::i()->find($outputId, $output);
-			if ( $output->getId() !== null ) {
-				$outputLabel = $output->getLabel();
-			}
+		if ( $outputId === false ) {
+			$outputId = $this->helpers()->devices()->getDefaultDeviceIdOutput();
+		}
+		$output = new Application_Model_Output();
+		Application_Model_OutputsMapper::i()->find($outputId, $output);
+		if ( $output->getId() !== null ) {
+			$outputLabel = $output->getLabel();
 		}
 		
 		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_outputs_output').": $outputLabel");
@@ -315,7 +316,8 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract implement
 	private function getBest($device) {
 		
 		$output = new Application_Model_Output();
-		Application_Model_OutputsMapper::i()->findBest($device, $output);
+		$outputId = $this->helpers()->devices()->getDefaultDeviceIdOutput();
+		Application_Model_OutputsMapper::i()->find($outputId, $output);
 		return $output;
 		
 	}

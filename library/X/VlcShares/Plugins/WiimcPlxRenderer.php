@@ -9,7 +9,7 @@ require_once ('X/Plx/Item.php');
  * @author ximarx
  *
  */
-class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract {
+class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_RendererInterface {
 
 	function __construct() {
 		$this->setPriority('gen_afterPageBuild')
@@ -21,7 +21,8 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 	 * Show an wiimc compatible error page in plx format
 	 */
 	function gen_beforePageBuild(Zend_Controller_Action $controller) {
-		if ( !((bool) $this->config('forced.enabled', false)) && !$this->helpers()->devices()->isWiimc() ) return;
+		//if ( !((bool) $this->config('forced.enabled', false)) && !$this->helpers()->devices()->isWiimc() ) return;
+		if ( !$this->isDefaultRenderer() ) return;
 		
 		$controllerName = $controller->getRequest()->getControllerName();
 		$actionName = $controller->getRequest()->getControllerName();
@@ -108,9 +109,12 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 	public function gen_afterPageBuild(X_Page_ItemList_PItem $list, Zend_Controller_Action $controller) {
 		
 		// force Rendering win over everythings
-		if ( !$this->_forceRendering ) {
+		/*if ( !$this->_forceRendering ) {
 			if ( !((bool) $this->config('forced.enabled', false)) && !$this->helpers()->devices()->isWiimc() ) return;
 		} 
+		*/
+		// new renderer interface
+		if ( !$this->isDefaultRenderer() ) return;
 		
 		X_Debug::i("Plugin triggered");
 
@@ -263,12 +267,34 @@ class X_VlcShares_Plugins_WiimcPlxRenderer extends X_VlcShares_Plugins_Abstract 
 			X_Debug::w("Unable to disable viewRenderer or Layout: {$e->getMessage()}");
 		}
 	}
-
+	
+	/*====================
+	 RendererInterface
+	 =====================*/
+	function getName() {
+		return X_Env::_('p_wiimcplxrenderer_interfacename');
+	}
+	
+	function getDescription() {
+		return X_Env::_('p_wiimcplxrenderer_interfacedescription');
+	}
+	
+	function getRequiredFeatures() {
+		return array(
+			self::FEATURES_STANDALONEPLAYER,
+			self::FEATURES_PLX
+		);
+	}
+	
 	// bad hack for autooptions
 	private $_forceRendering = false;
-	public function forceRendering($force = true) {
+	public function setDefaultRenderer($force = true) {
 		$this->_forceRendering = $force;
 	}
+	public function isDefaultRenderer() {
+		return $this->_forceRendering;
+	}
+		
 	
 }
 

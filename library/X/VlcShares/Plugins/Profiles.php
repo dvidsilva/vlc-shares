@@ -39,13 +39,16 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 
 		$profileId = $controller->getRequest()->getParam($this->getId(), false);
 		
-		if ( $profileId !== false ) {
-			$profile = new Application_Model_Profile();
-			Application_Model_ProfilesMapper::i()->find($profileId, $profile);
-			if ( $profile->getId() != null ) {
-				$profileLabel = $profile->getLabel();
-			}
+		if ( $profileId === false ) {
+			$profileId = $this->helpers()->devices()->getDefaultDeviceIdProfile();
 		}
+		
+		$profile = new Application_Model_Profile();
+		Application_Model_ProfilesMapper::i()->find($profileId, $profile);
+		if ( $profile->getId() != null ) {
+			$profileLabel = $profile->getLabel();
+		}
+	
 		
 		$link = new X_Page_Item_PItem($this->getId(), X_Env::_('p_profiles_profile').": $profileLabel");
 		$link->setIcon('/images/manage/plugin.png')
@@ -85,7 +88,9 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 		
 		$urlHelper = $controller->getHelper('url');
 		
+		
 		try {
+			/*
 			$provider = X_VlcShares_Plugins::broker()->getPlugins($provider);
 			$providerClass = get_class($provider);
 
@@ -133,8 +138,40 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 			$deviceCond = $this->helpers()->devices()->getDeviceType();
 			
 			$profiles = Application_Model_ProfilesMapper::i()->fetchByConds($codecCond, $deviceCond, $providerClass);
+			*/
+			
+			// i try to mark current selected profile based on $this->getId() param
+			// in $profileLabel i get the name of the current profile
+			$currentLabel = false;
+			$profileId = $controller->getRequest()->getParam($this->getId(), false);
+			if ( $profileId !== false ) {
+				$_profile = new Application_Model_Profile();
+				Application_Model_ProfilesMapper::i()->find($profileId, $_profile);
+				if ( $_profile->getId() != null ) {
+					$currentLabel = $_profile->getLabel();
+				}
+			}
+			
+
+			$defaultId = $this->helpers()->devices()->getDefaultDeviceIdProfile();
+			
+			$profile = new Application_Model_Profile();
+			Application_Model_ProfilesMapper::i()->find($defaultId, $profile);
+			
+			$profiles = array($profile);
+			
+			$extraIds = $this->helpers()->devices()->getDevice()->getExtra('alt-profiles');
+			if ( $extraIds && is_array($extraIds) && count($extraIds) ) {
+				foreach ( $extraIds as $id ) {
+					if ( $defaultId == $id ) continue;
+					$profile = new Application_Model_Profile();
+					Application_Model_ProfilesMapper::i()->find($id, $profile);
+					if ( $profile->getId() ) $profiles[] = $profile;
+				}
+			}
 
 			$return = new X_Page_ItemList_PItem();
+			/*
 			$item = new X_Page_Item_PItem($this->getId().'-auto', X_Env::_('p_profiles_selection_auto'));
 			$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
 				->setLink(array(
@@ -144,25 +181,23 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 					), 'default', false)
 				->setHighlight($currentLabel === false);
 			$return->append($item);
+			*/
 			
 			if ( count($profiles) ) {
-				X_Debug::i("Valid profiles for $location ($codecCond / $deviceCond): ".count($profiles));
-			} else {
-				X_Debug::e("No valid profiles for $location ($codecCond / $deviceCond): i need at least a profile");
+				X_Debug::e("No valid profiles for this device: i need at least a profile");
 			}
-			
 			// the best is the first
 			foreach ($profiles as $profile) {
 				/* @var $profile Application_Model_Profile */
-				X_Debug::i("Valid profile: [{$profile->getId()}] {$profile->getLabel()} ({$profile->getCondFormats()} / {$profile->getCondDevices()})");
-				$item = new X_Page_Item_PItem($this->getId().'-'.$profile->getId(), $profile->getLabel());
+				X_Debug::i("Valid profile: [{$profile->getId()}] {$profile->getLabel()}");
+				$item = new X_Page_Item_PItem($this->getId().'-'.$profile->getId(), $profile->getLabel() . ($profile->getId() == $defaultId ? " [". X_Env::_('p_profiles_selection_auto')."]" : '') );
 				$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
 					->setLink(array(
 							'action'	=>	'mode',
 							'pid'		=>	null,
 							$this->getId() => $profile->getId() // set this plugin selection as profileId
 						), 'default', false)
-					->setHighlight($currentLabel == $profile->getLabel());
+					->setHighlight($currentLabel == $profile->getLabel() || (!$currentLabel && $profile->getId() == $defaultId ) );
 				$return->append($item);
 			}
 			
@@ -236,33 +271,15 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 	
 	
 	private function getBest($location, $device, $provider) {
+
+		// stream analysis no more
 		
-		$provider = X_VlcShares_Plugins::broker()->getPlugins($provider);
-		$providerClass = get_class($provider);
+		// get the profile using the device info
 		
-		$codecCond = array();
-		
-		if ( $provider instanceof X_VlcShares_Plugins_ResolverInterface ) {
-			
-			// location param come in a plugin encoded way
-			$location = $provider->resolveLocation($location);
-		
-			$this->helpers()->stream()->setLocation($location);
-			
-			if ( $this->helpers()->stream()->getVideoStreamsNumber() ) {
-				$codecCond[] = $this->helpers()->stream()->getVideoCodecName();
-			}
-			
-			if ( $this->helpers()->stream()->getVideoStreamsNumber() ) {
-				$codecCond[] = $this->helpers()->stream()->getAudioCodecName();
-			}
-	
-			$codecCond = implode('+', $codecCond);
-		}
+		$profileId = $this->helpers()->devices()->getDefaultDeviceIdProfile();
 		
 		$profile = new Application_Model_Profile();
-		
-		Application_Model_ProfilesMapper::i()->findBest($codecCond, $device, $providerClass, $profile);
+		Application_Model_ProfilesMapper::i()->find($profileId, $profile);
 		
 		return $profile;
 		

@@ -6,7 +6,7 @@ class Application_Model_DevicesMapper extends Application_Model_AbstractMapper {
 	protected $_dbTable;
 	protected static $_instance = null;
 	protected function getMappedClass() { return 'Application_Model_Device'; }
-	protected function getDbTableClass() { return 'Application_Model_DbTable_AutoOptionsDevices'; }
+	protected function getDbTableClass() { return 'Application_Model_DbTable_Devices'; }
 	/**
 	 * Singleton
 	 * @return Application_Model_DevicesMapper
@@ -25,13 +25,14 @@ class Application_Model_DevicesMapper extends Application_Model_AbstractMapper {
 	public function save(Application_Model_Device  $model) {
 						
         $data = array(
-            'label'   => $model->getArg(),
+            'label'   => $model->getLabel(),
             'idProfile' => $model->getIdProfile(),
         	'idOutput' => $model->getIdOutput(),
         	'pattern' => $model->getPattern(),
         	'exact' => ($model->isExact() ? 1 : 0),
         	'guiClass' => $model->getGuiClass(),
-        	'priority' => $model->getPriority()
+        	'priority' => $model->getPriority(),
+        	'extra' => $model->getExtra()
         );
         
         if (null === ($id = $model->getId())) {
@@ -59,7 +60,23 @@ class Application_Model_DevicesMapper extends Application_Model_AbstractMapper {
 			->setGuiClass($row->guiClass)
 			->setPattern($row->pattern)
 			->setPriority($row->priority)
+			->initExtra($row->extra)
 			;
+	}
+	
+	
+	public function fetchAll() {
+		$select = $this->getDbTable()->select();
+		$select->order(array('priority DESC', 'id DESC'));
+		$resultSet = $this->getDbTable ()->fetchAll ($select);
+		$entries = array ();
+		foreach ( $resultSet as $row ) {
+			$mappedClass = $this->getMappedClass();
+			$entry = new $mappedClass();
+			$this->_populate($row, $entry);
+			$entries [] = $entry;
+		}
+		return $entries;
 	}
 	
 	public function delete(Application_Model_Device $model) {

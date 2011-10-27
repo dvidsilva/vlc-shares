@@ -108,7 +108,7 @@ CREATE TABLE videos (
 );
 
 
-CREATE TABLE plg_autooptions_devices (
+CREATE TABLE plg_devices (
 	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	label VARCHAR(255) NOT NULL,
 	pattern TEXT NOT NULL,
@@ -116,6 +116,7 @@ CREATE TABLE plg_autooptions_devices (
 	idProfile INTEGER NULL DEFAULT NULL,
 	idOutput INTEGER NULL DEFAULT NULL,
 	guiClass VARCHAR(255) DEFAULT NULL,
+	extra TEXT DEFAULT NULL,
 	priority INTEGER NOT NULL DEFAULT 0
 );
 

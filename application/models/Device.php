@@ -21,6 +21,7 @@ class Application_Model_Device extends Application_Model_Abstract {
 	protected $idOutput;
 	protected $guiClass;
 	protected $priority;
+	protected $extra = array();
 	
 	/**
 	 * @return the $id
@@ -74,6 +75,15 @@ class Application_Model_Device extends Application_Model_Abstract {
 	public function getPriority() {
 		return $this->priority;
 	}
+	
+	public function getExtra($key = null) {
+		if ( $key === null ) {
+			return serialize($this->extra);
+		} else {
+			return @$this->extra[$key]; 
+		}
+	}
+	
 	
 	/**
 	 * @param $id the $id to set
@@ -138,11 +148,37 @@ class Application_Model_Device extends Application_Model_Abstract {
 		return $this;
 	}
 
+	/**
+	 * @param $description the $description to set
+	 * @return Application_Model_Device
+	 */
 	public function setPriority($priority) {
 		$this->priority = $priority;
 		return $this;
 	}
 	
+	/**
+	 * @param $description the $description to set
+	 * @return Application_Model_Device
+	 */
+	public function setExtra($key, $value) {
+		$this->extra[$key] = $value;
+		return $this;
+	}
+	
+	/**
+	 * @param $description the $description to set
+	 * @return Application_Model_Device
+	 */
+	public function initExtra($serializedExtra) {
+		$unserialized = @unserialize($serializedExtra);
+		if ( !is_array($unserialized) ) {
+			$this->extra = array();
+		} else {
+			$this->extra = $unserialized;
+		}
+		return $this;
+	}
 	
 }
 
