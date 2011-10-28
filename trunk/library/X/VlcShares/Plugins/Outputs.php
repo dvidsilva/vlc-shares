@@ -221,6 +221,13 @@ class X_VlcShares_Plugins_Outputs extends X_VlcShares_Plugins_Abstract implement
 			
 			if ( $this->config('store.session', false) ) {
 				// store the link in session for future use
+				try {
+					/* @var $cache X_VlcShares_Plugins_Helper_Cache */
+					$cache = $this->helpers()->helper('cache');
+					$cache->storeItem('profile::lastvlclink', $profile->getLink(), 240);
+				} catch (Exception $e) {
+					// nothing to store or no place to store to
+				}
 			}
 			
 		} else {

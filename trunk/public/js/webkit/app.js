@@ -1,5 +1,5 @@
 
-var x_advancedDebug = false;
+var x_advancedDebug = true;
 
 var x_zend_defaultBlacklistKey = ['clickid', 'webkit_disabled', 'webkit:json', 'webkit', 'clearStorage', 'webkit_flash'];
 
@@ -88,7 +88,7 @@ function webkit_initBreadcrumb(breadcrumbContainer) {
 function webkit_updateBreadcrumb() {
 	var stateSign = $.param.fragment();
 	if ( _breadcrumb.exists(stateSign) ) {
-		if ( x_advancedDebug ) debug.log("Breadcrumb: truncating");
+		if ( x_advancedDebug ) console.log("Breadcrumb: truncating");
 		_breadcrumb.truncate(_breadcrumb.getBySign(stateSign));
 		return;
 	} else {
@@ -98,29 +98,29 @@ function webkit_updateBreadcrumb() {
 			if ( $clicked.size() ) {
 				var stateLabel = $clicked.find('h2').text();
 				if ( stateLabel ) {
-					if ( x_advancedDebug ) debug.log("Breadcrumb: state appended");
+					if ( x_advancedDebug ) console.log("Breadcrumb: state appended");
 					_breadcrumb.append(stateLabel, stateSign);
 					return;
 				}
 			} else {
-				if ( x_advancedDebug ) debug.log("Position not found. Invalid breadcrumb state");
+				if ( x_advancedDebug ) console.log("Position not found. Invalid breadcrumb state");
 				_breadcrumb.append('????', '');
 			}
 		}
-		if ( x_advancedDebug ) debug.log("Breadcrumb not updated");
+		if ( x_advancedDebug ) console.log("Breadcrumb not updated");
 	}
 }
 
 //function webkit_breadcrumbAppend(status, )
 
 function webkit_checkVlcStreaming(data, autoRedirect) {
-	if ( x_advancedDebug ) debug.log("Checking vlc status...");
+	if ( x_advancedDebug ) console.log("Checking vlc status...");
 	if ( data && typeof(data) == 'object' ) {
-		if ( x_advancedDebug ) debug.log("...valid params");
+		if ( x_advancedDebug ) console.log("...valid params");
 		if ( data.controller == 'controls' && data.action == "control" ) {
-			if ( x_advancedDebug ) debug.log("Vlc is streaming...");
+			if ( x_advancedDebug ) console.log("Vlc is streaming...");
 			if ( autoRedirect ) {
-				if ( x_advancedDebug ) debug.log('...autoredirect');
+				if ( x_advancedDebug ) console.log('...autoredirect');
 				var state = $.deparam.fragment();
 				state.controller = 'webkit';
 				state.action = 'ballot';
@@ -132,10 +132,10 @@ function webkit_checkVlcStreaming(data, autoRedirect) {
 			}
 			return true;
 		} else {
-			if ( x_advancedDebug ) debug.log("Vlc is down");
+			if ( x_advancedDebug ) console.log("Vlc is down");
 		}
 	} else {
-		if ( x_advancedDebug ) debug.log("Invalid params");
+		if ( x_advancedDebug ) console.log("Invalid params");
 	}
 	return false;
 }
@@ -185,13 +185,13 @@ function webkit_browser( state ) {
 		url = baseUrl+"/index/collections/webkit:json/1";
 	}
 	
-	if ( x_advancedDebug ) debug.log("Fetching: " + url);
+	if ( x_advancedDebug ) console.log("Fetching: " + url);
 	
 	$.getJSON(url, function (data) {
 		
-		if ( x_advancedDebug ) debug.log("Checking success: "+data.success);
+		if ( x_advancedDebug ) console.log("Checking success: "+data.success);
 		
-		if ( x_advancedDebug ) debug.log(data);
+		if ( x_advancedDebug ) console.log(data);
 		
 		// check if vlc is streaming
 		if ( webkit_checkVlcStreaming(data, true) )
@@ -312,11 +312,11 @@ function webkit_modechooser(state) {
 		var url = "";
 		url = x_zend_buildroute(state, ['clickid', 'webkit_disabled', 'webkit:json', 'webkit', 'clearStorage']);
 		
-		if ( x_advancedDebug ) debug.log("Fetching: " + url);
+		if ( x_advancedDebug ) console.log("Fetching: " + url);
 		
 		$.getJSON(url, function (data) {
-			if ( x_advancedDebug ) debug.log("Checking success: "+data.success);
-			if ( x_advancedDebug ) debug.log(data);
+			if ( x_advancedDebug ) console.log("Checking success: "+data.success);
+			if ( x_advancedDebug ) console.log(data);
 			
 			// check if vlc is streaming
 			if ( webkit_checkVlcStreaming(data, true) ) return;
@@ -390,20 +390,20 @@ function webkit_modechooser(state) {
 		
 		var pid = $.deparam.fragment().pid;
 		if ( pid ) {
-			if ( x_advancedDebug ) debug.log('Pid found: '+pid);
+			if ( x_advancedDebug ) console.log('Pid found: '+pid);
 			$('#modechooser-maincolumn #option_'+pid).addClass('highlight');
 		} else {
-			if ( x_advancedDebug ) debug.log('Pid not found');
+			if ( x_advancedDebug ) console.log('Pid not found');
 		}
 
 		var url = "";
 		url = x_zend_buildroute(state, ['clickid', 'webkit_disabled', 'webkit:json', 'webkit', 'clearStorage']);
 		
-		if ( x_advancedDebug ) debug.log("Fetching: " + url);
+		if ( x_advancedDebug ) console.log("Fetching: " + url);
 		
 		$.getJSON(url, function (data) {
-			if ( x_advancedDebug ) debug.log("Checking success: "+data.success);
-			if ( x_advancedDebug ) debug.log(data);
+			if ( x_advancedDebug ) console.log("Checking success: "+data.success);
+			if ( x_advancedDebug ) console.log(data);
 			
 			$(data.items).each(function (i, item) {
 
@@ -445,7 +445,7 @@ function webkit_modechooser(state) {
 
 function webkit_getPreferences(urlFragment, item) {
 	
-	if ( x_advancedDebug ) debug.log("Getting preferences");
+	if ( x_advancedDebug ) console.log("Getting preferences");
 	
 	var $item = $(item).addClass('highlight');
 	var $fragmentObj = $.deparam.fragment(urlFragment);
@@ -460,14 +460,14 @@ function webkit_getPreferences(urlFragment, item) {
 			$(this).remove();
 		});
 	} catch (e) {
-		if ( x_advancedDebug ) debug.log("Concurrency guard");
+		if ( x_advancedDebug ) console.log("Concurrency guard");
 	}
 		
-	if ( x_advancedDebug ) debug.log("Fetching: " + url);
+	if ( x_advancedDebug ) console.log("Fetching: " + url);
 	
 	$.getJSON(url, function (data) {
-		if ( x_advancedDebug ) debug.log("Checking success: "+data.success);
-		if ( x_advancedDebug ) debug.log(data);
+		if ( x_advancedDebug ) console.log("Checking success: "+data.success);
+		if ( x_advancedDebug ) console.log(data);
 		
 		// we are sure that there is 1 #...-preferences only
 		$('#modechooser-preferences').remove();
@@ -507,7 +507,7 @@ function webkit_getPreferences(urlFragment, item) {
 }
 
 function webkit_player(state) {
-	if ( x_advancedDebug ) debug.log("Showing player...");
+	if ( x_advancedDebug ) console.log("Showing player...");
 
 	var streamUrl = $.deparam.fragment().webkit_flash;
 	
@@ -517,7 +517,7 @@ function webkit_player(state) {
 		$('#tmplSectionOverlay').tmpl().appendTo('#app-content');
 	}
 	
-	if ( x_advancedDebug ) debug.log('Stream URL: '+streamUrl);
+	if ( x_advancedDebug ) console.log('Stream URL: '+streamUrl);
 	
 	$('#ballot-inner').fadeOut();
 
@@ -620,7 +620,7 @@ function webkit_player(state) {
 
 function webkit_stream(state) {
 	
-	if ( x_advancedDebug ) debug.log("Checking vlc status...");
+	if ( x_advancedDebug ) console.log("Checking vlc status...");
 	
 	// checking status
 	var url;
@@ -637,11 +637,11 @@ function webkit_stream(state) {
 			var url;
 			url = x_zend_buildroute(state, x_zend_defaultBlacklistKey);
 			
-			if ( x_advancedDebug ) debug.log("Launching stream: "+url);
+			if ( x_advancedDebug ) console.log("Launching stream: "+url);
 			
 			$.getJSON(url, function (datas) {
 				
-				if ( x_advancedDebug ) debug.log(data);
+				if ( x_advancedDebug ) console.log(datas);
 				
 				if ( datas.success ) {
 					
@@ -656,12 +656,12 @@ function webkit_stream(state) {
 						// shutdown stream
 						$.getJSON(url, function (datas) {
 							
-							if ( x_advancedDebug ) debug.log(datas);
+							if ( x_advancedDebug ) console.log(datas);
 							
 							if ( datas.success ) {
 								alert("Stream is down. Go check the truth");
 								
-								if ( x_advancedDebug ) debug.log("Stream is down");
+								if ( x_advancedDebug ) console.log("Stream is down");
 								
 								$('#player-overlay').fadeOut(function () {
 									$(this).remove();
@@ -681,7 +681,7 @@ function webkit_stream(state) {
 					}, '20000');
 					*/
 					
-					if ( x_advancedDebug ) debug.log("Redirecting to ballot");
+					if ( x_advancedDebug ) console.log("Redirecting to ballot");
 					
 					// redirect to ballot
 					var currentState = $.deparam.fragment();
@@ -721,18 +721,18 @@ function webkit_execCommand(trigger, href, request) {
 		href = href.replace(/\:param\:/g, param);
 	}
 
-	if ( x_advancedDebug ) debug.log("Executing: "+href);	
+	if ( x_advancedDebug ) console.log("Executing: "+href);	
 	
 	$.getJSON(href, function (data) {
 		
-		if ( x_advancedDebug ) debug.log(data);
+		if ( x_advancedDebug ) console.log(data);
 		
 		if ( data.success && data.items && data.items.length >= 1) {
 			if ( data.items[0].customs && (data.items[0].customs.vlc_still_alive === true || data.items[0].customs.vlc_still_alive === false ) ) {
 				// we can check
 				if ( data.items[0].customs.vlc_still_alive == false ) {
 					
-					if ( x_advancedDebug ) debug.log("Redirecting to browse/mode");
+					if ( x_advancedDebug ) console.log("Redirecting to browse/mode");
 					
 					// vlc has been shutdown, redirect to state browse/mode
 					var state = $.deparam.fragment();
@@ -749,7 +749,7 @@ function webkit_execCommand(trigger, href, request) {
 					
 					url = x_zend_buildroute(fakeState, x_zend_defaultBlacklistKey);
 					
-					if ( x_advancedDebug ) debug.log("Fetching: "+url);
+					if ( x_advancedDebug ) console.log("Fetching: "+url);
 					
 					$.getJSON(url, function (data) {
 
@@ -792,7 +792,7 @@ function webkit_populateControls(data) {
 		if ( item.key == "core-separator" ) return;
 		
 		if ( item.type == 'playable' && item.url ) {
-			if ( x_advancedDebug ) debug.log("Playable item found");
+			if ( x_advancedDebug ) console.log("Playable item found");
 			if ( !streamSourceUrl ) {
 				streamSourceUrl = item.link;
 			}
@@ -843,11 +843,11 @@ function webkit_ballot(state) {
 	
 	url = x_zend_buildroute(fakeState, x_zend_defaultBlacklistKey);
 	
-	if ( x_advancedDebug ) debug.log("Fetching: "+url);
+	if ( x_advancedDebug ) console.log("Fetching: "+url);
 	
 	$.getJSON(url, function (data) {
 		
-		if ( x_advancedDebug ) debug.log(data);
+		if ( x_advancedDebug ) console.log(data);
 
 		var streamSourceUrl = false;		
 		
@@ -869,7 +869,7 @@ function webkit_ballot(state) {
 			} else {
 				// redirect to the default state
 				
-				if ( x_advancedDebug ) debug.log("Error: redirect to browse/mode");
+				if ( x_advancedDebug ) console.log("Error: redirect to browse/mode");
 				
 				var state = $.deparam.fragment();
 				state.controller = 'browse';
@@ -922,7 +922,7 @@ $(function(){
 		
 		// process hash
 		var state = $.deparam.fragment($.param.fragment());
-		if ( x_advancedDebug ) debug.log(state);
+		if ( x_advancedDebug ) console.log(state);
 		
 		
 		state.controller = state.controller ? state.controller : 'index';

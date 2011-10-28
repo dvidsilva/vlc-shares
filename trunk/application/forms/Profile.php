@@ -26,31 +26,12 @@ class Application_Form_Profile extends X_Form
                 array('validator' => 'StringLength', 'options' => array(0, 1000))
                 )
         ));
-
-        $this->addElement('select', 'audio', array(
-            'label'      => X_Env::_('p_profiles_form_audio_label'),
-        	'description'=> X_Env::_('p_profiles_form_audio_desc'),
-			'required'   => true,
-        ));
         
-        $this->addElement('select', 'video', array(
-            'label'      => X_Env::_('p_profiles_form_video_label'),
-        	'description'=> X_Env::_('p_profiles_form_video_desc'),
-			'required'   => true,
-        ));
-        
-        $this->addElement('select', 'device', array(
-            'label'      => X_Env::_('p_profiles_form_devices_label'),
-        	'description'=> X_Env::_('p_profiles_form_devices_desc'),
-			'required'   => true,
-        ));
-        
-        $this->addElement('text', 'weight', array(
-            'label'      => X_Env::_('p_profiles_form_weight_label'),
-        	'description'=> X_Env::_('p_profiles_form_weight_desc'),
+        $this->addElement('text', 'link', array(
+            'label'      => X_Env::_('p_profiles_form_link_label'),
+        	'description'=> X_Env::_('p_profiles_form_link_desc'),
 			'required'   => false,
-        	'filters'    => array('Int'),
-            'validators' => array('Int')
+        	'filters'    => array('StringTrim'),
         ));
         
         // Add the submit button

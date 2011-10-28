@@ -44,11 +44,8 @@ class Application_Model_ProfilesMapper
 
         $data = array(
             'arg'   => $model->getArg(),
-            'cond_providers' => $model->getCondProviders(),
-        	'cond_formats' => $model->getCondFormats(),
-        	'cond_devices' => $model->getCondDevices(),
         	'label' => $model->getLabel(),
-        	'weight' => $model->getWeight()
+        	'link' => $model->getLink()
         );
         
         if (null === ($id = $model->getId())) {
@@ -69,38 +66,6 @@ class Application_Model_ProfilesMapper
         $row = $result->current();
         $this->_populate($model, $row);
     }
- 
-    public function findBest($format = null, $device = null, $provider = null, Application_Model_Profile $model) {
-    	$select = $this->getDbTable()->select();
-    	if ( $format !== null && is_string($format) ) {
-    		$select->orWhere("cond_formats LIKE ? AND cond_devices IS NULL", $format);
-    	}
-    	/*
-    	if ( $provider !== null && is_string($provider) ) {
-    		$select->where("cond_providers LIKE ?", "%|$provider|%");
-    	}
-    	*/
-    	if ( $device !== null && is_integer($device) ) {
-    		$select->orWhere("cond_devices = ? AND cond_formats IS NULL", $device);
-    	}
-    	
-    	if ( $format !== null && is_string($format) && $device !== null && is_integer($device) ) {
-    		$select->orWhere("cond_formats LIKE ? AND cond_devices = $device", $format);
-    	}
-    	
-    	$select->orWhere("cond_formats IS NULL AND cond_devices IS NULL")
-    		->order(array('cond_formats DESC', 'cond_devices DESC', 'weight DESC', 'label ASC'))
-    		->limit(1);
-    		
-    	X_Debug::i((string) $select);
-    	    	
-        $result = $this->getDbTable()->fetchAll($select);
-        if (0 == count($result)) {
-            return;
-        }
-        $row = $result->current();
-        $this->_populate($model, $row);
-    }
     
     
     /**
@@ -110,11 +75,8 @@ class Application_Model_ProfilesMapper
      */
     private function _populate(Application_Model_Profile $model, $row) {
         $model->setId($row->id)
-			->setCondFormats($row->cond_formats)
 			->setLabel($row->label)
-			->setCondProviders($row->cond_providers)
-			->setCondDevices($row->cond_devices)
-			->setWeight($row->weight)
+			->setLink($row->link)
 			->setArg($row->arg);
 	}
     
@@ -137,46 +99,4 @@ class Application_Model_ProfilesMapper
     	}
     }
     
-    /**
-     * Fetch profiles using conditions. Provider is ignored!
-     * Will be removed in future version
-     * 
-     * @param string $format
-     * @param int $device
-     * @param string $provider IS IGNORED!!!!
-     */
-    public function fetchByConds($format = null, $device = null, $provider = null) {
-    	$select = $this->getDbTable()->select();
-    	if ( $format !== null && is_string($format) ) {
-    		$select->orWhere("cond_formats LIKE ? AND cond_devices IS NULL", $format);
-    	}
-    	/*
-    	if ( $provider !== null && is_string($provider) ) {
-    		$select->where("cond_providers LIKE ?", "%|$provider|%");
-    	}
-    	*/
-    	if ( $device !== null && is_integer($device) ) {
-    		$select->orWhere("cond_devices = ? AND cond_formats IS NULL", $device);
-    	}
-    	
-    	if ( $format !== null && is_string($format) && $device !== null && is_integer($device) ) {
-    		$select->orWhere("cond_formats LIKE ? AND cond_devices = $device", $format);
-    	}
-    	
-    	$select->orWhere("cond_formats IS NULL AND cond_devices IS NULL")
-    		->order(array('cond_formats DESC', 'cond_devices DESC', 'weight DESC', 'label ASC'));
-    	
-    	
-    	//X_Debug::i((string) $select);
-    	
-        $resultSet = $this->getDbTable()->fetchAll($select);
-        $entries   = array();
-        foreach ($resultSet as $row) {
-            $entry = new Application_Model_Profile();
-			$this->_populate($entry, $row);
-            $entries[] = $entry;
-        }
-        return $entries;
-    	
-    }
 }

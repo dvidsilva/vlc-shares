@@ -27,7 +27,6 @@ class Application_Model_DevicesMapper extends Application_Model_AbstractMapper {
         $data = array(
             'label'   => $model->getLabel(),
             'idProfile' => $model->getIdProfile(),
-        	'idOutput' => $model->getIdOutput(),
         	'pattern' => $model->getPattern(),
         	'exact' => ($model->isExact() ? 1 : 0),
         	'guiClass' => $model->getGuiClass(),
@@ -55,7 +54,6 @@ class Application_Model_DevicesMapper extends Application_Model_AbstractMapper {
 		$model->setId($row->id)
 			->setLabel($row->label)
 			->setIdProfile($row->idProfile)
-			->setIdOutput($row->idOutput)
 			->setExact((bool) $row->exact)
 			->setGuiClass($row->guiClass)
 			->setPattern($row->pattern)
