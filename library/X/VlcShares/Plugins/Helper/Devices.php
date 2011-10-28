@@ -35,7 +35,7 @@ class X_VlcShares_Plugins_Helper_Devices extends X_VlcShares_Plugins_Helper_Abst
 	 * @return Application_Model_Device
 	 */
 	public function getDevice() {
-		if ( $this->device === null ) {
+		if ( $this->device == null ) {
 			
 			$this->device = false;
 			$devices = Application_Model_DevicesMapper::i()->fetchAll();
@@ -51,11 +51,10 @@ class X_VlcShares_Plugins_Helper_Devices extends X_VlcShares_Plugins_Helper_Abst
 					$this->device = $device;
 					break;
 						
-				} // false + 0 matches
+				}
 			}
 			
-			
-			if ( $this->device === false ) {
+			if ( $this->device == false ) {
 				// load things from default
 				
 				$this->device = new Application_Model_Device();
@@ -66,12 +65,11 @@ class X_VlcShares_Plugins_Helper_Devices extends X_VlcShares_Plugins_Helper_Abst
 				}
 				
 				$this->device->setIdProfile($this->options->get('profile', 1))
-					->setIdOutput(1) // FIXME remove this after profiles+outputs
 					->setLabel("Unknown device")
 					;
+					
 			}
 		}
-		
 		return $this->device;
 	}	
 	
@@ -87,13 +85,6 @@ class X_VlcShares_Plugins_Helper_Devices extends X_VlcShares_Plugins_Helper_Abst
 	 */
 	public function getDefaultDeviceIdProfile() {
 		return $this->getDevice()->getIdProfile();
-	}
-	
-	/**
-	 * @return int
-	 */
-	public function getDefaultDeviceIdOutput() {
-		return $this->getDevice()->getIdOutput();
 	}
 	
 	public function getDeviceLabel() {

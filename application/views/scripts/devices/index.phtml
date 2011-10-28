@@ -62,9 +62,8 @@ $this->layout()->breadcrumb = $breadcrumb
 				<table class="table" id="devices-table">
 					<tr class="header">
 						<th colspan="2"><?php echo X_Env::_('p_devices_header_label'); ?></th>
-						<th colspan="5"><?php echo X_Env::_('p_devices_header_regex'); ?></th>
-						<th colspan="2"><?php echo X_Env::_('p_devices_header_profile'); ?></th>
-						<th colspan="2"><?php echo X_Env::_('p_devices_header_output'); ?></th>
+						<th colspan="6"><?php echo X_Env::_('p_devices_header_regex'); ?></th>
+						<th colspan="3"><?php echo X_Env::_('p_devices_header_profile'); ?></th>
 						<th colspan="2"><?php echo X_Env::_('p_devices_header_gui'); ?></th>
 						<th colspan="2"><?php echo X_Env::_('table_options'); ?></th>
 					</tr>
@@ -72,16 +71,13 @@ $this->layout()->breadcrumb = $breadcrumb
 						<?php /* @var $device Application_Model_Device */?>
 						<tr class="<?php echo $i % 2 ? 'alt' : ''?>" id="deviceId-<?php echo $device->getId(); ?>">
 							<td colspan="2"><b><?php echo $device->getLabel() ?></b></td>
-							<td colspan="5" abbr="<?php echo $device->getPattern(); ?>">
+							<td colspan="6" abbr="<?php echo $device->getPattern(); ?>">
 								<div>
 								<?php echo (!$device->isExact() ? 'Regex: ' : '') . $device->getPattern(); ?>
 								</div>
 							</td>
-							<td colspan="2">
+							<td colspan="3">
 								<?php echo ( @$this->profiles[$device->getIdProfile()] ? $this->profiles[$device->getIdProfile()] : '<i>- Invalid -</i>');  ?>
-							</td>
-							<td colspan="2">
-								<?php echo ( @$this->outputs[$device->getIdOutput()] ? $this->outputs[$device->getIdOutput()] : '<i>- Invalid -</i>');  ?>
 							</td>
 							<td colspan="2"><?php echo  @$this->guis[$device->getGuiClass()]; ?></td>
 							<td colspan="2">

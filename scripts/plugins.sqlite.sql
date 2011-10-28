@@ -69,17 +69,6 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	0
 );
 
-
-INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
-	'outputs',
-	'X_VlcShares_Plugins_Outputs', 
-	'X/VlcShares/Plugins/Outputs.php',
-	'p_outputs_plglabel',
-	'p_outputs_plgdesc',
-	1,
-	0
-);
-
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
 	'fileSubs',
 	'X_VlcShares_Plugins_FileSubs', 

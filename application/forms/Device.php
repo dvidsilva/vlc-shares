@@ -46,12 +46,6 @@ class Application_Form_Device extends X_Form
 			'required'   => true,
         ));
 
-        $this->addElement('select', 'output', array(
-            'label'      => X_Env::_('p_devices_form_output_label'),
-        	'description'=> X_Env::_('p_devices_form_output_desc'),
-			'required'   => true,
-        ));
-
 		$this->addElement('select', 'profile', array(
             'label'      => X_Env::_('p_devices_form_profile_label'),
         	'description'=> X_Env::_('p_devices_form_profile_desc'),

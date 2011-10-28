@@ -4,11 +4,8 @@ class Application_Model_Profile {
 	
 	protected $_label;
 	protected $_arg;
-	protected $_cond_providers;
-	protected $_cond_formats;
-	protected $_cond_devices;
 	protected $_id;
-	protected $_weight;
+	protected $_link;
 	
 	public function __construct(array $options = null) {
 		if (is_array ( $options )) {
@@ -76,42 +73,15 @@ class Application_Model_Profile {
 	 * @param unknown_type $cond
 	 * @return Application_Model_Profile
 	 */
-	public function setCondProviders($cond) {
-		$this->_cond_providers = $cond;
+	public function setLink($cond) {
+		$this->_link = $cond;
 		return $this;
 	}
 	
-	public function getCondProviders() {
-		return $this->_cond_providers;
+	public function getLink() {
+		return $this->_link;
 	}
 	
-	/**
-	 * 
-	 * @param unknown_type $cond
-	 * @return Application_Model_Profile
-	 */
-	public function setCondFormats($cond) {
-		$this->_cond_formats = $cond;
-		return $this;
-	}
-	
-	public function getCondFormats() {
-		return $this->_cond_formats;
-	}
-
-	/**
-	 * 
-	 * @param unknown_type $cond
-	 * @return Application_Model_Profile
-	 */
-	public function setCondDevices($cond) {
-		$this->_cond_devices = $cond;
-		return $this;
-	}
-	
-	public function getCondDevices() {
-		return $this->_cond_devices;
-	}
 	
 	/**
 	 * 
@@ -125,20 +95,6 @@ class Application_Model_Profile {
 	
 	public function getId() {
 		return $this->_id;
-	}
-
-	/**
-	 * 
-	 * @param unknown_type $weight
-	 * @return Application_Model_Profile
-	 */
-	public function setWeight($weight) {
-		$this->_weight = ( int ) $weight;
-		return $this;
-	}
-	
-	public function getWeight() {
-		return $this->_weight;
 	}
 	
 	

@@ -12,13 +12,6 @@ class DevicesController extends X_Controller_Action {
 		}
 		unset($_profiles);
 		
-		$_outputs = Application_Model_OutputsMapper::i()->fetchAll();
-		$outputs = array();
-		foreach ($_outputs as $output) {
-			$outputs[$output->getId()] = $output->getLabel();
-		}
-		unset($_outputs);
-		
 		$_guis = X_VlcShares_Plugins::broker()->getPlugins();
 		$guis = array();
 		foreach ($_guis as $gui) {
@@ -53,7 +46,6 @@ class DevicesController extends X_Controller_Action {
 
 		$this->view->lastdevices = $lastdevices;
 		$this->view->devices = $devices;
-		$this->view->outputs = $outputs;
 		$this->view->profiles = $profiles;
 		$this->view->guis = $guis;
 		
@@ -85,7 +77,6 @@ class DevicesController extends X_Controller_Action {
 			$model->setPattern($form->getValue('pattern'));
 			$model->setExact((bool) $form->getValue('exact'));
 			$model->setGuiClass($form->getValue('gui'));
-			$model->setIdOutput($form->getValue('output'));
 			$model->setIdProfile($form->getValue('profile'));
 			$model->setExtra('alt-profiles', $form->getValue('profiles'));
 			
@@ -107,14 +98,14 @@ class DevicesController extends X_Controller_Action {
 		$csrf = $this->getRequest()->getParam('csrf', false);
 		
 		if ( $id === false ) {
-			$this->_helper->flashMessenger(X_Env::_('p_outputs_err_invaliddata'));
+			$this->_helper->flashMessenger(X_Env::_('p_devices_err_invaliddata'));
 			$this->_helper->redirector('index', 'outputs');
 		}
 		
 		$output = new Application_Model_Output();
 		Application_Model_OutputsMapper::i()->find($id, $output);
 		if ( is_null($output->getId()) ) {
-			$this->_helper->flashMessenger(X_Env::_('p_outputs_err_invaliddata'));
+			$this->_helper->flashMessenger(X_Env::_('p_devices_err_invaliddata'));
 			$this->_helper->redirector('index', 'outputs');
 		}
 
@@ -142,11 +133,11 @@ class DevicesController extends X_Controller_Action {
 		if ( $form->isValid($this->getRequest()->getPost()) ) {
 			try {
 				Application_Model_OutputsMapper::i()->delete($output);
-				$this->_helper->flashMessenger(X_Env::_('p_outputs_delete_done'));
+				$this->_helper->flashMessenger(X_Env::_('p_devices_delete_done'));
 			} catch (Exception $e) {
-				$this->_helper->flashMessenger(X_Env::_('p_outputs_err_db'));
+				$this->_helper->flashMessenger(X_Env::_('p_devices_err_db'));
 			}
-			$this->_helper->redirector('index', 'outputs');
+			$this->_helper->redirector('index', 'devices');
 		}
 		
 		$form->setDefault('id', $output->getId());
@@ -233,7 +224,6 @@ class DevicesController extends X_Controller_Action {
 			'pattern'	=> $device->getPattern(),
 			'exact' => (int) $device->isExact(),
 			'profile' => $device->getIdProfile(),
-			'output' => $device->getIdOutput(),
 			'gui' => $device->getGuiClass(),
 			'priority' => $device->getPriority(),
 			'profiles' => $device->getExtra('alt-profiles')
@@ -373,13 +363,6 @@ class DevicesController extends X_Controller_Action {
 		
 		$form = new Application_Form_Device();
 		
-		
-		$outputs = Application_Model_OutputsMapper::i()->fetchAll();
-		$outputsMO = array();
-		foreach ($outputs as $output) {
-			$outputsMO[(string) $output->getId()] = $output->getLabel();
-		}
-		
 		$profiles = Application_Model_ProfilesMapper::i()->fetchAll();
 		$profilesMO = array();
 		foreach ($profiles as $profile) {
@@ -394,8 +377,7 @@ class DevicesController extends X_Controller_Action {
 			}
 		}
 		
-		$form->setOutputsValues($outputsMO)
-			->setProfilesValues($profilesMO)
+		$form->setProfilesValues($profilesMO)
 			->setAltProfilesValues($profilesMO)
 			->setGuisValues($guisMO);
 		

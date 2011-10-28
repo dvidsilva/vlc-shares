@@ -15,49 +15,11 @@ class ProfilesController extends X_Controller_Action {
 		
 	function indexAction() {
 		
-		// fetch all shares
-		/*
-		$wiimcOuts = Application_Model_OutputsMapper::i()->fetchAllForDevice(X_VlcShares_Plugins_Helper_Devices::DEVICE_WIIMC);
-		$androidOuts = Application_Model_OutputsMapper::i()->fetchAllForDevice(X_VlcShares_Plugins_Helper_Devices::DEVICE_ANDROID);
-		$pcOuts = Application_Model_OutputsMapper::i()->fetchAllForDevice(X_VlcShares_Plugins_Helper_Devices::DEVICE_PC);
-		
-		$generalOuts = Application_Model_OutputsMapper::i()->fetchAllForDevice(null);
-		
-		*/
-		
 		$profiles = Application_Model_ProfilesMapper::i()->fetchAll();
-		
-
-		$acodecs = array(
-			'unknown' => X_Env::_('p_profiles_conf_codectype_unknown'),
-			X_VlcShares_Plugins_Helper_StreaminfoInterface::ACODEC_MP3 => 'MP3',
-			X_VlcShares_Plugins_Helper_StreaminfoInterface::ACODEC_AAC => 'AAC',
-			X_VlcShares_Plugins_Helper_StreaminfoInterface::ACODEC_AC3 => 'AC3',
-		);
-		
-		$vcodecs = array(
-			'unknown' => X_Env::_('p_profiles_conf_codectype_unknown'),
-			X_VlcShares_Plugins_Helper_StreaminfoInterface::VCODEC_XVID => 'XVID',
-			X_VlcShares_Plugins_Helper_StreaminfoInterface::VCODEC_FLV => 'FLV (H.263)',
-			X_VlcShares_Plugins_Helper_StreaminfoInterface::VCODEC_H264 => 'AVC (H.264)',
-		);
-		
-		$devices = array(
-			'unknown' => X_Env::_('p_profiles_conf_devicetype_unknown'),
-			X_VlcShares_Plugins_Helper_Devices::DEVICE_WIIMC => 'WiiMC',
-			X_VlcShares_Plugins_Helper_Devices::DEVICE_ANDROID => 'Android',
-			X_VlcShares_Plugins_Helper_Devices::DEVICE_PC => 'Pc',
-		);
-		
 
 		$form = $this->_initForm();
 		
-		
 		$this->view->form = $form;
-		
-		$this->view->vcodecs = $vcodecs;
-		$this->view->acodecs = $acodecs;
-		$this->view->devices = $devices;
 		$this->view->profiles = $profiles;
 		
 		$this->view->messages = array_merge($this->_helper->flashMessenger->getMessages(), $this->_helper->flashMessenger->getCurrentMessages());
@@ -138,32 +100,6 @@ class ProfilesController extends X_Controller_Action {
 			$this->form->setAction($this->_helper->url('save', 'profiles'));
 			
 			// i need to create an array of audio and video codecs and device types
-			
-			$audioCodecs = array(
-				'unknown' => X_Env::_('p_profiles_conf_codectype_unknown'),
-				X_VlcShares_Plugins_Helper_StreaminfoInterface::ACODEC_MP3 => 'MP3',
-				X_VlcShares_Plugins_Helper_StreaminfoInterface::ACODEC_AAC => 'AAC',
-				X_VlcShares_Plugins_Helper_StreaminfoInterface::ACODEC_AC3 => 'AC3',
-			);
-			
-			$videoCodecs = array(
-				'unknown' => X_Env::_('p_profiles_conf_codectype_unknown'),
-				X_VlcShares_Plugins_Helper_StreaminfoInterface::VCODEC_XVID => 'XVID',
-				X_VlcShares_Plugins_Helper_StreaminfoInterface::VCODEC_FLV => 'FLV (H.263)',
-				X_VlcShares_Plugins_Helper_StreaminfoInterface::VCODEC_H264 => 'AVC (H.264)',
-			);
-			
-			$devices = array(
-				'unknown' => X_Env::_('p_profiles_conf_devicetype_unknown'),
-				X_VlcShares_Plugins_Helper_Devices::DEVICE_WIIMC => 'WiiMC',
-				X_VlcShares_Plugins_Helper_Devices::DEVICE_ANDROID => 'Android',
-				X_VlcShares_Plugins_Helper_Devices::DEVICE_PC => 'Pc',
-			);
-			
-			
-			$this->form->audio->setMultiOptions($audioCodecs);
-			$this->form->video->setMultiOptions($videoCodecs);
-			$this->form->device->setMultiOptions($devices);
 			
 		}
 		return $this->form;	
@@ -250,16 +186,11 @@ class ProfilesController extends X_Controller_Action {
 			$this->_helper->redirector('index', 'profiles');
 		}
 		
-		@list($video, $audio ) = explode('+', $profile->getCondFormats(), 2);
-		
 		$defaults = array(
 			'id' => $profile->getId(),
 			'label' => $profile->getLabel(),
-			'device'	=> $profile->getCondDevices(),
 			'arg'	=> $profile->getArg(),
-			'audio' => $audio,
-			'video' => $video,
-			'weight' => $profile->getWeight()
+			'link' => $profile->getLink()
 		);
 		
 		/*

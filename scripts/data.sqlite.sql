@@ -18,100 +18,56 @@ INSERT INTO plg_filesystem_shares (label, path) VALUES
 	
 -- PROFILES
 	
-INSERT INTO plg_profiles (label, arg) VALUES
-	('Hq',
-	'transcode{venc=ffmpeg,vcodec=mp2v,vb=4000,scale=.5,width=640,fps=25,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}'
-	);	
-	
-INSERT INTO plg_profiles (label, arg) VALUES
-	('Mq',
-	'transcode{venc=ffmpeg,vcodec=mp2v,vb=3000,scale=.5,width=640,fps=25,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}'
-	);
-	
-INSERT INTO plg_profiles (label, arg) VALUES
-	('Lq',
-	'transcode{venc=ffmpeg,vcodec=mp2v,vb=2000,scale=.5,width=640,fps=25,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}'
-	);
-	
-INSERT INTO plg_profiles (label, arg, cond_formats) VALUES
-	('AVC/ACC safe profile',
-	'transcode{venc=ffmpeg,vcodec=mp2v,vb=3000,scale=.5,width=640,fps=25,soverlay}',
-	'h264+aac');
-
-INSERT INTO plg_profiles (label, arg, cond_devices, weight) VALUES
-	('Android Phone (HQ)',
-	'transcode{vcodec=h264,venc=x264{no-cabac,level=12,vbv-maxrate=384,vbv-bufsize=1000,keyint=75,ref=3,bframes=0},width=320,height=180,acodec=mp4a,ab=64,vb=384}',
-	1,
-	0);
-
-INSERT INTO plg_profiles (label, arg, cond_devices, weight) VALUES
-	('Android Phone (HQ Alternative)',
-	'transcode{vcodec=h264,venc=x264{no-cabac,keyint=75,ref=3,bframes=0},width=800,vb=1200,profile=baseline,level=1.2,acodec=mp4a,ab=160,channels=2}',
-	1,
-	0);
-
-
---INSERT INTO plg_profiles (label, arg, cond_devices, cond_formats) VALUES
---	('Android Phone (AVC/AAC)',
---	'transcode{vcodec=h264,venc=x264{no-cabac,level=12,vbv-maxrate=384,vbv-bufsize=1000,keyint=75,ref=3,bframes=0},width=320,height=180,vb=384}',
---	1,
---	'h264+aac');
-	
-	
-INSERT INTO plg_profiles (label, arg, cond_devices, weight) VALUES
-	('Android Phone (LQ)',
-	'transcode{vcodec=mp4v,vb=400,fps=25,scale=0.5,acodec=mp4a,ab=64,channels=2}',
-	1,
-	1);
-
-INSERT INTO plg_profiles (label, arg) VALUES
-	('FLV/MP3',
-	'transcode{vcodec=FLV1,acodec=mp3,vb=200,deinterlace,fps=25,samplerate=44100,ab=32}'
+-- 1
+INSERT INTO plg_profiles (label, arg, link) VALUES
+	('MP2v/AC3 over HTTP(ts)',
+	'#transcode{venc=ffmpeg,vcodec=mp2v,vb=3000,scale=.5,width=640,fps=25,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}:std{access=http{mime=video/mpeg},mux=ts,dst=:8081}',
+	'http://{%SERVER_NAME%}:8081/'
 	);
 
-INSERT INTO plg_profiles (label, arg) VALUES
-	('H264/MP3',
-	'transcode{vcodec=h264,vb=200,deinterlace,ab=32,fps=25,width=256,height=192,acodec=mp3,samplerate=44100}'
+-- 2
+INSERT INTO plg_profiles (label, arg, link) VALUES
+	('MP2v/-original- over HTTP(ts)',
+	'#transcode{venc=ffmpeg,vcodec=mp2v,vb=3000,scale=.5,width=640,fps=25,soverlay}:std{access=http{mime=video/mpeg},mux=ts,dst=:8081}',
+	'http://{%SERVER_NAME%}:8081/'
+	);
+
+-- 3
+INSERT INTO plg_profiles (label, arg, link) VALUES
+	('H264/AAC over RTSP',
+	'#transcode{vcodec=h264,venc=x264{no-cabac,level=12,vbv-maxrate=384,vbv-bufsize=1000,keyint=75,ref=3,bframes=0},width=320,height=180,acodec=mp4a,ab=64,vb=384}:rtp{mp4a-latm,sdp=rtsp://0.0.0.0:5554/android.sdp}',
+	'rtsp://{%SERVER_NAME%}:5554/android.sdp'
+	);
+
+-- 4
+INSERT INTO plg_profiles (label, arg, link) VALUES
+	('H264/AAC (HQ) over RTSP',
+	'#transcode{vcodec=h264,venc=x264{no-cabac,keyint=75,ref=3,bframes=0},width=800,vb=1200,profile=baseline,level=1.2,acodec=mp4a,ab=160,channels=2}:rtp{mp4a-latm,sdp=rtsp://0.0.0.0:5554/android.sdp}',
+	'rtsp://{%SERVER_NAME%}:5554/android.sdp'
+	);
+
+-- 5	
+INSERT INTO plg_profiles (label, arg, link) VALUES
+	('MP4v/AAC over RTSP',
+	'#transcode{vcodec=mp4v,vb=400,fps=25,scale=0.5,acodec=mp4a,ab=64,channels=2}:rtp{mp4a-latm,sdp=rtsp://0.0.0.0:5554/android.sdp}',
+	'rtsp://{%SERVER_NAME%}:5554/android.sdp'
+	);
+
+-- 6
+INSERT INTO plg_profiles (label, arg, link) VALUES
+	('FLV/MP3 over HTTP(flv)',
+	'#transcode{vcodec=FLV1,acodec=mp3,vb=200,deinterlace,fps=25,samplerate=44100,ab=32}:std{access=http{mime=video/x-flv},mux=ffmpeg{mux=flv},dst=:8081/stream}',
+	'http://{%SERVER_NAME%}:8081/stream'
+	);
+
+-- 7
+INSERT INTO plg_profiles (label, arg, link) VALUES
+	('H264/MP3 over HTTP(flv)',
+	'#transcode{vcodec=h264,vb=200,deinterlace,ab=32,fps=25,width=256,height=192,acodec=mp3,samplerate=44100}:std{access=http{mime=video/x-flv},mux=ffmpeg{mux=flv},dst=:8081/stream}',
+	'http://{%SERVER_NAME%}:8081/stream'
 	);
 	
-	
--- OUTPUTS
-	
-INSERT INTO plg_outputs (label, arg, link, cond_devices) VALUES
-	('Http stream on 8081',
-	'std{access=http,mux=ts,dst=:8081}',
-	'http://{%SERVER_NAME%}:8081/',
-	NULL);	
-	
-INSERT INTO plg_outputs (label, arg, link, cond_devices) VALUES
-	('WIIMC stream',
-	'std{access=http,mux=ts,dst=:8081}',
-	'http://{%SERVER_NAME%}:8081/',
-	0);	
-	
-INSERT INTO plg_outputs (label, arg, link, cond_devices) VALUES
-	('Simulated WIIMC stream for PC',
-	'std{access=http,mux=ts,dst=:8081}',
-	'http://{%SERVER_NAME%}:8081/',
-	100);	
-	
-INSERT INTO plg_outputs (label, arg, link, cond_devices) VALUES
-	('Android Phone (Rtp Stream)',
-	'rtp{mp4a-latm,sdp=rtsp://0.0.0.0:5554/android.sdp}',
-	'rtsp://{%SERVER_NAME%}:5554/android.sdp',
-	1);
 
-INSERT INTO plg_outputs (label, arg, link, cond_devices) VALUES
-	('HTTP mux FLV',
-	'std{access=http,mux=ffmpeg{mux=flv},dst=:8081/stream.flv}',
-	'http://{%SERVER_NAME%}:8081/stream.flv',
-	NULL);
-	
-INSERT INTO plg_outputs (label, arg, link, cond_devices) VALUES
-	('HTTP h264',
-	'std{access=http{mime=video/x-flv},mux=ffmpeg{mux=flv},dst=:8081/stream}',
-	'http://{%SERVER_NAME%}:8081/stream',
-	NULL);
 	
 -- ONLINE LIBRARY CHANNELS --
 
@@ -134,9 +90,11 @@ INSERT INTO "videos" VALUES(NULL,'mms://verytangy-673-404284.wm.llnwd.net/veryta
 -- AUTOOPTIONS
 
 INSERT INTO plg_devices VALUES 
-	(1, "WiiMC", "/WiiMC/i", 0, 1, 2, "X_VlcShares_Plugins_WiimcPlxRenderer", "", 0);
+	(1, "Asus Transformer", "/Android.*?Transformer TF101/i", 0, 7, "X_VlcShares_Plugins_WebkitRenderer", "", 2);
 INSERT INTO plg_devices VALUES 
-	(2, "Qualsiasi", "/.*/", 0, 1, 2, "X_VlcShares_Plugins_WebkitRenderer", "", 0);
+	(2, "WiiMC", "/WiiMC/i", 0, 1, "X_VlcShares_Plugins_WiimcPlxRenderer", "", 1);
+INSERT INTO plg_devices VALUES 
+	(3, "Qualsiasi", "/.*/", 0, 6, "X_VlcShares_Plugins_WebkitRenderer", "", 0);
 
 
 	

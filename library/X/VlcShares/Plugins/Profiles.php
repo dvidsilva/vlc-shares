@@ -17,6 +17,8 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 			->setPriority('preGetSelectionItems')
 			->setPriority('getSelectionItems')
 			->setPriority('getIndexManageLinks')
+			->setPriority('preGetControlItems', 1)
+			->setPriority('getStreamItems')
 			->setPriority('registerVlcArgs');
 	}
 	
@@ -161,6 +163,7 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 			$profiles = array($profile);
 			
 			$extraIds = $this->helpers()->devices()->getDevice()->getExtra('alt-profiles');
+			//X_Debug::i("Profiles: ".$extraIds);
 			if ( $extraIds && is_array($extraIds) && count($extraIds) ) {
 				foreach ( $extraIds as $id ) {
 					if ( $defaultId == $id ) continue;
@@ -240,9 +243,15 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 
 			$vlc->registerArg('profile', $profile->getArg());			
 			
-			if ( $this->config('store.session', false) ) {
+			if ( $this->config('store.session', true) ) {
 				// store the link in session for future use
-				// TODO add session support
+				try {
+					/* @var $cache X_VlcShares_Plugins_Helper_Cache */
+					$cache = $this->helpers()->helper('cache');
+					$cache->storeItem('profile::lastvlclink', $profile->getLink(), 240);
+				} catch (Exception $e) {
+					// nothing to store or no place to store to
+				}
 			}
 			
 		} else {
@@ -250,6 +259,107 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 		}
 	
 	}
+	
+	/**
+	 * Return the link -go-to-stream-
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return X_Page_ItemList_PItem 
+	 */
+	public function getStreamItems($provider, $location, Zend_Controller_Action $controller) {
+		
+		X_Debug::i('Plugin triggered');
+		
+		$profileId = $controller->getRequest()->getParam($this->getId(), false);
+		$urlHelper = $controller->getHelper('url');
+		
+		$profile = new Application_Model_Profile();
+		// i store the default link, so if i don't find the proper output
+		// i will have a valid link for -go-to-stream- button
+		//$output->setLink($this->config('default.link', "http://{$_SERVER['SERVER_ADDR']}:8081"));
+		
+		if ( $profileId !== false ) {
+			Application_Model_ProfilesMapper::i()->find($profileId, $profile);
+		} else {
+			// if no params is provided, i will try to
+			// get the best output for this devide
+			$profile = $this->getBest();
+		}
+		
+		
+		$outputLink = self::prepareOutputLink($profile->getLink());
+		
+		$item = new X_Page_Item_PItem($this->getId(), X_Env::_('p_profiles_gotostream'));
+		$item->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
+			->setIcon('/images/icons/play.png')
+			->setLink($outputLink);
+		return new X_Page_ItemList_PItem(array($item));
+		
+	}	
+	
+	/**
+	 * Add the button BackToStream in controls page
+	 * 
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array
+	 */
+	public function preGetControlItems(Zend_Controller_Action $controller) {
+		
+		X_Debug::i('Plugin triggered');
+		
+		$profileId = $controller->getRequest()->getParam($this->getId(), false);
+		$urlHelper = $controller->getHelper('url');
+		
+		$outputLink = false;
+		// i store the default link, so if i don't find the proper output
+		// i will have a valid link for -go-to-stream- button
+		//$output->setLink($this->config('default.link', "http://{$_SERVER['SERVER_ADDR']}:8081"));
+		
+		if ( $profileId !== false ) {
+			$profile = new Application_Model_Profile();
+			Application_Model_ProfilesMapper::i()->find($profileId, $profile);
+			$outputLink = $profile->getLink();
+		} else {
+			// if store session is enabled, i try to get last output
+			// method from store
+			// else i fallback to best selection
+			try {
+				if ( $this->config('store.session', true) ) {
+					/* @var $cache X_VlcShares_Plugins_Helper_Cache */
+					$cache = $this->helpers()->helper('cache');
+					$outputLink = $cache->retrieveItem('profile::lastvlclink');
+				} 
+			} catch (Exception $e) {
+				// cache expired or cache disabled;
+				X_Debug::i("Stored session not used");
+			}
+			if ( !$outputLink ) {
+				X_Debug::i("Outputlink not found. Using best for this device");
+				$profile = $this->getBest();
+				$outputLink = $profile->getLink();
+			}
+		}
+		
+		
+		$outputLink = self::prepareOutputLink($outputLink);
+		$outputLink = str_replace(
+			array(
+				'{%SERVER_IP%}',
+				'{%SERVER_NAME%}'
+			),array(
+				$_SERVER['SERVER_ADDR'],
+				$_SERVER['HTTP_HOST']
+			), $outputLink
+		);
+		
+		$item = new X_Page_Item_PItem($this->getId(), X_Env::_('p_profiles_backstream'));
+		$item->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
+			->setIcon('/images/icons/play.png')
+			->setLink($outputLink);
+		return new X_Page_ItemList_PItem(array($item));
+		
+	}	
 	
 	/**
 	 * Add the link for -manage-output-
@@ -270,7 +380,7 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 	}
 	
 	
-	private function getBest($location, $device, $provider) {
+	private function getBest() {
 
 		// stream analysis no more
 		
@@ -338,6 +448,18 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 		
 		return X_Env::_('p_profiles_backupper_restoreditems'). ": " .count($items['profiles']);
 		
+	}
+	
+	static public function prepareOutputLink($link) {
+		return str_replace(
+			array(
+				'{%SERVER_IP%}',
+				'{%SERVER_NAME%}'
+			),array(
+				$_SERVER['SERVER_ADDR'],
+				strstr($_SERVER['HTTP_HOST'], ':') ? strstr($_SERVER['HTTP_HOST'], ':') : $_SERVER['HTTP_HOST']
+			), $link
+		);
 	}
 }
 
