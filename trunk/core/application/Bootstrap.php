@@ -35,7 +35,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		
 		
 		// check for extra plugins path
-		$extraPluginsPath = APPLICATION_PATH . '/../extra/plugins';
+		$extraPluginsPath = APPLICATION_PATH . '/../../plugins';
 		if ( !file_exists($extraPluginsPath) ) {
 			X_Debug::w("Extra plugins path not found");
 			return;

@@ -1,2 +1,2 @@
 
-call ..\..\..\php\php.exe %*
+call ..\..\php\php.exe %*

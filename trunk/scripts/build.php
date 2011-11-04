@@ -12,7 +12,7 @@ function ignoreVcsCB($p_event, &$p_header) {
 
 // Initialize the application path and autoloading
 defined('APPLICATION_PATH')
-    || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application'));
+    || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../core/application'));
 set_include_path(implode(PATH_SEPARATOR, array(
     APPLICATION_PATH . '/../library',
     get_include_path(),
@@ -32,7 +32,7 @@ $coreInclude = array(
 	APPLICATION_PATH.'/../library'
 );
 
-$pluginsDir = APPLICATION_PATH.'/../extra/plugins';
+$pluginsDir = APPLICATION_PATH.'/../../plugins';
 
 $distDir = '/../dist';
 
