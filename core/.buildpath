@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<buildpath>
-	<buildpathentry excluding="scripts/|tests/|data/|docs/|build/|dist/|extra/plugins/cache/|extra/plugins/audioSwitcher/" kind="src" path=""/>
-	<buildpathentry kind="con" path="org.zend.php.framework.CONTAINER"/>
-	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
-</buildpath>
