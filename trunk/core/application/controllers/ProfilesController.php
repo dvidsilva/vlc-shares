@@ -40,20 +40,8 @@ class ProfilesController extends X_Controller_Action {
 				Application_Model_ProfilesMapper::i()->find($form->getValue('id'), $model);
 			}
 			$model->setLabel($form->getValue('label'));
-			//$model->setLink($form->getValue('link'));
+			$model->setLink($form->getValue('link'));
 			$model->setArg($form->getValue('arg'));
-			$model->setWeight($form->getValue('weight'));
-			$device = $form->getValue('device');
-			$audio = $form->getValue('audio');
-			$video = $form->getValue('video');
-			if ( $device == 'unknown') $device = null;
-			if ( $audio == 'unknown' || $video == 'unknown' ) {
-				$audiovideo = null;
-			} else {
-				$audiovideo = "$video+$audio";
-			}
-			$model->setCondDevices($device);
-			$model->setCondFormats($audiovideo);
 			//$this->_helper->flashMessenger(print_r($request->getPost(), true));
 			try {
 				Application_Model_ProfilesMapper::i()->save($model);
@@ -65,32 +53,6 @@ class ProfilesController extends X_Controller_Action {
 			$this->_helper->flashMessenger(X_Env::_('p_profiles_err_invaliddata').": ".var_export($form->getErrors(), true));
 		}
 		$this->_helper->redirector('index', 'profiles');
-	}
-		
-	public function testAction() {
-		
-		$audio = $this->getRequest()->getParam('audio', 'unknown');
-		$video = $this->getRequest()->getParam('video', 'unknown');
-		$device = $this->getRequest()->getParam('device', 'unknown');
-		
-		if ( $device == 'unknown') {
-			$device = null;
-		} else {
-			$device = (int) $device;
-		}
-		if ( $audio == 'unknown' || $video == 'unknown' ) {
-			$audiovideo = null;
-		} else {
-			$audiovideo = "$video+$audio";
-		}
-		
-		$profile = new Application_Model_Profile();
-		Application_Model_ProfilesMapper::i()->findBest($audiovideo, $device, null, $profile);
-
-		$return = array('profileId' => $profile->getId());
-		
-		$this->_helper->json($return);
-		
 	}
 
 	private function _initForm() {

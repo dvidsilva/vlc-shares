@@ -349,6 +349,27 @@ class ConfigsController extends X_Controller_Action
 	    		));
 	    	} catch(Exception $e) { X_Debug::w("No debug level settings? O_o"); }
 	    	
+	    	try {
+	    		$_guis = X_VlcShares_Plugins::broker()->getPlugins();
+	    		$guis = array();
+	    		foreach ($_guis as $gui) {
+	    			if ( $gui instanceof X_VlcShares_Plugins_RendererInterface ) {
+	    				$guis[get_class($gui)] = "{$gui->getName()} - {$gui->getDescription()}";
+	    			}
+	    		}
+	    		$this->configForm->helpers_devices_gui->setMultiOptions($guis);
+	    	} catch (Exception $e) { X_Debug::w("No gui settings"); }
+	    	
+	    	try {
+	    		$_profiles = Application_Model_ProfilesMapper::i()->fetchAll(); 
+	    		foreach ($_profiles as $profile) {
+	    			$profiles[$profile->getId()] = "{$profile->getId()} - {$profile->getLabel()}";
+	    		}
+	    		$this->configForm->helpers_devices_profile->setMultiOptions($profiles);
+	    	} catch (Exception $e) {
+	    		X_Debug::w("No gui settings");
+	    	}
+	    	
     	}
     	
     	if ( $posts !== null && is_array($posts)  ) {

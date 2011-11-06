@@ -99,18 +99,18 @@ class DevicesController extends X_Controller_Action {
 		
 		if ( $id === false ) {
 			$this->_helper->flashMessenger(X_Env::_('p_devices_err_invaliddata'));
-			$this->_helper->redirector('index', 'outputs');
+			$this->_helper->redirector('index', 'devices');
 		}
 		
-		$output = new Application_Model_Output();
-		Application_Model_OutputsMapper::i()->find($id, $output);
-		if ( is_null($output->getId()) ) {
+		$device = new Application_Model_Device();
+		Application_Model_DevicesMapper::i()->find($id, $device);
+		if ( is_null($device->getId()) ) {
 			$this->_helper->flashMessenger(X_Env::_('p_devices_err_invaliddata'));
-			$this->_helper->redirector('index', 'outputs');
+			$this->_helper->redirector('index', 'devices');
 		}
 
 		$form = new X_Form();
-		$form->setMethod(Zend_Form::METHOD_POST)->setAction($this->_helper->url('remove', 'outputs', 'default', array('id' => $output->getId())));
+		$form->setMethod(Zend_Form::METHOD_POST)->setAction($this->_helper->url('remove', 'devices', 'default', array('id' => $device->getId())));
 		$form->addElement('hash', 'csrf', array(
 			'salt'  => __CLASS__,
 			'ignore' => true,
@@ -132,7 +132,7 @@ class DevicesController extends X_Controller_Action {
 		// execute delete and redirect to index
 		if ( $form->isValid($this->getRequest()->getPost()) ) {
 			try {
-				Application_Model_OutputsMapper::i()->delete($output);
+				Application_Model_DevicesMapper::i()->delete($device);
 				$this->_helper->flashMessenger(X_Env::_('p_devices_delete_done'));
 			} catch (Exception $e) {
 				$this->_helper->flashMessenger(X_Env::_('p_devices_err_db'));
@@ -140,10 +140,10 @@ class DevicesController extends X_Controller_Action {
 			$this->_helper->redirector('index', 'devices');
 		}
 		
-		$form->setDefault('id', $output->getId());
+		$form->setDefault('id', $device->getId());
 		
 		$this->view->form = $form;
-		$this->view->output = $output;
+		$this->view->device = $device;
 		
 	}
 	
@@ -366,14 +366,14 @@ class DevicesController extends X_Controller_Action {
 		$profiles = Application_Model_ProfilesMapper::i()->fetchAll();
 		$profilesMO = array();
 		foreach ($profiles as $profile) {
-			$profilesMO[(string) $profile->getId()] = $profile->getLabel();
+			$profilesMO[(string) $profile->getId()] = "{$profile->getId()} - {$profile->getLabel()}";
 		}
 		
 		$guis = X_VlcShares_Plugins::broker()->getPlugins();
 		$guisMO = array();
 		foreach ($guis as $gui) {
 			if ( $gui instanceof X_VlcShares_Plugins_RendererInterface ) {
-				$guisMO[get_class($gui)] = $gui->getName();
+				$guisMO[get_class($gui)] = "{$gui->getName()} - {$gui->getDescription()}";
 			}
 		}
 		

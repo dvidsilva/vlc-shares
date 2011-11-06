@@ -30,7 +30,7 @@ class Application_Form_Profile extends X_Form
         $this->addElement('text', 'link', array(
             'label'      => X_Env::_('p_profiles_form_link_label'),
         	'description'=> X_Env::_('p_profiles_form_link_desc'),
-			'required'   => false,
+			'required'   => true,
         	'filters'    => array('StringTrim'),
         ));
         

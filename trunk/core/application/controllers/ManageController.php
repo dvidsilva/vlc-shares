@@ -34,6 +34,7 @@ class ManageController extends X_Controller_Action
     			'action'		=> 'collections'
     		), 'default', true);
     	$manageLinks->append($item);
+    	/*
     	$item = new X_Page_Item_ManageLink('core-manage-test', X_Env::_('manage_goto_testtitle'));
     	$item
     		->setTitle(X_Env::_('manage_goto_test'))
@@ -43,6 +44,7 @@ class ManageController extends X_Controller_Action
     			'action'		=> 'index'
     		), 'default', true);
     	$manageLinks->append($item);
+    	*/
     	$item = new X_Page_Item_ManageLink('core-manage-configs', X_Env::_('manage_goto_configstitle'));
     	$item
     		->setTitle(X_Env::_('manage_goto_configs'))

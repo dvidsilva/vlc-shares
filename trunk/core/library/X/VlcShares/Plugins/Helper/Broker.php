@@ -62,12 +62,8 @@ class X_VlcShares_Plugins_Helper_Broker {
 	}
 	public function init(Zend_Config $options) {
 		
-		//$this->mediainfo = new X_VlcShares_Plugins_Helper_Mediainfo($options->get('mediainfo', new Zend_Config(array())));
 		$this->language = new X_VlcShares_Plugins_Helper_Language($options->get('language', new Zend_Config(array())));
 		$this->ffmpeg = new X_VlcShares_Plugins_Helper_FFMpeg($options->get('ffmpeg', new Zend_Config(array())));
-		// mediainfo helper removed from 0.5.3
-		// everything is done by ffmpeg only
-		$this->mediainfo = $this->ffmpeg;
 		$this->devices = new X_VlcShares_Plugins_Helper_Devices($options->get('devices', new Zend_Config(array())));
 		$this->stream = new X_VlcShares_Plugins_Helper_Stream($options->get('stream', new Zend_Config(array())));
 		$this->paginator = new X_VlcShares_Plugins_Helper_Paginator($options->get('paginator', new Zend_Config(array())));
@@ -75,7 +71,7 @@ class X_VlcShares_Plugins_Helper_Broker {
 		$this->rtmpdump = new X_VlcShares_Plugins_Helper_RtmpDump($options->get('rtmpdump', new Zend_Config(array())));
 		$this->sopcast = new X_VlcShares_Plugins_Helper_SopCast($options->get('sopcast', new Zend_Config(array())));
 		
-		$this->registerHelper('mediainfo', $this->mediainfo, true)
+		$this
 			->registerHelper('language', $this->language, true)
 			->registerHelper('ffmpeg', $this->ffmpeg, true)
 			->registerHelper('devices', $this->devices, true)
@@ -85,11 +81,6 @@ class X_VlcShares_Plugins_Helper_Broker {
 			->registerHelper('rtmpdump', $this->rtmpdump, true)
 			->registerHelper('sopcast', $this->sopcast, true);
 	}
-	
-	/**
-	 * @return X_VlcShares_Plugins_Helper_Mediainfo
-	 */
-	public function mediainfo() { return $this->mediainfo; }
 	
 	/**
 	 * @return X_VlcShares_Plugins_Helper_Language
