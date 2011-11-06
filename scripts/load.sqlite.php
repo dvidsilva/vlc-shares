@@ -75,7 +75,7 @@ if (file_exists($dbFile)) {
 // this block executes the actual statements that were loaded from
 // the schema file.
 try {
-    $schemaSql = file_get_contents(dirname(__FILE__) . '/schema.sqlite.sql');
+    $schemaSql = file_get_contents(dirname(__FILE__) . '/db/schema.sqlite.sql');
     // use the connection directly to load sql in batches
     $dbAdapter->getConnection()->exec($schemaSql);
     chmod($dbFile, 0666);
@@ -86,7 +86,7 @@ try {
         echo PHP_EOL;
     }
 
-	$dataSql = file_get_contents(dirname(__FILE__) . '/configs.sqlite.sql');
+	$dataSql = file_get_contents(dirname(__FILE__) . '/db/configs.sqlite.sql');
 	// use the connection directly to load sql in batches
 	$dbAdapter->getConnection()->exec($dataSql);
 	if ('testing' != APPLICATION_ENV) {
@@ -94,7 +94,7 @@ try {
 		echo PHP_EOL;
 	}
 
-	$dataSql = file_get_contents(dirname(__FILE__) . '/plugins.sqlite.sql');
+	$dataSql = file_get_contents(dirname(__FILE__) . '/db/plugins.sqlite.sql');
 	// use the connection directly to load sql in batches
 	$dbAdapter->getConnection()->exec($dataSql);
 	if ('testing' != APPLICATION_ENV) {
@@ -103,7 +103,7 @@ try {
 	}
 	if ($withData) {
     	
-        $dataSql = file_get_contents(dirname(__FILE__) . '/data.sqlite.sql');
+        $dataSql = file_get_contents(dirname(__FILE__) . '/db/data.sqlite.sql');
         // use the connection directly to load sql in batches
         $dbAdapter->getConnection()->exec($dataSql);
         if ('testing' != APPLICATION_ENV) {
@@ -113,7 +113,7 @@ try {
     }
 
 	if ( $withBuffer ) {
-		$dataSql = file_get_contents(dirname(__FILE__) . '/buffer.sqlite.sql');
+		$dataSql = file_get_contents(dirname(__FILE__) . '/db/buffer.sqlite.sql');
 		if ( trim($dataSql) != '' ) {
 			// use the connection directly to load sql in batches
 			$dbAdapter->getConnection()->exec($dataSql);

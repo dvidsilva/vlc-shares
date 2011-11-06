@@ -1,22 +1,22 @@
-<!-- application/views/scripts/outputs/remove.phtml -->
+<!-- application/views/scripts/devices/remove.phtml -->
 <?php 
 
 $menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
 $this->layout()->subNavigator =	$menu
-	->addLinkRoute(X_Env::_('back'), "outputs", "index");
+	->addLinkRoute(X_Env::_('back'), "devices", "index");
 	
 $breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
 /* @var $breadcrumb X_VlcShares_Elements_Menu */
 $this->layout()->breadcrumb = $breadcrumb
 	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
-	->addLinkRoute(X_Env::_('p_outputs_title'), 'outputs', 'index')
-	->addLabel(X_Env::_('p_outputs_removeoutputs_title'));
+	->addLinkRoute(X_Env::_('p_devices_title'), 'devices', 'index')
+	->addLabel(X_Env::_('p_devices_removedevices_title'));
 
 ?>
 <?php //$this->headScript()->appendFile($this->baseUrl("/js/plugin/index.js")); ?>
 <?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
 <?php $this->headScript()->captureEnd(); ?>
-<?php $this->headTitle()->prepend(X_Env::_('p_outputs_removeoutputs_title')); ?>
+<?php $this->headTitle()->prepend(X_Env::_('p_devices_removedevices_title')); ?>
 
 <?php if ( count($this->messages) ) :?>
 <div class="span-24 last" id="manage-messages">
@@ -37,17 +37,15 @@ $this->layout()->breadcrumb = $breadcrumb
 	<div class="container horizontal-center" style="width: 960px">
 		<div class="box">
 			<div class="header">
-				<span class="title"><?php echo X_Env::_('p_outputs_removeoutput_maintitle'); ?></span>
+				<span class="title"><?php echo X_Env::_('p_devices_removeoutput_maintitle'); ?></span>
 			</div>
 			<div class="content">
-				<p><?php echo X_Env::_('p_outputs_removeoutput_maindesc'); ?></p>
+				<p><?php echo X_Env::_('p_devices_removeoutput_maindesc'); ?></p>
 				<dl>
-					<dt><b><?php echo X_Env::_('p_outputs_form_label_label'); ?></b></dt>
-					<dd><?php echo $this->output->getLabel(); ?></dd>
-					<dt><b><?php echo X_Env::_('p_outputs_form_link_label'); ?></b></dt>
-					<dd style="word-break: break-all"><?php echo $this->output->getLink(); ?></dd>
-					<dt><b><?php echo X_Env::_('p_outputs_form_arg_label'); ?></b></dt>
-					<dd style="word-break: break-all"><pre style="font-size: small;"><?php echo X_Env::codeFormat($this->output->getArg()); ?></pre></dd>
+					<dt><b><?php echo X_Env::_('p_devices_form_label_label'); ?></b></dt>
+					<dd><?php echo $this->device->getLabel(); ?></dd>
+					<dt><b><?php echo X_Env::_('p_devices_form_pattern_label'); ?></b></dt>
+					<dd style="word-break: break-all"><?php echo $this->device->getPattern(); ?></dd>
 				</dl>
 				<?php echo $this->form; ?>
 			</div>

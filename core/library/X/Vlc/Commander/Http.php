@@ -245,7 +245,7 @@ class X_Vlc_Commander_Http extends X_Vlc_Commander {
 		$host = $this->http_host;
 		$port = $this->http_port;
 		
-		return '-I http --http-host="'.$host.':'.$port.'"';
+		return '-I http --http-host="'.$host.'" --http-port="'.$port.'"';
 	}
 	
 	private function _send($command) {

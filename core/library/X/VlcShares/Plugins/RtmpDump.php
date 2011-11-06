@@ -31,7 +31,7 @@ class X_VlcShares_Plugins_RtmpDump extends X_VlcShares_Plugins_Abstract {
 			// parsing rtmpdump params from the uri and overriding the quiet param to be sure it's ok for the pipe
 			if ( X_Env::isWindows() ) {
 				X_Env::execute(
-					(string) X_RtmpDump::getInstance()->parseUri($source)->setQuiet(true)->setStreamPort('8081'), 
+					(string) X_RtmpDump::getInstance()->parseUri($source)->setQuiet(true)->setStreamPort($this->helpers()->rtmpdump()->getStreamPort()), 
 					X_Env::EXECUTE_OUT_NONE,
 					X_Env::EXECUTE_PS_BACKGROUND
 				);
@@ -41,7 +41,7 @@ class X_VlcShares_Plugins_RtmpDump extends X_VlcShares_Plugins_Abstract {
 				sleep(10);
 				
 			} else {
-				$vlc->setPipe(X_RtmpDump::getInstance()->parseUri($source)->setQuiet(true)->setStreamPort('8081')/*->setLive(true)*/);
+				$vlc->setPipe(X_RtmpDump::getInstance()->parseUri($source)->setQuiet(true)->setStreamPort($this->helpers()->rtmpdump()->getStreamPort())/*->setLive(true)*/);
 				$vlc->registerArg('source', '- --play-and-stop');
 			}
 			$vlc->registerArg('profile', '');
@@ -69,7 +69,7 @@ class X_VlcShares_Plugins_RtmpDump extends X_VlcShares_Plugins_Abstract {
 		$return = new X_Page_ItemList_PItem();
 		
 		
-		$outputLink = "http://{%SERVER_NAME%}:8081/";
+		$outputLink = "http://{%SERVER_NAME%}:{$this->helpers()->rtmpdump()->getStreamPort()}/";
 		$outputLink = str_replace(
 			array(
 				'{%SERVER_IP%}',
@@ -159,7 +159,7 @@ class X_VlcShares_Plugins_RtmpDump extends X_VlcShares_Plugins_Abstract {
 			return false;
 		} elseif ($key == 'outputs') {
 			
-			$outputLink = "http://{%SERVER_NAME%}:8081/";
+			$outputLink = "http://{%SERVER_NAME%}:{$this->helpers()->rtmpdump()->getStreamPort()}/";
 			$outputLink = str_replace(
 				array(
 					'{%SERVER_IP%}',

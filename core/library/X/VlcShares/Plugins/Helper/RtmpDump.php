@@ -26,6 +26,14 @@ class X_VlcShares_Plugins_Helper_RtmpDump extends X_VlcShares_Plugins_Helper_Abs
 		return ($this->options->get('enabled', false) && file_exists($this->options->get('path', false))); 
 	}
 	
+	/**
+	 * Get the stream port from configs
+	 * @return int|string
+	 */
+	function getStreamPort() {
+		return $this->options->get('port', 8081);
+	}
+	
 	
 }
 

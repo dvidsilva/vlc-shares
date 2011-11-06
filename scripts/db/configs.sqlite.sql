@@ -151,10 +151,11 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 --	NULL
 --);
 
+
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'paginator.perpage', 
-	'25',
-	'25',
+	'400',
+	'400',
 	'helpers',
 	0,
 	'config_helpers_paginator_perpage_label',
@@ -162,6 +163,27 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	NULL
 );
 
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'devices.gui', 
+	'X_VlcShares_Plugins_WebkitRenderer',
+	'X_VlcShares_Plugins_WebkitRenderer',
+	'helpers',
+	1,
+	'config_helpers_devices_gui_label',
+	'config_helpers_devices_gui_desc',
+	'advanced'
+);
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'devices.profile', 
+	'1',
+	'1',
+	'helpers',
+	1,
+	'config_helpers_devices_profile_label',
+	'config_helpers_devices_profile_desc',
+	'advanced'
+);
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'ffmpeg.enabled', 
@@ -205,6 +227,17 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	'config_helpers_rtmpdump_path_label',
 	'config_helpers_rtmpdump_path_desc',
 	NULL
+);
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'rtmpdump.port', 
+	'8081',
+	'8081',
+	'helpers',
+	0,
+	'config_helpers_rtmpdump_port_label',
+	'config_helpers_rtmpdump_port_desc',
+	'advanced'
 );
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
