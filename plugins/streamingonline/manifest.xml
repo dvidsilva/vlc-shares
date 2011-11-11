@@ -16,6 +16,11 @@
 	<files>
 		<library>
 			<X>
+				<PageParser>
+					<Parser>
+						<file>StreamingOnlineVideos.php</file>
+					</Parser>
+				</PageParser>
 				<VlcShares>
 					<Plugins>
 						<file>StreamingOnline.php</file>
