@@ -76,7 +76,7 @@ foreach ($directory as $entry) {
 			
 			foreach ($neededLinks as $linkFrom => $linkTo) {
 				if ( file_exists($linkTo)) {
-					if ( !$echoed ) echo "Cleanup file found: $bootstrapFile".PHP_EOL; $echoed = true;
+					if ( !$echoed ) echo "Cleanup file found and executed: $bootstrapFile".PHP_EOL; $echoed = true;
 					echo "   '---- Unlinking $linkTo".PHP_EOL;
 					unlink($linkTo);
 				}

@@ -65,6 +65,7 @@ $neededLinks = array(
  */
 $includeFiles = array(
 	//$basePath.'/application/controllers/MycontrollerController.php' // <--- THIS IS AN EAMPLE FOR CONTROLLER INCLUSION
+	$basePath.'/library/X/PageParser/Parser/StreamingOnlineVideos.php' // <--- THIS IS AN EAMPLE FOR CONTROLLER INCLUSION
 );
 
 /**
