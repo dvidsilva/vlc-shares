@@ -54,8 +54,10 @@ foreach ($directory as $entry) {
 	$bootstrapFile = $entry->getRealPath() . '/dev_cleanup.php';
 	
 	if ( file_exists($bootstrapFile) ) {
-		echo "Cleanup file found: $bootstrapFile".PHP_EOL;
+		//echo "Cleanup file found: $bootstrapFile".PHP_EOL;
 		{
+			
+			$echoed = false;
 			
 			$neededDirectories = array();
 			$neededLinks = array();
@@ -66,6 +68,7 @@ foreach ($directory as $entry) {
 
 			foreach ($neededDirectories as $dir) {
 				if ( file_exists($dir) ) {
+					if ( !$echoed ) echo "Cleanup file found and executed: $bootstrapFile".PHP_EOL; $echoed = true;
 					echo "   '---- Removing directory $dir".PHP_EOL;
 					rm_recursive($dir);
 				}
@@ -73,13 +76,14 @@ foreach ($directory as $entry) {
 			
 			foreach ($neededLinks as $linkFrom => $linkTo) {
 				if ( file_exists($linkTo)) {
+					if ( !$echoed ) echo "Cleanup file found: $bootstrapFile".PHP_EOL; $echoed = true;
 					echo "   '---- Unlinking $linkTo".PHP_EOL;
 					unlink($linkTo);
 				}
 			}
 		
 		}		
-		echo PHP_EOL;
+		//echo PHP_EOL;
 	} 
 }
 
