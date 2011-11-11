@@ -372,4 +372,31 @@
 			<description><![CDATA[*USE IT ONLY IF YOU HAVE A PREMIUM ACCOUNT* Allow to use premium account of real debrid for many hosters]]></description>
 		</version>
 	</plugin>
+	<plugin key="videozer">
+		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_videozer_0.1.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch videos from videozer]]></description>
+		</version>
+	</plugin>
+	<plugin key="pageparserlib">
+		<version name="0.1" type="alpha" cMin="0.5.4" cMax="0.5.5">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_pageparserlib_0.1alpha.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Add Page Parser API to VlcShares 0.5.4 (backported from 0.5.5dev)]]></description>
+		</version>
+	</plugin>
+	<plugin key="streamingonline">
+		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_streamingonline_0.1beta.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch videos from streaming-online.biz site (Require PageParserLib)]]></description>
+		</version>
+	</plugin>
 </plugins>
