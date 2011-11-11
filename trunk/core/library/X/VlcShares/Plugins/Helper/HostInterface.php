@@ -8,6 +8,7 @@ interface X_VlcShares_Plugins_Helper_HostInterface {
 	const E_URL_INVALID = 1;
 	const E_ID_INVALID = 2;
 	const E_ID_NOTFOUND = 3;
+	const E_QUOTA_NOMORE = 99;
 	
 	/**
 	 * give the hoster id
@@ -62,4 +63,3 @@ interface X_VlcShares_Plugins_Helper_HostInterface {
 	
 }
 
-?>
