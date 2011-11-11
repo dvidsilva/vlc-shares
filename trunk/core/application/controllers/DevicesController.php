@@ -20,10 +20,10 @@ class DevicesController extends X_Controller_Action {
 			}
 		}
 		
-		/* @var $cacheHelper X_VlcShares_Plugins_Helper_Cache  */
-		$cacheHelper = X_VlcShares_Plugins::helpers()->helper('cache');
 		$lastdevices = false;
 		try {
+			/* @var $cacheHelper X_VlcShares_Plugins_Helper_Cache  */
+			$cacheHelper = X_VlcShares_Plugins::helpers()->helper('cache');
 			$lastdevices = $cacheHelper->retrieveItem('devices::lastdevices');
 		} catch (Exception $e) { /* key missing */ }
 		if ( $lastdevices ) {
@@ -198,10 +198,10 @@ class DevicesController extends X_Controller_Action {
 		}
 		
 		
-		/* @var $cacheHelper X_VlcShares_Plugins_Helper_Cache  */
-		$cacheHelper = X_VlcShares_Plugins::helpers()->helper('cache');
 		$lastdevices = false;
 		try {
+			/* @var $cacheHelper X_VlcShares_Plugins_Helper_Cache  */
+			$cacheHelper = X_VlcShares_Plugins::helpers()->helper('cache');
 			$lastdevices = $cacheHelper->retrieveItem('devices::lastdevices');
 		} catch (Exception $e) { /* key missing */ }
 		if ( $lastdevices ) {
