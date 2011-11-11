@@ -1,3 +1,3 @@
-DELETE FROM configs WHERE `key` LIKE 'icefilms.%';
+--DELETE FROM configs WHERE `key` LIKE '.%';
 
 	
