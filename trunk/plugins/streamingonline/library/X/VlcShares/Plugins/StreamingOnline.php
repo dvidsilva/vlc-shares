@@ -2,7 +2,7 @@
 
 class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.1';
+	const VERSION = '0.1beta';
 	const VERSION_CLEAN = '0.1';
 	
 	const TYPE_MOVIESLAST = 'LastMovies';
@@ -41,12 +41,14 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 	protected $cachedLocation = array();
 	
 	function __construct() {
-		$this->setPriority('getCollectionsItems');
-		$this->setPriority('getShareItems');
-		$this->setPriority('preGetModeItems');
-		$this->setPriority('preRegisterVlcArgs');
+		if ( class_exists('X_VlcShares_Plugins_Utils') ) {
+			$this->setPriority('getCollectionsItems');
+			$this->setPriority('getShareItems');
+			$this->setPriority('preGetModeItems');
+			$this->setPriority('preRegisterVlcArgs');
+			$this->setPriority('getIndexManageLinks');
+		}
 		$this->setPriority('gen_beforeInit');
-		$this->setPriority('getIndexManageLinks');
 		$this->setPriority('getIndexMessages');
 	}
 
@@ -261,12 +263,19 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 	 */
 	public function getIndexMessages(Zend_Controller_Action $controller) {
 		$messages = new X_Page_ItemList_Message();
-		if ( count(X_VlcShares_Plugins::helpers()->hoster()->getHosters()) <= 1	 ) {
-			$messages->append(X_VlcShares_Plugins_Utils::getMessageEntry(
-					$this->getId(),
-					'p_streamingonline_warning_nohosters',
-					X_Page_Item_Message::TYPE_ERROR
-			));
+		
+		if ( class_exists("X_VlcShares_Plugins_Utils", true) ) {
+			if ( count(X_VlcShares_Plugins::helpers()->hoster()->getHosters()) <= 1	 ) {
+				$messages->append(X_VlcShares_Plugins_Utils::getMessageEntry(
+						$this->getId(),
+						'p_streamingonline_warning_nohosters',
+						X_Page_Item_Message::TYPE_ERROR
+				));
+			}
+		} else {
+			$message = new X_Page_Item_Message($this->getId(),"PageParser API is required from Streaming-Online. Please, install PageParserLib plugin (alpha version)");
+			$message->setType(X_Page_Item_Message::TYPE_FATAL);
+			$messages->append($message);
 		}
 		return $messages;
 	}

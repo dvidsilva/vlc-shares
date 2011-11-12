@@ -4,13 +4,13 @@
 		<label>p_streamingonline_plglabel</label>
 		<description>p_streamingonline_plgdesc</description>
 		<version>0.1</version>
-		<status>stable</status>
+		<status>beta</status>
 		<key>streamingonline</key>
 		<file>X/VlcShares/Plugins/StreamingOnline.php</file>
 		<class>X_VlcShares_Plugins_StreamingOnline</class>
 		<compatibility>
-			<from>0.5.5</from>
-			<to>0.6</to>
+			<from>0.5.4</from>
+			<to>0.5.5</to>
 		</compatibility>
 	</metadata>
 	<files>
@@ -38,7 +38,6 @@
 		<languages>
 			<file>X_VlcShares_Plugins_StreamingOnline.en_GB.ini</file>
 			<file>X_VlcShares_Plugins_StreamingOnline.it_IT.ini</file>
-			<file>X_VlcShares_Plugins_StreamingOnline.es_ES.ini</file>
 		</languages>
 	</files>
 	<database>

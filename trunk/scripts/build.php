@@ -34,7 +34,7 @@ $coreInclude = array(
 
 $pluginsDir = APPLICATION_PATH.'/../../plugins';
 
-$distDir = '/../dist';
+$distDir = '/../../dist';
 
 
 
