@@ -340,7 +340,7 @@ class X_FLVInfo {
 			// Set information from meta
 			if ((isset($info->meta)) && (isset($info->meta[1]))) {
 				// Codec (if not found from video frame)
-				if (!isset($ret->video->codec)) $ret->video->codec = $info->meta[1]['videocodecid'];
+				if (!isset($ret->video->codec)) $ret->video->codec = @$info->meta[1]['videocodecid'];
 
 				
 				// Bitrate
@@ -404,7 +404,7 @@ class X_FLVInfo {
 			// Set information from meta
 			if (isset($info->meta[1])) {
 				// Codec (if not found from video frame)
-				if (!isset($ret->audio->codec)) $ret->audio->codec = $info->meta[1]['audiocodecid'];
+				if (!isset($ret->audio->codec)) $ret->audio->codec = @$info->meta[1]['audiocodecid'];
 				
 				// Bitrate
 				if (isset($info->meta[1]['audiodatarate'])) $ret->audio->bitrate = $info->meta[1]['audiodatarate'];

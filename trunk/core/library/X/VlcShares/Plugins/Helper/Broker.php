@@ -5,55 +5,7 @@ require_once 'X/VlcShares/Plugins/Helper/Abstract.php';
 require_once 'Zend/Config.php';
 
 class X_VlcShares_Plugins_Helper_Broker {
-	
-	/**
-	 * 
-	 * @var X_VlcShares_Plugins_Helper_Mediainfo
-	 */
-	private $mediainfo;
-	/**
-	 * 
-	 * @var X_VlcShares_Plugins_Helper_Language
-	 */
-	private $language;
 
-	/**
-	 * 
-	 * @var X_VlcShares_Plugins_Helper_FFMpeg
-	 */
-	private $ffmpeg;
-
-	/**
-	 * 
-	 * @var X_VlcShares_Plugins_Helper_Stream
-	 */
-	private $stream;
-	
-	/**
-	 * 
-	 * @var X_VlcShares_Plugins_Helper_Devices
-	 */
-	private $devices;
-	
-	/**
-	 * @var X_VlcShares_Plugins_Helper_Paginator
-	 */
-	private $paginator;
-	
-	/**
-	 * @var X_VlcShares_Plugins_Helper_Hoster
-	 */
-	private $hoster;
-
-	/**
-	 * @var X_VlcShares_Plugins_Helper_RtmpDump
-	 */
-	private $rtmpdump;
-
-	/**
-	 * @var X_VlcShares_Plugins_Helper_SopCast
-	 */
-	private $sopcast;
 	
 	private $_helpers = array();
 	
@@ -62,66 +14,66 @@ class X_VlcShares_Plugins_Helper_Broker {
 	}
 	public function init(Zend_Config $options) {
 		
-		$this->language = new X_VlcShares_Plugins_Helper_Language($options->get('language', new Zend_Config(array())));
-		$this->ffmpeg = new X_VlcShares_Plugins_Helper_FFMpeg($options->get('ffmpeg', new Zend_Config(array())));
-		$this->devices = new X_VlcShares_Plugins_Helper_Devices($options->get('devices', new Zend_Config(array())));
-		$this->stream = new X_VlcShares_Plugins_Helper_Stream($options->get('stream', new Zend_Config(array())));
-		$this->paginator = new X_VlcShares_Plugins_Helper_Paginator($options->get('paginator', new Zend_Config(array())));
-		$this->hoster = new X_VlcShares_Plugins_Helper_Hoster();
-		$this->rtmpdump = new X_VlcShares_Plugins_Helper_RtmpDump($options->get('rtmpdump', new Zend_Config(array())));
-		$this->sopcast = new X_VlcShares_Plugins_Helper_SopCast($options->get('sopcast', new Zend_Config(array())));
+		$language = new X_VlcShares_Plugins_Helper_Language($options->get('language', new Zend_Config(array())));
+		$ffmpeg = new X_VlcShares_Plugins_Helper_FFMpeg($options->get('ffmpeg', new Zend_Config(array())));
+		$devices = new X_VlcShares_Plugins_Helper_Devices($options->get('devices', new Zend_Config(array())));
+		$stream = new X_VlcShares_Plugins_Helper_Stream($options->get('stream', new Zend_Config(array())));
+		$paginator = new X_VlcShares_Plugins_Helper_Paginator($options->get('paginator', new Zend_Config(array())));
+		$hoster = new X_VlcShares_Plugins_Helper_Hoster();
+		$rtmpdump = new X_VlcShares_Plugins_Helper_RtmpDump($options->get('rtmpdump', new Zend_Config(array())));
+		$sopcast = new X_VlcShares_Plugins_Helper_SopCast($options->get('sopcast', new Zend_Config(array())));
 		
 		$this
-			->registerHelper('language', $this->language, true)
-			->registerHelper('ffmpeg', $this->ffmpeg, true)
-			->registerHelper('devices', $this->devices, true)
-			->registerHelper('stream', $this->stream, true)
-			->registerHelper('paginator', $this->paginator, true)
-			->registerHelper('hoster', $this->hoster, true)
-			->registerHelper('rtmpdump', $this->rtmpdump, true)
-			->registerHelper('sopcast', $this->sopcast, true);
+			->registerHelper('language', $language, true)
+			->registerHelper('ffmpeg', $ffmpeg, true)
+			->registerHelper('devices', $devices, true)
+			->registerHelper('stream', $stream, true)
+			->registerHelper('paginator', $paginator, true)
+			->registerHelper('hoster', $hoster, true)
+			->registerHelper('rtmpdump', $rtmpdump, true)
+			->registerHelper('sopcast', $sopcast, true);
 	}
 	
 	/**
 	 * @return X_VlcShares_Plugins_Helper_Language
 	 */
-	public function language() { return $this->language; }
+	public function language() { return $this->helper(__FUNCTION__); }
 	
 	/**
 	 * @return X_VlcShares_Plugins_Helper_FFMpeg
 	 */
-	public function ffmpeg() { return $this->ffmpeg; }
+	public function ffmpeg() { return $this->helper(__FUNCTION__); }
 
 	/**
 	 * @return X_VlcShares_Plugins_Helper_Stream
 	 */
-	public function stream() { return $this->stream; }
+	public function stream() { return $this->helper(__FUNCTION__); }
 	
 	
 	/**
 	 * @return X_VlcShares_Plugins_Helper_Devices
 	 */
-	public function devices() { return $this->devices; }
+	public function devices() { return $this->helper(__FUNCTION__); }
 
 	/**
 	 * @return X_VlcShares_Plugins_Helper_Paginator
 	 */
-	public function paginator() { return $this->paginator; }
+	public function paginator() { return $this->helper(__FUNCTION__); }
 	
 	/**
 	 * @return X_VlcShares_Plugins_Helper_Hoster
 	 */
-	public function hoster() { return $this->hoster; }
+	public function hoster() { return $this->helper(__FUNCTION__); }
 	
 	/**
 	 * @return X_VlcShares_Plugins_Helper_RtmpDump
 	 */
-	public function rtmpdump() { return $this->rtmpdump; }
+	public function rtmpdump() { return $this->helper(__FUNCTION__); }
 	
 	/**
-	 * @return X_VlcShares_Plugins_Helper_RtmpDump
+	 * @return X_VlcShares_Plugins_Helper_SopCast
 	 */
-	public function sopcast() { return $this->sopcast; }
+	public function sopcast() { return $this->helper(__FUNCTION__); }
 	
 	/**
 	 * Register a new helper in the list
