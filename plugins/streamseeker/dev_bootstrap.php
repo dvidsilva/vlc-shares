@@ -25,7 +25,7 @@ $view = $this->getResource('view');
  * as basepath
  */
 $neededDirectories = array(
-	//APPLICATION_PATH.'/../public/my/created/folder/' // <--- THIS IS AN EXAMPLE:
+	APPLICATION_PATH.'/../public/images/streamseeker/'
 );
 
 /**
@@ -46,8 +46,9 @@ $neededDirectories = array(
  * Usually language files or image/css/js folders must be setted here
  */
 $neededLinks = array(
-	$basePath.'/public/images/icons/hosters/videozer.png' => APPLICATION_PATH.'/../public/images/icons/hosters/videozer.png',
-	//$basePath.'/languages/myfile.txt' => APPLICATION_PATH.'/../languages/myfile.txt', // <--- THIS IS AN EXAMPLE FOR FILES
+	$basePath.'/public/images/streamseeker/logo.png' => APPLICATION_PATH.'/../public/images/streamseeker/logo.png',
+	$basePath.'/languages/X_VlcShares_Plugins_StreamSeeker.en_GB.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_StreamSeeker.en_GB.ini',
+	$basePath.'/languages/X_VlcShares_Plugins_StreamSeeker.it_IT.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_StreamSeeker.it_IT.ini',
 );
 
 /**
@@ -64,6 +65,8 @@ $neededLinks = array(
  */
 $includeFiles = array(
 	//$basePath.'/application/controllers/VideobbController.php' // <--- THIS IS AN EAMPLE FOR CONTROLLER INCLUSION
+	$basePath.'/library/X/AMF0Parser.php',
+	$basePath.'/library/X/FLVInfo.php'
 );
 
 /**
@@ -84,7 +87,7 @@ $viewScriptsPath = array(
  * as basepath
  */
 $pluginsIncludes = array(
-	$basePath.'/library/X/VlcShares/Plugins/Videozer.php', // <---- THIS IS AN EXAMPLE
+	$basePath.'/library/X/VlcShares/Plugins/StreamSeeker.php', // <---- THIS IS AN EXAMPLE
 );
 
 /**
@@ -94,18 +97,19 @@ $pluginsIncludes = array(
  * as basepath
  */
 $helpersIncludes = array(
-	$basePath.'/library/X/VlcShares/Plugins/Helper/Hoster/Videozer.php', // <---- THIS IS AN EXAMPLE
+	$basePath.'/library/X/VlcShares/Plugins/Helper/StreamSeeker.php', // StreamSeeker Helper
+	$basePath.'/library/X/VlcShares/Plugins/Helper/HosterSSWrapper.php', // HosterSSWrapper (Hoster helper replacement)
 );
 
 /**
  * Insert here the pluginKey
  */
-$pluginInstance_pluginKey = 'videozer';
+$pluginInstance_pluginKey = 'streamseeker';
 
 /**
  * Insert here the plugin class
  */
-$pluginInstance_pluginClass = 'X_VlcShares_Plugins_Videozer';
+$pluginInstance_pluginClass = 'X_VlcShares_Plugins_StreamSeeker';
 
 /**
  * Insert here special plugin configs if required

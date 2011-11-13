@@ -4,12 +4,12 @@
 		<label>p_streamseeker_plglabel</label>
 		<description>p_streamseeker_plgdesc</description>
 		<version>0.1</version>
-		<status>stable</status>
+		<status>alpha</status>
 		<key>streamseeker</key>
 		<file>X/VlcShares/Plugins/Videozer.php</file>
 		<class>X_VlcShares_Plugins_Videozer</class>
 		<compatibility>
-			<from>0.5.4</from>
+			<from>0.5.5</from>
 			<to>0.6</to>
 		</compatibility>
 	</metadata>
@@ -24,11 +24,13 @@
 						</Helper>
 					</Plugins>
 				</VlcShares>
+				<file>FLVInfo.php</file>
+				<file>AMF0Parser.php</file>
 			</X>
 		</library>
 		<languages>
-			<file>X_VlcShares_Plugins_Videozer.en_GB.ini</file>
-			<file>X_VlcShares_Plugins_Videozer.it_IT.ini</file>
+			<file>X_VlcShares_Plugins_StreamSeeker.en_GB.ini</file>
+			<file>X_VlcShares_Plugins_StreamSeeker.it_IT.ini</file>
 		</languages>
 		<public>
 			<images>

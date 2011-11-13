@@ -14,7 +14,7 @@ $basePath = dirname(__FILE__);
  * of dev_bootstrap.php file
  */
 $neededDirectories = array(
-	//APPLICATION_PATH.'/../public/my/created/folder/' // <--- THIS IS AN EXAMPLE:
+	APPLICATION_PATH.'/../public/images/streamseeker/'
 );
 
 /**
@@ -22,6 +22,7 @@ $neededDirectories = array(
  * of dev_bootstrap.php file
  */
 $neededLinks = array(
-	$basePath.'/public/images/icons/hosters/videozer.png' => APPLICATION_PATH.'/../public/images/icons/hosters/videozer.png',
-	//$basePath.'/languages/myfile.txt' => APPLICATION_PATH.'/../languages/myfile.txt', // <--- THIS IS AN EXAMPLE FOR FILES
+	$basePath.'/public/images/streamseeker/logo.png' => APPLICATION_PATH.'/../public/images/streamseeker/logo.png',
+	$basePath.'/languages/X_VlcShares_Plugins_StreamSeeker.en_GB.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_StreamSeeker.en_GB.ini',
+	$basePath.'/languages/X_VlcShares_Plugins_StreamSeeker.it_IT.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_StreamSeeker.it_IT.ini',
 );

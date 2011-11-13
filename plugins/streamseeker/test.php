@@ -17,8 +17,8 @@ if ( @$argv['i'] == false ) {
 	return;
 }
 
-$INPUT = $argv['i'];
-$BUFFER = $argv['s'];
+$INPUT = @$argv['i'];
+$BUFFER = @$argv['s'];
 if ( preg_match('/^https?:\/\//i', $INPUT) || $BUFFER ) {
 	d("Dumping source...");
 	if ( $BUFFER ) {
@@ -64,6 +64,8 @@ if ( defined('TMP_FILE') ) {
 	d(sprintf("Unlinking temp file: %s", TMP_FILE));
 	@unlink(TMP_FILE);
 }
+
+file_put_contents("test.metadata.log", print_r($info, true));
 
 d("All done");
 return 1;
