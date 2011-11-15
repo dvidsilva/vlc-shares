@@ -337,9 +337,9 @@
 		</version>
 	</plugin>
 	<plugin key="videobb">
-		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
+		<version name="0.1.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_videobb_0.1.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_videobb_0.1.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videobb channels]]></description>
@@ -354,15 +354,6 @@
 			<description><![CDATA[Allow to watch vimeo videos]]></description>
 		</version>
 	</plugin>
-	<plugin key="videozer">
-		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
-			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_videozer_0.1.zip</download>
-			<changelog><![CDATA[
-			]]></changelog>
-			<description><![CDATA[Allow to watch videos from videozer]]></description>
-		</version>
-	</plugin>
 	<plugin key="realdebrid">
 		<version name="0.1.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
@@ -373,30 +364,39 @@
 		</version>
 	</plugin>
 	<plugin key="videozer">
-		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
+		<version name="0.1.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_videozer_0.1.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_videozer_0.1.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from videozer]]></description>
 		</version>
 	</plugin>
 	<plugin key="pageparserlib">
-		<version name="0.1" type="alpha" cMin="0.5.4" cMax="0.5.5">
+		<version name="0.1alpha2" type="alpha" cMin="0.5.4" cMax="0.5.5">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_pageparserlib_0.1alpha.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_pageparserlib_0.1alpha2.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Add Page Parser API to VlcShares 0.5.4 (backported from 0.5.5dev)]]></description>
 		</version>
 	</plugin>
 	<plugin key="streamingonline">
-		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.1beta" type="beta" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_streamingonline_0.1beta.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from streaming-online.biz site (Require PageParserLib)]]></description>
+		</version>
+	</plugin>
+	<plugin key="tvlinks">
+		<version name="0.1beta" type="beta" cMin="0.5.4" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_tvlinks_0.1beta.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch videos from tv-links.eu (Require PageParserLib)]]></description>
 		</version>
 	</plugin>
 </plugins>
