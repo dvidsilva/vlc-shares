@@ -373,7 +373,7 @@
 		</version>
 	</plugin>
 	<plugin key="pageparserlib">
-		<version name="0.1alpha2" type="alpha" cMin="0.5.4" cMax="0.5.5">
+		<version name="0.1" type="alpha2" cMin="0.5.4" cMax="0.5.5">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_pageparserlib_0.1alpha2.zip</download>
 			<changelog><![CDATA[
@@ -382,7 +382,7 @@
 		</version>
 	</plugin>
 	<plugin key="streamingonline">
-		<version name="0.1beta" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_streamingonline_0.1beta.zip</download>
 			<changelog><![CDATA[
@@ -391,7 +391,7 @@
 		</version>
 	</plugin>
 	<plugin key="tvlinks">
-		<version name="0.1beta" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_tvlinks_0.1beta.zip</download>
 			<changelog><![CDATA[
