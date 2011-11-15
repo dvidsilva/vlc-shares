@@ -3,7 +3,7 @@
 class X_VlcShares_Plugins_Helper_Hoster_RealDebridVideoBB extends X_VlcShares_Plugins_Helper_Hoster_RealDebridAbstract {
 	
 	const ID = 'videobb-realdebrid';
-	const PATTERN = '/http\:\/\/((www\.)?)videobb\.com\/video\/(?P<ID>[A-Za-z0-9]+)/';
+	const PATTERN = '/http\:\/\/((www\.)?)videobb\.com\/(video\/|watch_video.php\?v\=)(?P<ID>[A-Za-z0-9]+)/';
 	
 	/**
 	 * give the hoster id

@@ -6,16 +6,16 @@
 #    \  /  | |____| |____      ____) | | | | (_| | | |  __|__ \ #
 #     \/   |______|\_____|    |_____/|_| |_|\__,_|_|  \___|___/ #
 #     															#
-########## VideoBB Plugin #################################
+########## TvLinks Plugin ####################################
 
-VideoBB v0.1.1
+TvLinks v0.1
 Created by Francesco Capozzo (ximarx)
 ximarx@gmail.com
 
 All content of this file is released using
 GPL v3 (http://www.gnu.org/licenses/gpl.html)
 
-Allows to watch videos from VideoBB
+Allows to watch videos from tv-links.eu
 
 For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 
@@ -23,9 +23,5 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 | Changelog
 \==========---
 
-*** 0.1.1 ***
- - pattern improved for links in format videobb.com/watch_video.php?v=ID
-
 *** 0.1 ***
- - initial version
-
+ - Initial version
