@@ -59,7 +59,7 @@ class X_Page_Item_PItem extends X_Page_Item_Link {
 	/**
 	 * Set a new description
 	 * @param string $description
-	 * return X_Page_Item_PItem
+	 * @return X_Page_Item_PItem
 	 */
 	public function setDescription($description) {
 		$this->description = (string) $description;

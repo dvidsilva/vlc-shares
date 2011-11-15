@@ -265,7 +265,7 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 		$messages = new X_Page_ItemList_Message();
 		
 		if ( class_exists("X_VlcShares_Plugins_Utils", true) ) {
-			if ( count(X_VlcShares_Plugins::helpers()->hoster()->getHosters()) <= 1	 ) {
+			if ( count(X_VlcShares_Plugins::helpers()->hoster()->getHosters()) < 1	 ) {
 				$messages->append(X_VlcShares_Plugins_Utils::getMessageEntry(
 						$this->getId(),
 						'p_streamingonline_warning_nohosters',

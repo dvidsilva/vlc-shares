@@ -98,6 +98,13 @@ abstract class X_VlcShares_Plugins_Utils {
 		return $item;
 	}
 
+	/**
+	 * Prepare and return a -previous-page- item
+	 * 
+	 * @param string $location
+	 * @param int $previousPage
+	 * @param int $totalPages
+	 */
 	static function getPreviousPage($location, $previousPage, $totalPages = '???') {
 		$item = new X_Page_Item_PItem('previouspage', X_Env::_("previouspage", ($previousPage), $totalPages));
 		$item//->setIcon('/images/icons/folder_32.png')
@@ -118,8 +125,96 @@ abstract class X_VlcShares_Plugins_Utils {
 			X_Debug::e("No source o_O");
 		}
 	}
+
+	/**
+	 * Call a $menusContainer method following $nodeDefinitions and the current $location provided
+	 * 
+	 * @param X_Page_ItemList_PItem $items
+	 * @param string $location
+	 * @param array $nodesDefinitions
+	 * @param object $menusContainer
+	 * @return X_Page_ItemList_PItem
+	 * @throws Exception
+	 */
+	static function menuProxy(X_Page_ItemList_PItem $items, $location = '', $nodesDefinitions = array(), $menusContainer ) {
+		if ( !is_object($menusContainer) ) throw new Exception(sprintf("\$menuContainer must be an object, %s given", gettype($menusContainer)));
+		
+		X_Debug::i("Searching node handler for: $location");
+		foreach ($nodesDefinitions as $nodeSign => $handler) {
+			@list($matchType, $matchValue) = @explode(':', $nodeSign, 2);
+			$validHandler = false;
+			$method = false;
+			$params = array($items);
+			$matches = array();
+			switch ($matchType) {
+				case 'exact':
+					$validHandler = ($matchValue == $location);
+					$method = $handler['function'];
+					$params = array_merge($params,$handler['params']);
+					break;
+		
+				case 'regex':
+					$validHandler = (preg_match($matchValue, $location, $matches) > 0);
+					$method = $handler['function'];
+					// optimization: continue only if $validHandler
+					if ( $validHandler ) {
+						foreach ($handler['params'] as $placeholder) {
+							// if placehoster start with $ char, it's a placehoster from regex
+							if ( X_Env::startWith($placeholder, "$") ) {
+								// remove the $ char from the beginning of $placehoster
+								$placeholder = substr($placeholder, 1);
+								$params[] = array_key_exists($placeholder, $matches) ? $matches[$placeholder] : null;
+							} else {
+								$params[] = $placeholder;
+							}
+						}
+					}
+					break;
+			}
+			// stop loop on first validHandler found
+			if ( $validHandler ) { X_Debug::i(sprintf("Matching NodeSign: %s", $nodeSign)); break;	}
+		}
+		
+		if ( !$validHandler ) throw new Exception("Provider can't handle this node location: $location");
+		if ( !method_exists($menusContainer, $method) ) throw new Exception(sprintf("Invalid node handler: %s::%s() => %s", get_class($menusContainer), $method, htmlentities($nodeSign)));
+		$reflectionMethod = new ReflectionMethod($menusContainer, $method);
+		if ( !$reflectionMethod->isPublic() ) throw new Exception(sprintf("Menu method must be public: ",  get_class($menusContainer), $method));
+		
+		X_Debug::i(sprintf("Calling menu function {%s::%s(%s)}", get_class($menusContainer), $method, print_r($params, true) ));
+		
+		// $items is always the first params item (index 0)
+		call_user_func_array(array($menusContainer, $method), $params);
+		
+		return $items;
+		
+	}
 	
-	static private function isset_or($value, $alternative) {
+	/**
+	 * Fill an X_Page_ItemList_PItem object ($items) with a 
+	 * simple list of static values
+	 * @param X_Page_ItemList_PItem $items
+	 * @param array $menuEntries an array of menu entries, keys are locations and values are label keys 
+	 * @param string $keyPrefix a string prepended to all items key 
+	 * @param string $locationPrefix a string prepended to all items location
+	 * @return X_Page_ItemList_PItem
+	 */
+	static function fillStaticMenu(X_Page_ItemList_PItem $items, $menuEntries = array(), $keyPrefix = '', $locationPrefix = '') {
+		foreach ( $menuEntries as $location => $labelKey ) {
+			$entry = new X_Page_Item_PItem("{$keyPrefix}-$location", X_Env::_($labelKey));
+			$entry->setDescription(APPLICATION_ENV == 'development' ? "{$locationPrefix}{$location}" : null);
+			$entry->setGenerator(__METHOD__)
+				->setIcon('/images/icons/folder_32.png')
+				->setCustom(__METHOD__.":location", "{$locationPrefix}{$location}")
+				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+				->setLink(array(
+						'l' => X_Env::encode("{$locationPrefix}{$location}")
+					), 'default', false);
+			$items->append($entry);
+		}
+		return $items;
+	}
+	
+	static function isset_or($value, $alternative) {
 		return (isset($value) ? $value : $alternative);
 	}
 	
