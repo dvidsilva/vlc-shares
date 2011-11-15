@@ -142,6 +142,8 @@
 			<description><![CDATA[Integrate JDownloader inside VLCShares]]></description>
 		</version>
 	</plugin>
+<!-- No more streaming on Jigoku -->
+<!--
 	<plugin key="jigoku">
 		<version name="0.1.2" type="stable" cMin="0.5" cMax="0.5.4">
 			<update />
@@ -160,6 +162,7 @@
 			<description><![CDATA[Allow to watch videos from Jigoku.it (italian forum with sub-ita anime)]]></description>
 		</version>
 	</plugin>
+-->
 	<plugin key="narutoget">
 		<version name="0.2" type="stable" cMin="0.5.3" cMax="0.6">
 			<update />
@@ -262,6 +265,8 @@
 			<description><![CDATA[Allow to switch audio track while transcoding video]]></description>
 		</version>
 	</plugin>
+<!-- MyP2P offline, plugin useless -->
+<!--
 	<plugin key="myp2p">
 		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
@@ -271,6 +276,7 @@
 			<description><![CDATA[Allow to watch live TV channels and sports events from MyP2P.eu]]></description>
 		</version>
 	</plugin>
+-->
 	<!-- Mirrors -->
 	<plugin key="spaintv">
 		<version name="0.2" type="stable" cMin="0.5.3" cMax="0.6">
