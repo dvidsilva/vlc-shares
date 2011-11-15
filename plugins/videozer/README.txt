@@ -8,7 +8,7 @@
 #     															#
 ########## VideoZer Plugin #################################
 
-VideoZer v0.1
+VideoZer v0.1.1
 Created by Francesco Capozzo (ximarx)
 ximarx@gmail.com
 
@@ -22,6 +22,9 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.1.1 ***
+ - translation typo fixed
 
 *** 0.1 ***
  - initial version
