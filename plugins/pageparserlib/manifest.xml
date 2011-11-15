@@ -7,7 +7,7 @@
 		<status>alpha2</status>
 		<key>pageparserlib</key>
 		<file>X/VlcShares/Plugins/PageParserLib.php</file>
-		<class>X_VlcShares_Plugins_PageParserLib.php</class>
+		<class>X_VlcShares_Plugins_PageParserLib</class>
 		<compatibility>
 			<from>0.5.4</from>
 			<to>0.5.5</to>
