@@ -405,4 +405,22 @@
 			<description><![CDATA[Allow to watch videos from tv-links.eu (Require PageParserLib)]]></description>
 		</version>
 	</plugin>
+	<plugin key="youporn">
+		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_youporn_0.1beta.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch videos from youporn.com [VM18] (Require PageParserLib)]]></description>
+		</version>
+	</plugin>
+	<plugin key="rtmpgui">
+		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_rtmpgui_0.1beta.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch live tv from rtmpgui (Require PageParserLib)]]></description>
+		</version>
+	</plugin>
 </plugins>
