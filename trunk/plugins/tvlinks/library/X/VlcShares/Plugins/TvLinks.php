@@ -445,7 +445,7 @@ class X_VlcShares_Plugins_TvLinks extends X_VlcShares_Plugins_Abstract implement
 		}
 	
 		$http = new Zend_Http_Client(sprintf(self::URL_LINKRESOLVER, base64_encode($linkId)), array (
-				'maxredirects'	=> $this->config('request.maxredirects', 0),
+				'maxredirects'	=> 0,
 				'timeout'		=> $this->config('request.timeout', 25)
 		));
 		
