@@ -334,7 +334,7 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 			
 			$thumb = $pItem['image'];
 			$group = $pItem['category'];
-			$label = $pItem['label'];
+			$label = trim($pItem['label']);
 			$id = $pItem['id'];
 			
 			X_Debug::i("Parsed items: ".var_export(array($id, $group, $label, $thumb), true));
@@ -389,7 +389,7 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 		// $parsed format = array(array('image', 'category', 'id', 'label'),..)
 		foreach ($parsed as $pItem) {
 			
-			$label = $pItem['label'];
+			$label = trim($pItem['label']);
 			$subtype = @$pItem['subtype'] ? @$pItem['subtype'] : "{$month},{$pageN}" ;
 			$group = @$pItem['category'] ? "/{$pItem['category']}" : '';
 			$id = @$pItem['id'] ? "/{$pItem['id']}" : '';
@@ -440,7 +440,7 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 	
 			$thumb = $pItem['image'];
 			$group = $pItem['category'];
-			$label = $pItem['label'];
+			$label = trim($pItem['label']);
 			$id = $pItem['id'];
 	
 			X_Debug::i("Parsed item: ".var_export(array($id, $group, $label, $thumb), true));
@@ -485,7 +485,7 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 		// $parsed format = array(array('image', 'category', 'id', 'label'),..)
 		foreach ($parsed as $pItem) {
 	
-			$label = $pItem['label'];
+			$label = trim($pItem['label']);
 			$subtype = $pageN;
 			$group = @$pItem['category'] ? "/{$pItem['category']}" : '';
 			$id = @$pItem['id'] ? "/{$pItem['id']}" : '';
@@ -536,7 +536,7 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 			// fix for relative path:
 			if ( X_Env::startWith($thumb, '../') ) $thumb = self::URL_ANIME_INDEX_NEW.$thumb;
 			$group = $pItem['category'];
-			$label = $pItem['label'];
+			$label = trim($pItem['label']);
 			$id = $pItem['id'];
 	
 			X_Debug::i("Parsed item: ".var_export(array($id, $group, $label, $thumb), true));
@@ -581,7 +581,7 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 		// $parsed format = array(array('image', 'category', 'id', 'label'),..)
 		foreach ($parsed as $pItem) {
 	
-			$label = $pItem['label'];
+			$label = trim($pItem['label']);
 			$subtype = $pageN;
 			$group = @$pItem['category'] ? "/{$pItem['category']}" : '';
 			$id = @$pItem['id'] ? "/{$pItem['id']}" : '';
@@ -623,7 +623,7 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 		foreach ($parsed as $pItem) {
 	
 			$group = $pItem['category'];
-			$label = $pItem['label'];
+			$label = trim($pItem['label']);
 			$id = $pItem['id'];
 	
 			X_Debug::i("Parsed item: ".var_export(array($id, $group, $label), true));
@@ -656,7 +656,7 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 			$videoId = $link['videoId'];
 			$hosterId = $link['hosterId'];
 			$videoCode = $link['link'];
-			$videoLabel = "{$link['label']} [{$link['hosterId']}]";
+			$videoLabel = trim("{$link['label']} [{$link['hosterId']}]");
 			$videoThumb = $link['thumbnail'];
 			
 			$item = new X_Page_Item_PItem("{$this->getId()}-hoster-{$hosterId}-{$videoId}", $videoLabel);
