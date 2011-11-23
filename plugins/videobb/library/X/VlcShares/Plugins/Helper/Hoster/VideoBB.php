@@ -98,7 +98,7 @@ class X_VlcShares_Plugins_Helper_Hoster_VideoBB implements X_VlcShares_Plugins_H
 			'description' => @$json['settings']['video_details']['video']['description'],
 			'length' => 0,
 			'thumbnail' => @$json['settings']['config']['thumbnail'],
-			'url' => @base64_decode(@$json['settings']['config']['token1'])
+			'url' => @base64_decode(@$json['settings']['config']['token1a'])
 		);
 		
 		// add in cache
