@@ -8,7 +8,7 @@
 #     															#
 ########## VideoBB Plugin #################################
 
-VideoBB v0.1.1
+VideoBB v0.1.2
 Created by Francesco Capozzo (ximarx)
 ximarx@gmail.com
 
@@ -22,6 +22,9 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.1.2 ***
+ - new link decrypter
 
 *** 0.1.1 ***
  - pattern improved for links in format videobb.com/watch_video.php?v=ID

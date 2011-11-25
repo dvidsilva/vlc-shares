@@ -3,7 +3,7 @@
 	<metadata>
 		<label>p_videobb_plglabel</label>
 		<description>p_videobb_plgdesc</description>
-		<version>0.1.1</version>
+		<version>0.1.2</version>
 		<status>stable</status>
 		<key>videobb</key>
 		<file>X/VlcShares/Plugins/VideoBB.php</file>
