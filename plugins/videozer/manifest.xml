@@ -3,7 +3,7 @@
 	<metadata>
 		<label>p_videozer_plglabel</label>
 		<description>p_videozer_plgdesc</description>
-		<version>0.1.1</version>
+		<version>0.1.2</version>
 		<status>stable</status>
 		<key>videozer</key>
 		<file>X/VlcShares/Plugins/Videozer.php</file>
