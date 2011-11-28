@@ -5,7 +5,7 @@ class X_VlcShares_Plugins_Helper_Hoster_VideoBB implements X_VlcShares_Plugins_H
 	const ID = 'videobb';
 	const PATTERN = '/http\:\/\/((www\.)?)videobb\.com\/(video\/|watch_video.php\?v\=)(?P<ID>[A-Za-z0-9]+)/';
 
-	const KEY_2 = '226593';
+	const KEY_2 = 226593;
 	
 	const MAGIC_1A = 11;
 	const MAGIC_1B = 77213;
@@ -133,21 +133,21 @@ class X_VlcShares_Plugins_Helper_Hoster_VideoBB implements X_VlcShares_Plugins_H
 	}
 	
 	private function decrypt($cypher, $keyOne, $keyTwo) {
-		
+	
 		$C = self::hex2Bin($cypher);
-		
+	
 		$B = array();
-		
+	
 		for ( $i = 0; $i < 384; $i++ ) {
-		
+	
 			$keyOne = ($keyOne * self::MAGIC_1A + self::MAGIC_1B) % self::MAGIC_1C;
 			$keyTwo = ($keyTwo * self::MAGIC_2A + self::MAGIC_2B) % self::MAGIC_2C;
-		
+	
 			$B[$i] = ($keyOne + $keyTwo) % 128;
 		}
-		
+	
 		$x = $y = $z = 0;
-		
+	
 		for ( $i = 255; $i >= 0; $i-- ) {
 			$x = $B[$i];
 			$y = $i % 128;
@@ -155,39 +155,37 @@ class X_VlcShares_Plugins_Helper_Hoster_VideoBB implements X_VlcShares_Plugins_H
 			$C[$x] = $C[$y];
 			$C[$y] = $z;
 		}
-		
+	
 		for ( $i = 0; $i < 128; $i++ ) {
 			$C[$i] = $C[$i] ^ $B[$i + 256] & 1;
 		}
-		
+	
 		return self::bin2Hex($C);
-		
+	
 	}
 	
-	private static function hex2Bin($hexString, $trim = true) {
+	private static function hex2Bin($hexString, $pad = 256) {
 	
 		$result = '';
 		for ( $i = 0; $i < strlen($hexString); $i++ ) {
 			$result .= str_pad(decbin(hexdec($hexString[$i])), 4, '0', STR_PAD_LEFT);
 		}
-		if ( $trim ) {
-			$result = ltrim($result, '0');
-		}
+		$result = str_pad($result, $pad, '0', STR_PAD_LEFT);
 		return $result;
 	}
 	
 	private static function bin2Hex($binString) {
 	
 		$result = '';
-		$binString = strrev($binString);
+		//$binString = strrev($binString);
 	
 		for ( $i = 0; $i < strlen($binString); $i = $i + 4) {
 			$segment = substr($binString, $i, 4);
-			$segment = strrev($segment);
+			//$segment = strrev($segment);
 			$segment = str_pad($segment, 4, '0', STR_PAD_LEFT);
 			$result .= dechex(bindec($segment));
 		}
-		return strrev($result);
+		return /*strrev*/($result);
 	}	
 	
 }

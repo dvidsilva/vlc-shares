@@ -7,7 +7,7 @@ class X_VlcShares_Plugins_Helper_Hoster_Videozer implements X_VlcShares_Plugins_
 	
 	private $info_cache = array();
 
-	const KEY_2 = '215678';
+	const KEY_2 = 215678;
 	
 	const MAGIC_1A = 11;
 	const MAGIC_1B = 77213;
@@ -89,13 +89,21 @@ class X_VlcShares_Plugins_Helper_Hoster_Videozer implements X_VlcShares_Plugins_
 		}
 		
 		// use the api
-		$http = new Zend_Http_Client("http://www.videozer.com/player_control/settings.php?v=" . $url . '&fv=v1.1.12',
+		$http = new Zend_Http_Client($this->getHosterUrl($url),
 			array(
 				'headers' => array(
 					'User-Agent' => "vlc-shares/".X_VlcShares::VERSION." videozer/".X_VlcShares_Plugins_Videozer::VERSION
+/*					'User-Agent' => "Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.121 Safari/535.2",
+					'Referer' => 'http://www.videozer.com/player/player.swf?pv=1_1_37a',
+					'Origin' => 'http://www.videozer.com',
+					'Accept-Language:it-IT,it;q=0.8,en-US;q=0.6,en;q=0.4'*/
 				)
 			)
 		);
+		$http->setCookieJar(true);
+		$http->request();
+		
+		$http->setUri("http://www.videozer.com/player_control/settings.php?v=" . $url . '&fv=v1.1.14');
 		
 		$datas = $http->request()->getBody();
 
@@ -110,14 +118,41 @@ class X_VlcShares_Plugins_Helper_Hoster_Videozer implements X_VlcShares_Plugins_
 		$cypher = @$json['cfg']['info']['sece2'];
 		$key1 = @$json['cfg']['environment']['rkts'];
 		
+		
+		
 		$passkey = $this->decrypt($cypher, (int) $key1, self::KEY_2);
+		
+		//echo "Cypher: $cypher<br/>Key1: $key1<br/>Key2: ".self::KEY_2."<br/>Passkey: $passkey";
+		
+		$link = str_replace(':80', '', $token)."&c=".$passkey;
+
+		/*
+		$ctrlurl = @$json['cfg']['environment']['ctrl_url9'];
+		
+		$datas = new stdClass();
+		$datas->d = $this->getHosterUrl($url);
+		$datas->ut = @$json['cfg']['environment']['ut'];
+		$datas->i = @$json['cfg']['environment']['icode'];
+		$datas->t = time();
+		$datas->ac = "34";
+		$datas->u = "";
+		$datas->c = "b455ce73e469a6f88c581843851cba71";
+		$datas->v = $url;
+		$datas = Zend_Json::encode(array($datas));
+		
+		$http->setUri($ctrlurl)
+			->setMethod(Zend_Http_Client::POST)
+			->setParameterPost('data', $datas)
+			->setParameterPost("checkpromotion", 0);
+		$http->request();
+		*/
 		
 		$infos = array(
 			'title' => @$json["cfg"]['info']['video']['title'],
 			'description' => @$json["cfg"]['info']['video']['description'],
 			'length' => 0,
 			'thumbnail' => @$json["cfg"]['environment']['thumbnail'],
-			'url' => $token."&c=".$passkey,
+			'url' => $link,
 			'rawinfo' => $json
 		);
 		
@@ -164,30 +199,28 @@ class X_VlcShares_Plugins_Helper_Hoster_Videozer implements X_VlcShares_Plugins_
 	
 	}
 	
-	private static function hex2Bin($hexString, $trim = true) {
+	private static function hex2Bin($hexString, $pad = 256) {
 	
 		$result = '';
 		for ( $i = 0; $i < strlen($hexString); $i++ ) {
 			$result .= str_pad(decbin(hexdec($hexString[$i])), 4, '0', STR_PAD_LEFT);
 		}
-		if ( $trim ) {
-			$result = ltrim($result, '0');
-		}
+		$result = str_pad($result, $pad, '0', STR_PAD_LEFT);
 		return $result;
 	}
 	
 	private static function bin2Hex($binString) {
 	
 		$result = '';
-		$binString = strrev($binString);
+		//$binString = strrev($binString);
 	
 		for ( $i = 0; $i < strlen($binString); $i = $i + 4) {
 			$segment = substr($binString, $i, 4);
-			$segment = strrev($segment);
+			//$segment = strrev($segment);
 			$segment = str_pad($segment, 4, '0', STR_PAD_LEFT);
 			$result .= dechex(bindec($segment));
 		}
-		return strrev($result);
+		return /*strrev*/($result);
 	}	
 	
 }
