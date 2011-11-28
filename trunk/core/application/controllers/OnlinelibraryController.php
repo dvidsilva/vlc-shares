@@ -95,7 +95,7 @@ class OnlinelibraryController extends X_Controller_Action
 		try {
 			$_hosters = X_VlcShares_Plugins::helpers()->hoster()->getHosters();
 			if ( $rtmp === false ) {
-				$hosters = array('direct-url' => 'direct-url');
+				$hosters = array('auto' => X_Env::_('p_onlinelibrary_hosterauto'), 'direct-url' => 'direct-url');
 				foreach ($_hosters as $idHoster => $pattern) {
 					$hosters[$idHoster] = $idHoster;
 				}
@@ -134,7 +134,12 @@ class OnlinelibraryController extends X_Controller_Action
                 // with manual insertion
                 if ( $hoster !== 'direct-url' ) {
 	               	try {
-	               		$hosterObj = X_VlcShares_Plugins::helpers()->hoster()->getHoster($hoster);
+	               		if ( $hoster == 'auto' ) {
+	               			$hosterObj = X_VlcShares_Plugins::helpers()->hoster()->findHoster($idVideo);
+	               			$hoster = $hosterObj->getId();
+	               		} else {
+	               			$hosterObj = X_VlcShares_Plugins::helpers()->hoster()->getHoster($hoster);
+	               		}
 	               	} catch (Exception $e) {
 	               		$this->_helper->flashMessenger(array('type' => 'error', 'text' => X_Env::_('p_onlinelibrary_invalidhoster', $hoster) ));
 	               		$this->_helper->redirector('index', 'onlinelibrary');

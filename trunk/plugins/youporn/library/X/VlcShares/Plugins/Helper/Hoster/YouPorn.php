@@ -93,10 +93,11 @@ class X_VlcShares_Plugins_Helper_Hoster_YouPorn implements X_VlcShares_Plugins_H
 		$datas = $http->request(Zend_Http_Client::POST)->getBody();
 
 		$match = array();
-		if ( preg_match('/http\:\/\/download\.youporn\.com\/download\/(?P<download>[0-9]+)\?save\=1/i', $datas, $match) < 1) {
+		if ( preg_match_all('/http\:\/\/download\.youporn\.com\/download\/(?P<download>[0-9]+)\?save\=1/i', $datas, $match, PREG_SET_ORDER) < 1) {
 			throw new Exception("Invalid ID {{$url}}", self::E_ID_INVALID);
 		}
-		$downloadId = $match['download'];
+		$downloadId = $match[1]['download'];
+
 		
 		$match = array();
 		if ( preg_match('/<title>(?P<title>.*?) - Free Porn Videos - YouPorn<\/title>/i', $datas, $match) ) {
