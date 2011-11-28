@@ -3,8 +3,8 @@
 
 class X_VlcShares_Plugins_RealDebrid extends X_VlcShares_Plugins_Abstract {
 		
-	const VERSION_CLEAN = '0.1.1';
-	const VERSION = '0.1.1';
+	const VERSION_CLEAN = '0.1.2';
+	const VERSION = '0.1.2';
 	
 	private $hosters = array(
 		// replace-id => with class
@@ -14,6 +14,7 @@ class X_VlcShares_Plugins_RealDebrid extends X_VlcShares_Plugins_Abstract {
 		'4shared' => 'X_VlcShares_Plugins_Helper_Hoster_RealDebrid4Shared',
 		'megaporn' => 'X_VlcShares_Plugins_Helper_Hoster_RealDebridMegaporn',
 		'rapidshare' => 'X_VlcShares_Plugins_Helper_Hoster_RealDebridRapidShare',
+		'videozer' => 'X_VlcShares_Plugins_Helper_Hoster_RealDebridVideozer',
 	);
 	
 	public function __construct() {

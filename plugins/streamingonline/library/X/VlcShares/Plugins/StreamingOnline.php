@@ -2,7 +2,7 @@
 
 class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.1beta';
+	const VERSION = '0.1beta2';
 	const VERSION_CLEAN = '0.1';
 	
 	const TYPE_MOVIESLAST = 'LastMovies';

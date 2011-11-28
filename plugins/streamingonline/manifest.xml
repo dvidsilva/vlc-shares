@@ -4,7 +4,7 @@
 		<label>p_streamingonline_plglabel</label>
 		<description>p_streamingonline_plgdesc</description>
 		<version>0.1</version>
-		<status>beta</status>
+		<status>beta2</status>
 		<key>streamingonline</key>
 		<file>X/VlcShares/Plugins/StreamingOnline.php</file>
 		<class>X_VlcShares_Plugins_StreamingOnline</class>

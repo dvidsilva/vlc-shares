@@ -3,7 +3,7 @@
 	<metadata>
 		<label>p_realdebrid_plglabel</label>
 		<description>p_realdebrid_plgdesc</description>
-		<version>0.1.1</version>
+		<version>0.1.2</version>
 		<status>stable</status>
 		<key>realdebrid</key>
 		<file>X/VlcShares/Plugins/RealDebrid.php</file>
@@ -27,6 +27,7 @@
 								<file>RealDebrid4Shared.php</file>
 								<file>RealDebridRapidShare.php</file>
 								<file>RealDebridVideoBB.php</file>
+								<file>RealDebridVideozer.php</file>
 							</Hoster>
 							<file>RealDebrid.php</file>
 						</Helper>

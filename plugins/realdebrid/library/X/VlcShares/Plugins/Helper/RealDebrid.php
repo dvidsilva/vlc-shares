@@ -121,8 +121,13 @@ class X_VlcShares_Plugins_Helper_RealDebrid extends X_VlcShares_Plugins_Helper_A
 					$cacheHelper = X_VlcShares_Plugins::helpers()->helper('cache');
 					
 					$cks = $http->getCookieJar()->getAllCookies(Zend_Http_CookieJar::COOKIE_OBJECT);
+					$minValidity = 99999999999;
 					foreach ($cks as $i => $c) {
 						/* @var $c Zend_Http_Cookie */
+						$expire = $c->getExpiryTime();
+						if ( $expire != null && $expire < $minValidity ) {
+							$minValidity = $expire;
+						}
 						$cks[$i] = array(
 							'domain' => $c->getDomain(),
 							'exp' => $c->getExpiryTime(),
@@ -130,10 +135,13 @@ class X_VlcShares_Plugins_Helper_RealDebrid extends X_VlcShares_Plugins_Helper_A
 							'path' => $c->getPath(),
 							'value' => $c->getValue()
 						);
-					} 
-						
+					}
+
+					$minValidity = (int) ($minValidity - time() / 60) - 1;
+					if ( $minValidity < 0 ) $minValidity = 5; // if error, set to 5 minutes
+					
 					// perform a new authentication every 7 days
-					$cacheHelper->storeItem("realdebrid::cookies", serialize($cks), 7 * 24 * 60);
+					$cacheHelper->storeItem("realdebrid::cookies", serialize($cks), $minValidity);
 					
 				} catch (Exception $e) {
 					X_Debug::e("Real Debrid requires cache plugin, but it's disabled!!!");
@@ -195,6 +203,9 @@ class X_VlcShares_Plugins_Helper_RealDebrid extends X_VlcShares_Plugins_Helper_A
 			$results->next();
 		}
 		
+		if ( count($links) > 1 ) {
+			$links = array_reverse($links, false);
+		}
 		
 		return $links;
 		
