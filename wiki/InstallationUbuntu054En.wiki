@@ -3,7 +3,7 @@
 
 = Introduction =
 
-This guide help you to install VLCShares 0.5.4 on Ubuntu 10.10 and 11.04. 
+This guide help you to install VLCShares 0.5.4 on Ubuntu 10.10 and 11.04 (and 11.10, only manual). 
 
 <wiki:toc max_depth="6" />
 
@@ -49,9 +49,16 @@ Follow on-screen instructions. On operation completed, move on [PostInstallConfi
 
 Open a Terminal (Applications->Accessories->Terminal) and type inside it:
 
+*For Ubuntu 10.10 and 11.04*:
 {{{
 sudo apt-get update && sudo apt-get install apache2 libapache2-mod-php5 php5 zend-framework zend-framework-bin vlc php5-sqlite php5-mcrypt php5-cli vlc ffmpeg libavcodec-extra-52 libavcodec-unstripped-52
 }}}
+
+*For Ubuntu 11.10*:
+{{{
+sudo apt-get update && sudo apt-get install apache2 libapache2-mod-php5 php5 zend-framework zend-framework-bin vlc php5-sqlite php5-mcrypt php5-cli vlc ffmpeg libavcodec-extra-53
+}}}
+
 
 == Apache configuration ==
 
@@ -75,12 +82,22 @@ sudo wget -O vlc-shares.conf http://vlc-shares.googlecode.com/svn-history/r494/t
 sudo chmod 644 vlc-shares.conf
 }}}
 
-*For Ubuntu 11.04*:
+*For Ubuntu 11.04 and 11.10*:
 {{{
 sudo wget -O vlc-shares.conf http://vlc-shares.googlecode.com/svn-history/r570/trunk/scripts/apacheconf_ubuntu1104.conf
 sudo chmod 644 vlc-shares.conf
 }}}
 
+After that, type:
+{{{
+sudo gedit /etc/apache2/sites-enabled/000-default
+}}}
+
+Scroll down the file until you see the part `<Directory /var/www/>`. Underneath that line of code, change `AllowOverride None` to `AllowOverride All`
+
+http://imagecdn.maketecheasier.com/2011/02/vlc-shares-edit-apache-config.png
+
+Save and close the file.
 
 Let's do a Apache service restart
 
