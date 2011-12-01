@@ -3,7 +3,7 @@
 
 = Introduzione =
 
-Questa guida permette di installare VLCShares 0.5.4 in un sistema Ubuntu 10.10 e 11.04. 
+Questa guida permette di installare VLCShares 0.5.4 in un sistema Ubuntu 10.10 e 11.04 (e 11.10, ma solo installazione manuale). 
 
 <wiki:toc max_depth="6" />
 
@@ -48,9 +48,16 @@ Seguite le informazioni a schermo. Al termine procedete con l'ultimazione dell'i
 
 Aprite una Terminale (Applicationi->Accessori->Terminale) e digitate all'interno:
 
+*Per Ubuntu 10.10 and 11.04*:
 {{{
 sudo apt-get update && sudo apt-get install apache2 libapache2-mod-php5 php5 zend-framework zend-framework-bin vlc php5-sqlite php5-mcrypt php5-cli vlc ffmpeg libavcodec-extra-52 libavcodec-unstripped-52
 }}}
+
+*Per Ubuntu 11.10*:
+{{{
+sudo apt-get update && sudo apt-get install apache2 libapache2-mod-php5 php5 zend-framework zend-framework-bin vlc php5-sqlite php5-mcrypt php5-cli vlc ffmpeg libavcodec-extra-53
+}}}
+
 
 == Configurazione di Apache ==
 
@@ -68,17 +75,28 @@ cd /etc/apache2/conf.d/
 
 e
 
-*For Ubuntu 10.10*:
+*Per Ubuntu 10.10*:
 {{{
 sudo wget -O vlc-shares.conf http://vlc-shares.googlecode.com/svn-history/r494/trunk/scripts/apacheconf_ubuntu1010.conf
 sudo chmod 644 vlc-shares.conf
 }}}
 
-*For Ubuntu 11.04*:
+*Per Ubuntu 11.04 e 11.10*:
 {{{
 sudo wget -O vlc-shares.conf http://vlc-shares.googlecode.com/svn-history/r570/trunk/scripts/apacheconf_ubuntu1104.conf
 sudo chmod 644 vlc-shares.conf
 }}}
+
+Ora, scrivete:
+{{{
+sudo gedit /etc/apache2/sites-enabled/000-default
+}}}
+
+Spostatevi in basso nel file fino a trovare la parte con `<Directory /var/www/>`. All'interno di quella porzione, cambiate `AllowOverride None` in `AllowOverride All`
+
+http://imagecdn.maketecheasier.com/2011/02/vlc-shares-edit-apache-config.png
+
+Salvate e chiudete il file.
 
 
 Procedete quindi con un riavvio di Apache
