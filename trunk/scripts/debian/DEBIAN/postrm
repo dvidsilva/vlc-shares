@@ -1,0 +1,21 @@
+#!/bin/sh
+# postrm script for vlc-shares
+
+# remove optional plugins (and backup and other garbage)
+if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
+    rm -Rf /opt/vlc-shares/
+fi
+
+
+# restart apache2
+webserver="apache2"
+if [ -f /etc/init.d/$webserver ] ; then
+	if [ -x /usr/sbin/invoke-rc.d ]; then
+		invoke-rc.d $webserver restart 3>/dev/null || true
+	else
+		/etc/init.d/$webserver restart 3>/dev/null || true
+	fi
+fi	
+
+
+exit 0

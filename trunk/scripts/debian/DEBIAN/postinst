@@ -1,0 +1,29 @@
+#!/bin/sh
+# postinst script for vlc-shares
+
+set -e
+
+if [ "$1" = "configure" ]; then
+
+	# fix permissions
+	if [ -d /opt/vlc-shares ]; then
+		chown www-data:www-data -R /opt/vlc-shares/
+		chmod 777 -R /opt/vlc-shares/
+	fi
+	
+	# enable apache's mod_rewrite
+	a2enmod rewrite
+
+	webserver="apache2"
+
+ 	if [ -f /etc/init.d/$webserver ] ; then
+		if [ -x /usr/sbin/invoke-rc.d ]; then
+			invoke-rc.d $webserver restart 3>/dev/null || true
+		else
+			/etc/init.d/$webserver restart 3>/dev/null || true
+		fi
+	fi	
+	
+fi
+
+exit 0
