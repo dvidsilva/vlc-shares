@@ -3,7 +3,7 @@
 
 = Introduction =
 
-This guide help you to install VLCShares 0.5.4 on Ubuntu 10.10 and 11.04 (and 11.10, only manual). 
+This guide help you to install VLCShares 0.5.4 on Ubuntu 10.10, 11.04 and 11.10 (deb installer is experimental). 
 
 <wiki:toc max_depth="6" />
 
@@ -16,6 +16,8 @@ You will be asked to install RTMPDump and SopCast in the installation procedure.
 == Procedure ==
 
 Open a Terminal (Applications->Accessories->Terminal) and write inside it
+
+=== For Ubuntu 10.10 and 11.04 ===
 
 *For Ubuntu 10.10*:
 {{{
@@ -38,6 +40,19 @@ After that, start the installation typing:
 
 {{{
 ./vlc-shares_0.5.4_ubuntu-installer.sh
+}}}
+
+=== For Ubuntu 11.10 ===
+
+{{{
+wget https://vlc-shares.googlecode.com/files/vlc-shares_0.5.4-1_all.deb
+}}}
+
+After that, start the installation typing:
+
+{{{
+sudo dpkg -i vlc-shares_0.5.4-1_all.deb
+sudo apt-get install -f
 }}}
 
 Follow on-screen instructions. On operation completed, move on [PostInstallConfiguration054En post installation guide].
