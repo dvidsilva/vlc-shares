@@ -1,32 +1,25 @@
-<version name="0.5.4" type="stable">
+<version name="0.5.5alpha1" type="alpha">
 	<update></update>
-	<download>http://vlc-shares.googlecode.com/files/vlc-shares_0.5.4.zip</download>
+	<download>http://vlc-shares.googlecode.com/files/vlc-shares_0.5.5alpha1.zip</download>
 	<changelog><![CDATA[
-*** 0.5.4 (22/4/2011) ***
- - Automatic installer for Ubuntu 10.10
- - Automatic installer for Windows: permissions fixed
- - Documentation updates in the wiki 
- - Authetication features
- - build script improved
- - robots.txt
- - System report
- - rules for magic_quotes and register_globals in htaccess and system tests
- - audio quality for Android LQ improved (ab=20 -> ab=64)
- - Android LQ is the new default profile for android devices
- - New hoster helper
- - New bookmarklets
- - Global Online library introduced with multi-hoster support (this one replace the Megavideo Library)
- - New set of plugins for many hosters (megavideo, megaupload, youtube, videobb, 4shared, veoh, veetle, dailymotion, sopcast)
- - Older plugins updated for new hoster api where needed
- - Pagination helper
- - RTMPDump integrated (without transcoding, so it doesn't work for android devices)
- - SopCast integrated
- - New plugin for MyP2P.eu
- - Online installation of plugins without have to download them first through plugin installer
- - A short (english only) plugin description is available in the installation page
- - Partial translation for es_ES language available
- - Some live TV channels (working through rtmpdump) added in Online Library (for testing)
- - VLCShares main url is changed from http://IPADDRESS/vlc-shares/public to http://IPADDRESS/vlc-shares/
+*** 0.5.5 alpha 1 (02/12/2011) ***
+ - Outputs and Profiles plugins merged
+ - New Devices plugin + new devices compatibility system
+ - Automatic hoster selection in Online Library
+ - New Webkit interface for Webkit devices
+ - New PageParserLib
+ - Helper broker allow core helper substitution
+ - Compatibility with VLC 1.2 http server
+ - New Plugins_Utils utility class
+ - New RendererInterface for Renderer plugins
+ - DEB package for Ubuntu 11.10
+ - Scripts for DEB and ISS installer creation (ISS creation through cross compiling thanks to wine)
+ - Transcoding profiles improvements: better quality, mime-type for streams
+ - Transcoding profiles merged with outputs profiles
+ - Mediainfo helper removed
+ - Stream helper redirected to ffmpeg
+ - Automatic stream type recognition before transcoding removed
+ - Profile for Asus Transformer
  		]]>
 	</changelog>
 </version>

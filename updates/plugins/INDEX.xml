@@ -392,39 +392,67 @@
 		</version>
 	</plugin>
 	<plugin key="streamingonline">
-		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.1" type="beta" cMin="0.5.5" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_streamingonline_0.1beta.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
-			<description><![CDATA[Allow to watch videos from streaming-online.biz site (Require PageParserLib)]]></description>
+			<description><![CDATA[Allow to watch videos from streaming-online.biz site]]></description>
+		</version>
+		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.5.5">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_streamingonline_0.1beta.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch videos from streaming-online.biz site (Require PageParserLib or VLCShares 0.5.5+)]]></description>
 		</version>
 	</plugin>
 	<plugin key="tvlinks">
-		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.1" type="beta" cMin="0.5.5" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_tvlinks_0.1beta.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
-			<description><![CDATA[Allow to watch videos from tv-links.eu (Require PageParserLib)]]></description>
+			<description><![CDATA[Allow to watch videos from tv-links.eu]]></description>
+		</version>
+		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.5.5">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_tvlinks_0.1beta.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch videos from tv-links.eu (Require PageParserLib or VLCShares 0.5.5+)]]></description>
 		</version>
 	</plugin>
 	<plugin key="youporn">
-		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.1" type="beta" cMin="0.5.5" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_youporn_0.1beta.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
-			<description><![CDATA[Allow to watch videos from youporn.com [VM18] (Require PageParserLib)]]></description>
+			<description><![CDATA[Allow to watch videos from youporn.com [VM18]]]></description>
+		</version>
+		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.5.5">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_youporn_0.1beta.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch videos from youporn.com [VM18] (Require PageParserLib or VLCShares 0.5.5+)]]></description>
 		</version>
 	</plugin>
 	<plugin key="rtmpgui">
-		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
+		<version name="0.1" type="beta" cMin="0.5.5" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_rtmpgui_0.1beta.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
-			<description><![CDATA[Allow to watch live tv from rtmpgui (Require PageParserLib)]]></description>
+			<description><![CDATA[Allow to watch live tv from rtmpgui]]></description>
+		</version>
+		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.5.5">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_rtmpgui_0.1beta.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch live tv from rtmpgui (Require PageParserLib or VLCShares 0.5.5+)]]></description>
 		</version>
 	</plugin>
 </plugins>
