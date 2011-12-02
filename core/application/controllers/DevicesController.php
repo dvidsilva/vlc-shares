@@ -82,12 +82,12 @@ class DevicesController extends X_Controller_Action {
 			
 			try {
 				Application_Model_DevicesMapper::i()->save($model);
-				$this->_helper->flashMessenger(X_Env::_('p_devices_store_done'));
+				$this->_helper->flashMessenger(X_Env::_('gen_message_store_done'));
 			} catch (Exception $e) {
-				$this->_helper->flashMessenger(X_Env::_('p_devices_err_db', $e->getMessage()));
+				$this->_helper->flashMessenger(X_Env::_('gen_err_db', $e->getMessage()));
 			}
 		} else {
-			$this->_helper->flashMessenger(X_Env::_('p_devices_err_invaliddata')/*.": ".var_export($form->getErrors(), true)*/);
+			$this->_helper->flashMessenger(X_Env::_('gen_err_invaliddata')/*.": ".var_export($form->getErrors(), true)*/);
 		}
 		$this->_helper->redirector('index', 'devices');
 		
@@ -98,14 +98,14 @@ class DevicesController extends X_Controller_Action {
 		$csrf = $this->getRequest()->getParam('csrf', false);
 		
 		if ( $id === false ) {
-			$this->_helper->flashMessenger(X_Env::_('p_devices_err_invaliddata'));
+			$this->_helper->flashMessenger(X_Env::_('gen_err_invaliddata'));
 			$this->_helper->redirector('index', 'devices');
 		}
 		
 		$device = new Application_Model_Device();
 		Application_Model_DevicesMapper::i()->find($id, $device);
 		if ( is_null($device->getId()) ) {
-			$this->_helper->flashMessenger(X_Env::_('p_devices_err_invaliddata'));
+			$this->_helper->flashMessenger(X_Env::_('gen_err_invaliddata'));
 			$this->_helper->redirector('index', 'devices');
 		}
 
@@ -133,9 +133,9 @@ class DevicesController extends X_Controller_Action {
 		if ( $form->isValid($this->getRequest()->getPost()) ) {
 			try {
 				Application_Model_DevicesMapper::i()->delete($device);
-				$this->_helper->flashMessenger(X_Env::_('p_devices_delete_done'));
+				$this->_helper->flashMessenger(X_Env::_('gen_message_delete_done'));
 			} catch (Exception $e) {
-				$this->_helper->flashMessenger(X_Env::_('p_devices_err_db'));
+				$this->_helper->flashMessenger(X_Env::_('gen_err_db'));
 			}
 			$this->_helper->redirector('index', 'devices');
 		}
