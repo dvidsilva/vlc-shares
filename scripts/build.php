@@ -9,6 +9,39 @@ function ignoreVcsCB($p_event, &$p_header) {
 	}
 }
 
+/**
+ * Remove a directory (even if not empty)
+ */
+function rm_recursive($dir) {
+	$dir = rtrim($dir, '\\/');
+	if (is_dir($dir)) { 
+		$objects = scandir($dir); 
+		foreach ($objects as $object) { 
+			if ($object != "." && $object != "..") { 
+				if (filetype($dir."/".$object) == "dir") rm_recursive($dir."/".$object); else unlink($dir."/".$object); 
+			} 
+		} 
+		reset($objects); 
+		rmdir($dir); 
+	} 	
+}
+
+function copy_recursive($src, $dst) {
+	//if (file_exists($dst)) rrmdir($dst);
+	if (is_dir($src)) {
+		if ( !file_exists($dst) ) mkdir($dst);
+		//mkdir($dst);
+		$files = scandir($src);
+		foreach ($files as $file) {
+			// ignore .svn directories
+			if ($file != "." && $file != ".." && $file != '.svn') {
+				copy_recursive("$src/$file", "$dst/$file");
+			}
+		}
+	} else if (file_exists($src)) {
+		copy($src, $dst);
+	}
+}
 
 // Initialize the application path and autoloading
 defined('APPLICATION_PATH')
@@ -32,18 +65,20 @@ $coreInclude = array(
 	APPLICATION_PATH.'/../library'
 );
 
-$pluginsDir = APPLICATION_PATH.'/../../plugins';
-
-$distDir = '/../../dist';
-
-
+$pluginsDir		= APPLICATION_PATH.'/../../plugins';
+$distDir 		= '/../../dist';
+$buildDir 		= APPLICATION_PATH.'/../../build';
+$debianStub		= APPLICATION_PATH.'/../../scripts/debian/';
 
 // Define some CLI options
 $getopt = new Zend_Console_Getopt(array(
-	'all|a' => 'Create all packages',
-	'core|c' => 'Create a package for vlc-shares core only',
-    'plugins|p-s' => 'Create packages for a list of plugins (divided by comma)',
-    'help|h'     => 'Help -- usage message',
+	'all|a' 		=> 'Create all packages',
+	'core|c' 		=> 'Create a package for vlc-shares core',
+    'plugins|p-s' 	=> 'Create packages for a list of plugins (divided by comma)',
+	'deb|d' 		=> 'Prepare build dire for deb file creation (include -c)',
+	'iss|i'			=> 'Build an inno setup installer starting from easyphp directory (preclude -c)',
+	'iss-winec|W-s' => 'Path to wine\'s drive_c folder (Default: "~/.wine/drive_c")',
+    'help|h'     	=> 'Help -- usage message',
 ));
 try {
     $getopt->parse();
@@ -61,14 +96,20 @@ if ($getopt->getOption('h')) {
  
 // Initialize values based on presence or absence of CLI options
 $createAll		= $getopt->getOption('a');
-$coreOnly		= $getopt->getOption('c');
+$createCore		= $getopt->getOption('c');
 $pluginsList	= $getopt->getOption('p');
+$createDeb		= $getopt->getOption('d');
+$createIss		= $getopt->getOption('i');
+$wineCPath		= $getopt->getOption('W');
 
 // if no other args specified createall = true
-if ( !$coreOnly && !$pluginsList ) {
+if ( !$createDeb && !$createIss && !$createCore && !$pluginsList ) {
 	$createAll = true;
 }
 
+if ( ($createDeb || $createIss ) && !$createCore ) {
+	$createCore = true;
+}
 
 if ( !is_writable(APPLICATION_PATH.'/../') ) {
 	echo '[EEE] Project patch is not writable'.PHP_EOL;
@@ -86,7 +127,7 @@ if ( !is_writable(APPLICATION_PATH.$distDir) ) {
 	echo "[EEE] Dist dir is not writable".PHP_EOL;
 }
 
-if ( $createAll || $coreOnly ) {
+if ( $createAll || $createCore ) {
 	
 	// package the core
 	// get the current vlc-shares version from X_VlcShares::VERSION
@@ -119,10 +160,6 @@ if ( $createAll || $coreOnly ) {
 	}
 	
 	unset($coreZip);
-	
-	if ( $coreOnly ) {
-		return true;
-	}
 	
 }
 
@@ -198,6 +235,119 @@ if ( $createAll || $pluginsList ) {
 }
 
 
+if ( $createAll || $createDeb ) {
 
+	$coreVersion = X_VlcShares::VERSION;
 
+	$coreFilename = APPLICATION_PATH.$distDir."/vlc-shares_$coreVersion.zip";
 
+	if ( !file_exists($coreFilename) ) {
+		echo "[EEE] Core package $coreFilename not found and required for DEB installer creation".PHP_EOL;
+		return false;
+	}
+
+	if ( file_exists("{$buildDir}/debian/") ) {
+		echo "Cleaning up {$buildDir}".PHP_EOL;
+	}
+	
+	rm_recursive("{$buildDir}/debian/");
+	mkdir("{$buildDir}/debian/opt/", 0777, true);
+	
+	// copy DEBIAN folder inside build dir
+	copy_recursive($debianStub, "{$buildDir}/debian/");
+	
+	$coreZip = new PclZip($coreFilename);
+	$coreZip->extract(PCLZIP_OPT_PATH, "{$buildDir}/debian/opt/");
+	
+	// fix permissions for postinst and postrm files
+	chmod("{$buildDir}/debian/DEBIAN/postinst", 0775);
+	chmod("{$buildDir}/debian/DEBIAN/postrm", 0775);
+	
+	//echo "All ready, go and type \"dpkg --build debian\"".PHP_EOL;
+	
+	passthru("fakeroot dpkg --build {$buildDir}/debian/");
+	// debian.deb created from dpkg
+	
+	if ( !file_exists("{$buildDir}/debian.deb") ) {
+		echo "[EEE] Looks like DPKG failed to create the deb".PHP_EOL;
+		return false;
+	}
+	
+	$debFilename = APPLICATION_PATH.$distDir."/vlc-shares_$coreVersion-1_all.deb";
+	
+	if ( !rename("{$buildDir}/debian.deb", $debFilename) ) {
+		echo "[EEE] DEB renaming failed".PHP_EOL;
+		return false;
+	}
+	
+	// cleaning up?
+	rm_recursive("{$buildDir}/debian/");
+	echo "DEB package created: vlc-shares_$coreVersion-1_all.deb".PHP_EOL;
+}
+
+if ( $createAll || $createIss ) {
+	
+	$homeDir = getenv("HOME");
+	echo "Base dir: {$homeDir}/.wine/drive_c".PHP_EOL;
+	
+	if ( !$wineCPath ) {
+		$wineCPath = "{$homeDir}/.wine/drive_c";
+	} else {
+		$wineCPath = rtrim($wineCPath, '/\\');
+	}
+	
+	if ( !file_exists("{$wineCPath}/EasyPHP-5.3.3/") ) {
+		echo "[EEE] Invalid EasyPHP folder: '{$wineCPath}/EasyPHP-5.3.3/'".PHP_EOL;
+		return false;
+	}
+	
+	$EPHome = "{$wineCPath}/EasyPHP-5.3.3";
+	
+	$coreVersion = X_VlcShares::VERSION;
+	$coreFilename = APPLICATION_PATH.$distDir."/vlc-shares_$coreVersion.zip";
+	if ( !file_exists($coreFilename) ) {
+		echo "[EEE] Core package $coreFilename not found and required for IS installer creation".PHP_EOL;
+		return false;
+	}
+	
+	if ( file_exists("{$EPHome}/vlc-shares/") ) {
+		echo "Cleaning up {$EPHome}/vlc-shares/".PHP_EOL;
+		rm_recursive("{$EPHome}/vlc-shares/");
+	}
+	
+	if ( file_exists(dirname(__FILE__)."/iss/Output/") ) {
+		echo "Cleaning up ".dirname(__FILE__)."/iss/Output/".PHP_EOL;
+		rm_recursive(dirname(__FILE__)."/iss/Output/");
+	}
+	
+	$coreZip = new PclZip($coreFilename);
+	$coreZip->extract(PCLZIP_OPT_PATH, "{$EPHome}/");
+	
+	$ISCC = '/bin/iscc';
+	$ISScript = dirname(__FILE__)."/iss/easyphp-5.3.3-unified-installer.iss";
+	
+	//iscc - < ./iss/easyphp-5.3.3-unified-installer.iss
+	passthru("{$ISCC} {$ISScript}");
+
+	echo PHP_EOL;
+	
+	$issInstaller = dirname(__FILE__)."/iss/Output/vlc-shares.exe";
+	
+	if ( !file_exists($issInstaller) ) {
+		echo "[EEE] Looks like IS failed to create the installer in '{$issInstaller}'".PHP_EOL;
+		return false;
+	}
+	
+	$installerFilename = APPLICATION_PATH.$distDir."/vlc-shares_{$coreVersion}_installer.exe";
+	
+	if ( !rename($issInstaller, $installerFilename) ) {
+		echo "[EEE] Installer renaming failed".PHP_EOL;
+		return false;
+	}
+	
+	// cleaning up?
+	rm_recursive(dirname(__FILE__)."/iss/Output/");
+	echo "Installer created: vlc-shares_{$coreVersion}_installer.exe".PHP_EOL;
+	
+	
+}

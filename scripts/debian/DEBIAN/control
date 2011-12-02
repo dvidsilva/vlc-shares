@@ -1,0 +1,24 @@
+Package: vlc-shares
+Version: 0.5.5-1
+Architecture: all
+Section: web
+Priority: extra
+Maintainer: Francesco Capozzo <ximarx@gmail.com>
+Homepage: https://code.google.com/p/vlc-shares/
+Depends: libapache2-mod-php5 | php5,
+	apache2,
+	zend-framework,
+	zend-framework-bin,
+    php5-sqlite, 
+    php5-mcrypt,
+    php5-cli, 
+    vlc,
+    ffmpeg,
+    libavcodec-extra-53
+Suggests: www-browser | chromium-browser | firefox
+Description: Web based streaming and transconding solution for WiiMC and Android devices.
+ It aims to extend WiiMC online media tab features allowing to watch HD Files through vlc transcoding,
+ fetch medias from websites (ex. Megavideo, AllSp, GoGoCinema.com, etc etc) and make them viewable 
+ in WiiMC without have to download them first. It also provide same features for Android Phones too.
+ 
+ 

@@ -7,8 +7,8 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{2D3CDCAB-4146-42D2-83B6-E52B8BB7CE83}
 AppName=VLCShares
-AppVersion=0.5.4
-;AppVerName=VLCShares 0.5.4
+AppVersion=0.5.5
+;AppVerName=VLCShares 0.5.5
 AppPublisher=Ximarx
 AppPublisherURL=http://code.google.com/p/vlc-shares/
 AppSupportURL=http://code.google.com/p/vlc-shares/
@@ -28,8 +28,8 @@ Name: "italian"; MessagesFile: "compiler:Languages\Italian.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Documents and Settings\Ximarx\Desktop\easyphp-fullpackage\EasyPHP-5.3.3\EasyPHP-5.3.3.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Documents and Settings\Ximarx\Desktop\easyphp-fullpackage\EasyPHP-5.3.3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Permissions: everyone-modify
+Source: "C:\EasyPHP-5.3.3\EasyPHP-5.3.3.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\EasyPHP-5.3.3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Permissions: everyone-modify
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -40,6 +40,7 @@ Name: "{commondesktop}\VLCShares"; Filename: "{app}\EasyPHP-5.3.3.exe"; Tasks: d
 [UninstallDelete]
 Type: files; Name: "{app}\UpFile.tmp"
 Type: files; Name: "{app}\vlc-shares\*"
+Type: files; Name: "{app}\php_include_dir\*"
 Type: files; Name: "{app}\tmp\*"
 Type: files; Name: "{app}\mysql\data\ib_logfile0"
 Type: files; Name: "{app}\mysql\data\ib_logfile1"

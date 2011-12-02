@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=VLCShares
+Comment=VLCShares
+Exec=sensible-browser http://localhost/vlc-shares/
+Terminal=false
+Type=Application
+Icon=vlc
+Categories=Network;Multimedia;
