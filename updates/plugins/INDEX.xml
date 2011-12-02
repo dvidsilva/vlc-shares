@@ -392,13 +392,6 @@
 		</version>
 	</plugin>
 	<plugin key="streamingonline">
-		<version name="0.1" type="beta" cMin="0.5.5" cMax="0.6">
-			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_streamingonline_0.1beta.zip</download>
-			<changelog><![CDATA[
-			]]></changelog>
-			<description><![CDATA[Allow to watch videos from streaming-online.biz site]]></description>
-		</version>
 		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.5.5">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_streamingonline_0.1beta.zip</download>
@@ -408,13 +401,6 @@
 		</version>
 	</plugin>
 	<plugin key="tvlinks">
-		<version name="0.1" type="beta" cMin="0.5.5" cMax="0.6">
-			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_tvlinks_0.1beta.zip</download>
-			<changelog><![CDATA[
-			]]></changelog>
-			<description><![CDATA[Allow to watch videos from tv-links.eu]]></description>
-		</version>
 		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.5.5">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_tvlinks_0.1beta.zip</download>
