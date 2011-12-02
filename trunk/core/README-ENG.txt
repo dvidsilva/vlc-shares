@@ -8,7 +8,7 @@
 #     															#
 #################################################################
 
-VLC-SHARES v0.5.4 - 22/04/2011
+VLC-SHARES v0.5.5 alpha 1 - 02/12/2011
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -24,6 +24,25 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.5.5 alpha 1 (02/12/2011) ***
+ - Outputs and Profiles plugins merged
+ - New Devices plugin + new devices compatibility system
+ - Automatic hoster selection in Online Library
+ - New Webkit interface for Webkit devices
+ - New PageParserLib
+ - Helper broker allow core helper substitution
+ - Compatibility with VLC 1.2 http server
+ - New Plugins_Utils utility class
+ - New RendererInterface for Renderer plugins
+ - DEB package for Ubuntu 11.10
+ - Scripts for DEB and ISS installer creation (ISS creation through cross compiling thanks to wine)
+ - Transcoding profiles improvements: better quality, mime-type for streams
+ - Transcoding profiles merged with outputs profiles
+ - Mediainfo helper removed
+ - Stream helper redirected to ffmpeg
+ - Automatic stream type recognition before transcoding removed
+ - Profile for Asus Transformer
 
 *** 0.5.4 (22/4/2011) ***
  - Automatic installer for Ubuntu 10.10
