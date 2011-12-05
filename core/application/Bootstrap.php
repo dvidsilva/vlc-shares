@@ -225,5 +225,43 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$view->guiElements()->registerElement('tableCell', 'X_VlcShares_Elements_TableCell');
 	}
 	
+	protected function _initThreads() {
+		$this->bootstrap('db');
+		$this->bootstrap('configs');
+		
+		$dbAdapter = $this->getResource('db');
+		
+		$configs = $this->getResource('configs');
+		$url = null;
+		$logger = false;
+		try {
+			if ( $configs instanceof Zend_Config ) {
+				$url = @$configs->general->threads->forker;
+				$logger =  $configs->general->debug->enabled;
+			}
+		} catch ( Exception $e) {}
+		if ( $url == null )	$url = 'http://localhost/vlc-shares/threads/start';
+		if ( $logger == null ) $logger = false;
+		
+		X_Threads_Manager::instance()->setMonitor(
+			new X_Threads_Monitor_Db(
+				new X_Threads_Monitor_Db_Mapper(
+					new Application_Model_DbTable_Threads()
+				)
+			)
+		);
+
+		X_Threads_Manager::instance()->setMessenger(
+			new X_Threads_Messenger_ZendQueue($dbAdapter)
+		);
+		
+		X_Threads_Manager::instance()->setStarter(
+			new X_Threads_Starter_HttpPost($url)
+		);
+		
+		X_Threads_Manager::instance()->setLogger($logger);
+		
+	}
+	
 }
 

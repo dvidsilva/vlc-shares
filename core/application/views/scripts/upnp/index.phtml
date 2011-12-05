@@ -1,0 +1,38 @@
+<!-- application/views/scripts/upnp/index.phtml -->
+<?php 
+
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+	
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLabel(X_Env::_('p_upnp_title'));
+
+?>
+<?php //$this->headLink()->appendStylesheet($this->baseUrl('/css/upnp/style.css')); ?>
+<?php //$this->headScript()->appendFile($this->baseUrl("/js/upnp/index.js")); ?>
+<?php $this->headTitle()->prepend(X_Env::_('p_upnp_title')); ?>
+
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+
+Thread is: <?php echo $this->thread->getState(); ?></br>
+Last update: <pre><?php echo print_r($this->thread->getInfo(), true); ?></pre>
+
+<a href="<?php echo $this->url(array('action' => 'resume', 'controller' => 'upnp'), 'default', true); ?>">Resume</a> 
+ |
+<a href="<?php echo $this->url(array('action' => 'stop', 'controller' => 'upnp'), 'default', true); ?>">Stop</a> 

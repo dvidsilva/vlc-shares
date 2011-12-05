@@ -1,0 +1,30 @@
+
+CREATE TABLE threads 
+(
+	id VARCHAR(100) PRIMARY KEY,
+	state VARCHAR(50) NOT NULL,
+	info TEXT DEFAULT NULL,
+	sticked INTEGER(1) NOT NULL DEFAULT 0,
+	lastupdate TIMESTAMP DEFAULT (strftime('%s','now'))
+);
+
+CREATE TABLE queue
+(
+	queue_id INTEGER PRIMARY KEY AUTOINCREMENT,
+	queue_name VARCHAR(100) NOT NULL,
+	timeout INTEGER NOT NULL DEFAULT 30
+);
+
+
+
+CREATE TABLE message
+(
+	message_id INTEGER PRIMARY KEY AUTOINCREMENT,
+	queue_id INTEGER NOT NULL,
+	handle CHAR(32),
+	body VARCHAR(8192) NOT NULL,
+	md5 CHAR(32) NOT NULL,
+	timeout REAL,
+	created INTEGER,
+	FOREIGN KEY (queue_id) REFERENCES queue(queue_id)
+);

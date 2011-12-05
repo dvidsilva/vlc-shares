@@ -86,7 +86,16 @@ try {
         echo PHP_EOL;
     }
 
-	$dataSql = file_get_contents(dirname(__FILE__) . '/db/configs.sqlite.sql');
+	$dataSql = file_get_contents(dirname(__FILE__) . '/db/threads.sqlite.sql');
+	// use the connection directly to load sql in batches
+	$dbAdapter->getConnection()->exec($dataSql);
+	if ('testing' != APPLICATION_ENV) {
+		echo 'Threads Loaded.';
+		echo PHP_EOL;
+	}
+    
+    
+    $dataSql = file_get_contents(dirname(__FILE__) . '/db/configs.sqlite.sql');
 	// use the connection directly to load sql in batches
 	$dbAdapter->getConnection()->exec($dataSql);
 	if ('testing' != APPLICATION_ENV) {
