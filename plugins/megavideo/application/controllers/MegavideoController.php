@@ -13,6 +13,8 @@ class MegavideoController extends X_Controller_Action
 	 */
 	private $jar = null;
 	
+	
+	
     public function init()
     {
         parent::init();
@@ -25,6 +27,16 @@ class MegavideoController extends X_Controller_Action
 		} else {
 			$this->plugin = X_VlcShares_Plugins::broker()->getPlugins('megavideo');
 		}
+		
+		$action = $this->getRequest()->getActionName();
+		
+		if ( $action == 'premium' ) {
+			// disabling outbuffering
+			// and response return
+			$this->getFrontController()->setParam('disableOutputBuffering', true);
+			$this->getFrontController()->returnResponse(false);
+		}
+		
     }
 
     public function indexAction()

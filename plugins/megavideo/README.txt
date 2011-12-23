@@ -8,7 +8,7 @@
 #     															#
 ########## Megavideo Plugin #####################################
 
-Megavideo v0.3.1
+Megavideo v0.3.2
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -20,8 +20,12 @@ Allows to watch videos from Megavideo
 For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 
 /==========---
-| Changelogrequest
+| Changelog
 \==========---
+
+*** 0.3.2 ***
+ - Output buffering disabled when proxying
+ - Megaupload -> Megavideo id conversion fixed
 
 *** 0.3.1 ***
  - Megaupload helper allows two kind of pattern: megavideo.com/?d= and megaupload.com/?d=
