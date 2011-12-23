@@ -28,7 +28,7 @@ class X_VlcShares_Plugins_Helper_Megaupload extends X_VlcShares_Plugins_Helper_M
 			
 			$body = $response->getBody();
 			$matches = array();
-			if ( preg_match('/flashvars\.v \= \"([^\"]*)\";/', $body, $matches) ) {
+			if ( preg_match('/flashvars\.v\s*?=\s*?["\']([A-Z0-9]+)["\'];/', $body, $matches) ) {
 				//return $this->setLocation($matches[1]);
 				$megavideoId = $matches[1];
 			} else {

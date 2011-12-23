@@ -3,7 +3,7 @@
 	<metadata>
 		<label>p_megavideo_plglabel</label>
 		<description>p_megavideo_plgdesc</description>
-		<version>0.3.1</version>
+		<version>0.3.2</version>
 		<status>stable</status>
 		<key>megavideo</key>
 		<file>X/VlcShares/Plugins/Megavideo.php</file>
