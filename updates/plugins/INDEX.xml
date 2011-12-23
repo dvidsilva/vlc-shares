@@ -40,12 +40,13 @@
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from Megavideo and Megaupload (premium account supported)]]></description>
 		</version>
-		<version name="0.3.1" type="stable" cMin="0.5.4" cMax="0.6">
+		<version name="0.3.2" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_megavideo_0.3.1.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_megavideo_0.3.2.zip</download>
 			<changelog><![CDATA[
 			*** 0.3 ***
-			 - Megaupload links megaupload.com/?d= supported
+			 - Output buffering disabled when proxying
+			 - Megaupload -> Megavideo id conversion fixed
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from Megavideo and Megaupload (premium account supported)]]></description>
 		</version>
