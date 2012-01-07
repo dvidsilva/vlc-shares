@@ -3,8 +3,8 @@
 
 class X_VlcShares_Plugins_VideoBB extends X_VlcShares_Plugins_Abstract {
 	
-    const VERSION = '0.1.2';
-    const VERSION_CLEAN = '0.1.2';
+    const VERSION = '0.1.3';
+    const VERSION_CLEAN = '0.1.3';
 	
 	function __construct() {
 		
