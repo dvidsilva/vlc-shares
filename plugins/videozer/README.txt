@@ -8,7 +8,7 @@
 #     															#
 ########## VideoZer Plugin #################################
 
-VideoZer v0.1.2
+VideoZer v0.1.3
 Created by Francesco Capozzo (ximarx)
 ximarx@gmail.com
 
@@ -22,6 +22,9 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.1.3 ***
+ - New decrypter
 
 *** 0.1.2 ***
  - New link decrypter
