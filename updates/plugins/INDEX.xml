@@ -438,4 +438,20 @@
 			<description><![CDATA[Allow to watch live tv from rtmpgui (Require PageParserLib or VLCShares 0.5.5+)]]></description>
 		</version>
 	</plugin>
+	<plugin key="own3d">
+		<version name="0.1" type="beta" cMin="0.5.5" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_own3d_0.1beta.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch live streams from own3d.tv]]></description>
+		</version>
+		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.5.5">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_own3d_0.1beta.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch live streams from own3d (Require PageParserLib or VLCShares 0.5.5+)]]></description>
+		</version>
+	</plugin>
 </plugins>
