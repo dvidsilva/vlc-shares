@@ -181,6 +181,12 @@ class X_VlcShares_Plugins_Helper_Hoster_Videozer implements X_VlcShares_Plugins_
 		$link = str_replace(':80', '', $token)."&c=".$passkey;
 		*/
 		
+		if ( $token == '' ) {
+			X_Debug::e('Link has been removed or is unavailable: '.@$json['cfg']['msg']['display']['text'], true);
+			throw new Exception('Link has been removed or is unavailable: '.@$json['cfg']['msg']['display']['text'], self::E_ID_INVALID);
+		}
+		
+		
 		// prepare token for append: add & as last char if missing
 		$token = rtrim($token, '&').'&';
 		
@@ -191,7 +197,7 @@ class X_VlcShares_Plugins_Helper_Hoster_Videozer implements X_VlcShares_Plugins_
 		$algoCtrl = explode(';', $algoCtrl);
 		
 
-		if ( count($algoCtrl) == 0 || strpos($algoCtrl[0], '&') === false ) {
+		if ( count($algoCtrl) <= 1 ) {
 			X_Debug::e("Invalid AlgoCtrl: ".print_r($algoCtrl, true));
 			throw new Exception("Invalid AlgoCtrl value", self::E_ID_INVALID);
 		}
