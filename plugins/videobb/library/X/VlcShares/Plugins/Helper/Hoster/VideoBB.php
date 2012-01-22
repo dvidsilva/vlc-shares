@@ -4,10 +4,6 @@ class X_VlcShares_Plugins_Helper_Hoster_VideoBB implements X_VlcShares_Plugins_H
 
 	const ID = 'videobb';
 	const PATTERN = '/http\:\/\/((www\.)?)videobb\.com\/(video\/|watch_video.php\?v\=)(?P<ID>[A-Za-z0-9]+)/';
-
-	/*
-	const KEY_2 = 226593;
-	*/
 	
 	//{{{ MAGICs for BIT
 	const MAGIC_BIT_1A = 11;
@@ -164,26 +160,24 @@ class X_VlcShares_Plugins_Helper_Hoster_VideoBB implements X_VlcShares_Plugins_H
 		// format url
 		
 		$token = @base64_decode(@$json['settings']['config']['token1']);
+		
+		if ( $token == '' ) {
+			X_Debug::e('Link has been removed or is unavailable: '.@$json['settings']['messages']['display']['text'], true);
+			throw new Exception('Link has been removed or is unavailable: '.@$json['settings']['messages']['display']['text'], self::E_ID_INVALID);
+		}
+		
 		// prepare token for append: add & as last char if missing
 		$token = rtrim($token, '&').'&';
 		
-		
-		// 977d7876de4f788561b796a0
 		$spen = @$json['settings']['login_status']['spen'];
-		// 679352
 		$salt = @$json['settings']['login_status']['salt'];
-		
-		//echo "SPEN: $spen<br/>";
-		//echo "SALT: $salt<br/>";
-		
-		//$algoCtrl = explode(';', $this->decryptBit($spen, $salt, self::MAGIC_1));
 		
 		$algoCtrl = pack('H*', $this->decryptBit($spen, $salt, self::MAGIC_1));
 		$algoCtrl = explode(';', $algoCtrl);
 		
-		//echo "AlgoCtrl: ".print_r($algoCtrl, true);
+		//echo "Algoctrl: ".print_r($algoCtrl, true);
 
-		if ( count($algoCtrl) == 0 || strpos($algoCtrl[0], '&') === false ) {
+		if ( count($algoCtrl) <= 1 ) {
 			X_Debug::e("Invalid AlgoCtrl: ".print_r($algoCtrl, true));
 			throw new Exception("Invalid AlgoCtrl value", self::E_ID_INVALID);
 		}
@@ -212,7 +206,6 @@ class X_VlcShares_Plugins_Helper_Hoster_VideoBB implements X_VlcShares_Plugins_H
 					$decryptedString = $this->decryptByte($keyString, $key1, $key2);
 					break;
 				case 2:
-					//FIXME i think this is wrong url path
 					$keyString = @$json['settings']['banner']['g_ads']['url'];
 					$decryptedString = $this->decryptBit($keyString, $key1, $key2);
 					break;
