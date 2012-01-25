@@ -379,6 +379,15 @@
 			<description><![CDATA[Allow to watch videos from videozer]]></description>
 		</version>
 	</plugin>
+	<plugin key="2shared">
+		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_2shared_0.1beta.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch videos from 2shared.com]]></description>
+		</version>
+	</plugin>
 	<plugin key="pageparserlib">
 		<version name="0.1" type="alpha2" cMin="0.5.4" cMax="0.5.5">
 			<update />
