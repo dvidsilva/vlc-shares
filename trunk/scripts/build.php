@@ -315,6 +315,46 @@ if ( $createAll || $createIss ) {
 		rm_recursive("{$EPHome}/vlc-shares/");
 	}
 	
+	if ( file_exists("{$EPHome}/conf_files/httpd.conf") ) {
+		// clean httpd config file
+		echo "Cleaning up [APACHE CONF] {$EPHome}/conf_files/httpd.conf".PHP_EOL;
+		unlink("{$EPHome}/conf_files/httpd.conf");
+	}
+	//copy(dirname(__FILE__)."/iss/httpd.conf", "{$EPHome}/conf_files/httpd.conf");
+	
+	// read the vlc-shares.conf content
+	$vlcsharesModuleConf = file_get_contents(dirname(__FILE__)."/iss/vlc-shares.conf");
+	// read the httpd.conf content
+	$httpdConf = file_get_contents(dirname(__FILE__)."/iss/httpd.conf");
+	
+	// try to replace the VLCSHARESCONF entry point inside the HTTPD.conf
+	// with the real conf file
+	$num = 0;
+	$httpdConf = str_replace('#{{{VLC-SHARES-CONF-ENTRYPOINT}}}#', $vlcsharesModuleConf, $httpdConf, $num);
+	if ( $num == 0 ) {
+		echo "[EEE] Entry point for vlc-shares.conf inside httpd.conf not found. Build will fail".PHP_EOL;
+		return; 
+	}
+	
+	// subsitution found and done
+	// store the compiled httpd.conf
+	if ( file_put_contents("{$EPHome}/conf_files/httpd.conf", $httpdConf) === false ) {
+		echo "[EEE] Httpd.conf creation failed".PHP_EOL;
+		return;
+	}
+	
+	
+	if ( file_exists("{$EPHome}/conf_files/php.ini") ) {
+		// clean httpd config file
+		echo "Cleaning up [PHP CONF] {$EPHome}/conf_files/php.ini";
+		unlink("{$EPHome}/conf_files/php.ini");
+	}
+	if ( !copy(dirname(__FILE__)."/iss/php.ini", "{$EPHome}/conf_files/php.ini") ) {
+		echo "[EEE] php.ini copy failed".PHP_EOL;
+		return;
+	}
+	
+	
 	if ( file_exists(dirname(__FILE__)."/iss/Output/") ) {
 		echo "Cleaning up ".dirname(__FILE__)."/iss/Output/".PHP_EOL;
 		rm_recursive(dirname(__FILE__)."/iss/Output/");

@@ -179,7 +179,7 @@ class X_VlcShares_Plugins_Helper_Hoster_VideoBB implements X_VlcShares_Plugins_H
 
 		if ( count($algoCtrl) <= 1 ) {
 			X_Debug::e("Invalid AlgoCtrl: ".print_r($algoCtrl, true));
-			throw new Exception("Invalid AlgoCtrl value", self::E_ID_INVALID);
+			throw new Exception("Invalid AlgoCtrl value {".print_r($algoCtrl, true)."}", self::E_ID_INVALID);
 		}
 		
 		$keys = array();

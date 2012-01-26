@@ -1,0 +1,55 @@
+<?php echo $this->xmldef; ?>
+<root xmlns="urn:schemas-upnp-org:device-1-0" xmlns:dlna="urn:schemas-dlna-org:device-1-0" xmlns:sec="http://www.sec.co.kr/dlna">
+	<specVersion>
+		<major>1</major>
+		<minor>0</minor>
+	</specVersion>
+	<?php if ( false ): ?><URLBase><?php echo X_Env::completeUrl($this->baseUrl()); ?></URLBase><?php endif; ?>
+	<device>
+		<deviceType>urn:schemas-upnp-org:device:MediaServer:1</deviceType>
+		<friendlyName><?php echo X_Upnp::getDeviceName(true); ?></friendlyName>
+		<manufacturer>Ximarx</manufacturer>
+		<manufacturerURL>https://code.google.com/p/vlc-shares/</manufacturerURL>
+		<modelDescription>VLCShares Upnp Media Server</modelDescription>
+		<modelName>VLCShares <?php echo X_VlcShares::VERSION; ?></modelName>
+		<modelNumber><?php echo X_Upnp::version(true, true); ?></modelNumber>
+		<modelURL>https://code.google.com/p/vlc-shares/</modelURL>
+		<UDN>uuid:<?php echo X_Upnp::UUID; ?></UDN>
+		<dlna:X_DLNACAP/>
+		<dlna:X_DLNADOC>DMS-1.50</dlna:X_DLNADOC>
+		<dlna:X_DLNADOC>M-DMS-1.50</dlna:X_DLNADOC>	
+		<iconList> 
+			<icon> 
+				<mimetype>image/png</mimetype> 
+				<width>256</width> 
+				<height>256</height> 
+				<depth>24</depth> 
+				<url><?php echo $this->baseUrl('/images/logo.png'); ?></url> 
+			</icon> 
+		</iconList>
+		<serviceList>
+			<service>
+				<serviceType>urn:schemas-upnp-org:service:ContentDirectory:1</serviceType>
+				<serviceId>urn:upnp-org:serviceId:ContentDirectory</serviceId>
+				<controlURL><?php echo $this->baseUrl('/upnp/control'); ?></controlURL>
+				<eventSubURL><?php echo $this->baseUrl('/upnp/event/file/cdEvent.xml'); ?></eventSubURL>
+				<SCPDURL><?php echo $this->baseUrl('/upnp/manifest/file/content-directory') ?></SCPDURL>
+			</service>
+			<service>
+				<serviceType>urn:schemas-upnp-org:service:ConnectionManager:1</serviceType>
+				<serviceId>urn:upnp-org:serviceId:ConnectionManager</serviceId>
+				<controlURL><?php echo $this->baseUrl('/upnp/event/file/cmControl.xml'); ?></controlURL>
+				<eventSubURL><?php echo $this->baseUrl('/upnp/event/file/cmEvent.xml'); ?></eventSubURL>
+				<SCPDURL><?php echo $this->baseUrl('/upnp/manifest/file/connection-manager'); ?></SCPDURL>
+			</service>
+			<service>
+				<serviceType>urn:microsoft.com:service:X_MS_MediaReceiverRegistrar:1</serviceType>
+				<serviceId>urn:microsoft.com:serviceId:X_MS_MediaReceiverRegistrar</serviceId>
+				<SCPDURL><?php echo $this->baseUrl('/upnp/manifest/file/ms-media-receiver-registrar'); ?></SCPDURL>
+				<controlURL><?php echo $this->baseUrl('/upnp/controldnla'); ?></controlURL>
+				<eventSubURL><?php echo $this->baseUrl('/upnp/event/file/ms-registrar.xml'); ?></eventSubURL>
+			</service>			
+		</serviceList>
+		<presentationURL><?php echo X_Env::completeUrl($this->baseUrl()); ?></presentationURL>
+	</device>
+</root>

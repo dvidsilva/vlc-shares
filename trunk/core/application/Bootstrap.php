@@ -49,6 +49,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		ini_set('display_startup_errors', '1');
 		ini_set('error_reporting', 'E_ALL');
 		
+		restore_error_handler();
+		restore_exception_handler();
+		
+		//$prevHanlder = set_error_handler('myErrorHandler', E_ALL | E_STRICT);
+		
 		// scan /extra/plugins/$directory/ for dev_bootstrap.php file
 		// and execute it.
 		$directory = new DirectoryIterator($extraPluginsPath);
@@ -80,6 +85,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 				}
 			} 
 		}
+		
 		
 		ini_set('display_errors', $displayError);
 		ini_set('display_startup_errors', $displayStartup);
@@ -237,7 +243,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		try {
 			if ( $configs instanceof Zend_Config ) {
 				$url = @$configs->general->threads->forker;
-				$logger =  $configs->general->debug->enabled;
+				if ( $configs->general->debug->enabled ) {
+					$logger = @$configs->general->threads->logger;
+				}
 			}
 		} catch ( Exception $e) {}
 		if ( $url == null )	$url = 'http://localhost/vlc-shares/threads/start';
@@ -263,5 +271,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		
 	}
 	
+}
+
+if ( !function_exists('myErrorHandler') ) {
+	function myErrorHandler($errno, $errstr, $errfile, $errline) {
+		die("{$errno}: {$errstr} in {$errfile} on line {$errline}");
+	}
 }
 

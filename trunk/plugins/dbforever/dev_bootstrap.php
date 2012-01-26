@@ -50,6 +50,6 @@ $pluginsInstances = array(
 );
 
 $dbInits = array(
-	$basePath.'/install.sql' => (file_exists(APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_DBForever.en_GB.ini') == false),
+	//$basePath.'/install.sql' => (file_exists(APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_DBForever.en_GB.ini') == false),
 );
 

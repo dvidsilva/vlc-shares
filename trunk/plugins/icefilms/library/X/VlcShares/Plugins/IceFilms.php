@@ -603,7 +603,7 @@ class X_VlcShares_Plugins_IceFilms extends X_VlcShares_Plugins_Abstract implemen
 					@list(, $muId, $label) = $lm;
 					// $muId now is a videoId of Icefilms
 					
-					$label = "$label ($catLabel) [Megaupload]";
+					$label = "$label ($catLabel)";
 					//$videoId = self::TYPE_MEGAUPLOAD.":$muId";
 					$videoId = $muId;
 					
@@ -636,16 +636,19 @@ class X_VlcShares_Plugins_IceFilms extends X_VlcShares_Plugins_Abstract implemen
 	 */
 	private function _loadPage($uri, $validityCache = 0) {
 
+		$cachePlugin = false;
+		
 		if ( $validityCache > 0 ) {
 			if ( X_VlcShares_Plugins::broker()->isRegistered('cache') ) {
 				/* @var $cachePlugin X_VlcShares_Plugins_Cache */
 				$cachePlugin = X_VlcShares_Plugins::broker()->getPlugins('cache');
-			}
-			try {
-				X_Debug::i("Retrieving cache entry for {{$uri}}");
-				return $cachePlugin->retrieveItem($uri);
-			} catch (Exception $e) {
-				X_Debug::i("No valid cache entry for $uri");
+				
+				try {
+					X_Debug::i("Retrieving cache entry for {{$uri}}");
+					return $cachePlugin->retrieveItem($uri);
+				} catch (Exception $e) {
+					X_Debug::i("No valid cache entry for $uri");
+				}
 			}
 		}
 		

@@ -54,6 +54,28 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 );
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'threads.forker', 
+	'http://localhost/vlc-shares/threads/start',
+	'http://localhost/vlc-shares/threads/start',
+	'general',
+	0,
+	'config_general_threads_forker_label',
+	'config_general_threads_forker_desc',
+	'advanced'
+);
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'threads.logger', 
+	'0',
+	'0',
+	'general',
+	3,
+	'config_general_threads_logger_label',
+	'config_general_threads_logger_desc',
+	'advanced'
+);
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'apache.port', 
 	'80',
 	'80',
