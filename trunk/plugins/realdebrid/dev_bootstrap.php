@@ -107,7 +107,8 @@ $helpersIncludes = array(
 	$basePath.'/library/X/VlcShares/Plugins/Helper/Hoster/RealDebrid2Shared.php',
 	$basePath.'/library/X/VlcShares/Plugins/Helper/Hoster/RealDebridCwtv.php',
 	$basePath.'/library/X/VlcShares/Plugins/Helper/Hoster/RealDebridCbs.php',
-	$basePath.'/library/X/VlcShares/Plugins/Helper/Hoster/RealDebridVideoweed.php',	
+	$basePath.'/library/X/VlcShares/Plugins/Helper/Hoster/RealDebridVideoweed.php',
+	$basePath.'/library/X/VlcShares/Plugins/Helper/Hoster/RealDebridGeneric.php'	
 );
 
 /**

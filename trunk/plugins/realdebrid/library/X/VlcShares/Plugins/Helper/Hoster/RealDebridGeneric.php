@@ -1,10 +1,16 @@
 <?php 
 
-class X_VlcShares_Plugins_Helper_Hoster_RealDebridVideoweed extends X_VlcShares_Plugins_Helper_Hoster_RealDebridAbstract {
+class X_VlcShares_Plugins_Helper_Hoster_RealDebridGeneric extends X_VlcShares_Plugins_Helper_Hoster_RealDebridAbstract {
 	
-	const ID = 'videoweed-realdebrid';
-	const PATTERN = '/http:\/\/(www\.)?videoweed\.(es|com)\/file\/(?P<ID>[A-Za-z0-9]+)/i';
-	// http://www.videoweed.es/file/1kopfabwn8g7t
+	protected $ID = 'generic-realdebrid';
+	protected $PATTERN = '/http:\/\/(www\.)?generic\.com\/generic\/(?P<ID>[A-Za-z0-9]+)/i';
+	protected $URL = 'http://www.generic.com/generic/%s';
+	
+	public function __construct($ID, $PATTERN, $URL) {
+		$this->ID = $ID;
+		$this->PATTERN = $PATTERN;
+		$this->URL = $URL;
+	}
 	
 	/**
 	 * give the hoster id
@@ -14,7 +20,7 @@ class X_VlcShares_Plugins_Helper_Hoster_RealDebridVideoweed extends X_VlcShares_
 		try {
 			return $this->getParentProperty('Id');
 		} catch (Exception $e) {
-			return self::ID;
+			return $this->ID;
 		}
 	}
 	
@@ -26,7 +32,7 @@ class X_VlcShares_Plugins_Helper_Hoster_RealDebridVideoweed extends X_VlcShares_
 		try {
 			return $this->getParentProperty('Pattern');
 		} catch (Exception $e) {
-			return self::PATTERN;
+			return $this->PATTERN;
 		}
 	}
 	
@@ -41,7 +47,7 @@ class X_VlcShares_Plugins_Helper_Hoster_RealDebridVideoweed extends X_VlcShares_
 			return parent::getResourceId($url);
 		} catch (Exception $e) {
 			$matches = array();
-			if ( preg_match(self::PATTERN, $url, $matches ) ) {
+			if ( preg_match($this->PATTERN, $url, $matches ) ) {
 				if ( $matches['ID'] != '' ) {
 					return $matches['ID'];
 				}
@@ -86,7 +92,7 @@ class X_VlcShares_Plugins_Helper_Hoster_RealDebridVideoweed extends X_VlcShares_
 		try {
 			return parent::getHosterUrl($playableId);
 		} catch (Exception $e) {
-			return "http://www.videoweed.es/file/$playableId";
+			return sprintf($this->URL, $playableId);
 		}
 	}
 	

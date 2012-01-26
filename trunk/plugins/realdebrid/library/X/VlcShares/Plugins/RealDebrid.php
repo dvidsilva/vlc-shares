@@ -3,8 +3,8 @@
 
 class X_VlcShares_Plugins_RealDebrid extends X_VlcShares_Plugins_Abstract {
 		
-	const VERSION_CLEAN = '0.1.2';
-	const VERSION = '0.1.2';
+	const VERSION_CLEAN = '0.1.3';
+	const VERSION = '0.1.3';
 	
 	private $hosters = array(
 		// replace-id => with class
@@ -20,6 +20,61 @@ class X_VlcShares_Plugins_RealDebrid extends X_VlcShares_Plugins_Abstract {
 		'cwtv' => 'X_VlcShares_Plugins_Helper_Hoster_RealDebridCwtv',
 		'cbs' => 'X_VlcShares_Plugins_Helper_Hoster_RealDebridCbs',
 		'videoweed' => 'X_VlcShares_Plugins_Helper_Hoster_RealDebridVideoweed',
+	
+		// generics
+		'novamov' => array(
+			'/http:\/\/(www\.)?nova(mov|up)\.com\/(video|download)\/(?P<ID>[A-Za-z0-9]+)/i',
+			'http://www.novamov.com/video/%s'
+		),
+		'bitshare' => array(
+			'/http:\/\/(www\.)?bitshare\.com\/files\/(?P<ID>.+)/i',
+			'http://www.bitshare.com/files/%s'
+		),
+		'filefactory' => array(
+			'/http:\/\/(www\.)?filefactory\.com\/file\/(?P<ID>.+)/i',
+			'http://www.filefactory.com/file/%s'
+		),
+		'hotfile' => array(
+			'/http:\/\/(www\.)?hotfile\.com\/dl\/(?P<ID>.+)/i',
+			'http://www.hotfile.com/dl/%s'
+		),
+		'justintv' => array(
+			'/http:\/\/(www\.|([a-z]+)\.)?justin\.tv\/(?P<ID>.+)/i',
+			'http://www.justin.tv/dl/%s'
+		),
+		'loadto' => array(
+			'/http:\/\/(www\.)?load\.to\/(?P<ID>.+)/i',
+			'http://www.load.to/%s'
+		),
+		'mediafire' => array(
+			'/http:\/\/(www\.)?mediafire\.com\/\?(?P<ID>.+)/i',
+			'http://www.mediafire.com/?%s'
+		),
+		'megashares' => array(
+			'/http:\/\/(www\.|([a-z]+)\.)?megashares\.com\/(index\.php)?\?(?P<ID>.+)/i',
+			'http://www.megashares.com/?%s'
+		),
+		'netloadin' => array(
+			'/http:\/\/(www\.)?netload\.in\/(?P<ID>.+)/i',
+			'http://www.netload.in/%s'
+		),
+		'putlocker' => array(
+			'/http:\/\/(www\.)?putlocker\.com\/file\/(?P<ID>.+)/i',
+			'http://www.putlocker.com/file/%s'
+		),
+		'uploadedto' => array(
+			'/http:\/\/(www\.)?u(ploaded)?\.to\/file\/(?P<ID>.+)/i',
+			'http://www.uploaded.to/file/%s'
+		),
+		'wupload' => array(
+			'/http:\/\/(www\.)?wupload\.com\/file\/(?P<ID>.+)/i',
+			'http://www.wupload.com/file/%s'
+		),
+		'wattv' => array(
+			'/http:\/\/(www\.)?wat\.tv\/video\/(?P<ID>.+)/i',
+			'http://www.wat.tv/video/%s'
+		),
+		
 	);
 	
 	public function __construct() {
@@ -54,7 +109,13 @@ class X_VlcShares_Plugins_RealDebrid extends X_VlcShares_Plugins_Abstract {
 				} catch (Exception $e) {
 					// no problem, wasn't registered
 				}
-				$hObj = new $hClass();
+				
+				$hObj = null;
+				if ( is_array($hClass) ) {
+					$hObj = new X_VlcShares_Plugins_Helper_Hoster_RealDebridGeneric("$hId-realdebrid", $hClass[0], $hClass[1] );
+				} else {
+					$hObj = new $hClass();
+				}
 				// allow to use a standard hoster (if available) for fetch informations
 				// because it should work better than realdebrid hoster
 				if ( method_exists($hObj, 'setParentHoster') ) {
