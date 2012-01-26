@@ -3,7 +3,7 @@
 	<metadata>
 		<label>p_realdebrid_plglabel</label>
 		<description>p_realdebrid_plgdesc</description>
-		<version>0.1.2</version>
+		<version>0.1.3</version>
 		<status>stable</status>
 		<key>realdebrid</key>
 		<file>X/VlcShares/Plugins/RealDebrid.php</file>
@@ -33,6 +33,7 @@
 								<file>RealDebridCbs.php</file>
 								<file>RealDebridCwtv.php</file>
 								<file>RealDebridVideoweed.php</file>
+								<file>RealDebridGeneric.php</file>
 							</Hoster>
 							<file>RealDebrid.php</file>
 						</Helper>
@@ -63,6 +64,19 @@
 						<file>cwtv-realdebrid.png</file>
 						<file>2shared-realdebrid.png</file>
 						<file>videoweed-realdebrid.png</file>
+						<file>bitshare-realdebrid.png</file>
+						<file>filefactory-realdebrid.png</file>
+						<file>hotfile-realdebrid.png</file>
+						<file>justintv-realdebrid.png</file>
+						<file>loadto-realdebrid.png</file>
+						<file>mediafire-realdebrid.png</file>
+						<file>megashares-realdebrid.png</file>
+						<file>netloadin-realdebrid.png</file>
+						<file>novamov-realdebrid.png</file>
+						<file>putlocker-realdebrid.png</file>
+						<file>uploadedto-realdebrid.png</file>
+						<file>wattv-realdebrid.png</file>
+						<file>wupload-realdebrid.png</file>
 					</hosters>
 				</icons>
 			</images>

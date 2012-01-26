@@ -42,7 +42,7 @@ class X_VlcShares_Plugins_Helper_Hoster_RealDebridVideozer extends X_VlcShares_P
 			$matches = array();
 			if ( preg_match(self::PATTERN, $url, $matches ) ) {
 				if ( $matches['ID'] != '' ) {
-					return substr($matches['ID'], 0, 8);
+					return $matches['ID'];
 				}
 				X_Debug::e("No id found in {{$url}}", self::E_ID_NOTFOUND);
 				throw new Exception("No id found in {{$url}}");
