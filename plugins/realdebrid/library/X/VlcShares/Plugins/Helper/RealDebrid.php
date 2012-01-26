@@ -2,8 +2,9 @@
 
 class X_VlcShares_Plugins_Helper_RealDebrid extends X_VlcShares_Plugins_Helper_Abstract {
 
-	const API_URL_FETCH = "http://real-debrid.fr/ajax/deb.php?lang=en&link=%s&password=";
-	const API_URL_LOGIN = "https://real-debrid.fr/ajax/login.php?user=%s&pass=%s";
+	//const API_URL_FETCH = "http://real-debrid.fr/ajax/deb.php?lang=en&link=%s&password=";
+	const API_URL_FETCH = "http://real-debrid.fr/ajax/unrestrict.php?link=%s&password=&remote=0&time=%s";
+	const API_URL_LOGIN = "http://real-debrid.fr/ajax/login.php?user=%s&pass=%s&captcha_challenge=&captcha_answer=&time=%s";
 	const API_URL_ACCOUNT = "http://real-debrid.fr/api/account.php";
 	
 	/**
@@ -79,7 +80,7 @@ class X_VlcShares_Plugins_Helper_RealDebrid extends X_VlcShares_Plugins_Helper_A
 		}
 	}
 	
-	protected function fetch($url) {
+	protected function fetch($url, $retry = true) {
 		
 		if ( $this->options->get('username', '') == '' || $this->options->get('password', '') == '' ) {
 			X_Debug::e("Account missing");
@@ -105,12 +106,13 @@ class X_VlcShares_Plugins_Helper_RealDebrid extends X_VlcShares_Plugins_Helper_A
 		} catch (Exception $e) {
 			// no cache plugin or no authentication performed
 			// perform a new authentication
-			X_Debug::i("Authentication required");
+			X_Debug::i("Authentication required: {$e->getMessage()}");
 			
-			$http->setUri(sprintf(self::API_URL_LOGIN, $this->options->get('username'), $this->options->get('password')));
-			$loginBody = $http->request()->getBody();
+			$http->setUri(sprintf(self::API_URL_LOGIN, $this->options->get('username'), md5($this->options->get('password')), time()));
 			
-			if ( $loginBody != 'OK' ) {
+			$loginBody = Zend_Json::decode($http->request()->getBody());
+			
+			if ( $loginBody['error'] != 0 ) {
 				// invalid login info
 				throw new Exception("Invalid Real-Debrid account");
 			} else {
@@ -151,7 +153,7 @@ class X_VlcShares_Plugins_Helper_RealDebrid extends X_VlcShares_Plugins_Helper_A
 		}
 		
 		$url = urlencode($url);
-		$url = sprintf(self::API_URL_FETCH, $url);
+		$url = sprintf(self::API_URL_FETCH, $url, time());
 		X_Debug::i("Fetching: $url");
 		
 		$http->setUri($url)->setHeaders(array(
@@ -168,39 +170,49 @@ class X_VlcShares_Plugins_Helper_RealDebrid extends X_VlcShares_Plugins_Helper_A
 		//X_Debug::i("Request: ".var_export( $http->getLastRequest() , true));
 		//X_Debug::i("Real debrid response: ".$links);
 		
-		if ( trim($links) == 'error' ) {
-			X_Debug::e("Link error!");
-			return false;
+		$json = Zend_Json::decode($links);
+		
+		if ( isset($json['error']) ) { 
+			
+			switch ( $json['error'] ) {
+				case '0': // everything ok
+					break;
+				case '2': // invalid login
+					// invalid account or login missing.
+					// Try 1 more time only forcing relogin
+					if ( $retry ) {
+						return $this->fetch($url, false);
+					} else {
+						return false;
+					}
+				case '5': // expired account
+					return false;
+				default: // maybe invalid links?
+					return false;
+			
+			}
+			
 		}
 		
-		$dom = new Zend_Dom_Query($links);
-		
-		$results = $dom->queryXpath('//a');
 		
 		$links = array();
 		
-		while ( $results->valid() ) {
+		/*
+			Minecraft MindCrack - S3E266 - Revisiting Arkas.mp4 (720p)|-|http:\/\/s08.real-debrid.com\/dl\/94i41374r203339931\/Minecraft%20MindCrack%20-%20S3E266%20-%20Revisiting%20Arkas.mp4|--|Minecraft MindCrack - S3E266 - Revisiting Arkas.flv (HQ)|-|http:\/\/s08.real-debrid.com\/dl\/94i41374r203434188\/Minecraft%20MindCrack%20-%20S3E266%20-%20Revisiting%20Arkas.flv|--|Minecraft MindCrack - S3E266 - Revisiting Arkas.flv (SD)|-|http:\/\/s08.real-debrid.com\/dl\/94i41374r203537640\/Minecraft%20MindCrack%20-%20S3E266%20-%20Revisiting%20Arkas.flv|--|Minecraft MindCrack - S3E266 - Revisiting Arkas.flv (240p)|-|http:\/\/s08.real-debrid.com\/dl\/94i41374r203631597\/Minecraft%20MindCrack%20-%20S3E266%20-%20Revisiting%20Arkas.flv"
+		 */
+		
+		$linksS = $json['generated_links'];
+		
+		$xLinksS = explode('|--|', $linksS);
+		
+		foreach ( $xLinksS as $xLinkS ) {
 			
-			/* @var $current DOMElement */
-			$current = $results->current();
+			// $xLinkS = Minecraft MindCrack - S3E266 - Revisiting Arkas.mp4 (720p)|-|http:\/\/s08.real-debrid.com\/dl\/94i41374r203339931\/Minecraft%20MindCrack%20-%20S3E266%20-%20Revisiting%20Arkas.mp4
 			
-			$href = (string) $current->getAttribute('href');
+			$xLink = explode('|-|', $xLinkS);
 			
-			if ( !preg_match('/https?:\/\/.+real-debrid\..*/', $href) ) {
-				X_Debug::i("Invalid href: $href");
-				$results->next();
-				continue;
-			}
+			$links[] = $xLink[1];
 			
-			if ( X_Env::startWith($href, 'https://') ) {
-				$href = str_replace('https://', 'http://', $href);
-			}
-			
-			X_Debug::i("Valid href: $href");
-			
-			$links[] = $href;
-			
-			$results->next();
 		}
 		
 		if ( count($links) > 1 ) {

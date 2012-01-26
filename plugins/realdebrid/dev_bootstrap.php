@@ -103,6 +103,8 @@ $helpersIncludes = array(
 	$basePath.'/library/X/VlcShares/Plugins/Helper/Hoster/RealDebridMegaporn.php',
 	$basePath.'/library/X/VlcShares/Plugins/Helper/Hoster/RealDebridRapidShare.php',
 	$basePath.'/library/X/VlcShares/Plugins/Helper/Hoster/RealDebridVideozer.php',
+	$basePath.'/library/X/VlcShares/Plugins/Helper/Hoster/RealDebridHulu.php',
+	$basePath.'/library/X/VlcShares/Plugins/Helper/Hoster/RealDebrid2Shared.php'
 );
 
 /**
