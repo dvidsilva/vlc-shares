@@ -13,7 +13,6 @@ class X_Threads_Messenger_ZendQueue extends X_Threads_Messenger {
 	 */
 	public function enQueue(X_Threads_Thread_Info $thread, X_Threads_Message $message) {
 		$queue = $this->getZendQueue($thread->getId());
-		X_Debug::i("Enqueuing message: $message");
 		$queue->send(serialize($message));
 	}
 
@@ -26,7 +25,6 @@ class X_Threads_Messenger_ZendQueue extends X_Threads_Messenger {
 		if ( count($message) > 0 ) {
 			$message = $message->current();
 			$queue->deleteMessage($message);
-			X_Debug::i("Dequeuing message: {$message->body}");
 			return @unserialize($message->body);
 		} else {
 			// invoke queue removal

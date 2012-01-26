@@ -412,3 +412,14 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	1,
 	1
 );
+
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'upnprenderer',
+	'X_VlcShares_Plugins_UpnpRenderer', 
+	'X/VlcShares/Plugins/UpnpRenderer.php',
+	'p_upnp_plglabel',
+	'p_upnp_plgdesc',
+	1,
+	1
+);
+
