@@ -30,6 +30,9 @@
 								<file>RealDebridVideozer.php</file>
 								<file>RealDebridHulu.php</file>
 								<file>RealDebrid2Shared.php</file>
+								<file>RealDebridCbs.php</file>
+								<file>RealDebridCwtv.php</file>
+								<file>RealDebridVideoweed.php</file>
 							</Hoster>
 							<file>RealDebrid.php</file>
 						</Helper>
@@ -56,7 +59,10 @@
 						<file>videobb-realdebrid.png</file>
 						<file>rapidshare-realdebrid.png</file>
 						<file>hulu-realdebrid.png</file>
+						<file>cbs-realdebrid.png</file>
+						<file>cwtv-realdebrid.png</file>
 						<file>2shared-realdebrid.png</file>
+						<file>videoweed-realdebrid.png</file>
 					</hosters>
 				</icons>
 			</images>
