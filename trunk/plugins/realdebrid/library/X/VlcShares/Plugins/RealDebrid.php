@@ -15,6 +15,8 @@ class X_VlcShares_Plugins_RealDebrid extends X_VlcShares_Plugins_Abstract {
 		'megaporn' => 'X_VlcShares_Plugins_Helper_Hoster_RealDebridMegaporn',
 		'rapidshare' => 'X_VlcShares_Plugins_Helper_Hoster_RealDebridRapidShare',
 		'videozer' => 'X_VlcShares_Plugins_Helper_Hoster_RealDebridVideozer',
+		'hulu' => 'X_VlcShares_Plugins_Helper_Hoster_RealDebridHulu',
+		'2shared' => 'X_VlcShares_Plugins_Helper_Hoster_RealDebrid2Shared',
 	);
 	
 	public function __construct() {

@@ -28,6 +28,8 @@
 								<file>RealDebridRapidShare.php</file>
 								<file>RealDebridVideoBB.php</file>
 								<file>RealDebridVideozer.php</file>
+								<file>RealDebridHulu.php</file>
+								<file>RealDebrid2Shared.php</file>
 							</Hoster>
 							<file>RealDebrid.php</file>
 						</Helper>
@@ -53,6 +55,8 @@
 						<file>megaporn-realdebrid.png</file>
 						<file>videobb-realdebrid.png</file>
 						<file>rapidshare-realdebrid.png</file>
+						<file>hulu-realdebrid.png</file>
+						<file>2shared-realdebrid.png</file>
 					</hosters>
 				</icons>
 			</images>
