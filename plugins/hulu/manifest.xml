@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <vs-manifest type="plugin">
 	<metadata>
-		<label>p_dailymotion_plglabel</label>
-		<description>p_dailymotion_plgdesc</description>
+		<label>p_hulu_plglabel</label>
+		<description>p_hulu_plgdesc</description>
 		<version>0.1</version>
-		<status>stable</status>
-		<key>dailymotion</key>
-		<file>X/VlcShares/Plugins/DailyMotion.php</file>
-		<class>X_VlcShares_Plugins_DailyMotion</class>
+		<status>alpha</status>
+		<key>hulu</key>
+		<file>X/VlcShares/Plugins/Hulu.php</file>
+		<class>X_VlcShares_Plugins_Hulu</class>
 		<compatibility>
 			<from>0.5.4</from>
 			<to>0.6</to>
@@ -18,10 +18,11 @@
 			<X>
 				<VlcShares>
 					<Plugins>
-						<file>DailyMotion.php</file>
+						<file>Hulu.php</file>
 						<Helper>
+							<file>Hulu.php</file>
 							<Hoster>
-								<file>DailyMotion.php</file>
+								<file>Hulu.php</file>
 							</Hoster>
 						</Helper>
 					</Plugins>
@@ -29,15 +30,13 @@
 			</X>
 		</library>
 		<languages>
-			<file>X_VlcShares_Plugins_DailyMotion.en_GB.ini</file>
-			<file>X_VlcShares_Plugins_DailyMotion.it_IT.ini</file>
-			<file>X_VlcShares_Plugins_DailyMotion.es_ES.ini</file>
+			<file>X_VlcShares_Plugins_Hulu.en_GB.ini</file>
 		</languages>
 		<public>
 			<images>
 				<icons>
 					<hosters>
-						<file>dailymotion.png</file>
+						<file>hulu.png</file>
 					</hosters>
 				</icons>
 			</images>

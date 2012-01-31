@@ -3,7 +3,7 @@
 class X_VlcShares_Plugins_Helper_Hoster_Hulu implements X_VlcShares_Plugins_Helper_HostInterface {
 
 	const ID = 'hulu';
-	const PATTERN = '/http\:\/\/(www\.)?hulu\.com\/watch\/(?P<ID>[^\/]+)(\/.*)?/';
+	const PATTERN = '/http\:\/\/(www\.)?hulu\.com\/watch\/(?P<ID>[^\#]+)/';
 	
 	private $info_cache = array();
 	
@@ -76,63 +76,23 @@ class X_VlcShares_Plugins_Helper_Hoster_Hulu implements X_VlcShares_Plugins_Help
 			return $this->info_cache[$url];
 		}
 		
-		$http = new Zend_Http_Client("http://www.dailymotion.com/video/" . $url,
-			array(
-				'headers' => array(
-					'User-Agent' => "vlc-shares/".X_VlcShares::VERSION." hulu/".X_VlcShares_Plugins_Hulu::VERSION
-				)
-			)
-		);
-		$http->setCookieJar(true);
-		$http->getCookieJar()->addCookie(new Zend_Http_Cookie('family_filter', 'off', 'www.dailymotion.com'));
-		
-		$datas = $http->request()->getBody();
+		try {
+			$helper = X_VlcShares_Plugins::helpers('hulu');
+			/* @var $helper X_VlcShares_Plugins_Helper_Hulu */
 
-		if ( preg_match('/<title>(.*)404(.*)<\/title>/', $datas)  ) {
-			throw new Exception("Invalid ID {{$url}}", self::E_ID_INVALID);
-		}
+			$fetched = $helper->setLocation($url)->fetch();
+			
+			$infos = array(
+				'title' => $fetched['title'],
+				'description' => $fetched['description'],
+				'length' => $fetched['length'],
+				'thumbnail' => $fetched['thumbnail'],
+				'url' => $fetched['url']
+			);
 
-		$matches = array();
-		if ( !preg_match('/\.addVariable\(\"sequence\",  \"(?P<sequence>.*?)\"/', $datas, $matches)  ) {
-			throw new Exception("Invalid ID {{$url}}, sequence not found", self::E_ID_INVALID);
-		}
-		$sequence = urldecode($matches['sequence']);
-		
-		$matches = array();
-		if ( !preg_match('/videotitle\=(?P<title>[^&]+)&/', $sequence, $matches)  ) {
-			$title = "";
-		}
-		$title = urldecode($matches['title']);
-
-		$matches = array();
-		if ( !preg_match('/\"videoDescription\"\:\"(?P<description>[^\"]*)\"/', $sequence, $matches)  ) {
-			$description = '';
-		}
-		$description = urldecode($matches['description']);
-
-		
-		$matches = array();
-		if ( !preg_match('/\"duration\"\:(?P<length>.*)\,/', $sequence, $matches)  ) {
-			$length = '';
-		}
-		$length = $matches['length'];
-		
-		
-		$thumbnail = "http://www.dailymotion.com/thumbnail/320x240/video/$url";
-		
-		$matches = array();
-		if ( !preg_match('/\"sdURL\"\:\"(?P<video>[^\"]+)\"/', $sequence, $matches)  ) {
-			$video = '';
-		}
-		$video = stripslashes($matches['video']);
-		
-		$infos = array(
-			'title' => $title,
-			'description' => $description,
-			'length' => $length,
-			'thumbnail' => $thumbnail,
-			'url' => $video
-		);		
+		} catch (Exception $e ) {
+			throw new Exception("Hulu helper not found", self::E_URL_INVALID);
+		} 
 		
 		
 		// add in cache
@@ -143,7 +103,7 @@ class X_VlcShares_Plugins_Helper_Hoster_Hulu implements X_VlcShares_Plugins_Help
 	}
 	
 	function getHosterUrl($playableId) {
-		return "http://www.videobb.com/video/$playableId";
+		return "http://www.hulu.com/watch/$playableId";
 	}
 	
 }

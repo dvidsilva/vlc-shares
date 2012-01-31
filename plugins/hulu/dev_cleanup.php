@@ -23,5 +23,6 @@ $neededDirectories = array(
  */
 $neededLinks = array(
 	$basePath.'/public/images/icons/hosters/hulu.png' => APPLICATION_PATH.'/../public/images/icons/hosters/hulu.png',
-	//$basePath.'/languages/myfile.txt' => APPLICATION_PATH.'/../languages/myfile.txt', // <--- THIS IS AN EXAMPLE FOR FILES
+	$basePath.'/public/test-hulu.php' => APPLICATION_PATH.'/../public/test-hulu.php',
+	$basePath.'/languages/X_VlcShares_Plugins_Hulu.en_GB.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_Hulu.en_GB.ini', // link al file di traduzione
 );
