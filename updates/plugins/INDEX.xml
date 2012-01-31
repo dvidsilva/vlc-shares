@@ -464,7 +464,7 @@
 		</version>
 	</plugin>
 	<plugin key="hulu">
-		<version name="0.1" type="alpha" cMin="0.5.4" cMax="0.5.4">
+		<version name="0.1" type="alpha" cMin="0.5.4" cMax="0.5.5">
 			<update />
 			<download>http://www.wiimc.org/forum/download/file.php?id=515</download>
 			<changelog><![CDATA[
