@@ -238,25 +238,7 @@ class X_VlcShares_Plugins_Helper_Stream extends X_VlcShares_Plugins_Helper_Abstr
 		// else all datas are in $this->_fetched (array)
 		if ( $this->_fetched === false ) {
 			
-			/**
-			 * I need to check:
-			 * type of url
-			 * redirect fetch info to provider
-			 */
-			if ( X_Env::startWith($this->_location, 'http://') || X_Env::startWith($this->_location, 'https://' ) ) {
-				// i should use MPlayer
-			//} elseif ( false /* check for online streams */ ) {
-				// i should use MPlayer
-				$fetched = $this->fetchByFFMpeg();
-			} elseif ( true /* regex condition: W:\indows\path or W:/indows/path */ ) {
-				// i should use Mediainfo
-				if ( X_VlcShares_Plugins::helpers()->mediainfo()->isEnabled() ) {
-					$fetched = $this->fetchByMediainfo();
-				} else {
-					// fallback to ffmpeg if mediainfo isn't enabled
-					$fetched = $this->fetchByFFMpeg();
-				}
-			}
+			$fetched = $this->fetchByFFMpeg();
 			
 			//X_Debug::i(var_export($fetched, true));
 			
