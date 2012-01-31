@@ -3,7 +3,7 @@
 	<metadata>
 		<label>p_allsp_plglabel</label>
 		<description>p_allsp_plgdesc</description>
-		<version>0.2</version>
+		<version>0.2.1</version>
 		<status>stable</status>
 		<key>allsp</key>
 		<file>X/VlcShares/Plugins/AllSp.php</file>
