@@ -257,17 +257,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 					new Application_Model_DbTable_Threads()
 				)
 			)
-		);
-
-		X_Threads_Manager::instance()->setMessenger(
+		)->setMessenger(
 			new X_Threads_Messenger_ZendQueue($dbAdapter)
-		);
-		
-		X_Threads_Manager::instance()->setStarter(
+		)->setStarter(
 			new X_Threads_Starter_HttpPost($url)
-		);
-		
-		X_Threads_Manager::instance()->setLogger($logger);
+		)->setLogger($logger);
 		
 	}
 	

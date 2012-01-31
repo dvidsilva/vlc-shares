@@ -28,7 +28,7 @@ class X_VlcShares_Plugins_AllSp extends X_VlcShares_Plugins_Abstract implements 
 		12 => "http://allsp.com/e.php?season=12",
 		13 => "http://allsp.com/e.php?season=13",
 		14 => "http://allsp.com/e.php?season=14",
-    15 => "http://allsp.com/e.php?season=15",
+		15 => "http://allsp.com/e.php?season=15",
 	);
 	
 	
