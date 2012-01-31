@@ -291,15 +291,33 @@ class X_VlcShares_Plugins_Helper_FFMpeg extends X_VlcShares_Plugins_Helper_Abstr
 			    // Stream #0.2(ita): Subtitle: 0x0000
 			    // Stream #0.3: Attachment: 0x0000   <--- MKV Menu
 				
-				if ( !X_Env::startWith($line, 'Stream #0.') ) continue;
+				// OR DIFFERENT VERSION:
 				
-				X_Debug::i("Checking line: $line");				
+				//Stream #0:0: Video: h264 (High) (H264 / 0x34363248), yuv420p, 640x480 [SAR 1:1 DAR 4:3], 23.98 fps, 23.98 tbr, 1k tbn, 47.95 tbc (default)
+				//Stream #0:1(eng): Audio: vorbis, 48000 Hz, stereo, s16 (default)
+				//Stream #0:2(jpn): Audio: vorbis, 48000 Hz, mono, s16
+				//Stream #0:3(eng): Subtitle: ssa (default)
 				
+				//if ( !X_Env::startWith($line, 'Stream #0') ) continue;
+				
+				$matches = array();
+				$pattern = '/Stream #(?P<mainid>\d+)(.|:)(?P<subid>\d+)(?P<lang>(\(\w+\))?): (?P<type>\w+): (?P<codec>[^,\s]+)(?P<extra>.*)/';
+				if ( !preg_match($pattern, $line, $matches) ) {
+					continue;
+				}
+				
+				X_Debug::i("Checking line: $line");
+				
+				$language = $matches['lang'];
+				$streamID = $matches['subid'];
+				$streamType = $matches['type'];
+				$streamFormat = $matches['codec'];
+				$streamMore = $matches['extra'];
 				
 				// it's the line we are looking for
 				
 				// time to split
-				list(, $streamID, $streamType, $streamFormat, $streamMore ) = explode(' ', $line, 5);
+				//list(, $streamID, $streamType, $streamFormat, $streamMore ) = explode(' ', $line, 5);
 				
 				/*
 				X_Debug::i("StreamID (raw): $streamID");
@@ -315,7 +333,7 @@ class X_VlcShares_Plugins_Helper_FFMpeg extends X_VlcShares_Plugins_Helper_Abstr
 				//    OR
 				// in 3 -> StreamFormat   <---- for subtitle and attachment
 				
-				switch ( trim($streamType, ':') ) {
+				switch ( $streamType ) {
 					case 'Video': $streamType = 'videos'; break;
 					case 'Audio': $streamType = 'audios'; break;
 					case 'Subtitle': $streamType = 'subs'; break;
@@ -327,10 +345,10 @@ class X_VlcShares_Plugins_Helper_FFMpeg extends X_VlcShares_Plugins_Helper_Abstr
 				// time to get the real streamID
 				
 				//
-				@list($streamID, $language) = explode('(', trim($streamID, '):'), 2);
+				//@list($streamID, $language) = explode('(', trim($streamID, '):'), 2);
 				// in $streamID there is : #0.1
 				// discard the first piece
-				list( , $streamID) = explode('.', ltrim($streamID,'#'), 2);
+				//list( , $streamID) = explode('.', ltrim($streamID,'#'), 2);
 				
 				$infoStream = array();
 				if ( $streamType == 'subs' ) {
@@ -342,7 +360,7 @@ class X_VlcShares_Plugins_Helper_FFMpeg extends X_VlcShares_Plugins_Helper_Abstr
 					 'codecName' => X_VlcShares_Plugins_Helper_StreaminfoInterface::AVCODEC_UNKNOWN);
 					foreach ($this->formatTests as $key => $test) {
 						$valid = false;
-						if ( $test[0] == trim($streamFormat, ',') ) {
+						if ( $test[0] == $streamFormat ) {
 							$valid = true;
 							if ( count($test) > 1 && !X_Env::startWith(trim($streamMore), $test[1] ) ) {
 								$valid = false;
@@ -357,6 +375,9 @@ class X_VlcShares_Plugins_Helper_FFMpeg extends X_VlcShares_Plugins_Helper_Abstr
 				$infoStream['ID'] = $streamID;
 				//$fetched[$streamType][$streamID] = $infoStream;
 				// no index as key for use with vlc --sub-track 
+				
+				X_Debug::i("Stream type {{$streamType}} found: ".print_r($infoStream, true));
+				
 				$fetched[$streamType][] = $infoStream;
 			}
 			
