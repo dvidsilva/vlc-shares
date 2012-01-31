@@ -96,6 +96,16 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	'config_vlc_path_desc'
 );
 
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description ) VALUES (
+	'version', 
+	'1.1.x',
+	'1.1.x',
+	'vlc',
+	1,
+	'config_vlc_version_label',
+	'config_vlc_version_desc'
+);
+
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'args', 
 	'{%source%} --play-and-exit --sout="{%profile%}" --sout-keep {%subtitles%} {%audio%} {%filters%}',

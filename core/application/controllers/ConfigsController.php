@@ -348,6 +348,16 @@ class ConfigsController extends X_Controller_Action
 	    			'3' => '3: '. X_Env::_('config_debug_level_optinfo'),
 	    		));
 	    	} catch(Exception $e) { X_Debug::w("No debug level settings? O_o"); }
+
+	    	try {
+	    		$this->configForm->vlc_version->setMultiOptions(array(
+	    			'1.1.x' => '<= 1.1.x',
+	    			'1.2-git' => '>= 1.2-git',
+	    			//'1.2.x' => '1.2.x', // watching to the future
+	    		));
+	    	} catch(Exception $e) {
+	    		X_Debug::w("No vlc version setting? O_o");
+	    	}
 	    	
 	    	try {
 	    		$_guis = X_VlcShares_Plugins::broker()->getPlugins();
