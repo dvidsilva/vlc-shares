@@ -52,13 +52,12 @@
 		</version>
 	</plugin>
 	<plugin key="allsp">
-		<version name="0.2" type="stable" cMin="0.5.3" cMax="0.6">
+		<version name="0.2.1" type="stable" cMin="0.5.3" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_allsp_0.2.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_allsp_0.2.1.zip</download>
 			<changelog><![CDATA[
-			*** 0.2 ***
-			 - Moved to Extra
-			 - Plugin key changed from southpark to allsp
+			*** 0.2.1 ***
+			 - Added season 15
 			]]></changelog>
 			<description><![CDATA[Watch South Park videos from AllSp.com]]></description>
 		</version>
