@@ -127,11 +127,17 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 		// location param come in a plugin encoded way
 		$location = $provider->resolveLocation($location);
 		
+		X_Debug::i("Searching subs for location {{$location}}");
+		
 		// check if infile support is enabled
 		// by default infile.enabled is true
 		if ( $this->config('infile.enabled', true) ) {
+			
 			// check for infile subs
 			$infileSubs = $this->helpers()->stream()->setLocation($location)->getSubsInfo();
+			
+			X_Debug::i("Embedded subs: ".print_r($infileSubs, true));
+			
 			//X_Debug::i(var_export($infileSubs, true));
 			foreach ($infileSubs as $streamId => $sub) {
 				X_Debug::i("Valid infile-sub: [{$streamId}] {$sub['language']} ({$sub['format']})");
@@ -156,6 +162,9 @@ class X_VlcShares_Plugins_FileSubs extends X_VlcShares_Plugins_Abstract {
 			$filename = pathinfo($location, PATHINFO_FILENAME);
 			
 			$extSubs = $this->getFSSubs($dirname, $filename);
+			
+			X_Debug::i("External subs {dir: {$dirname}, filename: {$filename}}: ".print_r($extSubs, true));
+			
 			foreach ($extSubs as $streamId => $sub) {
 				X_Debug::i("Valid extfile-sub: {$sub['language']} ({$sub['format']})");
 				$item = new X_Page_Item_PItem($this->getId().'-file-'.$streamId, X_Env::_("p_filesubs_subtype_".self::FILE)." {$sub['language']} ({$sub['format']})");
