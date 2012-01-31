@@ -463,4 +463,20 @@
 			<description><![CDATA[Allow to watch live streams from own3d (Require PageParserLib or VLCShares 0.5.5+)]]></description>
 		</version>
 	</plugin>
+	<plugin key="hulu">
+		<version name="0.1" type="alpha" cMin="0.5.4" cMax="0.5.4">
+			<update />
+			<download>http://www.wiimc.org/forum/download/file.php?id=515</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch video from hulu.com (Require PageParserLib)]]></description>
+		</version>
+		<version name="0.1" type="alpha" cMin="0.5.5" cMax="0.6">
+			<update />
+			<download>http://www.wiimc.org/forum/download/file.php?id=515</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch video from hulu.com]]></description>
+		</version>
+	</plugin>
 </plugins>
