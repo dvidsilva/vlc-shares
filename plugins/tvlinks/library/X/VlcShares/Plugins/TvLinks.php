@@ -2,7 +2,7 @@
 
 class X_VlcShares_Plugins_TvLinks extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.1beta';
+	const VERSION = '0.1';
 	const VERSION_CLEAN = '0.1';
 	
 	const URL_INDEX_TITLES = 'http://www.tv-links.eu/%s/%s.html';
@@ -387,8 +387,9 @@ class X_VlcShares_Plugins_TvLinks extends X_VlcShares_Plugins_Abstract implement
 		foreach ($parsed as $match) {
 			
 			$id = $match['id'];
-			$label = $match['label'];
 			$hoster = $match['hoster'];
+			$label = X_Env::_('p_tvlinks_watchon', ucfirst($hoster));
+			
 			$thumbnail = array_key_exists('thumbnail', $match) ? $match['thumbnail'] : null;
 			
 			$item = new X_Page_Item_PItem($this->getId()."-{$type}-{$filter}-{$title}-{$season}-{$episode}-{$id}", $label );
