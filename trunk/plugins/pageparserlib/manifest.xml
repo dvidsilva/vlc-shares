@@ -4,7 +4,7 @@
 		<label>Lib_PageParser</label>
 		<description>Add PageParser Api in 0.5.4 version</description>
 		<version>0.1</version>
-		<status>alpha2</status>
+		<status>stable</status>
 		<key>pageparserlib</key>
 		<file>X/VlcShares/Plugins/PageParserLib.php</file>
 		<class>X_VlcShares_Plugins_PageParserLib</class>

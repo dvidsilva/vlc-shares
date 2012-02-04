@@ -22,7 +22,7 @@ class X_PageParser_Parser_TvLinks extends X_PageParser_Parser {
 	
 	const PATTERN_THUMBNAIL = '#<img src="(?P<thumb>[^\"]+?)" class="img_mov#';
 	
-	const PATTERN_LINKS = '%<li> <a .*?onclick="return frameLink\(\'(?P<link>.*?)\'\);">.*?<span class="big dark">#(?P<number>[0-9]+).*?<span class="bigger bold underline">(?P<label>.+?)</span>.*?<span class="bold">(?P<hoster>.+?)</span>.*?</li>%i';
+	const PATTERN_LINKS = '%onclick="return frameLink\(\'(?P<link>.*?)\'\);">.*?<span class="bold">(?P<hoster>.+?)</span>%i';
 	
 	const PATTERN_NEXTPAGE = '%<a href="#" onclick="return chPage(.*?)">next</a>%i';
 	
@@ -150,13 +150,13 @@ class X_PageParser_Parser_TvLinks extends X_PageParser_Parser {
 		// process links
 		foreach ($matches as $match ) {
 			
-			$label = $match['label'];
-			$num = $match['number'];
+			//$label = $match['label'];
+			//$num = $match['number'];
 			$id = $match['link'];
 			$hoster = $match['hoster'];
 			
 			$link = array();
-			$link['label'] = "#{$num}: {$label} [{$hoster}]";
+			//$link['label'] = "#{$num}: {$label} [{$hoster}]";
 			$link['hoster'] = $hoster;
 			$link['id'] = base64_decode($id);
 			$links[] = $link;

@@ -4,13 +4,13 @@
 		<label>p_tvlinks_plglabel</label>
 		<description>p_tvlinks_plgdesc</description>
 		<version>0.1</version>
-		<status>beta</status>
+		<status>stable</status>
 		<key>tvlinks</key>
 		<file>X/VlcShares/Plugins/TvLinks.php</file>
 		<class>X_VlcShares_Plugins_TvLinks</class>
 		<compatibility>
 			<from>0.5.4</from>
-			<to>0.5.5</to>
+			<to>0.6</to>
 		</compatibility>
 	</metadata>
 	<files>
