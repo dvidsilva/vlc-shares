@@ -388,16 +388,16 @@
 		</version>
 	</plugin>
 	<plugin key="pageparserlib">
-		<version name="0.1" type="alpha2" cMin="0.5.4" cMax="0.5.5">
+		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.5.5">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_pageparserlib_0.1alpha2.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_pageparserlib_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Add Page Parser API to VlcShares 0.5.4 (backported from 0.5.5dev)]]></description>
 		</version>
 	</plugin>
 	<plugin key="streamingonline">
-		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.5.5">
+		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_streamingonline_0.1beta.zip</download>
 			<changelog><![CDATA[
@@ -406,12 +406,19 @@
 		</version>
 	</plugin>
 	<plugin key="tvlinks">
-		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.5.5">
+		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.5.5">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_tvlinks_0.1beta.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_tvlinks_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from tv-links.eu (Require PageParserLib or VLCShares 0.5.5+)]]></description>
+		</version>
+		<version name="0.1" type="stable" cMin="0.5.5" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_tvlinks_0.1.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch videos from tv-links.eu]]></description>
 		</version>
 	</plugin>
 	<plugin key="youporn">
