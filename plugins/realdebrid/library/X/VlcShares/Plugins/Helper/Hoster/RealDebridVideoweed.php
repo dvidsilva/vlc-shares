@@ -82,6 +82,21 @@ class X_VlcShares_Plugins_Helper_Hoster_RealDebridVideoweed extends X_VlcShares_
 		}
 	}	
 	
+	
+	
+	/* (non-PHPdoc)
+	 * @see X_VlcShares_Plugins_Helper_Hoster_RealDebridAbstract::getPlayable()
+	 */
+	public function getPlayable($url, $isId = true) {
+		//{{{ WORKAROUND FOR FAKE LINK GENERATION
+		$playable = parent::getPlayable($url, $isId);
+		if ( substr($playable, -5) == '/.flv' ) {
+			throw new Exception("Invalid video", self::E_ID_INVALID);
+		}
+		return $playable;
+		//}}}
+	}
+
 	function getHosterUrl($playableId) {
 		try {
 			return parent::getHosterUrl($playableId);

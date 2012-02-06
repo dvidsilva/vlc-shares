@@ -8,7 +8,7 @@
 #     															#
 ########## RealDebrid Plugin ####################################
 
-RealDebrid v0.1.3
+RealDebrid v0.1.4
 Created by Francesco Capozzo (ximarx)
 ximarx@gmail.com
 
@@ -41,12 +41,18 @@ for (even without hoster plugin installed):
  - uploaded.to (u.to)
  - wat.tv
  - wupload.com
+ - abc.go.com
 
 For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 
 /==========---
 | Changelog
 \==========---
+
+*** 0.1.4 ***
+ - new hosters:
+ 	abc.go.com
+ - workaround for wrong link generation for videoweed on removed files
 
 *** 0.1.3 ***
  - new hosters:
