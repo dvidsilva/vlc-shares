@@ -3,8 +3,8 @@
 
 class X_VlcShares_Plugins_RealDebrid extends X_VlcShares_Plugins_Abstract {
 		
-	const VERSION_CLEAN = '0.1.3';
-	const VERSION = '0.1.3';
+	const VERSION_CLEAN = '0.1.4';
+	const VERSION = '0.1.4';
 	
 	private $hosters = array(
 		// replace-id => with class
@@ -74,7 +74,10 @@ class X_VlcShares_Plugins_RealDebrid extends X_VlcShares_Plugins_Abstract {
 			'/http:\/\/(www\.)?wat\.tv\/video\/(?P<ID>.+)/i',
 			'http://www.wat.tv/video/%s'
 		),
-		
+		'abc' => array(
+			'/http:\/\/abc\.go\.com\/watch\/(?P<ID>.+)/i',
+			'http://abc.go.com/watch/%s'
+		),
 	);
 	
 	public function __construct() {

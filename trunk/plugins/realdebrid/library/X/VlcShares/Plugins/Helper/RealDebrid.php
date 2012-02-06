@@ -108,9 +108,20 @@ class X_VlcShares_Plugins_Helper_RealDebrid extends X_VlcShares_Plugins_Helper_A
 			// perform a new authentication
 			X_Debug::i("Authentication required: {$e->getMessage()}");
 			
-			$http->setUri(sprintf(self::API_URL_LOGIN, $this->options->get('username'), md5($this->options->get('password')), time()));
+			try {
 			
-			$loginBody = Zend_Json::decode($http->request()->getBody());
+				$http->setUri(sprintf(self::API_URL_LOGIN, $this->options->get('username'), md5($this->options->get('password')), time()));
+				$loginBody = Zend_Json::decode($http->request()->getBody());
+			
+			} catch (Exception $e) {
+				if ( $retry ) {
+					X_Debug::e("Login request failed, try again: {$e->getMessage()}");
+					return $this->fetch($url, false);
+				} else {
+					X_Debug::e("Login request failed (2nd time): {$e->getMessage()}");
+					throw $e;
+				}
+			}
 			
 			if ( $loginBody['error'] != 0 ) {
 				// invalid login info
