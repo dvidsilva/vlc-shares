@@ -7,9 +7,11 @@ class X_PageParser_Parser_YouPorn extends X_PageParser_Parser {
 	
 	private $mode = self::MODE_VIDEOS;
 	
-	const PATTERN_VIDEOS = '%<img id="thumb[0-9]+" src="(?P<thumbnail>[^\"]+?)" .*?<h1><a href="/watch/(?P<id>[0-9]+)/[^\?]+?">(?P<label>.*?)</a></h1>%is';
+	// <a href="/watch/705575/cock-in-all-of-her-holes/?from=country_rating">
+			//<img src="http://ss-3.youporn.com/screenshot/70/55/screenshot/705575_extra_large.jpg" alt="Cock in all of her holes" class="flipbook" data-max="8" data-thumbnail="http://ss-3.youporn.com/screenshot/70/55/screenshot/705575_extra_large.jpg"
+	const PATTERN_VIDEOS = '%<a href="/watch/(?P<id>[0-9]+)/.*?<img src="(?P<thumbnail>[^\"]+?)" alt="(?P<label>.*?)"%is';
 	
-	const PATTERN_NEXTPAGE = '%<a href="\/.*?\?page\=[0-9]+">.+?&#187;</a>%i';
+	const PATTERN_NEXTPAGE = '%<a href="\/.*?\?page\=[0-9]+">.+?</a>%i';
 	
 	public function __construct($mode = self::MODE_VIDEOS) {
 		$this->mode = $mode;
@@ -32,6 +34,7 @@ class X_PageParser_Parser_YouPorn extends X_PageParser_Parser {
 		$matches = array();
 		$links = array();
 		preg_match_all(self::PATTERN_VIDEOS, $string, $matches, PREG_SET_ORDER);
+		
 		X_Debug::i(sprintf("Links found: %s", count($matches)));
 		
 		// process links
