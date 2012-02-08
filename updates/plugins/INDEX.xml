@@ -422,19 +422,19 @@
 		</version>
 	</plugin>
 	<plugin key="youporn">
-		<version name="0.1" type="beta" cMin="0.5.5" cMax="0.6">
+		<version name="0.1" type="stable" cMin="0.5.5" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_youporn_0.1beta.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_youporn_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from youporn.com [VM18]]]></description>
 		</version>
-		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.5.5">
+		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.5.5">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_youporn_0.1beta.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_youporn_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
-			<description><![CDATA[Allow to watch videos from youporn.com [VM18] (Require PageParserLib or VLCShares 0.5.5+)]]></description>
+			<description><![CDATA[Allow to watch videos from youporn.com [VM18] (Require PageParserLib)]]></description>
 		</version>
 	</plugin>
 	<plugin key="rtmpgui">
