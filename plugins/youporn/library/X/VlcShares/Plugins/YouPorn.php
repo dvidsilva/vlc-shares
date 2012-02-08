@@ -2,7 +2,7 @@
 
 class X_VlcShares_Plugins_YouPorn extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.1beta';
+	const VERSION = '0.1';
 	const VERSION_CLEAN = '0.1';
 	
 	const URL_INDEX_VIDEOS = 'http://www.youporn.com/browse/time?page=%s';
@@ -39,6 +39,7 @@ class X_VlcShares_Plugins_YouPorn extends X_VlcShares_Plugins_Abstract implement
 			$this->setPriority('preGetModeItems');
 			$this->setPriority('preRegisterVlcArgs');
 			$this->setPriority('getIndexManageLinks');
+			$this->setPriority('prepareConfigElement');
 		}
 		$this->setPriority('gen_beforeInit');
 		$this->setPriority('getIndexMessages');
@@ -51,8 +52,11 @@ class X_VlcShares_Plugins_YouPorn extends X_VlcShares_Plugins_Abstract implement
 	function gen_beforeInit(Zend_Controller_Action $controller) {
 		$this->helpers()->language()->addTranslation(__CLASS__);
 		$this->helpers()->hoster()->registerHoster(
-				new X_VlcShares_Plugins_Helper_Hoster_YouPorn($this->config('hide.useragent', false)
-		));
+				new X_VlcShares_Plugins_Helper_Hoster_YouPorn(
+						$this->config('hide.useragent', false),
+						$this->config('video.quality', 1)
+					)
+			);
 	}
 	
 	
@@ -268,6 +272,36 @@ class X_VlcShares_Plugins_YouPorn extends X_VlcShares_Plugins_Abstract implement
 		}
 		
 	}
+	
+	
+	/**
+	 * Add multioptions for video quality
+	 * @param string $section
+	 * @param string $namespace
+	 * @param unknown_type $key
+	 * @param Zend_Form_Element $element
+	 * @param Zend_Form $form
+	 * @param Zend_Controller_Action $controller
+	 */
+	public function prepareConfigElement($section, $namespace, $key, Zend_Form_Element $element, Zend_Form  $form, Zend_Controller_Action $controller) {
+		// nothing to do if this isn't the right section
+		if ( $namespace != $this->getId() ) return;
+	
+		switch ($key) {
+			// add multioptions for veetle server ip selection
+			case 'plugins_youporn_video_quality':
+				if ( $element instanceof Zend_Form_Element_Select ) {
+					$element->setMultiOptions(array(
+							'0' => 'MPG (MPG1V/MP2 - 640x480 - 1.2kbps)',
+							'1' => 'MP4 (H264/AAC - 640x480 - 400kbps)',
+							'2' => 'MP4 (H264/AAC - 320x240 - 200kbps)'
+					));
+				}
+				break;
+		}
+	
+	}
+	
 	
 	private function getLinkHosterUrl($linkId) {
 		
