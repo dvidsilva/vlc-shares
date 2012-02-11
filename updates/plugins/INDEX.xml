@@ -528,4 +528,13 @@
 			<description><![CDATA[Allow to watch videos from SockShare.com (by Jan Holthuis)]]></description>
 		</version>
 	</plugin>
+	<plugin key="ovfile">
+		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_ovfile_0.1.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch videos from OvFile.com (by Jan Holthuis)]]></description>
+		</version>
+	</plugin>
 </plugins>
