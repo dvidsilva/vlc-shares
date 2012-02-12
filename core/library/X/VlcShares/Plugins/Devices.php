@@ -97,6 +97,9 @@ class X_VlcShares_Plugins_Devices extends X_VlcShares_Plugins_Abstract {
 			}
 		}
 		
+		// disable this trigger, prevent double initialization
+		$this->setPriority('gen_beforePageBuild', -1);
+		
 	}
 	
 	/**
