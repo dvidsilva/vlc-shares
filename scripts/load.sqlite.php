@@ -19,6 +19,7 @@ Zend_Loader_Autoloader::getInstance();
 $getopt = new Zend_Console_Getopt(array(
 	'withbuffer|b' => 'Load database with buffer data',
     'withdata|w' => 'Load database with sample data',
+	'withdevs|d' => 'Load database with dev settings',
     'env|e-s'    => 'Application environment for which to create database (defaults to development)',
     'help|h'     => 'Help -- usage message',
 ));
@@ -39,6 +40,7 @@ if ($getopt->getOption('h')) {
 // Initialize values based on presence or absence of CLI options
 $withData = $getopt->getOption('w');
 $withBuffer = $getopt->getOption('b');
+$withDevs = $getopt->getOption('d');
 $env      = $getopt->getOption('e');
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (null === $env) ? 'development' : $env);
@@ -132,7 +134,19 @@ try {
 			}
 		}
 	}
-    
+
+	if ( $withDevs ) {
+		$dataSql = file_get_contents(dirname(__FILE__) . '/db/development.sqlite.sql');
+		if ( trim($dataSql) != '' ) {
+			// use the connection directly to load sql in batches
+			$dbAdapter->getConnection()->exec($dataSql);
+			if ('testing' != APPLICATION_ENV) {
+				echo 'Dev settings Loaded.';
+				echo PHP_EOL;
+			}
+		}
+	}
+	
     
 } catch (Exception $e) {
     echo 'AN ERROR HAS OCCURED:' . PHP_EOL;

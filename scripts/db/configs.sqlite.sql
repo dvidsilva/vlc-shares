@@ -108,8 +108,8 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'args', 
-	'{%source%} --play-and-exit --sout="{%profile%}" --sout-keep {%subtitles%} {%audio%} {%filters%}',
-	'{%source%} --play-and-exit --sout="{%profile%}" --sout-keep {%subtitles%} {%audio%} {%filters%}',
+	'{%source%} --play-and-exit --sout="{%profile%}" --sout-keep --http-caching="10000" --sout-mux-caching="20000" {%subtitles%} {%audio%} {%filters%}',
+	'{%source%} --play-and-exit --sout="{%profile%}" --sout-keep --http-caching="10000" --sout-mux-caching="20000" {%subtitles%} {%audio%} {%filters%}',
 	'vlc',
 	0,
 	'config_vlc_args_label',
