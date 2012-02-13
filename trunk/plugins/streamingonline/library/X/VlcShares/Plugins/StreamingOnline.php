@@ -2,7 +2,7 @@
 
 class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.1beta2';
+	const VERSION = '0.1';
 	const VERSION_CLEAN = '0.1';
 	
 	const TYPE_MOVIESLAST = 'LastMovies';
@@ -657,7 +657,7 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 			$hosterId = $link['hosterId'];
 			$videoCode = $link['link'];
 			$videoLabel = trim("{$link['label']} [{$link['hosterId']}]");
-			$videoThumb = $link['thumbnail'];
+			//$videoThumb = $link['thumbnail'];
 			
 			$item = new X_Page_Item_PItem("{$this->getId()}-hoster-{$hosterId}-{$videoId}", $videoLabel);
 			$item->setIcon('/images/icons/file_32.png')
@@ -671,10 +671,11 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 			if ( APPLICATION_ENV == 'development' ) {
 				$item->setDescription("$resourceType/$pageN/$resourceGroup/$resourceId/$videoCode");
 			}
-			
+			/*
 			if ( $videoThumb ) {
 				$item->setThumbnail($videoThumb);
 			}
+			*/
 			
 			$items->append($item);
 		}
