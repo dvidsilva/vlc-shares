@@ -4,7 +4,7 @@
 		<label>p_hulu_plglabel</label>
 		<description>p_hulu_plgdesc</description>
 		<version>0.1</version>
-		<status>alpha2</status>
+		<status>beta</status>
 		<key>hulu</key>
 		<file>X/VlcShares/Plugins/Hulu.php</file>
 		<class>X_VlcShares_Plugins_Hulu</class>
@@ -31,10 +31,13 @@
 		</library>
 		<languages>
 			<file>X_VlcShares_Plugins_Hulu.en_GB.ini</file>
+			<file>X_VlcShares_Plugins_Hulu.it_IT.ini</file>
 		</languages>
 		<public>
-			<file>test-hulu.php</file>
 			<images>
+				<hulu>
+					<file>logo.png</file>
+				</hulu>
 				<icons>
 					<hosters>
 						<file>hulu.png</file>
@@ -45,6 +48,6 @@
 	</files>
 	<database>
 		<install>install.sql</install>
-		<uninstall>uninstall.sql</uninstall> 
+		<uninstall>uninstall.sql</uninstall>
 	</database>
 </vs-manifest>

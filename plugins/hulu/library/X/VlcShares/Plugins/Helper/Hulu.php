@@ -3,7 +3,7 @@
 
 class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstract {
 	
-	const VERSION_CLEAN = '0.1';
+	const VERSION_CLEAN = '0.1beta';
 	const VERSION = '0.1';
 	
 	const HULU_PLAYER = 'http://download.hulu.com/huludesktop.swf';
@@ -42,6 +42,9 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 
 	private $_fetched = false;
 	
+	/**
+	 * @var Zend_Config
+	 */
 	private $options;
 	
 	/**
@@ -52,8 +55,23 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 	function __construct(Zend_Config $options = null) {
 		
 		if ( $options == null ) {
-			$options = new Zend_Config(array('username' => '', 'password' => '', 'premium' => false));
+			$options = new Zend_Config(array(
+				'username' => '',
+				'password' => '',
+				'plus' => false,
+				'cdn' => 'limelight', 
+				// limelight
+				// akamai
+				// level3
+				'quality' => '400_h264' 
+				// 400_h264 => 16x9 30fps H264 400K 
+				// 1000_h264 => 16x9 30fps H264 Medium
+				// 650_h264 => 16x9 30fps H264 650K
+				// 480_vp6 => 16x9 30fps Medium
+				
+			));
 		}
+		
 		$this->options = $options;
 	}
 	
@@ -77,7 +95,7 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 	}
 	
 	// TODO set protected
-	public function fetch() {
+	public function fetch($infoOnly = false) {
 		if ( $this->_location == null ) {
 			X_Debug::w('Trying to fetch a hulu location without a location');
 			throw new Exception('Trying to fetch a hulu location without a location');
@@ -180,13 +198,18 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 			
 			$needProxy = $xml->video->{"allow-international"}[0] == 'false' ? true : false;
 			
-			X_Debug::i("Video info: ".print_r(array(
-				'title' => $title,
-				'description' => $description,
-				'length' => $length,
-				'thumbnail' => $thumbnail,
-				'needProxy' => $needProxy
-			), true));
+			
+			if ( $infoOnly ) {
+				$infos = array(
+					'title' => $title,
+					'description' => $description,
+					'length' => $length,
+					'thumbnail' => $thumbnail,
+					'needProxy' => $needProxy
+				);
+				X_Debug::i("Video info: ".print_r($infos, true));
+				return $infos; 
+			}
 			
 			// new focus on smil infos
 			
@@ -241,16 +264,31 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 			$datas = $this->decodeSmil($datas);
 			
 			//echo "<b>DECRYPTED SMIL</b><textarea>".htmlentities($datas)."</textarea><br/>";
-			X_Debug::i("Decoded SMIL: \n$datas");
+			X_Debug::i("Decoded SMIL (50 chars only): \n".substr($datas, 0, 50)."...");
 			
 			$xml = new SimpleXMLElement($datas);
 			
 			//$vids = $xml->body->switch[1]->video[0];
-			$vid = $xml->body->switch[1]->video[0];
+			$vids = $xml->body->switch[1]->video;//[0];
 			//$ref = $xml->body->switch[1]->ref[0]; // choose the better source... ignored now
 			
 			//echo "<b>VIDEOS</b><pre>".print_r($vid, true)."</pre><br/>";
 			
+			if ( $this->options->get('priority', 'cdn') ) {
+				$vids = $this->filterCdn($vids, $this->options->get('cdn', 'limelight'));
+				$vids = $this->filterCdn($vids, $this->options->get('quality', '400_h264'));
+			} else {
+				$vids = $this->filterCdn($vids, $this->options->get('quality', '400_h264'));
+				$vids = $this->filterCdn($vids, $this->options->get('cdn', 'limelight'));
+			}
+
+			$vid = @$vids[0];
+			
+			// if no vid available yet, just try to get the first one
+			if ( !$vid ) {
+				X_Debug::w('Filter mode failed');
+				$vid = $xml->body->switch[1]->video[0];
+			}
 			
 			
 			if ( is_null($vid) ) {
@@ -259,7 +297,7 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 				throw new Exception('No video tag. Video requires HULU Plus or you are not in US');
 			}
 			
-			X_Debug::i("First video info: ".print_r($vid, true));
+			X_Debug::i("Selected video info: ".print_r($vid, true));
 			
 			// ported code: http://code.google.com/p/bluecop-xbmc-repo/source/browse/trunk/plugin.video.hulu/resources/lib/stream_hulu.py?spec=svn157&r=157
 			
@@ -282,19 +320,7 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 	        	$appName = $matches['appname'];
 	        }
 	        
-			/*	        
-	        $matches = array();
-	        if ( preg_match('#^rtmpe?://[^/]+/#', $server, $matches) ) {
-	        	$app = substr($server, strlen($matches[0]));
-	        }
-	        
-			$app = "$app?$token";
-			$rtmp = "$server?$token";
-	        $playpath = (string) $stream;
-	        */
-	        
 	        // rtmp params based on cdn
-	        
 	        switch ($cdn) {
 	        	case 'level3': 
 	        		$appName .= "?sessionid=sessionId&$token";
@@ -364,7 +390,7 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 			
 			$this->_cachedSearch[$this->_location] = $this->_fetched;
 			
-			X_Debug::i("All info: ".print_r($this->_fetched, true));
+			//X_Debug::i("All info: ".print_r($this->_fetched, true));
 			
 			return $this->_fetched;
 		}
@@ -572,6 +598,38 @@ class X_VlcShares_Plugins_Helper_Hulu extends X_VlcShares_Plugins_Helper_Abstrac
 			$this->http->setUri($url);
 		}
 		return $this->http;
+	}
+	
+	private function filterCdn($vids, $prefCdn ) {
+		$newVids = array();
+		foreach ($vids as $vid) {
+			if ( $vid['cdn'] == $prefCdn ) {
+				$newVids[] = $vid;
+			}
+		}
+		// check if there is at least one video available
+		if ( count($newVids) ) {
+			return $newVids;
+		} else {
+			// otherwise ignore filter
+			return $vids;
+		}
+	}
+
+	private function filterQuality($vids, $prefQuality ) {
+		$newVids = array();
+		foreach ($vids as $vid) {
+			if ( $vid['file-type'] == $prefQuality ) {
+				$newVids[] = $vid;
+			}
+		}
+		// check if there is at least one video available
+		if ( count($newVids) ) {
+			return $newVids;
+		} else {
+			// otherwire ignore filter
+			return $vids;
+		}
 	}
 	
 }

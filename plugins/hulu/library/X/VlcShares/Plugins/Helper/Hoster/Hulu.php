@@ -49,7 +49,28 @@ class X_VlcShares_Plugins_Helper_Hoster_Hulu implements X_VlcShares_Plugins_Help
 	 * @return string a playable url
 	 */
 	function getPlayable($url, $isId = true) {
-		$infos = $this->getPlayableInfos($url, $isId);
+		if ( !$isId ) {
+			$url = $this->getResourceId($url);
+		}
+		
+		// use cached values ONLY IF THEY HAVE URL TOO
+		if ( array_key_exists($url, $this->info_cache) && array_key_exists('url', $this->info_cache[$url]) ) {
+			return $this->info_cache[$url];
+		}
+		
+		try {
+			$helper = X_VlcShares_Plugins::helpers('hulu');
+			/* @var $helper X_VlcShares_Plugins_Helper_Hulu */
+
+			$infos = $helper->setLocation($url)->fetch(false);
+
+		} catch (Exception $e ) {
+			throw new Exception("Hulu helper not found", self::E_URL_INVALID);
+		} 
+		
+		// add in cache
+		$this->info_cache[$url] = $infos;
+		
 		return $infos['url'];
 	}
 	
@@ -80,15 +101,7 @@ class X_VlcShares_Plugins_Helper_Hoster_Hulu implements X_VlcShares_Plugins_Help
 			$helper = X_VlcShares_Plugins::helpers('hulu');
 			/* @var $helper X_VlcShares_Plugins_Helper_Hulu */
 
-			$fetched = $helper->setLocation($url)->fetch();
-			
-			$infos = array(
-				'title' => $fetched['title'],
-				'description' => $fetched['description'],
-				'length' => $fetched['length'],
-				'thumbnail' => $fetched['thumbnail'],
-				'url' => $fetched['url']
-			);
+			$infos = $helper->setLocation($url)->fetch(true);
 
 		} catch (Exception $e ) {
 			throw new Exception("Hulu helper not found", self::E_URL_INVALID);
