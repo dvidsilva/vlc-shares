@@ -4,13 +4,13 @@
 		<label>p_streamingonline_plglabel</label>
 		<description>p_streamingonline_plgdesc</description>
 		<version>0.1</version>
-		<status>beta2</status>
+		<status>stable</status>
 		<key>streamingonline</key>
 		<file>X/VlcShares/Plugins/StreamingOnline.php</file>
 		<class>X_VlcShares_Plugins_StreamingOnline</class>
 		<compatibility>
 			<from>0.5.4</from>
-			<to>0.5.5</to>
+			<to>0.6</to>
 		</compatibility>
 	</metadata>
 	<files>
