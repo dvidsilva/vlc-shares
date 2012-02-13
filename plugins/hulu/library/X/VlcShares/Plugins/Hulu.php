@@ -307,6 +307,20 @@ class X_VlcShares_Plugins_Hulu extends X_VlcShares_Plugins_Abstract implements X
 		}
 	}
 	
+	/**
+	 *	Add button -watch stream directly-
+	 *
+	 * @param string $provider
+	 * @param string $location
+	 * @param Zend_Controller_Action $controller
+	 */
+	public function preGetModeItems($provider, $location, Zend_Controller_Action $controller) {
+	
+		if ( $provider != $this->getId()) return;
+		X_Debug::i("Plugin triggered");
+		return X_VlcShares_Plugins_Utils::getWatchDirectlyOrFilter($this->getId(), $this, $location);
+	}
+	
 	
 	/**
 	 * Fill $items of types menu entry
