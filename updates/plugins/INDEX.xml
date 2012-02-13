@@ -361,9 +361,9 @@
 		</version>
 	</plugin>
 	<plugin key="realdebrid">
-		<version name="0.1.4" type="stable" cMin="0.5.4" cMax="0.6">
+		<version name="0.1.5" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_realdebrid_0.1.4.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_realdebrid_0.1.5.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[*USE IT ONLY IF YOU HAVE A PREMIUM ACCOUNT* Allow to use premium account of real debrid for many hosters]]></description>
