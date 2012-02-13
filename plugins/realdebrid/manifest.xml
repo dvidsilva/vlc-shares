@@ -3,7 +3,7 @@
 	<metadata>
 		<label>p_realdebrid_plglabel</label>
 		<description>p_realdebrid_plgdesc</description>
-		<version>0.1.4</version>
+		<version>0.1.5</version>
 		<status>stable</status>
 		<key>realdebrid</key>
 		<file>X/VlcShares/Plugins/RealDebrid.php</file>
@@ -78,6 +78,7 @@
 						<file>wattv-realdebrid.png</file>
 						<file>wupload-realdebrid.png</file>
 						<file>abc-realdebrid.png</file>
+						<file>sockshare-realdebrid.png</file>
 					</hosters>
 				</icons>
 			</images>

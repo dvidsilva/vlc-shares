@@ -3,7 +3,7 @@
 class X_VlcShares_Plugins_Helper_Hoster_RealDebridRapidShare extends X_VlcShares_Plugins_Helper_Hoster_RealDebridAbstract {
 	
 	const ID = 'rapidshare-realdebrid';
-	const PATTERN = '/http\:\/\/((www\.)?)rapidshare\.com\/files\/(?P<ID>.+)/';
+	const PATTERN = '/https?\:\/\/((www\.)?)rapidshare\.com\/files\/(?P<ID>.+)/';
 	
 	/**
 	 * give the hoster id
