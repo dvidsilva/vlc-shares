@@ -64,7 +64,7 @@ class X_VlcShares_Plugins_RealDebrid extends X_VlcShares_Plugins_Abstract {
 		),
 		'uploadedto' => array(
 			'/https?:\/\/(www\.)?u((ploaded)|l)?\.to\/(file\/)?(?P<ID>.+)/i',
-			'http://www.uploaded.to/file/%s'
+			'http://uploaded.to/file/%s'
 		),
 		'wupload' => array(
 			'/https?:\/\/(www\.)?wupload\.com\/file\/(?P<ID>.+)/i',
