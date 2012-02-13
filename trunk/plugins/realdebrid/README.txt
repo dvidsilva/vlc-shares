@@ -8,7 +8,7 @@
 #     															#
 ########## RealDebrid Plugin ####################################
 
-RealDebrid v0.1.4
+RealDebrid v0.1.5
 Created by Francesco Capozzo (ximarx)
 ximarx@gmail.com
 
@@ -42,12 +42,18 @@ for (even without hoster plugin installed):
  - wat.tv
  - wupload.com
  - abc.go.com
+ - sockshare.com
 
 For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 
 /==========---
 | Changelog
 \==========---
+
+*** 0.1.5 ***
+ - sockshare.com
+ - uploaded.to pattern improved
+ - http/https accepted both in regex for some hosters
 
 *** 0.1.4 ***
  - new hosters:

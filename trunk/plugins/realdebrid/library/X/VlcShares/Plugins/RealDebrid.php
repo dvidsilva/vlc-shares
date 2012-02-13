@@ -3,8 +3,8 @@
 
 class X_VlcShares_Plugins_RealDebrid extends X_VlcShares_Plugins_Abstract {
 		
-	const VERSION_CLEAN = '0.1.4';
-	const VERSION = '0.1.4';
+	const VERSION_CLEAN = '0.1.5';
+	const VERSION = '0.1.5';
 	
 	private $hosters = array(
 		// replace-id => with class
@@ -23,61 +23,70 @@ class X_VlcShares_Plugins_RealDebrid extends X_VlcShares_Plugins_Abstract {
 	
 		// generics
 		'novamov' => array(
-			'/http:\/\/(www\.)?nova(mov|up)\.com\/(video|download)\/(?P<ID>[A-Za-z0-9]+)/i',
+			'/https?:\/\/(www\.)?nova(mov|up)\.com\/(video|download)\/(?P<ID>[A-Za-z0-9]+)/i',
 			'http://www.novamov.com/video/%s'
 		),
 		'bitshare' => array(
-			'/http:\/\/(www\.)?bitshare\.com\/files\/(?P<ID>.+)/i',
+			'/https?:\/\/(www\.)?bitshare\.com\/files\/(?P<ID>.+)/i',
 			'http://www.bitshare.com/files/%s'
 		),
 		'filefactory' => array(
-			'/http:\/\/(www\.)?filefactory\.com\/file\/(?P<ID>.+)/i',
+			'/https?:\/\/(www\.)?filefactory\.com\/file\/(?P<ID>.+)/i',
 			'http://www.filefactory.com/file/%s'
 		),
 		'hotfile' => array(
-			'/http:\/\/(www\.)?hotfile\.com\/dl\/(?P<ID>.+)/i',
-			'http://www.hotfile.com/dl/%s'
+			'/https?:\/\/(www\.)?hotfile\.com\/dl\/(?P<ID>.+)/i',
+			'https?://www.hotfile.com/dl/%s'
 		),
 		'justintv' => array(
-			'/http:\/\/(www\.|([a-z]+)\.)?justin\.tv\/(?P<ID>.+)/i',
+			'/https?:\/\/(www\.|([a-z]+)\.)?justin\.tv\/(?P<ID>.+)/i',
 			'http://www.justin.tv/dl/%s'
 		),
 		'loadto' => array(
-			'/http:\/\/(www\.)?load\.to\/(?P<ID>.+)/i',
+			'/https?:\/\/(www\.)?load\.to\/(?P<ID>.+)/i',
 			'http://www.load.to/%s'
 		),
 		'mediafire' => array(
-			'/http:\/\/(www\.)?mediafire\.com\/\?(?P<ID>.+)/i',
+			'/https?:\/\/(www\.)?mediafire\.com\/\?(?P<ID>.+)/i',
 			'http://www.mediafire.com/?%s'
 		),
 		'megashares' => array(
-			'/http:\/\/(www\.|([a-z]+)\.)?megashares\.com\/(index\.php)?\?(?P<ID>.+)/i',
+			'/https?:\/\/(www\.|([a-z]+)\.)?megashares\.com\/(index\.php)?\?(?P<ID>.+)/i',
 			'http://www.megashares.com/?%s'
 		),
 		'netloadin' => array(
-			'/http:\/\/(www\.)?netload\.in\/(?P<ID>.+)/i',
+			'/https?:\/\/(www\.)?netload\.in\/(?P<ID>.+)/i',
 			'http://www.netload.in/%s'
 		),
 		'putlocker' => array(
-			'/http:\/\/(www\.)?putlocker\.com\/file\/(?P<ID>.+)/i',
+			'/https?:\/\/(www\.)?putlocker\.com\/file\/(?P<ID>.+)/i',
 			'http://www.putlocker.com/file/%s'
 		),
 		'uploadedto' => array(
-			'/http:\/\/(www\.)?u(ploaded)?\.to\/file\/(?P<ID>.+)/i',
+			'/https?:\/\/(www\.)?u((ploaded)|l)?\.to\/(file\/)?(?P<ID>.+)/i',
 			'http://www.uploaded.to/file/%s'
 		),
 		'wupload' => array(
-			'/http:\/\/(www\.)?wupload\.com\/file\/(?P<ID>.+)/i',
+			'/https?:\/\/(www\.)?wupload\.com\/file\/(?P<ID>.+)/i',
 			'http://www.wupload.com/file/%s'
 		),
 		'wattv' => array(
-			'/http:\/\/(www\.)?wat\.tv\/video\/(?P<ID>.+)/i',
+			'/https?:\/\/(www\.)?wat\.tv\/video\/(?P<ID>.+)/i',
 			'http://www.wat.tv/video/%s'
 		),
 		'abc' => array(
-			'/http:\/\/abc\.go\.com\/watch\/(?P<ID>.+)/i',
+			'/https?:\/\/abc\.go\.com\/watch\/(?P<ID>.+)/i',
 			'http://abc.go.com/watch/%s'
 		),
+		'abc' => array(
+			'/https?:\/\/abc\.go\.com\/watch\/(?P<ID>.+)/i',
+			'http://abc.go.com/watch/%s'
+		),
+		'sockshare' => array(
+			'/https\:\/\/((www\.)?)sockshare\.com\/(file|embed)\/(?P<ID>[A-Za-z0-9]+)/i',
+			'http://www.sockshare.com/file/%s'
+		),
+				
 	);
 	
 	public function __construct() {
