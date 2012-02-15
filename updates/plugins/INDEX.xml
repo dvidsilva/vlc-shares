@@ -470,16 +470,16 @@
 		</version>
 	</plugin>
 	<plugin key="hulu">
-		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.5.5">
+		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.5.5">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_hulu_0.1beta.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_hulu_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch video from hulu.com (Require PageParserLib)]]></description>
 		</version>
-		<version name="0.1" type="beta" cMin="0.5.5" cMax="0.6">
+		<version name="0.1" type="stable" cMin="0.5.5" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_hulu_0.1beta.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_hulu_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch video from hulu.com]]></description>
