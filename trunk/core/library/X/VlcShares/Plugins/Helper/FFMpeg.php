@@ -308,7 +308,7 @@ class X_VlcShares_Plugins_Helper_FFMpeg extends X_VlcShares_Plugins_Helper_Abstr
 				
 				X_Debug::i("Checking line: $line");
 				
-				$language = $matches['lang'];
+				$language = @$matches['lang'];
 				$streamID = $matches['subid'];
 				$streamType = $matches['type'];
 				$streamFormat = $matches['codec'];
@@ -373,6 +373,8 @@ class X_VlcShares_Plugins_Helper_FFMpeg extends X_VlcShares_Plugins_Helper_Abstr
 					}
 				}
 				$infoStream['ID'] = $streamID;
+				// language if available
+				if ( $language ) $infoStream['language'] = $language;
 				//$fetched[$streamType][$streamID] = $infoStream;
 				// no index as key for use with vlc --sub-track 
 				
