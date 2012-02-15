@@ -3,7 +3,7 @@
 
 class X_VlcShares_Plugins_Hulu extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-    const VERSION = '0.1beta';
+    const VERSION = '0.1';
     const VERSION_CLEAN = '0.1';
 	
     const URL_BASE = "http://www.hulu.com/%s";
