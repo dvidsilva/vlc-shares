@@ -40,6 +40,10 @@ class X_Env {
 		return self::$_isWindows;
 	}
 	
+	static function isset_or($value, $alternative) {
+		return (isset($value) ? $value : $alternative);
+	}
+	
 	/**
 	 * Execute a call in system env
 	 * @param string $command command to be executed

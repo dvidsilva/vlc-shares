@@ -246,7 +246,7 @@ class X_Vlc_Commander_Http extends X_Vlc_Commander {
 		$port = $this->http_port;
 		
 		switch ( $this->options->version ) {
-			case '1.2.x': // default future use
+			case '2.x': // default future use
 			case '1.2-git': // http:port is broken in 1.2-git
 				return '-I http --http-host="'.$host.'" --http-port="'.$port.'"';
 			case '1.1.x':

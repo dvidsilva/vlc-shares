@@ -353,7 +353,7 @@ class ConfigsController extends X_Controller_Action
 	    		$this->configForm->vlc_version->setMultiOptions(array(
 	    			'1.1.x' => '<= 1.1.x',
 	    			'1.2-git' => '>= 1.2-git',
-	    			//'1.2.x' => '1.2.x', // watching to the future
+	    			'2.x' => '2.x',
 	    		));
 	    	} catch(Exception $e) {
 	    		X_Debug::w("No vlc version setting? O_o");

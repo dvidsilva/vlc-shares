@@ -205,13 +205,6 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
  
  
 /==========---
-| In the next release (maybe)
-\==========---
- 
- - parental control
- - login support
- 
-/==========---
 | Troubleshooting
 \==========---
 

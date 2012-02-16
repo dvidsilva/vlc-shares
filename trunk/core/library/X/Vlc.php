@@ -1,5 +1,25 @@
 <?php
 
+/**
+ * This file is part of the vlc-shares project by Francesco Capozzo (ximarx) <ximarx@gmail.com>
+ *
+ * @author: Francesco Capozzo (ximarx) <ximarx@gmail.com>
+ *
+ * vlc-shares is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * vlc-shares is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with vlc-shares.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 require_once 'X/Vlc/Adapter.php';
 require_once 'X/Vlc/Adapter/Linux.php';
 require_once 'X/Vlc/Adapter/Windows.php';
@@ -94,6 +114,7 @@ class X_Vlc {
 		
 		$this->lazyInit();
 		
+		X_Debug::i("Setting {{$placeholder}} => {{$substitution}}");
 		$this->_registredArgs[$placeholder] = $substitution;
 		
 		return $this;
@@ -144,11 +165,19 @@ class X_Vlc {
 		return call_user_func_array(array($this->adapter, $name), $argv);
 	}
 	
+	/**
+	 * @deprecated
+	 * @param unknown_type $pipe
+	 */
 	public function setPipe($pipe) {
 		$this->_pipe = $pipe;
 		return $this;
 	}
 	
+	/**
+	 * @deprecated
+	 * @throws Exception
+	 */
 	public function getPipe() {
 		if ($this->_pipe !== false && ((string) $this->_pipe) !== '' ) {
 			return $this->_pipe;

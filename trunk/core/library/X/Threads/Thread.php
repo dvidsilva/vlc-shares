@@ -90,7 +90,8 @@ final class X_Threads_Thread extends X_Threads_Thread_Info {
 						"spawned" => $this->spawned,
 						"phase" => self::PHASE_PRE,
 						"message_type" => $message->getType(),
-						"message_sign" => (string) $message
+						"message_sign" => (string) $message,
+						"message_params" => $message->getType() == X_Threads_Message_Command::TYPE_COMMAND ? $message->getParams() : array()
 					));
 					
 					switch ( $message->getType() ) {
@@ -123,6 +124,7 @@ final class X_Threads_Thread extends X_Threads_Thread_Info {
 						"phase" => self::PHASE_POST,
 						"message_type" => $message->getType(),
 						"message_sign" => (string) $message,
+						"message_params" => $message->getType() == X_Threads_Message_Command::TYPE_COMMAND ? $message->getParams() : array(),
 						"command_return" => $commandReturn
 					));
 					
@@ -207,6 +209,10 @@ final class X_Threads_Thread extends X_Threads_Thread_Info {
 		if ( $this->logger == null ) {
 			// initialize default logger
 			$this->setLogger(new X_Threads_Logger_File("vlcShares.thread-{$this->getId()}.log", sys_get_temp_dir()));
+			// redirect standard debug too if enabled
+			if ( X_Debug::isEnabled() ) {
+				X_Debug::init(sys_get_temp_dir()."/vlcShares.thread-{$this->getId()}.log", X_Debug::getLevel());
+			}
 		}
 		$this->logger->log($msg);
 	}

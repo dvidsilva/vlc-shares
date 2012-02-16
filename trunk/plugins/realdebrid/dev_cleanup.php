@@ -24,4 +24,5 @@ $neededDirectories = array(
 $neededLinks = array(
 	//$basePath.'/public/images/myfolder/' => APPLICATION_PATH.'/../public/images/myfolder', // <--- THIS IS AN EXAMPLE FOR FOLDERS
 	$basePath.'/languages/X_VlcShares_Plugins_RealDebrid.en_GB.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_RealDebrid.en_GB.ini',
+	$basePath.'/languages/X_VlcShares_Plugins_RealDebrid.it_IT.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_RealDebrid.it_IT.ini',
 );

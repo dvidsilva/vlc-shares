@@ -435,6 +435,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	/**
 	 * This hook can be used to add low priority args in vlc stack
 	 * 
+	 * @deprecated
 	 * @param X_Vlc $vlc vlc wrapper object
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to stream
@@ -445,6 +446,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	/**
 	 * This hook can be used to add normal priority args in vlc stack
 	 * 
+	 * @deprecated
 	 * @param X_Vlc $vlc vlc wrapper object
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to stream
@@ -455,6 +457,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	/**
 	 * This hook can be used to add top priority args in vlc stack
 	 * 
+	 * @deprecated
 	 * @param X_Vlc $vlc vlc wrapper object
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to stream
@@ -466,6 +469,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * This hook can be used check vlc status just before
 	 * spawn is called
 	 * 
+	 * @deprecated
 	 * @param X_Vlc $vlc vlc wrapper object
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to stream
@@ -477,6 +481,7 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * This hook can be used to check vlc status just after
 	 * spawn has been called
 	 * 
+	 * @deprecated
 	 * @param X_Vlc $vlc vlc wrapper object
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to stream
@@ -484,6 +489,82 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 */
 	public function postSpawnVlc(X_Vlc $vlc, $provider, $location, Zend_Controller_Action $controller) {}
 	
+	//{{{ NEW STREAMER-BASED APIS FROM 0.5.5alpha2
+	
+	/**
+	 * This hook can be used to add low priority args in streamer engine
+	 *
+	 * @param X_Streamer_Engine $engine streamer engine wrapper object
+	 * @param string $url URI of the content to be streamed
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function preRegisterStreamerArgs(X_Streamer_Engine $engine, $url, $provider, $location, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * This hook can be used to add normal priority args in streamer engine
+	 *
+	 * @param X_Streamer_Engine $engine streamer engine wrapper object
+	 * @param string $url URI of the content to be streamed
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function registerStreamerArgs(X_Streamer_Engine $engine, $url, $provider, $location, Zend_Controller_Action $controller) {}
+		
+	/**
+	 * This hook can be used to add top priority args in streamer engine
+	 *
+	 * @param X_Streamer_Engine $engine streamer engine wrapper object
+	 * @param string $url URI of the content to be streamed
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function postRegisterStreamerArgs(X_Streamer_Engine $engine, $url, $provider, $location, Zend_Controller_Action $controller) {}
+		
+	/**
+	 * This hook can be used check streamer status just before
+	 * start is called
+	 *
+	 * @param X_Streamer_Engine $engine streamer engine wrapper object
+	 * @param string $url URI of the content to be streamed
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function preStartStreamer(X_Streamer_Engine $engine, $url, $provider, $location, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * Check if the stream can be started
+	 * If return is false, the streamer will be not started for sure
+	 * If return is true, isn't sure that the streamer will be started (check postStartStreamer to be sure)
+	 * 'cause another plugin can prevent this
+	 *
+	 * @param X_Streamer_Engine $engine streamer engine wrapper object
+	 * @param string $url URI of the content to be streamed
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return boolean true if streamer can be started, false otherwise
+	 */
+	public function canStartStreamer(X_Streamer_Engine $engine, $url, $provider, $location, Zend_Controller_Action $controller) {}
+	
+	/**
+	 * This hook can be used check streamer status just after
+	 * start is called
+	 *
+	 * @param bool $started say if $engine has been started
+	 * @param X_Streamer_Engine $engine streamer engine wrapper object
+	 * @param string $url URI of the content to be streamed
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 */
+	public function postStartStreamer($started, X_Streamer_Engine $engine, $url, $provider, $location, Zend_Controller_Action $controller) {}
+		
+	//}}} 
 	
 	//=== END OF Browse:stream ===//
 

@@ -22,7 +22,13 @@ class BrowseController extends X_Controller_Action {
 	public function init() {
 		
 		parent::init();
-		$this->vlc = new X_Vlc($this->options->vlc);
+		//
+		$this->vlc = X_Vlc::getLastInstance();
+		// bootstrap failed
+		if ( is_null($this->vlc) ) {
+			$this->vlc = new X_Vlc($this->options->vlc);
+			X_VlcShares_Plugins::helpers()->streamer()->register(new X_Streamer_Engine_Vlc($this->vlc));
+		}
 		
 	}
 	
@@ -204,19 +210,77 @@ class BrowseController extends X_Controller_Action {
 		}
 		$location = X_Env::decode($request->getParam('l', ''));
 
-		
-    	// each arg is stored as in a LIFO stack. If i put top priority as first,
-    	// low priority args could override it. So i use an inverse priority insertion  
-    	// register low priority args
-    	X_VlcShares_Plugins::broker()->preRegisterVlcArgs($this->vlc, $provider, $location, $this);
-    	// register normal priority args
-    	X_VlcShares_Plugins::broker()->registerVlcArgs($this->vlc, $provider, $location, $this);
-    	// register top priority args
-    	X_VlcShares_Plugins::broker()->postRegisterVlcArgs($this->vlc, $provider, $location, $this);
+		$providerObj = X_VlcShares_Plugins::broker()->getPlugins($provider);
+
+		// if provider is a resolver, i can use new streamer api
+		if ( X_VlcShares_Plugins::helpers()->streamer()->isEnabled() && $providerObj instanceof X_VlcShares_Plugins_ResolverInterface ) {
+			$url = $providerObj->resolveLocation($location);
+			
+			X_Debug::i("Resolved location: {{$url}}");
+			
+			// check if url is valid (resolver give null or false on error)
+			if ( !$url ) {
+				X_Debug::e("Invalid location: $location");
+				throw new Exception("Stream location is invalid: $url");
+			}
+			
+			$engine = X_VlcShares_Plugins::helpers()->streamer()->find($url);
+			
+			X_Debug::i("Streamer engine found: {{$engine->getId()}}");
+			
+			// automatically set the url as source param in the engine
+			$engine->setSource($url);
+			
+			// NEW APIS
+			
+			// each arg is stored as in a LIFO stack. If i put top priority as first,
+			// low priority args could override it. So i use an inverse priority insertion
+			// register low priority args
+			X_VlcShares_Plugins::broker()->preRegisterStreamerArgs($engine, $url, $provider, $location, $this);
+			// register normal priority args
+			X_VlcShares_Plugins::broker()->registerStreamerArgs($engine, $url, $provider, $location, $this);
+			// register top priority args
+			X_VlcShares_Plugins::broker()->postRegisterStreamerArgs($engine, $url, $provider, $location, $this);
+			
+			X_VlcShares_Plugins::broker()->preStartStreamer($engine, $url, $provider, $location, $this);
+			
+			$results = X_VlcShares_Plugins::broker()->canStartStreamer($engine, $url, $provider, $location, $this);
+			$started = false;
+			if ( is_null($results) || !in_array(false, $results) ) {
+				X_Debug::i("Starting streamer {{$engine->getId()}}: $engine");
+				$started = true;
+				X_Streamer::i()->start($engine);				
+			} else {
+				$pluginId = array_search(false, $results, true);
+				X_Debug::f("Plugin {{$pluginId}} prevented streamer from starting...");
+				//throw new Exception("Plugin {{$pluginId}} prevented streamer from starting");
+			}
+			
+			X_VlcShares_Plugins::broker()->postStartStreamer($started, $engine, $url, $provider, $location, $this);
+				
+			
+		} else {
+			// otherwise i'm forced to fallback to old api
+			
+			//{{{ THIS CODE BLOCK WILL IS DEPRECATED AND WILL BE REMOVED IN 0.5.6 or 0.6
+			//TODO remove in 0.5.6 or 0.6
+			
+	    	// each arg is stored as in a LIFO stack. If i put top priority as first,
+	    	// low priority args could override it. So i use an inverse priority insertion  
+	    	// register low priority args
+	    	X_VlcShares_Plugins::broker()->preRegisterVlcArgs($this->vlc, $provider, $location, $this);
+	    	// register normal priority args
+	    	X_VlcShares_Plugins::broker()->registerVlcArgs($this->vlc, $provider, $location, $this);
+	    	// register top priority args
+	    	X_VlcShares_Plugins::broker()->postRegisterVlcArgs($this->vlc, $provider, $location, $this);
+	    	
+	    	X_VlcShares_Plugins::broker()->preSpawnVlc($this->vlc, $provider, $location, $this);
+	    	$this->vlc->spawn(); 
+	    	X_VlcShares_Plugins::broker()->postSpawnVlc($this->vlc, $provider, $location, $this);
+	    	
+	    	//}}}
     	
-    	X_VlcShares_Plugins::broker()->preSpawnVlc($this->vlc, $provider, $location, $this);
-    	$this->vlc->spawn(); // in test leave this commented out
-    	X_VlcShares_Plugins::broker()->postSpawnVlc($this->vlc, $provider, $location, $this);
+		}
     	
 		$pageItems = new X_Page_ItemList_PItem();
 		
