@@ -22,7 +22,7 @@ abstract class X_Threads_Monitor {
 			list($state, $info) = $this->retrieveStatus($threadId);
 			$thread->setStatus($state, $info);
 		} catch (Exception $e ) {
-			// thread found
+			// thread not found
 		}
 		
 		return $thread;

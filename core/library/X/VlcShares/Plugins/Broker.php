@@ -121,9 +121,9 @@ class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 						}
 					} else {
 						if ( $returnedVal == null) {
-							$returnedVal = array($return);
+							$returnedVal = array($pluginId => $return);
 						} elseif ( is_array($returnedVal) ) {
-							$returnedVal[] = $return;
+							$returnedVal[$pluginId] = $return;
 						}
 					}
 				}
@@ -131,7 +131,49 @@ class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 		}
 		return $returnedVal;
 	}
+	
+	//{{{ redirect new stream api to old one (ONLY IF VLC)
+	public function preRegisterStreamerArgs(X_Streamer_Engine $engine, $url, $provider, $location, Zend_Controller_Action $controller) {
+		if ( $engine instanceof X_Streamer_Engine_Vlc ) {
+			return $this->preRegisterVlcArgs(X_Vlc::getLastInstance(), $provider, $location, $controller);
+		} else {
+			return $this->__call(__FUNCTION__, func_get_args());
+		}
+	}
 
+	public function registerStreamerArgs(X_Streamer_Engine $engine, $url, $provider, $location, Zend_Controller_Action $controller) {
+		if ( $engine instanceof X_Streamer_Engine_Vlc ) {
+			return $this->registerVlcArgs(X_Vlc::getLastInstance(), $provider, $location, $controller);
+		} else {
+			return $this->__call(__FUNCTION__, func_get_args());
+		}
+	}
+	
+	public function postStreamerArgs(X_Streamer_Engine $engine, $url, $provider, $location, Zend_Controller_Action $controller) {
+		if ( $engine instanceof X_Streamer_Engine_Vlc ) {
+			return $this->postRegisterVlcArgs(X_Vlc::getLastInstance(), $provider, $location, $controller);
+		} else {
+			return $this->__call(__FUNCTION__, func_get_args());
+		}
+	}
+	
+	public function preStartStreamer(X_Streamer_Engine $engine, $url, $provider, $location, Zend_Controller_Action $controller) {
+		if ( $engine instanceof X_Streamer_Engine_Vlc ) {
+			return $this->preSpawnVlc(X_Vlc::getLastInstance(), $provider, $location, $controller);
+		} else {
+			return $this->__call(__FUNCTION__, func_get_args());
+		}
+	}	
+
+	public function postStartStreamer($started, X_Streamer_Engine $engine, $url, $provider, $location, Zend_Controller_Action $controller) {
+		if ( $engine instanceof X_Streamer_Engine_Vlc ) {
+			return $this->postSpawnVlc(X_Vlc::getLastInstance(), $provider, $location, $controller);
+		} else {
+			return $this->__call(__FUNCTION__, func_get_args());
+		}
+	}
+	//}}}
+	
 	function __call($funcName, $funcParams) {
 		if ( method_exists('X_VlcShares_Plugins_Abstract', $funcName) && !in_array($funcName, $this->backlistedFunctions) ) {
 			$toBeCalled = array();
@@ -159,9 +201,9 @@ class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 							}
 						} else {
 							if ( $returnedVal == null) {
-								$returnedVal = array($return);
+								$returnedVal = array($pluginId => $return);
 							} elseif ( is_array($returnedVal) ) {
-								$returnedVal[] = $return;
+								$returnedVal[$pluginId] = $return;
 							}
 						}
 					}
@@ -173,5 +215,6 @@ class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 			throw new Exception('Invalid trigger');
 		}
 	}
+	
 }
 

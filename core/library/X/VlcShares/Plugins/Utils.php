@@ -214,8 +214,14 @@ abstract class X_VlcShares_Plugins_Utils {
 		return $items;
 	}
 	
+	/**
+	 * @deprecated use X_Env::isset_or
+	 * @param mixed $value
+	 * @param mixed $alternative
+	 * @return mixed
+	 */
 	static function isset_or($value, $alternative) {
-		return (isset($value) ? $value : $alternative);
+		return X_Env::isset_or($value, $alternative);
 	}
 	
 }

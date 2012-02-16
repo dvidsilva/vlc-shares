@@ -1,15 +1,37 @@
 <?php
 
+/**
+ * This file is part of the vlc-shares project by Francesco Capozzo (ximarx) <ximarx@gmail.com>
+ *
+ * @author: Francesco Capozzo (ximarx) <ximarx@gmail.com>
+ *
+ * vlc-shares is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * vlc-shares is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with vlc-shares.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 require_once 'X/Vlc/Adapter.php';
 require_once 'X/Vlc/Commander/Http.php';
 
 class X_Vlc_Adapter_Linux extends X_Vlc_Adapter {
 
 	private $pidFile = '';
+	private $vlcLog = false;
 	
 	public function __construct($options = array()) {
 		parent::__construct($options);
 		$this->pidFile = $this->_options->get('adapter', new Zend_Config(array()))->get('pidFile', sys_get_temp_dir().'/vlcLock.pid');
+		$this->vlcLog = $this->_options->get('adapter', new Zend_Config(array()))->get('log', false);
 	}
 	
 	/**
@@ -18,24 +40,18 @@ class X_Vlc_Adapter_Linux extends X_Vlc_Adapter {
 	public function spawn($vlcPath, $args = '') {
 		$args = $this->interfaceCheck($args);
 		if ( !$this->isRunning() ) {
-			// qui devo semplicemente aggiungere la roba passata da configurazione
-			try {
-				//> /dev/null 2>&1 & pidof vlc > /tmp/vlcLock.pid
-				X_Vlc::getLastInstance()->getPipe(); 
-				
-				// if we are in piped mode, i cannot use daemon mode,
-				// i have to switch to pidof
-
-				$args .= " > /dev/null 2>&1 & pidof vlc > \"{$this->pidFile}\"";
-				// trying with normal background mode
-				X_Env::execute("$vlcPath $args", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_BACKGROUND_SPECIAL);
-			} catch (Exception $e) {
-				$args .= " --daemon --pidfile=\"$this->pidFile\"";
-				X_Env::execute("$vlcPath $args", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_BACKGROUND);
+			// log store checkc
+			if ( $this->vlcLog ) {
+				$logFile = sys_get_temp_dir().'/vlcShares.vlc-log.txt';
+				//$args .= " --verbose=\"2\"";
+				$args .= " --file-logging --logfile=\"$logFile\"";
 			}
+			
+			$args .= " | pidof vlc > \"{$this->pidFile}\" && rm \"{$this->pidFile}\"";
+			// trying with normal background mode
+			X_Env::execute("$vlcPath $args", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_WAIT);
+			
 		}
-		// halt execution for 2-3 seconds. Slow pc took some time to spawn the process. This could create some problem
-		sleep(3);
 	}
 
 	/**

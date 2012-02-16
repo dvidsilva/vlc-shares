@@ -14,12 +14,28 @@ class X_Debug {
 	const LVL_INFO = 3;
 	
 	private static $logFile = null;
-	private static $logLevel = -1;
+	private static $logLevel = self::LVL_NONE;
 	
 	/**
 	 * Prevent constuction
 	 */
 	private function __construct() {}
+	
+	/**
+	 * Tell if log is enabled ad initialized
+	 * @return boolean
+	 */
+	static public function isEnabled() {
+		return (self::$logLevel > self::LVL_NONE && self::$logFile);
+	}
+	
+	/**
+	 * Return the current log level
+	 * @return int (comparable with X_Debug::LVL_*)
+	 */
+	static public function getLevel() {
+		return self::$logLevel;
+	}
 	
 	/**
 	 * Init debug system

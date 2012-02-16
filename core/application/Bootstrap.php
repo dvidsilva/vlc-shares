@@ -265,6 +265,19 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		
 	}
 	
+	protected function _initStreamers() {
+		$this->bootstrap('configs');
+		$this->bootstrap('plugins');
+		
+		$configs = $this->getResource('configs');
+		
+		$vlc = new X_Vlc($configs->vlc);
+		X_VlcShares_Plugins::helpers()->streamer()->register(new X_Streamer_Engine_Vlc($vlc));
+		
+		X_VlcShares_Plugins::helpers()->streamer()->register(new X_Streamer_Engine_RtmpDump());
+		
+	}
+	
 }
 
 if ( !function_exists('myErrorHandler') ) {

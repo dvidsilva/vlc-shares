@@ -5,7 +5,7 @@ abstract class X_Threads_Controller_Action extends Zend_Controller_Action {
 	
 	final public function startAction() {
 		
-		X_Debug::e("Inside action");
+		//X_Debug::e("Inside action");
 
 		
 		/* @var $request Zend_Controller_Request_Http */

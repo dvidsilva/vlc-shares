@@ -106,6 +106,17 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	'config_vlc_version_desc'
 );
 
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description ) VALUES (
+	'adapter.log', 
+	'0',
+	'0',
+	'vlc',
+	3,
+	'config_vlc_adapterlog_label',
+	'config_vlc_adapterlog_desc'
+);
+
+
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'args', 
 	'{%source%} --play-and-exit --sout="{%profile%}" --sout-keep --http-caching="10000" --sout-mux-caching="20000" {%subtitles%} {%audio%} {%filters%}',
@@ -215,6 +226,17 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	'config_helpers_devices_profile_label',
 	'config_helpers_devices_profile_desc',
 	'advanced'
+);
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'streamer.enabled', 
+	'1',
+	'1',
+	'helpers',
+	3,
+	'config_helpers_streamer_enabled_label',
+	'config_helpers_streamer_enabled_desc',
+	NULL
 );
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (

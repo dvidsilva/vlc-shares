@@ -107,10 +107,21 @@ class X_Threads_Manager {
 			$thread = new X_Threads_Thread($threadId, $this);
 			if ( !$this->isLogger() ) {
 				$thread->setLogger(new X_Threads_Logger_Null());
+			} else {
+				$thread->setLogger(new X_Threads_Logger_File("vlcShares.thread-{$threadId}.log", sys_get_temp_dir()));
+				// redirect standard debug too if enabled
+				if ( X_Debug::isEnabled() ) {
+					X_Debug::i("Forking debug log to {".sys_get_temp_dir()."/vlcShares.thread-{$threadId}.log");
+					X_Debug::init(sys_get_temp_dir()."/vlcShares.thread-{$threadId}.log", X_Debug::getLevel());
+				}
 			}
 		}
 		
 		return $thread;
+	}
+	
+	public function getThreadInfo($threadId) {
+		return $this->getMonitor()->getThread($threadId);
 	}
 	
 	public function appendJob($runnableClass, $params, $threadId ) {
