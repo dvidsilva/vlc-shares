@@ -405,32 +405,39 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * Return items that should be added at the beginning of the list
 	 * This hook can also used for redirect application flow
 	 * 
+	 * @param X_Streamer_Engine $engine the engine
+	 * @param string $uri
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to stream
 	 * @param Zend_Controller_Action $controller the controller who handle the request
 	 * @return X_Page_ItemList_PItem
 	 */
-	public function preGetStreamItems($provider, $location, Zend_Controller_Action $controller) {}
+	public function preGetStreamItems(X_Streamer_Engine $engine, $uri, $provider, $location, Zend_Controller_Action $controller) {}
 	
 	/**
 	 * Return items that should be added in collection list
+	 *
+	 * @param X_Streamer_Engine $engine the engine
+	 * @param string $uri
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to stream
 	 * @param Zend_Controller_Action $controller the controller who handle the request
 	 * @return X_Page_ItemList_PItem 
 	 */
-	public function getStreamItems($provider, $location, Zend_Controller_Action $controller) {}
+	public function getStreamItems(X_Streamer_Engine $engine, $uri, $provider, $location, Zend_Controller_Action $controller) {}
 	
 	/**
 	 * Return items that should be added at the end of the list
 	 * This hook can also used for redirect application flow
 	 * 
+	 * @param X_Streamer_Engine $engine the engine
+	 * @param string $uri
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to stream
 	 * @param Zend_Controller_Action $controller the controller who handle the request
 	 * @return X_Page_ItemList_PItem
 	 */
-	public function postGetStreamItems($provider, $location, Zend_Controller_Action $controller) {}
+	public function postGetStreamItems(X_Streamer_Engine $engine, $uri, $provider, $location, Zend_Controller_Action $controller) {}
 
 	/**
 	 * This hook can be used to add low priority args in vlc stack
@@ -573,26 +580,29 @@ abstract class X_VlcShares_Plugins_Abstract {
 	/**
 	 * Return items that should be added at the beginning of the list
 	 * 
+	 * @param X_Streamer_Engine $engine streamer engine
 	 * @param Zend_Controller_Action $controller the controller who handle the request
 	 * @return X_Page_ItemList_PItem
 	 */
-	public function preGetControlItems(Zend_Controller_Action $controller) {}
+	public function preGetControlItems(X_Streamer_Engine $engine, Zend_Controller_Action $controller) {}
 	
 	/**
 	 * Return items that should be added in collection list
+	 * @param X_Streamer_Engine $engine streamer engine
 	 * @param Zend_Controller_Action $controller the controller who handle the request
 	 * @return X_Page_ItemList_PItem 
 	 */
-	public function getControlItems(Zend_Controller_Action $controller) {}
+	public function getControlItems(X_Streamer_Engine $engine, Zend_Controller_Action $controller) {}
 	
 	/**
 	 * Return items that should be added at the end of the list
 	 * This hook can also used for redirect application flow
 	 * 
+	 * @param X_Streamer_Engine $engine streamer engine
 	 * @param Zend_Controller_Action $controller the controller who handle the request
 	 * @return X_Page_ItemList_PItem
 	 */
-	public function postGetControlItems(Zend_Controller_Action $controller) {}	
+	public function postGetControlItems(X_Streamer_Engine $engine, Zend_Controller_Action $controller) {}	
 
 	/**
 	 * Check if the controls item should be filtered out
@@ -603,10 +613,11 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * Plugins who check per-item acl or blacklist should hook here
 	 * 
 	 * @param X_Page_Item_PItem $item
+	 * @param X_Streamer_Engine $engine streamer engine
 	 * @param Zend_Controller_Action $controller
 	 * @return boolean true if item is ok, false if item should be discarded
 	 */
-	public function filterControlItems(X_Page_Item_PItem $item, Zend_Controller_Action $controller) {}	
+	public function filterControlItems(X_Page_Item_PItem $item, X_Streamer_Engine $engine, Zend_Controller_Action $controller) {}	
 	
 	//=== END OF Controls:control ===//
 	
@@ -645,32 +656,32 @@ abstract class X_VlcShares_Plugins_Abstract {
 	/**
 	 * This hook is triggered before the command is execute in control action
 	 * 
-	 * @param X_Vlc $vlc
+	 * @param X_Streamer_Engine $vlc
 	 * @param string $pid
 	 * @param string $action
 	 * @param Zend_Controller_Action $controller the controller who handle the request
 	 */
-	public function preExecute(X_Vlc $vlc, $pid, $action, Zend_Controller_Action $controller) {}
+	public function preExecute(X_Streamer_Engine $engine, $pid, $action, Zend_Controller_Action $controller) {}
 
 	/**
 	 * Use this hook to execute action on controls controller
 	 * 
-	 * @param X_Vlc $vlc
+	 * @param X_Streamer_Engine $vlc
 	 * @param string $pid
 	 * @param string $action
 	 * @param Zend_Controller_Action $controller the controller who handle the request
 	 */
-	public function execute(X_Vlc $vlc, $pid, $action, Zend_Controller_Action $controller) {}
+	public function execute(X_Streamer_Engine $engine, $pid, $action, Zend_Controller_Action $controller) {}
 	
 	/**
 	 * This hook is triggered after the command is execute in control action
 	 *  
-	 * @param X_Vlc $vlc
+	 * @param X_Streamer_Engine $vlc
 	 * @param string $pid
 	 * @param string $action
 	 * @param Zend_Controller_Action $controller the controller who handle the request
 	 */
-	public function postExecute(X_Vlc $vlc, $pid, $action, Zend_Controller_Action $controller) {}
+	public function postExecute(X_Streamer_Engine $engine, $pid, $action, Zend_Controller_Action $controller) {}
 	
 	//=== END OF Controls:control ===//
 	

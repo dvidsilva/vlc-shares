@@ -31,15 +31,74 @@ class X_Streamer {
 		
 	}
 	
+	public function getStreamingEngineId() {
+		
+		// i don't use self::isStreaming because
+		// i don't want double fetch of thread status
+		$thread = X_Threads_Manager::instance()->getThreadInfo(self::THREAD_ID);
+		if ( $thread->getState() != X_Threads_Thread_Info::RUNNING ) {
+			throw new Exception("No engine is streaming right now");
+		}
+		
+		$infos = $thread->getInfo();
+		if ( !isset($infos['message_params']) || !isset($infos['message_params']['streamerId']) ) {
+			X_Debug::e("Streamer thread is working, but without a real streamer engine");
+			throw new Exception("No engine information available");
+		}
+		
+		return $infos['message_params']['streamerId'];
+		
+	}
+	
+	/**
+	 * Invoke remote execution of the streamer thread with the streamer engine job
+	 * @param X_Streamer_Engine $engine
+	 * @return boolean true if thread move to running state, false otherwise
+	 * 		This could happen if streamer job failed really fast (wrong params?)
+	 * 		or if the job is appended between the last waiting tick and the shutdown
+	 * 		of the thread 
+	 */
 	public function start(X_Streamer_Engine $engine ) {
 		// check if streamer is alive (if it is, shutdown it)
 		if ( $this->isStreaming() ) {
 			$this->stop();
 		}
 		
+		// get standard params overloaded by engine's ones, if any
+		$params = array_merge(array(
+				'streamerId' => $engine->getId(),
+				'streamerClass' => get_class($engine),
+			), $engine->getRunnableParams());
+		
 		// then wake up the thread
-		X_Threads_Manager::instance()->appendJob($engine->getRunnableClass(), $engine->getRunnableParams(), self::THREAD_ID);
-		//die("DEV");
+		X_Threads_Manager::instance()->appendJob($engine->getRunnableClass(), $params, self::THREAD_ID);
+		
+		$i = 10;
+		$threadInfo = X_Threads_Manager::instance()->getThreadInfo(self::THREAD_ID);
+		while ( $threadInfo->getState() != X_Threads_Thread_Info::RUNNING && $i > 0 ) { 
+			// check the thread is alive, sooooon after the append job
+			//$threadInfo = X_Threads_Manager::instance()->getThreadInfo(self::THREAD_ID);
+			if ( $threadInfo->getState() == X_Threads_Thread_Info::STOPPED ) {
+				// this is a very special case: i appended the job just between
+				// the last waiting tick and the stop of the thread,
+				// so the thread manager tought he can simple append the message,
+				// but for real the thread go in stop state (so it haven't read the
+				// read the message)
+				// to avoid this, i just append a renew message, so the thread
+				// move from stop -> run stream job -> stop (if any)
+				X_Threads_Manager::instance()->renew($threadInfo);
+			}
+			sleep(1);
+			$threadInfo = X_Threads_Manager::instance()->getThreadInfo(self::THREAD_ID);
+			$i--;
+		}
+		
+		// check 1 more time
+		if ( $i <= 0 || $threadInfo->getState() != X_Threads_Thread_Info::RUNNING ) {
+			X_Debug::e("Streamer thread doesn't want to wake up or it finished really fast");
+			return false;
+		}
+		return true;
 	}
 	
 	public function stop() {

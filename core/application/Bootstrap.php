@@ -274,8 +274,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$vlc = new X_Vlc($configs->vlc);
 		X_VlcShares_Plugins::helpers()->streamer()->register(new X_Streamer_Engine_Vlc($vlc));
 		
-		X_VlcShares_Plugins::helpers()->streamer()->register(new X_Streamer_Engine_RtmpDump());
-		
 	}
 	
 }

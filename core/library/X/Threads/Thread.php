@@ -137,7 +137,12 @@ final class X_Threads_Thread extends X_Threads_Thread_Info {
 					"spawned" => $this->spawned
 				));
 				
-				sleep($this->tick);
+				
+				// last tick... don't wait. move fast from wait to stop state
+				if ( $tickleft > 0 ) {
+					sleep($this->tick);
+				}
+				
 			}
 			
 		} catch ( Exception $e ) {

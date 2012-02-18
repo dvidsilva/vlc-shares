@@ -36,12 +36,14 @@ class X_VlcShares_Plugins_RedirectControls extends X_VlcShares_Plugins_Abstract 
 	 */
 	public function gen_beforePageBuild(Zend_Controller_Action $controller ) {
 		
+		/*
 		$vlc = X_Vlc::getLastInstance();
 		
 		if ( $vlc === null ) {
 			X_Debug::i("No vlc instance");
 			return;
 		}
+		*/
 		
 		$controllerName = $controller->getRequest()->getControllerName();
 		$actionName = $controller->getRequest()->getActionName();
@@ -49,9 +51,10 @@ class X_VlcShares_Plugins_RedirectControls extends X_VlcShares_Plugins_Abstract 
 		$query = "$controllerName/$actionName";
 		
 		X_Debug::i("Plugin triggered for: {$query}");
-		
-		$isRunning = $vlc->isRunning();
-		
+
+		//$isRunning = $vlc->isRunning();
+		$isRunning = X_Streamer::i()->isStreaming();
+	
 		if ( array_search($query, $this->redirectCond_To) !== false && $isRunning ) {
 			$controller->getRequest()->setControllerName('controls')->setActionName('control')->setDispatched(false);
 			X_Debug::i("Redirect to controls/control");
@@ -61,7 +64,6 @@ class X_VlcShares_Plugins_RedirectControls extends X_VlcShares_Plugins_Abstract 
 		} else {
 			X_Debug::i("No redirection: vlc is running? " . ($isRunning ? 'Yes' : 'No'));
 		}
-		
 	}
 }	
 

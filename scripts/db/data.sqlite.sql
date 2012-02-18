@@ -21,14 +21,14 @@ INSERT INTO plg_filesystem_shares (label, path) VALUES
 -- 1
 INSERT INTO plg_profiles (label, arg, link) VALUES
 	('MP2v/AC3 over HTTP(ts)',
-	'#transcode{venc=ffmpeg,vcodec=mp2v,vb=3000,scale=.5,width=640,fps=25,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}:std{access=http{mime=video/mpeg},mux=ts,dst=:8081}',
+	'#transcode{venc=ffmpeg,vcodec=mp2v,vb=3000,scale=.5,width=640,fps=25,acodec=a52,ab=384,channels=6,samplerate=48000,soverlay}:std{access=http{mime=video/mpeg},mux=ts,dst=0.0.0.0:8081}',
 	'http://{%SERVER_NAME%}:8081/'
 	);
 
 -- 2
 INSERT INTO plg_profiles (label, arg, link) VALUES
 	('MP2v/-original- over HTTP(ts)',
-	'#transcode{venc=ffmpeg,vcodec=mp2v,vb=3000,scale=.5,width=640,fps=25,soverlay}:std{access=http{mime=video/mpeg},mux=ts,dst=:8081}',
+	'#transcode{venc=ffmpeg,vcodec=mp2v,vb=3000,scale=.5,width=640,fps=25,soverlay}:std{access=http{mime=video/mpeg},mux=ts,dst=0.0.0.0:8081}',
 	'http://{%SERVER_NAME%}:8081/'
 	);
 
@@ -56,14 +56,14 @@ INSERT INTO plg_profiles (label, arg, link) VALUES
 -- 6
 INSERT INTO plg_profiles (label, arg, link) VALUES
 	('FLV/MP3 over HTTP(flv)',
-	'#transcode{vcodec=FLV1,acodec=mp3,vb=200,deinterlace,fps=25,samplerate=44100,ab=32}:std{access=http{mime=video/x-flv},mux=ffmpeg{mux=flv},dst=:8081/stream}',
+	'#transcode{vcodec=FLV1,acodec=mp3,vb=200,deinterlace,fps=25,samplerate=44100,ab=32}:std{access=http{mime=video/x-flv},mux=ffmpeg{mux=flv},dst=0.0.0.0:8081/stream}',
 	'http://{%SERVER_NAME%}:8081/stream'
 	);
 
 -- 7
 INSERT INTO plg_profiles (label, arg, link) VALUES
 	('H264/MP3 over HTTP(flv)',
-	'#transcode{vcodec=h264,vb=200,deinterlace,ab=32,fps=25,width=256,height=192,acodec=mp3,samplerate=44100}:std{access=http{mime=video/x-flv},mux=ffmpeg{mux=flv},dst=:8081/stream}',
+	'#transcode{vcodec=h264,vb=200,deinterlace,ab=32,fps=25,width=256,height=192,acodec=mp3,samplerate=44100}:std{access=http{mime=video/x-flv},mux=ffmpeg{mux=flv},dst=0.0.0.0:8081/stream}',
 	'http://{%SERVER_NAME%}:8081/stream'
 	);
 	

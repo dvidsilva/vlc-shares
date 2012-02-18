@@ -182,9 +182,16 @@ class X_Vlc_Commander_Http extends X_Vlc_Commander {
 				$rInfos['time'] = $results->current()->nodeValue;
 			}
 			// posizione name
-			$results = $dom->queryXpath('/root/information/meta-information/title');
-			if ( count($results) > 0 ) {
-				$rInfos['name'] = $results->current()->nodeValue;
+			if ( $this->options->version == '1.1.x' ) {
+				$results = $dom->queryXpath('/root/information/meta-information/title');
+				if ( count($results) > 0 ) {
+					$rInfos['name'] = $results->current()->nodeValue;
+				}
+			} elseif ( $this->options->version == '1.2-git' || $this->options->version == '2.x' ) {
+				$results = $dom->queryXpath('/root/information/category[@name="meta"]/info[@name="filename"]');
+				if ( count($results) > 0 ) {
+					$rInfos['name'] = $results->current()->nodeValue;
+				}
 			}
 			
 			/* l'aggiungo in 0.5 forse
@@ -256,8 +263,8 @@ class X_Vlc_Commander_Http extends X_Vlc_Commander {
 	}
 	
 	private function _send($command) {
-		X_Env::debug(__METHOD__.": sending message $command");
-		$command = str_replace('{%command%}', "?$command", $this->http_command);
+		$commandFull = str_replace('{%command%}', "?$command", $this->http_command);
+		X_Debug::i(__METHOD__.": sending message {{$command}}: {{$commandFull}}");		
 		$ctx = stream_context_create(array( 
 		    'http' => array( 
 		        'timeout' => $this->http_timeout
@@ -265,7 +272,7 @@ class X_Vlc_Commander_Http extends X_Vlc_Commander {
 		    ) 
 		); 		
 		//$return = X_Env::execute($command, $outtype, X_Env::EXECUTE_PS_WAIT);
-		$return = @file_get_contents($command, false, $ctx);
+		$return = @file_get_contents($commandFull, false, $ctx);
 		return $return;
 	}
 	
