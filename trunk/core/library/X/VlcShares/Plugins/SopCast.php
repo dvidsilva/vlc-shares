@@ -10,9 +10,20 @@ class X_VlcShares_Plugins_SopCast extends X_VlcShares_Plugins_Abstract implement
 	
 	
 	function __construct() {
-		$this->setPriority('gen_beforeInit');
+		$this
+			->setPriority('gen_afterPluginsInitialized')
+			->setPriority('gen_beforeInit');
 	}
 	
+	/**
+	 * Register sopcast engine
+	 * @see X_VlcShares_Plugins_Abstract::gen_afterPluginsInitialized()
+	 */
+	public function gen_afterPluginsInitialized(X_VlcShares_Plugins_Broker $broker) {
+		if ( $this->helpers()->sopcast()->isEnabled() ) {
+			$this->helpers()->streamer()->register(new X_Streamer_Engine_SopCast());
+		}
+	}
 	
 	
 	public function gen_beforeInit(Zend_Controller_Action $controller) {
@@ -25,7 +36,7 @@ class X_VlcShares_Plugins_SopCast extends X_VlcShares_Plugins_Abstract implement
 				->setPriority('preRegisterVlcArgs')
 			
 				// general sopcast support triggers
-				->setPriority('preSpawnVlc', 99)
+				->setPriority('getStreamItems')
 				->setPriority('preGetControlItems')
 				->setPriority('execute');
 			
@@ -354,58 +365,22 @@ class X_VlcShares_Plugins_SopCast extends X_VlcShares_Plugins_Abstract implement
 	}	
 	
 	
+	/**
+	 * Add the go to stream link (only if engine is sopcast)
+	 * 
+	 * @param X_Streamer_Engine $engine selected streamer engine
+	 * @param string $uri
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return X_Page_ItemList_PItem 
+	 */
+	public function getStreamItems(X_Streamer_Engine $engine, $uri, $provider, $location, Zend_Controller_Action $controller) {
+		
+		// ignore the call if streamer is not stopcast
+		if ( !($engine instanceof X_Streamer_Engine_SopCast ) ) return; 
+		
 	
-	// GENERIC SOPCAST SUPPORT
-	
-	public function preSpawnVlc(X_Vlc $vlc, $provider, $location, Zend_Controller_Action $controller) {
-		
-		if ( !$this->helpers()->rtmpdump()->isEnabled() ) return;
-		
-		$source = $vlc->getArg('source');
-		// remove quotes, if present
-		$source = trim($source, '"');
-		
-		if ( X_Env::startWith($source, "sop://") ) {
-			X_Debug::i("Source is a dummy uri for sopcast forwarding. Setting pipe");
-			// spawning sopcast
-			if ( X_Env::isWindows() ) {
-				X_Env::execute(
-					(string) X_SopCast::getInstance()->setUri($source), 
-					X_Env::EXECUTE_OUT_NONE,
-					X_Env::EXECUTE_PS_BACKGROUND
-				);
-			} else {
-				X_Env::execute(
-					(string) X_SopCast::getInstance()->setUri($source) . " > /dev/null 2>&1 &", 
-					X_Env::EXECUTE_OUT_NONE,
-					X_Env::EXECUTE_PS_BACKGROUND_SPECIAL
-				);
-			}
-			
-			// Sleep here ~= 15 seconds waiting for sopcast init
-			sleep(15);
-			
-			$vlc->registerArg('source', '--play-and-stop');
-			$vlc->registerArg('profile', '');
-			$vlc->registerArg('output', '');
-			
-			$this->setPriority('getStreamItems');
-			
-			// unregister output and profile plugin
-			try {
-				X_VlcShares_Plugins::broker()->unregisterPluginClass('X_VlcShares_Plugins_Outputs');
-				X_VlcShares_Plugins::broker()->unregisterPluginClass('X_VlcShares_Plugins_Profiles');
-				// unregister redirect control too
-				//X_VlcShares_Plugins::broker()->unregisterPluginClass('X_VlcShares_Plugins_Controls');
-			} catch ( Exception $e) {
-				
-			}
-		}
-		
-	}
-	
-	public function getStreamItems($provider, $location, Zend_Controller_Action $controller) {
-
 		X_Debug::i('Plugin triggered');
 		
 		$return = new X_Page_ItemList_PItem();
@@ -429,6 +404,7 @@ class X_VlcShares_Plugins_SopCast extends X_VlcShares_Plugins_Abstract implement
 		$return->append($item);		
 		
 
+		/*
 		$item = new X_Page_Item_PItem('controls-stop', X_Env::_('p_controls_stop'));
 		$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
 			->setIcon('/images/icons/stop.png')
@@ -439,6 +415,7 @@ class X_VlcShares_Plugins_SopCast extends X_VlcShares_Plugins_Abstract implement
 				'pid'				=>	$this->getId(),
 			), 'default', false);
 		$return->append($item);
+		*/
 		
 		
 		return $return;
@@ -446,131 +423,37 @@ class X_VlcShares_Plugins_SopCast extends X_VlcShares_Plugins_Abstract implement
 	}
 	
 
-	public function preGetControlItems(Zend_Controller_Action $controller) {
-		
-		$location = X_Env::decode($controller->getRequest()->getParam('l', ''));
-		$provider = $controller->getRequest()->getParam('p', '');
-		
-		X_Debug::i("Check for context: provider = {{$provider}}, location = {{$location}}");
-		
-		if ( $provider != '' ) {
-			try {
-				$providerObj = X_VlcShares_Plugins::broker()->getPlugins($provider);
-				if ( $providerObj instanceof X_VlcShares_Plugins_ResolverInterface ) {
-					$source = $providerObj->resolveLocation($location);
-					if ( X_Env::startWith($source, 'sop://') ) {
-						
-						// adding priority for overloaded controls
-						// and to filter out old ones
-						$this->setPriority('getControlItems')
-							->setPriority('filterControlItems');
-
-						return;
-							
-					}
-				}
-			} catch (Exception $e) {
-				X_Debug::e("Invalid provider?!");
-			}
-		}
-	}
+	/**
+	 * Add the button BackToStream in controls page
+	 *
+	 * @param X_Streamer_Engine $engine
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array
+	 */
+	public function preGetControlItems(X_Streamer_Engine $engine, Zend_Controller_Action $controller) {
 	
-	public function getControlItems(Zend_Controller_Action $controller) {
-		
-		$item = new X_Page_Item_PItem('controls-stop', X_Env::_('p_controls_stop'));
-		$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
-			->setGenerator($this->getId())
-			->setIcon('/images/icons/stop.png')
-			->setLink(array(
-				'controller'		=>	'controls',
-				'action'			=>	'execute',
-				'a'					=>	'stop',
-				'pid'				=>	$this->getId(),
-			), 'default', false);
+		// ignore if the streamer is not vlc
+		if ( !($engine instanceof X_Streamer_Engine_RtmpDump ) ) return;
+
+		$outputLink = "http://{%SERVER_NAME%}:8902/tv.asf";
+		$outputLink = str_replace(
+			array(
+				'{%SERVER_IP%}',
+				'{%SERVER_NAME%}'
+			),array(
+				$_SERVER['SERVER_ADDR'],
+				strstr($_SERVER['HTTP_HOST'], ':') ? strstr($_SERVER['HTTP_HOST'], ':') : $_SERVER['HTTP_HOST']
+			), $outputLink
+		);
+					
+		$item = new X_Page_Item_PItem($this->getId(), X_Env::_('p_profiles_backstream'));
+		$item->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
+			->setIcon('/images/icons/play.png')
+			->setLink($outputLink);
 		return new X_Page_ItemList_PItem(array($item));
 		
 	}
-	
-	/**
-	 * Remove the standard controls
-	 * and the standard output
-	 */
-	public function filterControlItems(X_Page_Item_PItem $item, Zend_Controller_Action $controller) {
-		$key = $item->getKey();
-		if ( X_Env::startWith($key, 'controls-') && $item->getGenerator() != $this->getId() ) {
-			return false;
-		} elseif ($key == 'outputs') {
-			
-			$outputLink = "http://{%SERVER_NAME%}:8902/tv.asf";
-			$outputLink = str_replace(
-				array(
-					'{%SERVER_IP%}',
-					'{%SERVER_NAME%}'
-				),array(
-					$_SERVER['SERVER_ADDR'],
-					strstr($_SERVER['HTTP_HOST'], ':') ? strstr($_SERVER['HTTP_HOST'], ':') : $_SERVER['HTTP_HOST']
-				), $outputLink
-			);
-			
-			// change the link to point to sopcast stream
-			$item->setLink($outputLink);
-		} else {
-			X_Debug::i("Item key not filtered: $key");
-		}
-		
-	}
-	
-	/**
-	 * Execute the shutdown action 
-	 * 
-	 * @param X_Vlc $vlc
-	 * @param string $pid
-	 * @param string $action
-	 * @param Zend_Controller_Action $controller the controller who handle the request
-	 */
-	public function execute(X_Vlc $vlc, $pid, $action, Zend_Controller_Action $controller) {
-		// the trigger isn't for this plugin
-		//if ( $this->getId() != $pid ) return;
-		
-		
-		$location = X_Env::decode($controller->getRequest()->getParam('l', ''));
-		$provider = $controller->getRequest()->getParam('p', '');
-		
-		if ( $this->getId() != $pid  && $provider !== '' ) {
-			try {
-				$providerObj = X_VlcShares_Plugins::broker()->getPlugins($provider);
-				if ( $providerObj instanceof X_VlcShares_Plugins_ResolverInterface ) {
-					$source = $providerObj->resolveLocation($location);
-					if ( !X_Env::startWith($source, 'sop://') ) {
-						// ignore it, it's not provided by sopcast
-						return;
-					}
-				}
-			} catch (Exception $e) {
-				// no provider, so we kill sopcast anyway
-			}
-		} // else no provider or id = pid, so we execute
-		
-		X_Debug::i("Plugin triggered for action {$action}");
-		
-		$param = $controller->getRequest()->getParam('param', null);
-		
-		if ( method_exists($this, "_action_$action") ) {
-			$method = "_action_$action";
-			$this->$method($vlc, $param);
-		} else {
-			X_Debug::e("Invalid action $action");
-		}
-		
-		//$controller->getRequest()->setControllerName('controls')->setActionName('control')->setDispatched(false);
-		
-	}	
 
-	private function _action_stop(X_Vlc $vlc, $param) {
-		$vlc->forceKill();
-		X_SopCast::getInstance()->forceKill();
-		sleep(1); // wait here so i will get "no vlc running" when i'll try later
-	}
 	
 	/**
 	 * Load an $uri performing an http request (or from cache if possible/allowed)

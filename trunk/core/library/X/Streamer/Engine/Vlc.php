@@ -140,4 +140,12 @@ class X_Streamer_Engine_Vlc extends X_Streamer_Engine implements X_Streamer_Stop
 		return $this;
 	}
 	
+	/**
+	 * return a reference to a X_Vlc wrapper registered with this instance
+	 * @return X_Vlc
+	 */
+	public function getVlcWrapper() {
+		return $this->vlc;
+	}
+	
 }

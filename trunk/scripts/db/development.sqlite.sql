@@ -2,6 +2,7 @@
 UPDATE configs SET value="1" WHERE key = "debug.enabled";
 UPDATE configs SET value="3" WHERE key = "debug.level";
 UPDATE configs SET value="1" WHERE key = "threads.logger";
+UPDATE configs SET value="1" WHERE key = "adapter.log";
 
 UPDATE configs SET value="X_VlcShares_Plugins_MobileRenderer" WHERE key = "devices.gui";
 

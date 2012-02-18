@@ -261,13 +261,19 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 	}
 	
 	/**
-	 * Return the link -go-to-stream-
+	 * Return the link -go-to-stream- only if streamer is vlc
+	 * 
+	 * @param X_Streamer_Engine $engine selected streamer engine
+	 * @param string $uri
 	 * @param string $provider id of the plugin that should handle request
 	 * @param string $location to stream
 	 * @param Zend_Controller_Action $controller the controller who handle the request
 	 * @return X_Page_ItemList_PItem 
 	 */
-	public function getStreamItems($provider, $location, Zend_Controller_Action $controller) {
+	public function getStreamItems(X_Streamer_Engine $engine, $uri, $provider, $location, Zend_Controller_Action $controller) {
+		
+		// it serves play link only if streamer is vlc
+		if ( !($engine instanceof X_Streamer_Engine_Vlc ) ) return;
 		
 		X_Debug::i('Plugin triggered');
 		
@@ -283,7 +289,7 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 			Application_Model_ProfilesMapper::i()->find($profileId, $profile);
 		} else {
 			// if no params is provided, i will try to
-			// get the best output for this devide
+			// get the best output for this device
 			$profile = $this->getBest();
 		}
 		
@@ -301,10 +307,14 @@ class X_VlcShares_Plugins_Profiles extends X_VlcShares_Plugins_Abstract implemen
 	/**
 	 * Add the button BackToStream in controls page
 	 * 
+	 * @param X_Streamer_Engine $engine 
 	 * @param Zend_Controller_Action $controller the controller who handle the request
 	 * @return array
 	 */
-	public function preGetControlItems(Zend_Controller_Action $controller) {
+	public function preGetControlItems(X_Streamer_Engine $engine, Zend_Controller_Action $controller) {
+		
+		// ignore if the streamer is not vlc
+		if ( !($engine instanceof X_Streamer_Engine_Vlc ) ) return;
 		
 		X_Debug::i('Plugin triggered');
 		

@@ -23,8 +23,13 @@ class ControlsController extends X_Controller_Action {
 	public function init() {
 		parent::init();
 		
-		$this->vlc = new X_Vlc($this->options->vlc);
-		
+		$this->vlc = X_Vlc::getLastInstance();
+		// bootstrap failed
+		if ( is_null($this->vlc) ) {
+			$this->vlc = new X_Vlc($this->options->vlc);
+			X_VlcShares_Plugins::helpers()->streamer()->register(new X_Streamer_Engine_Vlc($this->vlc));
+		}
+				
 	}
 	
 	
@@ -38,25 +43,7 @@ class ControlsController extends X_Controller_Action {
 	    	 * @var $redirector Zend_Controller_Action_Helper_Redirector
 	    	 */
         	$redirector = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
-			$redirector->gotoSimpleAndExit('pcstream');
-		}
-	}
-	
-	public function pcstreamAction() {
-		X_Env::debug(__METHOD__);
-		// Niente controllo flusso, se lo streaming non e' attivo
-		if ( !$this->vlc->isRunning() ) {
-	    	/**
-	    	 * @var $redirector Zend_Controller_Action_Helper_Redirector
-	    	 */
-        	$redirector = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
-			$redirector->gotoSimpleAndExit('index', 'index');
-		} else {
-			$this->view->showVideo = $this->options->pcstream->get('showVideo', false);
-			$this->view->stream = $this->options->vlc->get('stream', "http://{$_SERVER['SERVER_ADDR']}:8081" );
-			$this->view->pause = X_Env::routeLink('controls', 'pause', array('ajax' => true));
-			$this->view->stop = X_Env::routeLink('controls', 'shutdown', array('ajax' => true));
-			$this->view->seek = X_Env::routeLink('controls', 'seek', array('ajax' => true, 'time' => ''));
+			$redirector->gotoSimpleAndExit('control');
 		}
 	}
 
@@ -64,10 +51,13 @@ class ControlsController extends X_Controller_Action {
 		
 		$request = $this->getRequest();
 
+		$engineId = X_Streamer::i()->getStreamingEngineId();
+		$engine = X_VlcShares_Plugins::helpers()->streamer()->get($engineId);
+		
     	$pageItems = new X_Page_ItemList_PItem();
     	
     	// links on top
-    	$pageItems->merge(X_VlcShares_Plugins::broker()->preGetControlItems($this));
+    	$pageItems->merge(X_VlcShares_Plugins::broker()->preGetControlItems($engine, $this));
     	
     	// add separator between play items and options items
     	$separator = new X_Page_Item_PItem('core-separator', X_Env::_('_____options_separator_____'));
@@ -82,13 +72,13 @@ class ControlsController extends X_Controller_Action {
     	$pageItems->append($separator);
     	
     	// normal links
-    	$pageItems->merge(X_VlcShares_Plugins::broker()->getControlItems($this));
+    	$pageItems->merge(X_VlcShares_Plugins::broker()->getControlItems($engine, $this));
     	// bottom links
-		$pageItems->merge(X_VlcShares_Plugins::broker()->postGetControlItems($this));
+		$pageItems->merge(X_VlcShares_Plugins::broker()->postGetControlItems($engine, $this));
 		
 		// filter out items (parental-control / hidden file / system dir / custom controls)
 		foreach ($pageItems->getItems() as $key => $item) {
-			$results = X_VlcShares_Plugins::broker()->filterControlItems($item, $this);
+			$results = X_VlcShares_Plugins::broker()->filterControlItems($item, $engine, $this);
 			if ( $results != null && in_array(false, $results) ) {
 				$pageItems->remove($item);
 			}
@@ -119,10 +109,12 @@ class ControlsController extends X_Controller_Action {
 		$pid = $request->getParam('pid', false);
 		$a = $request->getParam('a', false);
 		
-		X_VlcShares_Plugins::broker()->preExecute($this->vlc, $pid, $a, $this);
-		X_VlcShares_Plugins::broker()->execute($this->vlc, $pid, $a, $this);
-		X_VlcShares_Plugins::broker()->postExecute($this->vlc, $pid, $a, $this);
+		$engineId = X_Streamer::i()->getStreamingEngineId();
+		$engine = X_VlcShares_Plugins::helpers()->streamer()->get($engineId);
 		
+		X_VlcShares_Plugins::broker()->preExecute($engine, $pid, $a, $this);
+		X_VlcShares_Plugins::broker()->execute($engine, $pid, $a, $this);
+		X_VlcShares_Plugins::broker()->postExecute($engine, $pid, $a, $this);
 		
     	$pageItems = new X_Page_ItemList_PItem();
     	

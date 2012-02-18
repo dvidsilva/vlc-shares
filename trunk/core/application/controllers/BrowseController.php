@@ -277,7 +277,15 @@ class BrowseController extends X_Controller_Action {
 	    	X_VlcShares_Plugins::broker()->preSpawnVlc($this->vlc, $provider, $location, $this);
 	    	$this->vlc->spawn(); 
 	    	X_VlcShares_Plugins::broker()->postSpawnVlc($this->vlc, $provider, $location, $this);
+
+	    	try {
+	    		$engine = X_VlcShares_Plugins::helpers()->streamer()->get('vlc');
+	    	} catch ( Exception $e ) {
+	    		X_Debug::w('No vlc streamer available');
+	    		$engine = new X_Streamer_Engine_Vlc($this->vlc);
+	    	}
 	    	
+	    	$url = $this->vlc->getArg('source');
 	    	//}}}
     	
 		}
@@ -291,11 +299,11 @@ class BrowseController extends X_Controller_Action {
 		// will be always enabled
     	
     	// top links
-		$pageItems->merge(X_VlcShares_Plugins::broker()->preGetStreamItems($provider, $location, $this));
+		$pageItems->merge(X_VlcShares_Plugins::broker()->preGetStreamItems($engine, $url, $provider, $location, $this));
     	// normal links
-    	$pageItems->merge(X_VlcShares_Plugins::broker()->getStreamItems($provider, $location, $this));
+    	$pageItems->merge(X_VlcShares_Plugins::broker()->getStreamItems($engine, $url, $provider, $location, $this));
     	// bottom links
-		$pageItems->merge(X_VlcShares_Plugins::broker()->postGetStreamItems($provider, $location, $this));    	
+		$pageItems->merge(X_VlcShares_Plugins::broker()->postGetStreamItems($engine, $url, $provider, $location, $this));    	
     	
     	
 		// trigger for page creation

@@ -26,34 +26,59 @@ class X_VlcShares_Plugins_StreamInfo extends X_VlcShares_Plugins_Abstract {
 	}	
 	
 	/**
-	 * Display current title and/or current position
-	 * @param Zend_Controller_Action $controller
+	 * Add the button BackToStream in controls page
+	 *
+	 * @param X_Streamer_Engine $engine
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array
 	 */
-	public function preGetControlItems(Zend_Controller_Action $controller) {
-		$urlHelper = $controller->getHelper('url');
+	public function preGetControlItems(X_Streamer_Engine $engine, Zend_Controller_Action $controller) {
 		
-		$vlc = X_Vlc::getLastInstance();
+		$urlHelper = $controller->getHelper('url');
 		
 		$return = new X_Page_ItemList_PItem();
 		
 		if ( $this->config('show.title', true)) {
-			// show the title of the file
+
+			$onAirName = X_Env::_("p_streaminfo_unknown_source");
 			
-			$item = new X_Page_Item_PItem('streaminfo-onair', X_Env::_('p_streaminfo_onair'). ": {$vlc->getCurrentName()}");
+			if ( $engine instanceof X_Streamer_Engine_Vlc ) {
+				$vlc = $engine->getVlcWrapper();
+				$onAirName = $vlc->getCurrentName();
+			} else {
+				// try to find the name from the location (if any)
+				$providerId = $controller->getRequest()->getParam('p', false);
+				$location = $controller->getRequest()->getParam('l', false);
+				if ( $providerId && $location ) {
+					$providerObj = X_VlcShares_Plugins::broker()->getPlugins($providerId);
+					$location = X_Env::decode($location);
+					if ( $providerObj instanceof X_VlcShares_Plugins_ResolverInterface ) {
+						$onAirName = $providerObj->resolveLocation($location);
+					}
+				}
+			}
+				
+			// show the title of the file
+			$item = new X_Page_Item_PItem('streaminfo-onair', X_Env::_('p_streaminfo_onair'). ": {$onAirName}");
 			$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
 				->setLink(X_Env::completeUrl($urlHelper->url()));
 			$return->append($item);
 			
 		}
 		
-		if ( $this->config('show.time', false)) {
-			$currentTime = X_Env::formatTime($vlc->getCurrentTime());
-			$totalTime = X_Env::formatTime($vlc->getTotalTime());
-
-			$item = new X_Page_Item_PItem('streaminfo-time', "{$currentTime}/{$totalTime}");
-			$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
-				->setLink(X_Env::completeUrl($urlHelper->url()));
-			$return->append($item);
+		if ( $engine instanceof X_Streamer_Engine_Vlc ) {
+			$vlc = $engine->getVlcWrapper();
+			
+			if ( $this->config('show.time', false)) {
+				$currentTime = X_Env::formatTime($vlc->getCurrentTime());
+				$totalTime = X_Env::formatTime($vlc->getTotalTime());
+	
+				$item = new X_Page_Item_PItem('streaminfo-time', "{$currentTime}/{$totalTime}");
+				$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+					->setLink(X_Env::completeUrl($urlHelper->url()));
+				$return->append($item);
+			}
+			
 		}
 		
 		return $return;
