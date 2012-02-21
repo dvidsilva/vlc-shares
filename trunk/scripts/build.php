@@ -327,6 +327,9 @@ if ( $createAll || $createIss ) {
 	// read the httpd.conf content
 	$httpdConf = file_get_contents(dirname(__FILE__)."/iss/httpd.conf");
 	
+	// fix \r\n from \n only
+	$vlcsharesModuleConf = preg_replace("/(^\r)\n/", "\r\n", $vlcsharesModuleConf);
+	
 	// try to replace the VLCSHARESCONF entry point inside the HTTPD.conf
 	// with the real conf file
 	$num = 0;

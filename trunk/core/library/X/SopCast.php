@@ -39,6 +39,7 @@ class X_SopCast {
 		$calls[] = "\"{$this->getUri()}\"";
 		
 		if ( !X_Env::isWindows()) {
+			// internal port external port
 			$calls[] = '3809 8902';
 		}
 		

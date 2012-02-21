@@ -29,7 +29,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "C:\EasyPHP-5.3.3\EasyPHP-5.3.3.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\EasyPHP-5.3.3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Permissions: everyone-modify
+Source: "C:\EasyPHP-5.3.3\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs allowunsafefiles; Permissions: everyone-modify;
+Source: "C:\EasyPHP-5.3.3\vlc-shares\public\.htaccess"; DestDir: "{app}\vlc-shares\public"; Flags: ignoreversion allowunsafefiles; Permissions: everyone-modify;
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

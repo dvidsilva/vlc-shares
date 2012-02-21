@@ -66,6 +66,13 @@ INSERT INTO plg_profiles (label, arg, link) VALUES
 	'#transcode{vcodec=h264,vb=200,deinterlace,ab=32,fps=25,width=256,height=192,acodec=mp3,samplerate=44100}:std{access=http{mime=video/x-flv},mux=ffmpeg{mux=flv},dst=0.0.0.0:8081/stream}',
 	'http://{%SERVER_NAME%}:8081/stream'
 	);
+
+-- 8
+INSERT INTO plg_profiles (label, arg, link) VALUES
+	('H264/MP3 over RTSP',
+	'#transcode{fps=15,audio-sync,vcodec=h264,venc=x264{vbv-maxrate=512,vbv-bufsize=512,preset=slow,profile=main,keyint=15},vfilter=canvas{width=800,height=480,padd},aenc=ffmpeg,acodec=mp3,ab=80,samplerate=44100,channels=2,soverlay}:rtp{mp4a-latm,sdp=rtsp://0.0.0.0:5554/android.sdp}',
+	'rtsp://{%SERVER_NAME%}:5554/android.sdp'
+	);
 	
 
 	
@@ -91,7 +98,7 @@ INSERT INTO "videos" VALUES(NULL,'mms://verytangy-673-404284.wm.llnwd.net/veryta
 
 INSERT INTO plg_devices 
 	("id", "label", "pattern", "exact", "idProfile", "guiClass", "extra", "priority") VALUES 
-	('1', 'Asus Transformer', '/Android.*?Transformer [A-Z]{2}101/i', '0', '7', 'X_VlcShares_Plugins_WebkitRenderer', 'a:1:{s:12:"alt-profiles";a:4:{i:0;s:1:"3";i:1;s:1:"4";i:2;s:1:"6";i:3;s:1:"7";}}', '3');
+	('1', 'Asus Transformer', '/Android.*?Transformer [A-Z]{2}101/i', '0', '8', 'X_VlcShares_Plugins_WebkitRenderer', 'a:1:{s:12:"alt-profiles";a:4:{i:0;s:1:"3";i:1;s:1:"4";i:2;s:1:"6";i:3;s:1:"7";}}', '3');
 INSERT INTO plg_devices
 	("id", "label", "pattern", "exact", "idProfile", "guiClass", "extra", "priority") VALUES 
 	('2', 'WiiMC', '/WiiMC/i', '0', '1', 'X_VlcShares_Plugins_WiimcPlxRenderer', 'a:0:{}', '4');

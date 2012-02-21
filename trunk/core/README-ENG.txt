@@ -8,7 +8,7 @@
 #     															#
 #################################################################
 
-VLC-SHARES v0.5.5 alpha 1 - 02/12/2011
+VLC-SHARES v0.5.5 alpha 2 - 21/02/2012
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -25,7 +25,7 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 | Changelog
 \==========---
 
-*** 0.5.5 alpha 1 (02/12/2011) ***
+*** 0.5.5 alpha 2 (21/02/2012) ***
  - Outputs and Profiles plugins merged
  - New Devices plugin + new devices compatibility system
  - Automatic hoster selection in Online Library
@@ -43,6 +43,7 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
  - Stream helper redirected to ffmpeg
  - Automatic stream type recognition before transcoding removed
  - Profile for Asus Transformer
+ - Move streamers engine to multithreads
 
 *** 0.5.4 (22/4/2011) ***
  - Automatic installer for Ubuntu 10.10

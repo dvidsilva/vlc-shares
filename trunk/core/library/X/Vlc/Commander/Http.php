@@ -187,7 +187,7 @@ class X_Vlc_Commander_Http extends X_Vlc_Commander {
 				if ( count($results) > 0 ) {
 					$rInfos['name'] = $results->current()->nodeValue;
 				}
-			} elseif ( $this->options->version == '1.2-git' || $this->options->version == '2.x' ) {
+			} elseif ( $this->options->version == '2.x' ) {
 				$results = $dom->queryXpath('/root/information/category[@name="meta"]/info[@name="filename"]');
 				if ( count($results) > 0 ) {
 					$rInfos['name'] = $results->current()->nodeValue;
@@ -253,8 +253,7 @@ class X_Vlc_Commander_Http extends X_Vlc_Commander {
 		$port = $this->http_port;
 		
 		switch ( $this->options->version ) {
-			case '2.x': // default future use
-			case '1.2-git': // http:port is broken in 1.2-git
+			case '2.x': // http:port is changed in 2.0
 				return '-I http --http-host="'.$host.'" --http-port="'.$port.'"';
 			case '1.1.x':
 			default:
