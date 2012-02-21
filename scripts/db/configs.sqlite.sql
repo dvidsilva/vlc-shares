@@ -236,7 +236,7 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	3,
 	'config_helpers_streamer_enabled_label',
 	'config_helpers_streamer_enabled_desc',
-	NULL
+	'advanced'
 );
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
