@@ -1,26 +1,18 @@
-<version name="0.5.5" type="alpha1">
+<version name="0.5.5" type="alpha2">
 	<update></update>
-	<download>http://vlc-shares.googlecode.com/files/vlc-shares_0.5.5alpha1.zip</download>
+	<download>http://vlc-shares.googlecode.com/files/vlc-shares_0.5.5alpha2.zip</download>
 	<changelog><![CDATA[
-*** 0.5.5 alpha 1 (02/12/2011) ***
- - Outputs and Profiles plugins merged
- - New Devices plugin + new devices compatibility system
- - Automatic hoster selection in Online Library
- - New Webkit interface for Webkit devices
- - New PageParserLib
- - Helper broker allow core helper substitution
- - Compatibility with VLC 1.2 http server
- - New Plugins_Utils utility class
- - New RendererInterface for Renderer plugins
- - DEB package for Ubuntu 11.10
- - Scripts for DEB and ISS installer creation (ISS creation through cross compiling thanks to wine)
- - Transcoding profiles improvements: better quality, mime-type for streams
- - Transcoding profiles merged with outputs profiles
- - Mediainfo helper removed
- - Stream helper redirected to ffmpeg
- - Automatic stream type recognition before transcoding removed
- - Profile for Asus Transformer
- 		]]>
-	</changelog>
+*** 0.5.5 alpha 2 (21/02/2012) ***
+ - compatibility with vlc 2.0 and 1.2-git
+ - improved compatibility with ffmpeg
+ - streamer code refractoring
+ - improved integration with rtmpdump and sopcast
+ - some changes in lvl1 api about stream wakeup and controls
+ - threads lib in library
+ - streamers lib in library (threads-based)
+ - new transcode profile for tegra2 based android devices (h264/mp3 over rtsp)
+ - upnp server soc (experimental, not testested)
+ - fix in windows installer
+]]></changelog>
 </version>
 
