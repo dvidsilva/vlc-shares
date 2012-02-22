@@ -8,7 +8,7 @@
 #     															#
 ########## Hulu Plugin ##########################################
 
-Hulu v0.1alpha
+Hulu v0.2
 Created by Francesco Capozzo (ximarx)
 ximarx@gmail.com
 
@@ -23,6 +23,11 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 | Changelog
 \==========---
 
-*** 0.1 alpha ***
- - dev preview for feedback from US users
+*** 0.2 ***
+ - browse in hulu free content too
+ - add option to hide hulu plus contents (and menu)
+ - clips and other kind of contents can be watched
+
+*** 0.1 ***
+ - initial release
 
