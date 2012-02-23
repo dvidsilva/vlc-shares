@@ -67,6 +67,7 @@ $neededLinks = array(
  */
 $includeFiles = array(
 	//$basePath.'/application/controllers/VideobbController.php' // <--- THIS IS AN EAMPLE FOR CONTROLLER INCLUSION
+	"{$basePath}/library/X/PageParser/Parser/HuluFree.php"
 );
 
 /**
