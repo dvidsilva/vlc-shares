@@ -485,6 +485,22 @@
 			<description><![CDATA[Allow to watch video from hulu.com]]></description>
 		</version>
 	</plugin>
+	<plugin key="rapidshare">
+		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.5.5">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_rapidshare_0.1.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch video from rapidshare.com. Premium account supported (Require PageParserLib)]]></description>
+		</version>
+		<version name="0.1" type="stable" cMin="0.5.5" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_rapidshare_0.1.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch video from rapidshare.com. Premium account supported]]></description>
+		</version>
+	</plugin>   
 	<plugin key="gorillavid">
 		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
