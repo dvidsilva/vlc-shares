@@ -3,18 +3,20 @@
 
 class X_VlcShares_Plugins_Hulu extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-    const VERSION = '0.1';
-    const VERSION_CLEAN = '0.1';
+    const VERSION = '0.2';
+    const VERSION_CLEAN = '0.2';
 	
     const URL_BASE = "http://www.hulu.com/%s";
     //1: letter, 2: page (1->), 3: tv/movie?
-    const URL_PROVIDER_PLUS = "http://www.hulu.com/plus/more_content?closed_captioned=0&has_hd=0&is_current=0&letter=%s&page=%s&sort=alpha&video_type=%s"; 
+    const URL_PROVIDER_PLUS = "http://www.hulu.com/plus/more_content?closed_captioned=0&has_hd=0&is_current=0&letter=%s&page=%s&sort=alpha&video_type=%s";
+    //1: letter, 2: page (0->)
+    const URL_PROVIDER_FREE = "http://www.hulu.com/browse/search?keyword=&alphabet=%s&family_friendly=0&closed_captioned=0&has_free=0&has_huluplus=0&has_hd=0&channel=All&subchannel=&network=All&rating=&display=Shows%%20with%%20full%%20episodes%%20only&decade=All&type=tv&view_as_thumbnail=true&block_num=%s";
     //1: page, 2: season, 3: show_id
     const URL_VIDEOS = "http://www.hulu.com/videos/slider?items_per_page=5&page=%s&season=%s&show_id=%s&show_placeholders=1&sort=original_premiere_date&type=episode";
     //1: epId, 2: epName
     const URL_PLAYABLE = "http://www.hulu.com/watch/%s/%s";
     
-    const LOCATION = '/^(?P<type>[^\/]+?)\/(?P<filter>[^\/]+?)\/(?P<page>[0-9]+?)\/(?P<show>[^\/]+?)\/(?P<season>[^:]+?):(?P<showId>[^\/]+?)\/(?P<epid>[^:]+?):(?P<epname>.+?)$/';
+    const LOCATION = '/^(?P<type>[^\/]+?)\/(?P<filter>[^\/]+?)\/(?P<page>[0-9]+?)\/(?P<show>[^\/]+?)\/(?P<season>[^:]*?):(?P<showType>[^\/]+?)\/(?P<epid>[^:]+?):(?P<epname>.+?)$/';
     
     //{{{NODE DEFINITION
     private $nodes = array(
@@ -41,17 +43,12 @@ class X_VlcShares_Plugins_Hulu extends X_VlcShares_Plugins_Abstract implements X
     				'params'	=> array('$type', '$filter', '$page', '$show' )
     		),
     		// season field = season:showid
-    		'regex:/^(?P<type>[^\/]+?)\/(?P<filter>[^\/]+?)\/(?P<page>[0-9]+?)\/(?P<show>[^\/]+?)\/(?P<season>[^:]+?):(?P<showId>[^\/]+?)$/' => array(
+    		'regex:/^(?P<type>[^\/]+?)\/(?P<filter>[^\/]+?)\/(?P<page>[0-9]+?)\/(?P<show>[^\/]+?)\/(?P<season>[^:]*?):(?P<showType>[^\/]+?)$/' => array(
     				'function'	=> 'menuEpisodes',
-    				'params'	=> array('$type', '$filter', '$page', '$show', '$season', '$showId' )
+    				'params'	=> array('$type', '$filter', '$page', '$show', '$season', '$showType' )
     		),
     );
     //}}}
-    
-    private $types = array(
-    	'tv' => 'p_hulu_types_tvshows',
-    	//'movie' => 'p_hulu_types_movies',
-    );
     
     protected $cachedLocation = array();
     
@@ -124,11 +121,11 @@ class X_VlcShares_Plugins_Hulu extends X_VlcShares_Plugins_Abstract implements X
 		$page = $matches['page'];
 		$show = $matches['show'];
 		$season = $matches['season'];
-		$showId = $matches['showId'];
+		$showType = $matches['showType'];
 		$epId = $matches['epid'];
 		$epName = $matches['epname'];
 		
-		X_Debug::i("Type: $type, Filter: $filter, Page: $page, Show: $show, Season: $season, ShowId: $showId, EpId: $epId, EpName: $epName");
+		X_Debug::i("Type: $type, Filter: $filter, Page: $page, Show: $show, Season: $season, ShowType: $showType, EpId: $epId, EpName: $epName");
 		
 		// create the link to hulu page:
 		$hosterUrl = sprintf(self::URL_PLAYABLE, $epId, $epName);
@@ -328,7 +325,16 @@ class X_VlcShares_Plugins_Hulu extends X_VlcShares_Plugins_Abstract implements X
 	 */
 	public function menuTypes(X_Page_ItemList_PItem $items) {
 		$this->disableCache();
-		X_VlcShares_Plugins_Utils::fillStaticMenu($items, $this->types, "{$this->getId()}-type-");
+		
+		$types = array(
+			'free' => 'p_hulu_types_free',
+		);		
+		
+		if ( $this->config('show.plus', true) ) {
+			$types['plus'] = 'p_hulu_types_plus';
+		}
+		
+		X_VlcShares_Plugins_Utils::fillStaticMenu($items, $types, "{$this->getId()}-type-");
 	}
 	
 	/**
@@ -349,21 +355,34 @@ class X_VlcShares_Plugins_Hulu extends X_VlcShares_Plugins_Abstract implements X
 	
 	
 	public function menuShows(X_Page_ItemList_PItem $items, $type, $filter, $pageN = '1') {
-		$page = X_PageParser_Page::getPage(
-				sprintf(self::URL_PROVIDER_PLUS, $filter, $pageN, $type),
-				new X_PageParser_Parser_Preg(
-						'/<td width="25%".*?<a href="https?:\/\/(www|secure).hulu.com\/(?P<href>.*?)".*?<img alt="(?P<label>.*?)".*?src="(?P<thumbnail>.*?)".*?<div style="margin-top:0;">(?P<description>.*?)<\/div>/is',
-						X_PageParser_Parser_Preg::PREG_MATCH_ALL, PREG_SET_ORDER)
-		);
+		if ( $type == 'plus' ) {
+			$page = X_PageParser_Page::getPage(
+					sprintf(self::URL_PROVIDER_PLUS, $filter, $pageN, 'tv'),
+					new X_PageParser_Parser_Preg(
+							'/<td width="25%".*?<a href="https?:\/\/(www|secure).hulu.com\/(?P<href>.*?)".*?<img alt="(?P<label>.*?)".*?src="(?P<thumbnail>.*?)".*?<div style="margin-top:0;">(?P<description>.*?)<\/div>/is',
+							X_PageParser_Parser_Preg::PREG_MATCH_ALL, PREG_SET_ORDER)
+			);
+		} else {
+			// hulu free
+			$page = X_PageParser_Page::getPage(
+					sprintf(self::URL_PROVIDER_FREE, $filter == '#' ? '%23' : strtoupper($filter), ($pageN - 1)),
+					new X_PageParser_Parser_HuluFree()
+			);
+		}
 		$this->preparePageLoader($page);
 		$parsed = $page->getParsed();
 		
-		
-		$nextResult = $page->getParsed(new X_PageParser_Parser_Preg('/<form.*?current_page="(?P<current>.*?)".*?total_pages="(?P<total>.*?)"/si', X_PageParser_Parser_Preg::PREG_MATCH));
+		if ( $type == 'plus' ) {
+			$nextResult = $page->getParsed(new X_PageParser_Parser_Preg('/<form.*?current_page="(?P<current>.*?)".*?total_pages="(?P<total>.*?)"/si', X_PageParser_Parser_Preg::PREG_MATCH));
+		} else {
+			$nextResult = $page->getParsed(new X_PageParser_Parser_Preg('/browse-lazy-load/', X_PageParser_Parser_Preg::PREG_MATCH ));
+			
+			
+		}
 		
 		if ( $pageN != '1' ) {
 			$previousPage = $pageN - 1;
-			$items->append(X_VlcShares_Plugins_Utils::getPreviousPage("$type/$filter/$previousPage", $previousPage, $nextResult ? $nextResult['total'] : '???'));			
+			$items->append(X_VlcShares_Plugins_Utils::getPreviousPage("$type/$filter/$previousPage", $previousPage, isset($nextResult['total']) ? $nextResult['total'] : '???'));			
 		}
 	
 		foreach ( $parsed as $match ) {
@@ -387,9 +406,13 @@ class X_VlcShares_Plugins_Hulu extends X_VlcShares_Plugins_Abstract implements X
 				
 		}
 	
-		if ( $nextResult && $nextResult['current'] != $nextResult['total'] ) {
+		if ( 
+				($type == 'plus' && $nextResult && $nextResult['current'] != $nextResult['total'] ) 
+				||
+				$type == 'free' && count($parsed) && count($nextResult)
+			) {
 			$nextPage = $pageN + 1;
-			$items->append(X_VlcShares_Plugins_Utils::getNextPage("$type/$filter/$nextPage", $nextPage, $nextResult['total']));
+			$items->append(X_VlcShares_Plugins_Utils::getNextPage("$type/$filter/$nextPage", $nextPage, isset($nextResult['total']) ? $nextResult['total'] : '???' ));
 		}
 		
 		
@@ -399,26 +422,55 @@ class X_VlcShares_Plugins_Hulu extends X_VlcShares_Plugins_Abstract implements X
 		$page = X_PageParser_Page::getPage(
 				sprintf(self::URL_BASE, $show),
 				new X_PageParser_Parser_Preg(
-						'/\/\/<!\[CDATA\[.*?var .*?_episodes.*?", (?P<json>{.*?})\).*?\/\/\]\]>/si',
-						X_PageParser_Parser_Preg::PREG_MATCH)
+						'/new VideoSlider\("(?P<showType>.+?)",(?P<json>.*?)\)\s+\/\/]]>/si',
+						X_PageParser_Parser_Preg::PREG_MATCH_ALL, PREG_SET_ORDER)
 		);
 		$this->preparePageLoader($page);
 		$parsed = $page->getParsed();
-		if ( $parsed ) {
+		foreach ( $parsed as $feed ) {
 			
-			$json = Zend_Json::decode($parsed['json']);
+			$json = Zend_Json::decode($feed['json']);
 			
-			$showid = $json['urlOptions']['show_id'];
+			$showType = $feed['showType'];
 			
-			foreach ( $json['seasonCounts']['episode'] as $match => $episodes ) {
-				
-				if ( $match == 'all' || $episodes == '0') continue;
-				
-				$match = substr($match, 1);
-				
-				$label = X_Env::_('p_hulu_season_label', $match, $episodes);
-				$href = "$match:$showid";
+			if ( strpos($showType, 'youmightalsolike' ) !== false ) continue;
+			
+			$showTypeLabel = isset($json['urlOptions']['category']) ? $json['urlOptions']['category'] : X_Env::_('p_hulu_listofepisodes'); 
+			
+			if ( !isset($json['urlOptions']['category']) || $json['urlOptions']['category'] == 'Episodes') {
+			
+				foreach ( $json['seasonCounts']['episode'] as $match => $episodes ) {
 					
+					if ( $match == 'all' || $episodes == '0' ) continue;
+						
+					// use maxcount if there are only 2 seasons (all, 1) and episode count for s1 == 0
+					$label = X_Env::_('p_hulu_season_label', substr($match, 1));
+					$season = substr($match, 1);
+					
+					$label = X_Env::_('p_hulu_showtype_season_label', $showTypeLabel, $label, $episodes);
+					$href = "$season:$showType";
+						
+					$item = new X_Page_Item_PItem($this->getId()."-{$show}-{$href}", $label );
+					$item->setIcon('/images/icons/folder_32.png')
+					->setType(X_Page_Item_PItem::TYPE_CONTAINER)
+					->setCustom(__CLASS__.':location', "$type/$filter/$pageN/$show/$href")
+					->setDescription(APPLICATION_ENV == 'development' ? "$type/$filter/$pageN/$show/$href" : null)
+					->setLink(array(
+							'l'	=>	X_Env::encode("$type/$filter/$pageN/$show/$href")
+					), 'default', false);
+						
+					$items->append($item);
+						
+				}
+				
+			} else {
+
+				$episodes = $json['maxCount'];
+				$season = '';
+				
+				$label = X_Env::_('p_hulu_showtype_season_label', $showTypeLabel, "" , $episodes);
+				$href = "$season:$showType";
+				
 				$item = new X_Page_Item_PItem($this->getId()."-{$show}-{$href}", $label );
 				$item->setIcon('/images/icons/folder_32.png')
 				->setType(X_Page_Item_PItem::TYPE_CONTAINER)
@@ -427,61 +479,89 @@ class X_VlcShares_Plugins_Hulu extends X_VlcShares_Plugins_Abstract implements X
 				->setLink(array(
 						'l'	=>	X_Env::encode("$type/$filter/$pageN/$show/$href")
 				), 'default', false);
-					
+				
 				$items->append($item);
-					
-					
+				
 			}
 		}
 	
 	}	
 	
 	
-	public function menuEpisodes(X_Page_ItemList_PItem $items, $type, $filter, $pageN, $show, $season, $showId) {
-		$i = 0;
-		while ( true ) {
-			$page = X_PageParser_Page::getPage(
-					sprintf(self::URL_VIDEOS, $i++, $season, $showId), // i incremented for next iteration
-					new X_PageParser_Parser_Preg(
-							'/<li.*?<a href=".*?watch\/(?P<epid>.*?)\/(?P<epname>.*?)".*?<img src="(?P<thumbnail>.*?)".*?alt="(?P<label>.*?)"/s',
-							X_PageParser_Parser_Preg::PREG_MATCH_ALL, PREG_SET_ORDER)
-			);
-			$this->preparePageLoader($page);
-			$parsed = $page->getParsed();
+	public function menuEpisodes(X_Page_ItemList_PItem $items, $type, $filter, $pageN, $show, $season, $showType) {
+		
+		$page = X_PageParser_Page::getPage(
+				sprintf(self::URL_BASE, $show),
+				new X_PageParser_Parser_Preg(
+						'/new VideoSlider\("'.$showType.'",(?P<json>.*?)\)\s+\/\/]]>/si',
+						X_PageParser_Parser_Preg::PREG_MATCH)
+		);
+		$this->preparePageLoader($page);
+		$parsed = $page->getParsed();
+		
+		if ( $parsed ) {
 				
-			// exit first time no item found
-			if ( !count($parsed) ) {
-				return;
+			$json = Zend_Json::decode($parsed['json']);
+		
+			$url = "{$json['url']}?";
+			foreach ($json['urlOptions'] as $key => $value) {
+				if ( $key == 'season' ) $value = $season;
+				if ( $key == 'page' ) $value = "%s";
+				$url .= "{$key}={$value}&";
 			}
+			$url = rtrim($url, "&");
+		
+			$i = 1;
+			while ( true ) {
+				$page = X_PageParser_Page::getPage(
+						sprintf($url, $i++), // i incremented for next iteration
+						new X_PageParser_Parser_Preg(
+								'/<li.*?<a href=".*?watch\/(?P<epid>.*?)\/(?P<epname>.*?)".*?<img src="(?P<thumbnail>.*?)".*?alt="(?P<label>.*?)"(?P<extra>.*?)<\/li>/s',
+								X_PageParser_Parser_Preg::PREG_MATCH_ALL, PREG_SET_ORDER)
+				);
+				$this->preparePageLoader($page);
+				$parsed = $page->getParsed();
+					
+				// exit first time no item found
+				if ( !count($parsed) ) {
+					return;
+				}
+					
+				foreach ( $parsed as $match ) {
+					$label = $match['label'];
+					$href = "{$match['epid']}:{$match['epname']}";
+					$thumbnail = $match['thumbnail'];
+					if ( strpos($match['extra'], 'class="hplus-sticker') !== false ) {
+						// can ignore plus content
+						if ( !$this->config('show.plus', true) ) continue;
+						$label = "[Hulu+] {$label}";
+					}
+		
+					$item = new X_Page_Item_PItem($this->getId()."-{$show}-{$season}-{$href}", $label );
+		
+					$item->setIcon("/images/icons/file_32.png");
+		
+					$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
+					->setCustom(__CLASS__.':location', "$type/$filter/$pageN/$show/$season:$showType/$href")
+					->setThumbnail($thumbnail)
+					->setDescription(APPLICATION_ENV == 'development' ? "$type/$filter/$pageN/$show/$season:$showType/$href" : null)
+					->setLink(array(
+							'action' => 'mode',
+							'l'	=>	X_Env::encode("$type/$filter/$pageN/$show/$season:$showType/$href")
+					), 'default', false);
+		
+		
+					$items->append($item);
+		
+				}
 				
-			foreach ( $parsed as $match ) {
-				$label = $match['label'];
-				$href = "{$match['epid']}:{$match['epname']}";
-				$thumbnail = $match['thumbnail'];
-	
-				$item = new X_Page_Item_PItem($this->getId()."-{$show}-{$season}-{$href}", $label );
-	
-				$item->setIcon("/images/icons/file_32.png");
-	
-				$item->setType(X_Page_Item_PItem::TYPE_ELEMENT)
-				->setCustom(__CLASS__.':location', "$type/$filter/$pageN/$show/$season:$showId/$href")
-				->setThumbnail($thumbnail)
-				->setDescription(APPLICATION_ENV == 'development' ? "$type/$filter/$pageN/$show/$season:$showId/$href" : null)
-				->setLink(array(
-						'action' => 'mode',
-						'l'	=>	X_Env::encode("$type/$filter/$pageN/$show/$season:$showId/$href")
-				), 'default', false);
-	
-	
-				$items->append($item);
-	
+				// if parsed < per-page, i know there are no more videos
+				if ( count($parsed) < 5 ) {
+					break;
+				}
+		
 			}
 			
-			// if parsed < per-page, i know there are no more videos
-			if ( count($parsed) < 5 ) {
-				break;
-			}
-	
 		}
 	}	
 

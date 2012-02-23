@@ -10,6 +10,8 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	'hulu.request.timeout', '25', '25', 'plugins', 0, 'p_hulu_conf_requesttimeout_label', 'p_hulu_conf_requesttimeout_desc', '');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'hulu.request.maxredirects', '10', '10', 'plugins', 0, 'p_hulu_conf_requestredirects_label', 'p_hulu_conf_requestredirects_desc', '');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'hulu.show.plus', '1', '1', 'plugins', 3, 'p_hulu_conf_showplus_label', 'p_hulu_conf_showplus_desc',	'');
 	
 
 	

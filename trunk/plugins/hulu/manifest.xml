@@ -3,7 +3,7 @@
 	<metadata>
 		<label>p_hulu_plglabel</label>
 		<description>p_hulu_plgdesc</description>
-		<version>0.1</version>
+		<version>0.2</version>
 		<status>stable</status>
 		<key>hulu</key>
 		<file>X/VlcShares/Plugins/Hulu.php</file>
@@ -16,6 +16,11 @@
 	<files>
 		<library>
 			<X>
+				<PageParser>
+					<Parser>
+						<file>HuluFree.php</file>
+					</Parser>
+				</PageParser>
 				<VlcShares>
 					<Plugins>
 						<file>Hulu.php</file>
