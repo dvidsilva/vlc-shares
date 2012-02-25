@@ -3,7 +3,7 @@
 	<metadata>
 		<label>p_sockshare_plglabel</label>
 		<description>p_sockshare_plgdesc</description>
-		<version>0.1</version>
+		<version>0.1.1</version>
 		<status>stable</status>
 		<key>sockshare</key>
 		<file>X/VlcShares/Plugins/SockShare.php</file>
