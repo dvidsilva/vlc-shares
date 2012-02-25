@@ -3,7 +3,7 @@
 	<metadata>
 		<label>p_animeftw_plglabel</label>
 		<description>p_animeftw_plgdesc</description>
-		<version>0.3</version>
+		<version>0.3.1</version>
 		<status>stable</status>
 		<key>animeftw</key>
 		<file>X/VlcShares/Plugins/AnimeFTW.php</file>

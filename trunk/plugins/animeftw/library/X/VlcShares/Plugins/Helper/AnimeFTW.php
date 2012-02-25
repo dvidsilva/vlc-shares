@@ -3,8 +3,8 @@
 
 class X_VlcShares_Plugins_Helper_AnimeFTW implements X_VlcShares_Plugins_Helper_Interface {
 	
-	const VERSION = '0.3';
-	const VERSION_CLEAN = '0.3';
+	const VERSION = '0.3.1';
+	const VERSION_CLEAN = '0.3.1';
 	
 	const API_KEY = 'gh7h-9b4k-2ofr-5o8l';
 	
@@ -181,7 +181,7 @@ class X_VlcShares_Plugins_Helper_AnimeFTW implements X_VlcShares_Plugins_Helper_
 			 self::API_KEY,
 			 $this->options->get('username', ''),
 			 md5($this->options->get('password', '')),
-			 "$queryType&start=$page&count=$perpage" . ($filter != '' ? "&filter=$filter" : '')
+			 "$queryType&start=$page&count=$perpage" . ($filter != '' || true ? "&filter=$filter" : '')
 		);
 		
 	}

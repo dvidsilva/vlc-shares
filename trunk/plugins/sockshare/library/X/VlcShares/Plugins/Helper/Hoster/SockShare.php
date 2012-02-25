@@ -98,7 +98,7 @@ class X_VlcShares_Plugins_Helper_Hoster_SockShare implements X_VlcShares_Plugins
 		$http = new Zend_Http_Client("http://www.sockshare.com/embed/" . $url,
 			array(
 				'headers' => array(
-					'User-Agent' => "vlc-shares/".X_VlcShares::VERSION." sockshare/".X_VlcShares_Plugins_PutLocker::VERSION
+					'User-Agent' => "vlc-shares/".X_VlcShares::VERSION." sockshare/".X_VlcShares_Plugins_SockShare::VERSION
 				)
 			)
 		);

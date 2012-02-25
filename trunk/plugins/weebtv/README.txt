@@ -6,36 +6,25 @@
 #    \  /  | |____| |____      ____) | | | | (_| | | |  __|__ \ #
 #     \/   |______|\_____|    |_____/|_| |_|\__,_|_|  \___|___/ #
 #     															#
-########## AnimeFTW.tv Plugin ####################################
+########## WeebTv Plugin ########################################
 
-AnimeFTW.tv v0.3
-Created by Francesco Capozzo (Ximarx)
+WeebTv v0.1 beta
+Created by Francesco Capozzo (ximarx)
 ximarx@gmail.com
 
 All content of this file is released using
 GPL v3 (http://www.gnu.org/licenses/gpl.html)
 
-Allows to watch videos from AnimeFTW.tv site. Require a valid (free) user account to fetch contents.
+Allows to watch videos from weeb.tv
 
 For more infos, browse the project site at http://code.google.com/p/vlc-shares/
+
+This package include a modified version of rtmpdump + utils statically compiled for ubuntu
+and windows (not tested). Patch applied to standard git checkout is available in the root for this package
 
 /==========---
 | Changelog
 \==========---
 
-*** 0.3.1 ***
- - Network improvement when proxy feature is used
-
-*** 0.3 ***
- - The plugin uses the new Rest API
-
-*** 0.2.1 ***
- - Password field in config page is type="password"
- - Cookie reset on configs change
-
-*** 0.2 ***
- - fixed auth problems with video in server1 forcing proxy method to all videos
- - removed hide user-agent config and user-agent locked to vlc-shares/VERSION animeftw/VERSION
-
-*** 0.1 ***
+*** 0.1 beta ***
  - Initial version
