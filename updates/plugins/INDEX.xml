@@ -528,9 +528,9 @@
 		</version>
 	</plugin>
 	<plugin key="putlocker">
-		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
+		<version name="0.1.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_putlocker_0.1.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_putlocker_0.1.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from PutLocker.com (by Jan Holthuis)]]></description>
