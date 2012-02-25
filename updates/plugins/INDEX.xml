@@ -94,12 +94,13 @@
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from AnimeFTW.tv (english)]]></description>
 		</version>
-		<version name="0.3" type="stable" cMin="0.5.4" cMax="0.6">
+		<version name="0.3.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_animeftw_0.3.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_animeftw_0.3.1.zip</download>
 			<changelog><![CDATA[
-			*** 0.3 ***
-			 - The plugin uses the new Rest API
+			*** 0.3.1 ***
+			 - Network improvements when proxy features enabled
+       - Proxy forced on for WiiMC
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from AnimeFTW.tv (english)]]></description>
 		</version>
@@ -536,9 +537,9 @@
 		</version>
 	</plugin>
 	<plugin key="sockshare">
-		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
+		<version name="0.1.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_sockshare_0.1.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_sockshare_0.1.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from SockShare.com (by Jan Holthuis)]]></description>
@@ -548,6 +549,15 @@
 		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_ovfile_0.1.zip</download>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch videos from OvFile.com (by Jan Holthuis)]]></description>
+		</version>
+	</plugin>
+	<plugin key="weebtv">
+		<version name="0.1" type="beta" cMin="0.5.5" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_weebtv_0.1beta.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from OvFile.com (by Jan Holthuis)]]></description>
