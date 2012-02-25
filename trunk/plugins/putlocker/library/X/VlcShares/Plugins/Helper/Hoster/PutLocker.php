@@ -121,18 +121,19 @@ class X_VlcShares_Plugins_Helper_Hoster_PutLocker implements X_VlcShares_Plugins
 			
 		$description = '';
 
-		if ( !preg_match('/<input type\=\"hidden\" value\=\"(?P<hash>[^\"]+)\" name\=\"hash\">/', $xml, $matches)  ) {
+		if ( !preg_match('/<input type\=\"hidden\" value\=\"(?P<hash>[^\"]+)\" name\=\"(?P<arg>[^\"]+)\">/', $xml, $matches)  ) {
 			X_Debug::w("Couldn't find hash for file {{$url}}");
 			throw new Exception("Couldn't find hash for file {{$url}}", self::E_ID_INVALID);
 		}
 		$hash = $matches['hash'];
+		$arg = $matches['arg'];
 
 		// To turn cookie stickiness on, set a Cookie Jar
 		$http->setCookieJar();
 
 		// First request: log in and start a session
 		$http->setUri("http://www.putlocker.com/embed/" . $url);
-		$http->setParameterPost('hash', $hash);
+		$http->setParameterPost($arg, $hash);
 		$http->setParameterPost('confirm', 'Close Ad and Watch as Free User');
 		$http->request('POST');
 
