@@ -15,8 +15,8 @@ require_once 'Zend/Dom/Query.php';
  */
 class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.3';
-	const VERSION_CLEAN = '0.3';
+	const VERSION = '0.3.1';
+	const VERSION_CLEAN = '0.3.1';
 	
 	const BASE_URL = 'http://www.animeftw.tv/';
 	const PAGE_LOGIN = 'http://www.animeftw.tv/login';
@@ -295,7 +295,7 @@ class X_VlcShares_Plugins_AnimeFTW extends X_VlcShares_Plugins_Abstract implemen
 		
 		if ( $type == self::TYPE_SERIES_PERGENRE || $type == self::TYPE_SERIES_PERLETTER ) {
 			
-			if ( $this->config('proxy.enabled', true) ) {
+			if ($this->helpers()->devices()->isWiimc() || $this->config('proxy.enabled', true) ) {
 						
 				// X_Env::routeLink should be deprecated, but now is the best option
 				$return = X_Env::routeLink('animeftw','proxy2', array(

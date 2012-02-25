@@ -53,6 +53,7 @@ if ( isset($runtimeConfigs->plugins->animeftw ) ) {
 				'auth.username' => $runtimeConfigs->plugins->animeftw->auth->username,
 				'auth.password' => $runtimeConfigs->plugins->animeftw->auth->password,
 				'sitescraper.enabled' => $runtimeConfigs->plugins->animeftw->sitescraber->enabled,
+				'proxy.enabled' => $runtimeConfigs->plugins->animeftw->proxy->enabled,
 			)
 		)
 	);

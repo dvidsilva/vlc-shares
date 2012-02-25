@@ -1,6 +1,5 @@
 <?php
 
-require_once 'X/Controller/Action.php';
 
 class AnimeftwController extends X_Controller_Action
 {
@@ -11,6 +10,7 @@ class AnimeftwController extends X_Controller_Action
 	protected $plugin = null;
 	
 	function init() {
+		
 		// call parent init, always
 		parent::init();
 		if ( !X_VlcShares_Plugins::broker()->isRegistered('animeftw') ) {
@@ -22,6 +22,10 @@ class AnimeftwController extends X_Controller_Action
 		} else {
 			$this->plugin = X_VlcShares_Plugins::broker()->getPlugins('animeftw');
 		}
+		
+		$this->getFrontController()->setParam('disableOutputBuffering', true);
+		$this->getFrontController()->returnResponse(false);
+		
 	}
 
 	function proxy2Action() {
@@ -30,7 +34,7 @@ class AnimeftwController extends X_Controller_Action
 		/* @var $request Zend_Controller_Request_Http */
 		$request = $this->getRequest();
 		
-		if ( !$this->plugin->config('proxy.enabled', true) ) {
+		if ( !$this->plugin->config('proxy.enabled', true) && !X_VlcShares_Plugins::helpers()->devices()->isWiimc() ) {
 			throw new Exception(X_Env::_('p_animeftw_err_proxydisabled'));
 		}
 
@@ -57,9 +61,10 @@ class AnimeftwController extends X_Controller_Action
 	
 		$videoUrl = $episode['url'];
 		
-		
+		/*
 		while ( ob_get_level() != 0 )
 			ob_end_clean();
+			*/
 		
 		$userAgent = 'User-Agent: vlc-shares/'.X_VlcShares::VERSION.' animeftw/'.X_VlcShares_Plugins_AnimeFTW::VERSION; 
 		
@@ -84,7 +89,7 @@ class AnimeftwController extends X_Controller_Action
 		/* @var $request Zend_Controller_Request_Http */
 		$request = $this->getRequest();
 		
-		if ( !$this->plugin->config('proxy.enabled', true) ) {
+		if ( !$this->plugin->config('proxy.enabled', true) && !X_VlcShares_Plugins::helpers()->devices()->isWiimc() ) {
 			throw new Exception(X_Env::_('p_animeftw_err_proxydisabled'));
 		}
 
