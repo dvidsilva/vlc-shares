@@ -3,7 +3,7 @@
 	<metadata>
 		<label>p_veetle_plglabel</label>
 		<description>p_veetle_plgdesc</description>
-		<version>0.1.1</version>
+		<version>0.2</version>
 		<status>stable</status>
 		<key>veetle</key>
 		<file>X/VlcShares/Plugins/Veetle.php</file>
