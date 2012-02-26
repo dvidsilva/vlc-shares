@@ -8,14 +8,6 @@ class X_VlcShares_Plugins_Helper_Hoster_Veetle implements X_VlcShares_Plugins_He
 	
 	private $info_cache = array();
 	
-	private $serverIp = '213.254.245.212';
-	
-	function __construct($serverIp = null) {
-		if ( $serverIp != null ) {
-			$this->serverIp = $serverIp;
-		}
-	}
-	
 	/**
 	 * give the hoster id
 	 * @return string
@@ -62,9 +54,36 @@ class X_VlcShares_Plugins_Helper_Hoster_Veetle implements X_VlcShares_Plugins_He
 		if ( !$isId ) {
 			$url = $this->getResourceId($url);
 		}
-		// or http://77.67.109.208/flv/
-		//return "http://77.67.108.152/flv/$url";
-		return "http://{$this->serverIp}/flv/$url";
+		
+		if ( isset($this->info_cache[$url]) && isset($this->info_cache[$url]['url']) ) {
+			return $this->info_cache[$url]['url'];
+		}
+		
+		$http = new Zend_Http_Client("http://veetle.com/index.php/channel/ajaxStreamLocation/{$url}/flash",
+				array(
+						'headers' => array(
+								'User-Agent' => "vlc-shares/".X_VlcShares::VERSION." veetle/".X_VlcShares_Plugins_Veetle::VERSION
+						)
+				)
+		);
+		
+		$result = false;
+		
+		$json = $http->request()->getBody();
+		
+		$json = @Zend_Json::decode($json);
+		
+		if ( @!$json['success'] ) {
+			X_Debug::e("Can't find stream info about channel {{$url}}");
+			//throw new Exception("Invalid ID {{$url}}. Can't find channel info", self::E_ID_INVALID);
+		} else {
+			$result = $json['payload'];
+		}
+		
+		$this->info_cache[$url]['url'] = $result;
+		
+		return $result;
+		
 	}
 	
 	/**
@@ -109,12 +128,16 @@ class X_VlcShares_Plugins_Helper_Hoster_Veetle implements X_VlcShares_Plugins_He
 		
 		$json = Zend_Json::decode($json['payload']);
 		
+		if ( !isset($json['flashEnabled']) || !$json['flashEnabled'] ) {
+			X_Debug::e("Selected channel is not flash enabled {{$url}}");
+			throw new Exception("Invalid ID {{$url}}. Channel is not flash enabled", self::E_ID_INVALID);
+		}
+		
 		$infos = array(
 			'title' => @$json['title'],
 			'description' => @$json['description'],
 			'length' => 0,
 			'thumbnail' => @$json['logo']['lg'],
-			//'url' => @base64_decode(@$json['settings']['config']['token1'])
 		);
 		
 		// add in cache

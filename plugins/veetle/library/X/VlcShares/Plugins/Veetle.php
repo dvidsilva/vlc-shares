@@ -3,10 +3,10 @@
 
 class X_VlcShares_Plugins_Veetle extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-    const VERSION = '0.1.1';
-    const VERSION_CLEAN = '0.1.1';
+    const VERSION = '0.2';
+    const VERSION_CLEAN = '0.2';
 	
-    const CHANNELS_INDEX = "http://www.veetle.com/iphone-channel-listing-cross-site.js";
+    const CHANNELS_INDEX = "http://www.veetle.com/channel-listing-cross-site.js";
     
 	function __construct() {
 		
@@ -15,7 +15,6 @@ class X_VlcShares_Plugins_Veetle extends X_VlcShares_Plugins_Abstract implements
 			->setPriority('getCollectionsItems')
 			->setPriority('getShareItems')
 			->setPriority('preGetModeItems')
-			->setPriority('prepareConfigElement')
 			->setPriority('getIndexManageLinks')
 			->setPriority('preRegisterVlcArgs')
 			;
@@ -29,7 +28,7 @@ class X_VlcShares_Plugins_Veetle extends X_VlcShares_Plugins_Abstract implements
 	public function gen_beforeInit(Zend_Controller_Action $controller) {
 		
 		$this->helpers()->language()->addTranslation(__CLASS__);
-		$this->helpers()->hoster()->registerHoster(new X_VlcShares_Plugins_Helper_Hoster_Veetle($this->config('server.ip', '213.254.245.212')));
+		$this->helpers()->hoster()->registerHoster(new X_VlcShares_Plugins_Helper_Hoster_Veetle());
 		
 	}
 
@@ -171,7 +170,15 @@ class X_VlcShares_Plugins_Veetle extends X_VlcShares_Plugins_Abstract implements
 		
 		$json = $this->_loadPage(self::CHANNELS_INDEX, $this->config('channels.cache.validity', 3));
 		
-		$channels = Zend_Json::decode($json);
+		$_channels = Zend_Json::decode($json);
+		
+		// filter channels
+		$channels = array();
+		foreach ($_channels as $channel) {
+			if ( isset($channel['flashEnabled']) && $channel['flashEnabled'] == true ) {
+				$channels[] = $channel;
+			}
+		}
 		
 		$totalPageCount = $this->helpers()->paginator()->getPages($channels);
 		
@@ -295,32 +302,6 @@ class X_VlcShares_Plugins_Veetle extends X_VlcShares_Plugins_Abstract implements
 			X_Debug::e("No source o_O");
 		}
 	
-	}	
-	
-	/**
-	 * Add multioptions for server ip list
-	 * @param string $section
-	 * @param string $namespace
-	 * @param unknown_type $key
-	 * @param Zend_Form_Element $element
-	 * @param Zend_Form $form
-	 * @param Zend_Controller_Action $controller
-	 */
-	public function prepareConfigElement($section, $namespace, $key, Zend_Form_Element $element, Zend_Form  $form, Zend_Controller_Action $controller) {
-		// nothing to do if this isn't the right section
-		if ( $namespace != $this->getId() ) return;
-		
-		switch ($key) {
-			// add multioptions for veetle server ip selection
-			case 'plugins_veetle_server_ip':
-				if ( $element instanceof Zend_Form_Element_Select ) {
-					$element->setMultiOptions(array(
-						'213.254.245.212' => '213.254.245.212'
-					));
-				}
-				break;
-		}
-		
 	}	
 	
 	

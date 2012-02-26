@@ -8,8 +8,8 @@
 #     															#
 ########## Veetle Plugin #################################
 
-Vettle v0.1.1
-Created by Francesco Capozz (ximarx)
+Vettle v0.2
+Created by Francesco Capozzo (ximarx)
 ximarx@gmail.com
 
 All content of this file is released using
@@ -22,6 +22,10 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.2 ***
+ - channels source updated
+ - auto discovering stream ip address using veetle apis
 
 *** 0.1.1 ***
  - Stream ip updated
