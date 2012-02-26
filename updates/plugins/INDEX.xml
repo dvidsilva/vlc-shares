@@ -554,13 +554,13 @@
 			<description><![CDATA[Allow to watch videos from OvFile.com (by Jan Holthuis)]]></description>
 		</version>
 	</plugin>
-	<!--<plugin key="weebtv">
-		<version name="0.1" type="beta" cMin="0.5.5" cMax="0.6">
+	<plugin key="weebtv">
+		<version name="0.1" type="beta2" cMin="0.5.5" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_weebtv_0.1beta.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_weebtv_0.1beta2.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from OvFile.com (by Jan Holthuis)]]></description>
 		</version>
-	</plugin>-->
+	</plugin>
 </plugins>
