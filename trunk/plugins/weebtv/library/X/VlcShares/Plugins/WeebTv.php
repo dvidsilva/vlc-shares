@@ -2,7 +2,7 @@
 
 class X_VlcShares_Plugins_WeebTv extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.1beta';
+	const VERSION = '0.1beta2';
 	const VERSION_CLEAN = '0.1';
 	
 	const URL_CHANNELS = 'http://weeb.tv/channels%s';
@@ -33,9 +33,9 @@ class X_VlcShares_Plugins_WeebTv extends X_VlcShares_Plugins_Abstract implements
 		$this->setPriority('prepareConfigElement');
 		
 		// check for __bootstrap loading
-		try {
+		if ( X_VlcShares_Plugins::helpers() && X_VlcShares_Plugins::helpers()->streamer() ) {
 			X_VlcShares_Plugins::helpers()->streamer()->register(new X_Streamer_Engine_RtmpDumpWeebTv());
-		} catch (Exception $e) {
+		} else {
 			$this->setPriority('gen_afterPluginsInitialized');			
 		}
 		
