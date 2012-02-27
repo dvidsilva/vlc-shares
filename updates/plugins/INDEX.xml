@@ -22,6 +22,7 @@
 		<version name="0.2.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_youtube_0.2.1.zip</download>
+	      <thumbnail>http://geeko.lesoir.be/wp-content/thumbs/288/100/http://geeko.lesoir.be/wp-content/uploads/2012/01/youtubeaffiche.jpg</thumbnail>
 			<changelog><![CDATA[
 			*** 0.2.1 ***
 			 - Http stream links back
@@ -29,6 +30,7 @@
 			<description><![CDATA[Allow to watch videos from Youtube (closed caption supported)]]></description>
 		</version>
 	</plugin>
+<!--
 	<plugin key="megavideo">
 		<version name="0.2.1" type="stable" cMin="0.5.3" cMax="0.5.4">
 			<update />
@@ -51,10 +53,12 @@
 			<description><![CDATA[Allow to watch videos from Megavideo and Megaupload (premium account supported)]]></description>
 		</version>
 	</plugin>
+-->
 	<plugin key="allsp">
 		<version name="0.2.1" type="stable" cMin="0.5.3" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_allsp_0.2.1.zip</download>
+	      <thumbnail>http://oggitv.net/wp-content/uploads/2011/10/images36-288x100.jpg</thumbnail>
 			<changelog><![CDATA[
 			*** 0.2.1 ***
 			 - Added season 15
@@ -77,6 +81,7 @@
 		<version name="0.2.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_animedb_0.2.1.zip</download>
+      <thumbnail>http://www.informaticagratis.it/wp-content/uploads/2010/02/animedb.gif</thumbnail>
 			<changelog><![CDATA[
 			*** 0.2 ***
 			 - fix
@@ -97,6 +102,7 @@
 		<version name="0.3.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_animeftw_0.3.1.zip</download>
+			<thumbnail>http://img100.imageshack.us/img100/5427/animeftwoj2.jpg</thumbnail>
 			<changelog><![CDATA[
 			*** 0.3.1 ***
 			 - Network improvements when proxy features enabled
@@ -109,6 +115,7 @@
 		<version name="0.2" type="stable" cMin="0.5.3" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_animeland_0.2.zip</download>
+			<thumbnail>http://www.shadowspace.net/jewels/animeland.jpg</thumbnail>
 			<changelog><![CDATA[
 			*** 0.2 ***
 			 - Moved to Extra
@@ -120,6 +127,7 @@
 		<version name="0.2" type="stable" cMin="0.5.3" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_dbforever_0.2.zip</download>
+			<thumbnail>http://fc06.deviantart.net/fs70/i/2010/229/8/e/DB_Forever___Logo_II_by_NamekianKAI.png</thumbnail>
 			<changelog><![CDATA[
 			*** 0.2 ***
 			 - Moved to Extra
@@ -138,6 +146,7 @@
 		<version name="0.2.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_jdownloader_0.2.1.zip</download>
+			<thumbnail>http://www.pngicon.com/wp-content/uploads/jdownloader.jpg</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Integrate JDownloader inside VLCShares]]></description>
@@ -168,6 +177,7 @@
 		<version name="0.2" type="stable" cMin="0.5.3" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_narutoget_0.2.zip</download>
+			<thumbnail>http://1.sjimgs.com/anime/narutoget.png</thumbnail>
 			<changelog><![CDATA[
 			*** 0.2 ***
 			 - Moved to Extra
@@ -179,6 +189,7 @@
 		<version name="0.2.1" type="stable" cMin="0.5.2" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_opfitalia_0.2.1.zip</download>
+			<thumbnail>http://i51.tinypic.com/rseqfc.png</thumbnail>
 			<changelog><![CDATA[
 			*** 0.2.1 ***
 			 - Compatibility with VLCShares 0.5.3
@@ -191,6 +202,7 @@
 		<version name="0.1" type="stable" cMin="0.5.3" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_direttarai_0.1.zip</download>
+			<thumbnail>http://download90.altervista.org/blog/wp-content/uploads/2011/09/rai1-streaming.png</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch Rai live channels (italian TV)]]></description>
@@ -207,6 +219,7 @@
 		<version name="0.2" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_gogocinema_0.2.zip</download>
+			<thumbnail>http://www.gogocinema.com/Images/logo.jpg</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from GoGoCinema.com (english)]]></description>
@@ -216,6 +229,7 @@
 		<version name="0.1" type="stable" cMin="0.5.3" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_fsthumbs_0.1.zip</download>
+			<thumbnail>http://blog.cocoia.com/wp-content/uploads/2007/06/%20%20/preview_icon_tiger.jpg</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Create and show thumbnails of video in shared folders while browsing]]></description>
@@ -232,6 +246,7 @@
 		<version name="0.2.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_icefilms_0.2.1.zip</download>
+			<thumbnail>http://2.bp.blogspot.com/-F2vI1E7iX2w/Td85OijV7WI/AAAAAAAAAHM/rFDy05SK7MI/s400/43NBN_IceFilms.jpg</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from IceFilms.com (english)]]></description>
@@ -250,6 +265,7 @@
 		<version name="0.2" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_filmstream_0.2.zip</download>
+			<thumbnail>http://www.pctricks.it/wp-content/uploads/2011/01/filmstreaming.jpg</thumbnail>
 			<changelog><![CDATA[
 			*** 0.1.1 ***
 			 - multihoster support
@@ -302,6 +318,7 @@
 		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_4shared_0.1.zip</download>
+			<thumbnail>http://www.pocketberry.com/wp-content/uploads/2012/01/4shared.png</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch 4shared videos]]></description>
@@ -311,6 +328,7 @@
 		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_dailymotion_0.1.zip</download>
+			<thumbnail>http://www.mondoinformatico.info/wp-content/uploads/200905214732_dailymotion.jpg</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch dailymotion videos]]></description>
@@ -320,6 +338,7 @@
 		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_movshare_0.1.zip</download>
+			<thumbnail>http://www.movshare.net/images/logo.png</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch movshare videos]]></description>
@@ -329,6 +348,7 @@
 		<version name="0.2" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_veetle_0.2.zip</download>
+			<thumbnail>http://sporttvhd.tv/images/veetle.jpg</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch veetle channels]]></description>
@@ -338,6 +358,7 @@
 		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_veoh_0.1.zip</download>
+			<thumbnail>http://www.workingcapital.telecomitalia.it/wp-content/uploads/2010/02/veoh_logo.png</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch veoh videos]]></description>
@@ -347,6 +368,7 @@
 		<version name="0.1.4" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_videobb_0.1.4.zip</download>
+			<thumbnail>http://3.bp.blogspot.com/-xs0osNmG1o8/TeI-nlGReAI/AAAAAAAAAI4/4RYUOwxDOBM/s1600/videobb.jpg</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videobb channels]]></description>
@@ -356,6 +378,7 @@
 		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_vimeo_0.1.zip</download>
+			<thumbnail>http://www.fullyillustrated.com/wp-content/uploads/2010/09/vimeo.jpg</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch vimeo videos]]></description>
@@ -365,6 +388,7 @@
 		<version name="0.1.5" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_realdebrid_0.1.5.zip</download>
+			<thumbnail>http://www.megaacceso.com/src/realdebrid.jpg</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[*USE IT ONLY IF YOU HAVE A PREMIUM ACCOUNT* Allow to use premium account of real debrid for many hosters]]></description>
@@ -374,6 +398,7 @@
 		<version name="0.1.4" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_videozer_0.1.4.zip</download>
+			<thumbnail>http://img.20dollars2surf.com/img_QBcaRXsd7o.php</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from videozer]]></description>
@@ -383,6 +408,7 @@
 		<version name="0.1" type="beta" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_2shared_0.1beta.zip</download>
+			<thumbnail>http://www.2shared.com/images/logo.gif</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from 2shared.com]]></description>
@@ -398,12 +424,20 @@
 		</version>
 	</plugin>
 	<plugin key="streamingonline">
-		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
+		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.5.5">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_streamingonline_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
-			<description><![CDATA[Allow to watch videos from streaming-online.biz site (Require PageParserLib or VLCShares 0.5.5+)]]></description>
+			<description><![CDATA[Allow to watch videos from streaming-online.biz site (Require PageParserLib)]]></description>
+		</version>
+		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
+			<update />
+			<download>http://vlc-shares.googlecode.com/files/plugin_streamingonline_0.1.zip</download>
+			<thumbnail>http://www.videolarocca.it/videoclublarocca/images/stories/streaming_online.jpg</thumbnail>
+			<changelog><![CDATA[
+			]]></changelog>
+			<description><![CDATA[Allow to watch videos from streaming-online.biz site]]></description>
 		</version>
 	</plugin>
 	<plugin key="tvlinks">
@@ -417,6 +451,7 @@
 		<version name="0.1" type="stable" cMin="0.5.5" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_tvlinks_0.1.zip</download>
+			<thumbnail>http://static.mou.me.uk/uploads/migrated/tvlinks.jpg</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from tv-links.eu]]></description>
@@ -426,6 +461,7 @@
 		<version name="0.1" type="stable" cMin="0.5.5" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_youporn_0.1.zip</download>
+			<thumbnail>http://www.giornalettismo.com/r/683x250c/2012/02/youporn-683.jpg</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from youporn.com [VM18]]]></description>
@@ -442,6 +478,7 @@
 		<version name="0.1" type="beta" cMin="0.5.5" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_rtmpgui_0.1beta.zip</download>
+			<thumbnail>http://img.44paths.com/images/73236659391931859301.png</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch live tv from rtmpgui]]></description>
@@ -458,6 +495,7 @@
 		<version name="0.1" type="beta" cMin="0.5.5" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_own3d_0.1beta.zip</download>
+			<thumbnail>http://www.own3d.tv/templates/own3d_2011/img/logo.png?v6</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch live streams from own3d.tv]]></description>
@@ -481,6 +519,7 @@
 		<version name="0.2" type="stable" cMin="0.5.5" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_hulu_0.2.zip</download>
+			<thumbnail>http://media.tested.com/uploads/0/5/5344-hulu_600_super.jpg</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch video from hulu.com]]></description>
@@ -496,6 +535,7 @@
 		</version>
 		<version name="0.1" type="stable" cMin="0.5.5" cMax="0.6">
 			<update />
+			<thumbnail>http://www.boacompra.com/index_includes/languages/EN/images/20/rapidshare.jpg</thumbnail>
 			<download>http://vlc-shares.googlecode.com/files/plugin_rapidshare_0.1.zip</download>
 			<changelog><![CDATA[
 			]]></changelog>
@@ -506,6 +546,7 @@
 		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_gorillavid_0.1.zip</download>
+			<thumbnail>http://gorillavid.com/images1/GorillaVid-logo.png</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from GorillaVid. (by Jan Holthuis)]]></description>
@@ -522,6 +563,7 @@
 		<version name="0.1" type="stable" cMin="0.5.5" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_raiclick_0.1.zip</download>
+			<thumbnail>http://upload.wikimedia.org/wikipedia/it/archive/9/93/20110725052123!Rai_Click.png</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from Rai.tv.]]></description>
@@ -531,6 +573,7 @@
 		<version name="0.1.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_putlocker_0.1.1.zip</download>
+			<thumbnail>http://lulzimg.com/i24/cfa902.jpg</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from PutLocker.com (by Jan Holthuis)]]></description>
@@ -540,6 +583,7 @@
 		<version name="0.1.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_sockshare_0.1.1.zip</download>
+			<thumbnail>http://www.freeso.org/wp-content/uploads/2011/11/20111117140122.jpg</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from SockShare.com (by Jan Holthuis)]]></description>
@@ -549,6 +593,7 @@
 		<version name="0.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_ovfile_0.1.zip</download>
+			<thumbnail>http://venturebeat.files.wordpress.com/2012/01/ovfile1.jpg</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from OvFile.com (by Jan Holthuis)]]></description>
@@ -558,6 +603,7 @@
 		<version name="0.1" type="beta2" cMin="0.5.5" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_weebtv_0.1beta2.zip</download>
+			<thumbnail>http://www.videofen.com/web/gallery/thumbs/d5d883e49ecaf90b9bc53a646d6a13c0_1195.jpg</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
 			<description><![CDATA[Allow to watch videos from OvFile.com (by Jan Holthuis)]]></description>
