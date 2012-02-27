@@ -358,6 +358,7 @@ class X_VlcShares_Plugins_UpdateNotifier extends X_VlcShares_Plugins_Abstract {
 						'download' => (string) $version->download,
 						'changelog' => (string) $version->changelog,
 						'description' => (string) $version->description,
+						'thumbnail' => (string) $version->thumbnail,
 					);
 					
 					$pluginArray[] = $version;
