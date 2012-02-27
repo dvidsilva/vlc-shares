@@ -14,6 +14,36 @@
 		</compatibility>
 	</metadata>
 	<files>
+		<!-- 
+		Accepted file attributes:
+			replace:
+				allow file overwriting if file already exists
+				file flagged as replace = true will not be removed on uninstallation
+				if removeOnUninstall flag is not explicitally set to true
+				valid values: true|false|0|1
+				default: false
+			permissions:
+				4 octal mask for permissions that will be set after file extraction
+				valid values: values accepted by chmod (php) as 4 digit values (ex 0777, 0755, 0666, ...)
+				default: unchanged
+			ignoreIfNotExists:
+				installation process will ignore the copy of this file if missing in the package
+				and installation will not fail
+				valid values: true|false|0|1
+				default: false
+			haltOnCopyError:
+				halt copy process of files if this file is not copied
+				valid values: true|false|0|1
+				default: false
+			removeReplacedOnUninstall:
+				allow delete the file when uninstalling even if replace flag is true
+				valid values: true|false|0|1
+				default: false
+			ignoreUnlinkError:
+				ignore unlink error on uninstall
+				valid values: true|false|0|1
+				default: true
+		 -->
 		<application>
 			<controllers>
 				<file>SampleController.php</file>

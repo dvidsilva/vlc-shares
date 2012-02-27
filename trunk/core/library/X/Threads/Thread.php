@@ -6,6 +6,7 @@ final class X_Threads_Thread extends X_Threads_Thread_Info {
 	const PHASE_POST = 'post';
 	
 	const EXIT_NORMAL = 0;
+	const EXIT_ABNORMAL = -100;
 	
 	const RETURN_INVALID_CLASS = 'Invalid command class';
 	const RETURN_INVALID_PARAMS = 'Invalid params for command';
@@ -45,18 +46,36 @@ final class X_Threads_Thread extends X_Threads_Thread_Info {
 	 */
 	protected $manager = null;
 	
+	protected $normalShutdown = false;
+	
 	
 	public function __construct($threadId, X_Threads_Manager $manager) {
 		$this->manager = $manager;
 		parent::__construct($threadId);
 	}
 	
+	function __shutdown() {
+		if ( !$this->normalShutdown ) {
+			$this->manager->getMonitor()->updateStatus($this, self::STOPPED, array(
+					"tickleft" => 0,
+					"max_tickleft" => $this->tickleft,
+					"tick" => $this->tick,
+					"spawned" => $this->spawned,
+					"exit_status" => self::EXIT_ABNORMAL
+			));
+		}
+	}
 	
 	public function loop() {
 		set_time_limit(0);
 		$this->spawned = time();
 		$tickleft = $this->tickleft;
 		$exitStatus = self::EXIT_NORMAL;
+		
+		// register shutdown function to reset
+		// status to STOP if abnormal shutdown
+		
+		register_shutdown_function(array($this, '__shutdown'));
 		
 		$this->log(sprintf("Thread resumed"));
 		
@@ -157,6 +176,8 @@ final class X_Threads_Thread extends X_Threads_Thread_Info {
 			"spawned" => $this->spawned,
 			"exit_status" => $exitStatus
 		));
+		
+		$this->normalShutdown = true;
 		
 		$this->log("Thread stopped");
 		

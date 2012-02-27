@@ -2,7 +2,7 @@
 
 class X_VlcShares_Plugins_WeebTv extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.1beta2';
+	const VERSION = '0.1beta3';
 	const VERSION_CLEAN = '0.1';
 	
 	const URL_CHANNELS = 'http://weeb.tv/channels%s';
@@ -34,7 +34,9 @@ class X_VlcShares_Plugins_WeebTv extends X_VlcShares_Plugins_Abstract implements
 		
 		// check for __bootstrap loading
 		if ( X_VlcShares_Plugins::helpers() && X_VlcShares_Plugins::helpers()->streamer() ) {
-			X_VlcShares_Plugins::helpers()->streamer()->register(new X_Streamer_Engine_RtmpDumpWeebTv());
+			// manually call trigger because when loading plugin in dev env
+			// extra plugins are loaded after trigger has been call
+			$this->gen_afterPluginsInitialized(X_VlcShares_Plugins::broker());
 		} else {
 			$this->setPriority('gen_afterPluginsInitialized');			
 		}

@@ -62,7 +62,8 @@ $coreInclude = array(
 	APPLICATION_PATH.'/../languages',
 	APPLICATION_PATH.'/../data',
 	APPLICATION_PATH.'/../public',
-	APPLICATION_PATH.'/../library'
+	APPLICATION_PATH.'/../library',
+	APPLICATION_PATH.'/../bin',
 );
 
 $pluginsDir		= APPLICATION_PATH.'/../../plugins';

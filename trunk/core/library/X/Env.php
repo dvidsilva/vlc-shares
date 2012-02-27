@@ -67,11 +67,19 @@ class X_Env {
 					$command = trim($command).' > /dev/null 2>&1';
 				}
 				X_Debug::i("Executing: $command");
-				$lastLine = exec($command, $output);
+				if ( $outputType == self::EXECUTE_OUT_NONE ) {
+					$lastLine = exec($command);
+				} else {
+					$lastLine = exec($command, $output);
+				}
 			}
 		} else {
 			X_Debug::i("Executing: $command");
-			$lastLine = exec($command, $output);
+			if ( $outputType == self::EXECUTE_OUT_NONE ) {
+				$lastLine = exec($command);
+			} else {
+				$lastLine = exec($command, $output);
+			}
 		}
 		
 		switch ($outputType) {
