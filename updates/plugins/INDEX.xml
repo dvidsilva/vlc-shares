@@ -79,7 +79,7 @@
 		<version name="0.2.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_animedb_0.2.1.zip</download>
-      <thumbnail>http://www.informaticagratis.it/wp-content/uploads/2010/02/animedb.gif/<thumbnail>
+      <thumbnail>http://www.informaticagratis.it/wp-content/uploads/2010/02/animedb.gif</thumbnail>
 			<changelog><![CDATA[
 			*** 0.2 ***
 			 - fix
