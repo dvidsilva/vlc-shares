@@ -286,7 +286,14 @@ class InstallerController extends X_Controller_Action
 						continue;
 					}
 					
-					$return[$version['download']] = "<b>$key</b>" . ($version['description'] != '' ? " - <span class=\"installer-plugin-description\">{$version['description']}</span>" : '');
+					$img = '';
+					if ( $version['thumbnail'] ) {
+						$img = '<img class="installer-plugin-thumb" src="' . $this->_helper->viewRenderer->view->baseUrl("/images/loading.gif") . '" data-src="'. $version['thumbnail'] .'" />';
+					} else {
+						$img = '<img class="installer-plugin-thumb" src="'. $this->_helper->viewRenderer->view->baseUrl("/images/no-images.png") .'" />';
+					}
+					
+					$return[$version['download']] = $img . "<span class=\"installer-plugin-title\">$key</span>" . ($version['description'] != '' ? "<span class=\"installer-plugin-description\">{$version['description']}</span>" : '');
 					
 					// doesn't continue in versions traversal
 					break;
