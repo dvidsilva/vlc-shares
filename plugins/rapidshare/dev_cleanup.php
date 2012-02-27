@@ -22,7 +22,8 @@ $neededDirectories = array(
  * of dev_bootstrap.php file
  */
 $neededLinks = array(
-	$basePath.'/public/images/icons/hosters/sockshare.png' => APPLICATION_PATH.'/../public/images/icons/hosters/sockshare.png',
-	$basePath.'/languages/X_VlcShares_Plugins_SockShare.en_GB.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_SockShare.en_GB.ini', // link al file di traduzione
-	$basePath.'/languages/X_VlcShares_Plugins_SockShare.it_IT.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_SockShare.it_IT.ini', // link al file di traduzione
+	$basePath.'/public/images/rapidshare/logo.png' => APPLICATION_PATH.'/../public/images/rapidshare/logo.png',
+	$basePath.'/public/images/icons/hosters/rapidshare.png' => APPLICATION_PATH.'/../public/images/icons/hosters/rapidshare.png',
+	$basePath.'/languages/X_VlcShares_Plugins_RapidShare.en_GB.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_RapidShare.en_GB.ini', // link al file di traduzione
+	$basePath.'/languages/X_VlcShares_Plugins_RapidShare.it_IT.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_RapidShare.it_IT.ini', // link al file di traduzione
 );

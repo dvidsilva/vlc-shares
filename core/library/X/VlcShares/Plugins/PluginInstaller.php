@@ -82,11 +82,13 @@ class X_VlcShares_Plugins_PluginInstaller extends X_VlcShares_Plugins_Abstract {
 	
 	public function installPlugin($source, $isUrl = false) {
 		
+		X_Debug::i("Installing plugin from {{$source}}: isUrl = {{$isUrl}}");
+		
 		if ( $isUrl ) {
 			// perform a download in a temp file
 			$http = new Zend_Http_Client($source, array(
 				'headers' => array(
-					'User-Agent' => "vlc-shares/".X_VlcShares::VERSION." pluginsinstaller/".X_VlcShares::VERSION
+					'User-Agent' => "vlc-shares/".X_VlcShares::VERSION." plugininstaller/".X_VlcShares::VERSION
 				)
 			));
 			$http->setStream(true);
@@ -120,18 +122,24 @@ class X_VlcShares_Plugins_PluginInstaller extends X_VlcShares_Plugins_Abstract {
 			$toBeCopied = array();
 			foreach ($egg->getFiles() as $file) {
 				/* @var $file X_Egg_File */
-				if ( !false && file_exists($file->getDestination()) ) {
+				if ( !$file->getProperty(X_Egg_File::P_REPLACE, false) && file_exists($file->getDestination()) ) {
 					throw new Exception(X_Env::_('plugin_err_installerror_fileexists'). ": {$file->getDestination()}");
 				}
 				
 				if ( !file_exists($file->getSource())) {
-					throw new Exception(X_Env::_('plugin_err_installerror_sourcenotexists'). ": {$file->getSource()}");
+					if ( !$file->getProperty(X_Egg_File::P_IGNOREIFNOTEXISTS, false) ) {
+						throw new Exception(X_Env::_('plugin_err_installerror_sourcenotexists'). ": {$file->getSource()}");
+					}
+					// ignore this item if P_IGNOREIFNOTEXISTS is true and file not exists
+					continue;
 				}
 				
 				$toBeCopied[] = array(
-					'src' => $file->getSource(),
-					'dest' => $file->getDestination() 
+						'src' => $file->getSource(),
+						'dest' => $file->getDestination(),
+						'resource' => $file
 				);
+				
 			}
 			
 			// before copy act, i must be sure to be able to revert changes
@@ -166,11 +174,36 @@ class X_VlcShares_Plugins_PluginInstaller extends X_VlcShares_Plugins_Abstract {
 			
 			// ... then copy
 			foreach ($toBeCopied as $copyInfo) {
+				$copied = false;
 				if ( !file_exists(dirname($copyInfo['dest'])) ) {
 					@mkdir(dirname($copyInfo['dest']), 0777, true);
 				}
 				if ( !copy($copyInfo['src'], $copyInfo['dest']) ) {
 					$this->_helper->flashMessenger(array('text' => X_Env::_('plugin_err_installerror_copyerror').": <br/>".$copyInfo['src'].'<br/>'.$copyInfo['dest'], 'type' => 'error'));
+				} else {
+					X_Debug::i("File copied {{$copyInfo['dest']}}");
+					$copied = true;
+				}
+
+				/* @var $xeggFile X_Egg_File */
+				$xeggFile = $copyInfo['resource'];
+				
+				if ( $copied ) {
+					// check permission
+					$permission = $xeggFile->getProperty(X_Egg_File::P_PERMISSIONS, false);
+					if ( $permission !== false ) {
+						if ( !chmod($copyInfo['dest'], octdec($permission)) ) {
+							X_Debug::e("Chmod {{$permission}} failed for file {{$copyInfo['dest']}}");
+						} else {
+							X_Debug::i("Permissions set to {{$permission}} for file {{$copyInfo['dest']}} as required");
+						}
+					}
+					
+				} else {
+					if ( $xeggFile->getProperty(X_Egg_File::P_HALTONCOPYERROR, false) ) {
+						X_Debug::f("File not copied {{$copyInfo['dest']}} and flagged as HaltOnCopyError");
+						break;
+					}
 				}
 			}
 			

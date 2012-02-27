@@ -44,9 +44,9 @@ abstract class X_Threads_Monitor {
 		
 	}
 	
-	public function removeThread(X_Threads_Thread_Info $thread) {
+	public function removeThread(X_Threads_Thread_Info $thread, $forced = false) {
 		$thread = $this->getThread($thread->getId());
-		if ( $thread->getState() === X_Threads_Thread_Info::STOPPED ) {
+		if ($forced || $thread->getState() === X_Threads_Thread_Info::STOPPED ) {
 			$this->removeStatus($thread->getId());
 		}
 	}

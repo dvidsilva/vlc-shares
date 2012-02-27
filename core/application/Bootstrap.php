@@ -24,7 +24,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			return;
 		}
 		
-		$extraPlugins = $configs->general->get('extraPlugins', '');
+		$extraPlugins = trim($configs->general->get('extraPlugins', ''));
+		
+		if ( $extraPlugins == '' ) return;
+		
 		$extraPlugins = explode(',', $extraPlugins);
 		
 		if ( !count($extraPlugins) ) return;

@@ -450,6 +450,7 @@ class X_VlcShares_Plugins_Youtube extends X_VlcShares_Plugins_Abstract implement
 					// for valid video id but video with restrictions
 					// alternatives formats can't be fetched by youtube page.
 					// i have to fallback to standard api url
+					X_Debug::i("Getting video url from standard api");
 					$apiVideo = $helper->getVideo($foundVideo);
 					
 					foreach ($apiVideo->mediaGroup->content as $content) {
@@ -461,6 +462,7 @@ class X_VlcShares_Plugins_Youtube extends X_VlcShares_Plugins_Abstract implement
 					}
 
 					if ( $returned === null ) {
+						X_Debug::e("No video link found in api too");
 						$returned = false;
 					}
 				}

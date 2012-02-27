@@ -5,10 +5,43 @@
  */
 interface X_VlcShares_Plugins_Helper_HostInterface {
 	
+	//{{{ URL EXCEPTION CODE FROM 0->9
+	const E_URL_MIN = 0;
 	const E_URL_INVALID = 1;
-	const E_ID_INVALID = 2;
-	const E_ID_NOTFOUND = 3;
-	const E_QUOTA_NOMORE = 99;
+	const E_URL_MAX = 9;
+	//}}}
+	
+	//{{{ ID EXCEPTION CODE FROM 10->99
+	const E_ID_MIN = 10;
+	const E_ID_INVALID = 11;
+	const E_ID_NOTFOUND = 12;
+	const E_ID_MAX = 99;
+	//}}}
+	
+	//{{{ RESOURCE EXCEPTION CODE FROM 100->199
+	const E_RESOURCE_MIN = 100;
+	const E_RESOURCE_TEMP_UNAVAILABLE = 101;
+	const E_RESOURCE_ILLEGAL = 102;
+	const E_RESOURCE_MAX = 199;
+	//}}}
+	
+	//{{{ AUTO EXCEPTION CODE FROM 200->299
+	const E_AUTH_MIN = 200;
+	const E_AUTH_INVALID = 201;
+	const E_AUTH_RETRY = 298;
+	const E_AUTH_MAX = 299;
+	//}}}
+	
+	//{{{ QUOTA EXCEPTION CODE FROM 300->399
+	const E_QUOTA_MIN = 300;
+	const E_QUOTA_NOMORE = 301;
+	const E_QUOTA_MAX = 399;
+	//}}}
+	
+	const E_HOSTER_OBSOLETE = 999998;
+	
+	const E_EXCEPTIONS_MAXSTD = 999999; 
+	// 1000000+ for custom exception code
 	
 	/**
 	 * give the hoster id

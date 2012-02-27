@@ -59,6 +59,12 @@ class X_Egg {
 		
 		while ( $filesXPath->valid() ) {
 			$node = $filesXPath->current();
+			
+			$properties = array();
+			for ( $i = 0; $i < $node->attributes->length; $i++ ) {
+				$properties[$node->attributes->item($i)->nodeName] = $node->attributes->item($i)->nodeValue;
+			}
+			
 			$filename = $node->nodeValue;
 			
 			$parentStack = array();
@@ -71,8 +77,12 @@ class X_Egg {
 			}
 			
 			$path = implode('/', array_reverse($parentStack, false));
+
+			if ( $properties ) {
+				X_Debug::i("Properties for {{$path}/{$filename}}: ".print_r($properties, true));
+			}
 			
-			$this->files[] = new X_Egg_File("$path/$filename", $this->basePath, $this->destinationPath);
+			$this->files[] = new X_Egg_File("$path/$filename", $this->basePath, $this->destinationPath, $properties);
 			
 			$filesXPath->next();
 		}

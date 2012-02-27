@@ -76,6 +76,7 @@ class X_VlcShares_Plugins_Helper_Streamer extends X_VlcShares_Plugins_Helper_Abs
 		if ( $id === null ) {
 			$id = $streamer->getId();
 		}
+		X_Debug::i("Registering streamer {{$id}}");
 		$this->streamers[$id] = $streamer;
 		
 		return $this;
@@ -109,9 +110,11 @@ class X_VlcShares_Plugins_Helper_Streamer extends X_VlcShares_Plugins_Helper_Abs
 		/* @var $streamerConcrete X_Streamer_Engine */
 		$streamerConcrete = null;
 		$maxScore = self::SCORE_IGNORE;
+		//X_Debug::i("Available streamers: ".print_r($this->streamers, true));
 		foreach ($this->streamers as $streamer) {
 			/* @var $streamer X_Streamer_Engine */
 			$score = $streamer->checkScore($url);
+			X_Debug::i("Checking score for ".get_class($streamer).": $score");
 			if ( $score == self::SCORE_BEST ) {
 				$streamerConcrete = $streamer;
 				break;

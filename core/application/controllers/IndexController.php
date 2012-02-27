@@ -10,7 +10,8 @@ class IndexController extends X_Controller_Action
     	// maybe i will add a trigger here 
 		if ( X_VlcShares_Plugins::helpers()->devices()->isWiimc() ) {
 			// wiimc 1.0.9 e inferiori nn accetta redirect
-			$this->_forward('collections');
+			X_Debug::i("Forwarding...");
+			$this->_forward('collections', 'index');
 		} else {
 			$this->_helper->redirector('index','manage');
 		}

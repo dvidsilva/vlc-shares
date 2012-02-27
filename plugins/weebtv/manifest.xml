@@ -4,7 +4,7 @@
 		<label>p_weebtv_plglabel</label>
 		<description>p_weebtv_plgdesc</description>
 		<version>0.1</version>
-		<status>beta2</status>
+		<status>beta3</status>
 		<key>weebtv</key>
 		<file>X/VlcShares/Plugins/WeebTv.php</file>
 		<class>X_VlcShares_Plugins_WeebTv</class>
@@ -20,10 +20,10 @@
 				<file>COPYING</file>
 				<file>README</file>
 				<file>README2</file>
-				<file>rtmpdump-weebtv</file>
-				<file>rtmpgw-weebtv</file>
-				<file>rtmpsrv-weebtv</file>
-				<file>rtmpsuck-weebtv</file>
+				<file permissions="0777">rtmpdump-weebtv</file>
+				<file permissions="0777">rtmpgw-weebtv</file>
+				<file permissions="0777">rtmpsrv-weebtv</file>
+				<file permissions="0777">rtmpsuck-weebtv</file>
 			</rtmpdump-weebtv-linux>
 			<rtmpdump-weebtv-win>
 				<file>ChangeLog</file>

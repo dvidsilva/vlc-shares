@@ -49,15 +49,21 @@ class YoutubeController extends X_Controller_Action
 			$form = '<p>'.X_Env::_('p_youtube_form_err_noupload').': ' . $e->getMessage() . '</p>';
 		}
 		
-		if ( /*$form instanceof Application_Form_YoutubeCategory &&*/ $idCategory != false && $idCategory != '') {
+		if ( /*$form instanceof Application_Form_YoutubeCategory &&*/ $idCategory !== false && $idCategory !== '') {
 			Application_Model_YoutubeCategoriesMapper::i()->find($idCategory, $category);
 			
 			if ( $idCategory == $category->getId() ) {
 				$videos = Application_Model_YoutubeVideosMapper::i()->fetchByCategory($category->getId());
-				
-				$form->id->setValue($category->getId());
-				$form->label->setValue($category->getLabel());
-				$form->thumbselect->setValue(pathinfo($category->getThumbnail(), PATHINFO_BASENAME));
+
+				if ( $form instanceof Application_Form_YoutubeCategory ) {
+					$form
+						->id
+							->setValue(
+								$category->getId()
+								);
+					$form->label->setValue($category->getLabel());
+					$form->thumbselect->setValue(pathinfo($category->getThumbnail(), PATHINFO_BASENAME));
+				}
 			}
 		}
 		

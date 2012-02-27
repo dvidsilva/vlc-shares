@@ -386,7 +386,21 @@ class PluginController extends X_Controller_Action
 		
 		foreach ( $egg->getFiles() as $file ) {
 			/* @var $file X_Egg_File */
-			@unlink($file->getDestination());
+			
+			// if file doesn't exists, ignore it
+			// this prevent errors when you retry to uninstall
+			// a partially installed plugin
+			if ( !file_exists($file->getDestination()) ) continue;
+			
+			if ( !$file->getProperty(X_Egg_File::P_REPLACE, false) || $file->getProperty(X_Egg_File::P_REMOVEREPLACEDONUNINSTALL, false) ) {
+				$unlinkStatus = @unlink($file->getDestination());
+				if ( !$file->getProperty(X_Egg_File::P_IGNOREUNLINKERROR, true) && !$unlinkStatus ) {
+					X_Debug::e("File not unlinked: {{$file->getDestination()}}");
+					throw new Exception("Cannot unlink file {{$file->getDestination()}} and ignoreUnlinkError flag is FALSE. Remove it manually and try again");
+				}
+			} else {
+				X_Debug::i("Replaced file {{$file->getDestination()}} left because removeReplacedOnUninstall is FALSE");
+			}
 		}
 		
 		$uninstallSql = $egg->getUninstallSQL();

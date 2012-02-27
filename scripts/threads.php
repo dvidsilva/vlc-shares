@@ -23,6 +23,7 @@ $getopt = new Zend_Console_Getopt(array(
 	'info|i-s'		=> 'Show last update info about a thread',
 	'try|t-s'		=> 'Try to execute a Runnable instance',
 	'clear|c'		=> 'Clear old message queues',
+	'reset|r'		=> 'Reset all threads status',
     'help|h'     	=> 'Help -- usage message',
 ));
 try {
@@ -46,6 +47,7 @@ $stopall   	= $getopt->getOption('k');
 $info		= $getopt->getOption('i');
 $try		= $getopt->getOption('t');
 $clear		= $getopt->getOption('c');
+$reset		= $getopt->getOption('r');
 
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', 'development' );
@@ -146,6 +148,15 @@ if ( $clear ) {
 		}
 	}
 	
+}
+
+if ( $reset ) {
+	$threads = X_Threads_Manager::instance()->getMonitor()->getThreads();
+	foreach ($threads as $thread) {
+		/* @var $thread X_Threads_Thread_Info */
+		X_Threads_Manager::instance()->getMessenger()->clearQueue($thread);
+		X_Threads_Manager::instance()->getMonitor()->removeThread($thread, true);
+	}
 }
 
 return 0;
