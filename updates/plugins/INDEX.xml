@@ -30,7 +30,6 @@
 			<description><![CDATA[Allow to watch videos from Youtube (closed caption supported)]]></description>
 		</version>
 	</plugin>
-<!--
 	<plugin key="megavideo">
 		<version name="0.2.1" type="stable" cMin="0.5.3" cMax="0.5.4">
 			<update />
@@ -53,7 +52,6 @@
 			<description><![CDATA[Allow to watch videos from Megavideo and Megaupload (premium account supported)]]></description>
 		</version>
 	</plugin>
--->
 	<plugin key="allsp">
 		<version name="0.2.1" type="stable" cMin="0.5.3" cMax="0.6">
 			<update />
