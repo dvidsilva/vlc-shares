@@ -50,7 +50,7 @@ class ManageController extends X_Controller_Action
     		->setTitle(X_Env::_('manage_goto_configs'))
     		->setIcon('/images/manage/configs.png')
     		->setLink(array(
-    			'controller'	=> 'configs',
+    			'controller'	=> 'gconfigs',
     			'action'		=> 'index'
     		), 'default', true);
     	$manageLinks->append($item);
@@ -79,27 +79,6 @@ class ManageController extends X_Controller_Action
      */
     public function indexAction() {
     	
-    	$coreLinks = array(
-    		array(
-    			'label'		=>	X_Env::_('manage_goto_browse'),
-    			'link'		=>	$this->_helper->url('collections', 'index'),
-    			'icon'		=>	'/images/manage/browse.png',
-    			'title'		=>	X_Env::_('manage_goto_browsetitle'),
-    		),
-    		array(
-    			'label'		=>	X_Env::_('manage_goto_test'),
-    			'link'		=>	$this->_helper->url('index', 'test'),
-    			'icon'		=>	'/images/manage/test.png',
-    			'title'		=>	X_Env::_('manage_goto_testtitle'),
-    		),
-    		array(
-    			'label'		=>	X_Env::_('manage_goto_configs'),
-    			'link'		=>	$this->_helper->url('configs', 'manage'),
-    			'icon'		=>	'/images/manage/configs.png',
-    			'title'		=>	X_Env::_('manage_goto_configstitle'),
-    		),
-    	);
-
     	/* @var $messages X_Page_ItemList_Message */
     	$messages = new X_Page_ItemList_Message();
     	$messages->merge(X_VlcShares_Plugins::broker()->getIndexMessages($this));
@@ -146,7 +125,7 @@ class ManageController extends X_Controller_Action
     		->setTitle(X_Env::_('manage_goto_configs'))
     		->setIcon('/images/manage/configs.png')
     		->setLink(array(
-    			'controller'	=> 'configs',
+    			'controller'	=> 'gconfigs',
     			'action'		=> 'index'
     		), 'default', true);
     	$manageLinks->append($item);
@@ -162,7 +141,6 @@ class ManageController extends X_Controller_Action
 		//$this->view->test = $this->_helper->url('index', 'test');
 		//$this->view->pcstream = $this->_helper->url('pcstream', 'index');
 		//$this->view->pcstream_enabled = ($this->options->pcstream->get('commanderEnabled', false) && $this->vlc->isRunning());
-		$this->view->coreLinks = $coreLinks;
 		$this->view->actionLinks = $actionLinks;
 		$this->view->manageLinks = $manageLinks;
 		$this->view->statistics = $statistics;

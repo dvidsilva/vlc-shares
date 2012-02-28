@@ -15,6 +15,7 @@ class X_Debug {
 	
 	private static $logFile = null;
 	private static $logLevel = self::LVL_NONE;
+	private static $logPath = null;
 	
 	/**
 	 * Prevent constuction
@@ -37,6 +38,14 @@ class X_Debug {
 		return self::$logLevel;
 	}
 	
+	static public function getLogPath() {
+		if ( self::isEnabled() ) {
+			return dirname(self::$logPath);
+		} else {
+			return sys_get_temp_dir();
+		}
+	}
+	
 	/**
 	 * Init debug system
 	 * @param string $logPath path for debug log
@@ -47,6 +56,7 @@ class X_Debug {
 			fclose(self::$logFile);
 		}
 		self::$logFile = fopen($logPath, 'ab');
+		self::$logPath = $logPath;
 		self::$logLevel = $logLevel;
 		self::forcedInfo("------------------------------------------------------");
 		self::forcedInfo("Debug log enabled, level: {$logLevel}");

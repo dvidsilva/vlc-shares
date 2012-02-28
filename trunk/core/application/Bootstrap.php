@@ -194,7 +194,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 					
 					$debugPath = sys_get_temp_dir().'/vlcShares.debug.log';
 					if ( $configs->general->debug->path != null && trim($configs->general->debug->path) != '' ) {
-						$configs->general->debug->get('path', sys_get_temp_dir().'/vlcShares.debug.log' );
+						$debugPath = $configs->general->debug->get('path', sys_get_temp_dir()) .'/vlcShares.debug.log';
 					}
 					
 					X_Debug::init(

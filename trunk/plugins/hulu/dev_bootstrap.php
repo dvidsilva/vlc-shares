@@ -143,7 +143,7 @@ $pluginInstance_pluginConfigs = array(
  * 			(array_search('MY_TABLE_NAME', $dbAdapter->listTables()) === false)
  */
 $dbInits = array(
-	//$basePath.'/install.sql' => (file_exists(APPLICATION_PATH.'/../languages/myfile.txt') == false),
+	$basePath.'/install.sql' => (file_exists(APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_Hulu.en_GB.ini') == false),
 );
 
 

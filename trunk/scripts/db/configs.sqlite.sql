@@ -50,7 +50,7 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	0,
 	'config_general_debug_path_label',
 	'config_general_debug_path_desc',
-	'advanced'
+	'advanced fileBrowser fileBrowser-dir'
 );
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
@@ -86,20 +86,21 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	'advanced'
 );
 
-INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description ) VALUES (
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'path', 
 	'/usr/bin/vlc',
 	'/usr/bin/vlc',
 	'vlc',
 	0,
 	'config_vlc_path_label',
-	'config_vlc_path_desc'
+	'config_vlc_path_desc',
+	'fileBrowser'
 );
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description ) VALUES (
 	'version', 
-	'1.1.x',
-	'1.1.x',
+	'2.x',
+	'2.x',
 	'vlc',
 	1,
 	'config_vlc_version_label',
@@ -214,7 +215,7 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	1,
 	'config_helpers_devices_gui_label',
 	'config_helpers_devices_gui_desc',
-	'advanced'
+	''
 );
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
@@ -225,7 +226,7 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	1,
 	'config_helpers_devices_profile_label',
 	'config_helpers_devices_profile_desc',
-	'advanced'
+	''
 );
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
@@ -258,7 +259,7 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	0,
 	'config_helpers_ffmpeg_path_label',
 	'config_helpers_ffmpeg_path_desc',
-	NULL
+	'fileBrowser'
 );
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
@@ -280,7 +281,7 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	0,
 	'config_helpers_rtmpdump_path_label',
 	'config_helpers_rtmpdump_path_desc',
-	NULL
+	'fileBrowser'
 );
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
@@ -313,5 +314,5 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	0,
 	'config_helpers_sopcast_path_label',
 	'config_helpers_sopcast_path_desc',
-	NULL
+	'fileBrowser'
 );
