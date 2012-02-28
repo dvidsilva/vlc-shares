@@ -1,0 +1,62 @@
+<!-- application/views/scripts/gconfigs/index.phtml -->
+<?php
+// prepare decoration
+
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLink(X_Env::_('configs_showadvaced'), "javascript:toggleAdvanced(this);");
+
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLabel(X_Env::_('configs_title'));
+
+?>
+<?php $this->headScript()->appendFile($this->baseUrl("/js/gconfigs/index.js")); ?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
+		var showAdvLabel = "<?php echo X_Env::_('configs_showadvaced'); ?>";
+		var applyLabel = "<?php echo X_Env::_('apply'); ?>";
+	<?php $this->headScript()->captureEnd(); ?>
+<?php $this->headTitle()->prepend(X_Env::_('configs_title')); ?>
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<div class="unit columns on-4">
+	<div class="column">
+		<div class="container">
+			<!-- NAV -->
+			<?php echo $this->action("navtree", "gconfigs", "default", array("filter" => $this->filter) ); ?>
+		</div>
+	</div>
+	<div class="elastic column span-3">
+		<div class="container">
+			<!-- CONFIGS BOX -->
+			<?php if ( $this->filter ) : ?>
+				<div class="box">
+					<?php echo $this->action("form", "gconfigs", "default", array("filter" => $this->filter) ); ?>
+					<!-- 
+					<div class="header">
+						<span class="title"><?php echo X_Env::_('configs_title'); ?></span>
+					</div>
+					<div class="content">
+						<?php echo $this->form; ?>
+					</div>
+					-->
+				</div>
+			<?php endif; ?>
+		</div>
+	</div>
+</div>

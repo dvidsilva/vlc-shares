@@ -797,7 +797,44 @@ abstract class X_VlcShares_Plugins_Abstract {
 	 * @param Zend_Form_Element $element
 	 * @param Zend_Form $form
 	 * @param Zend_Controller_Action $controller
+	 * @deprecated
 	 */
 	public function prepareConfigElement($section, $namespace, $key, Zend_Form_Element $element, Zend_Form  $form, Zend_Controller_Action $controller) {}
+	
+	
+	//=== Triggered in GConfigs::* ===//
+	
+	/**
+	 * Allow plugins to prepare own configs (set multioptions, validator, filters...)
+	 * Difference to prepareConfig is that this trigger have only to set element properties
+	 * 
+	 * value check on store in delegated to checkGConfigsElement
+	 * 
+	 * @param string $section
+	 * @param string $namespace
+	 * @param unknown_type $key
+	 * @param Zend_Form_Element $element
+	 * @param Zend_Form $form
+	 * @param Zend_Controller_Action $controller
+	 */
+	public function prepareGConfigsElement($section, $namespace, $key, Zend_Form_Element $element, Zend_Form  $form, Zend_Controller_Action $controller) {}
+
+	
+	/**
+	 * Allow to check value submitted by user
+	 * This trigger is called when the save event happens
+	 * Form can be valid or not. This trigger is called anyway.
+	 * Check form status to get more info
+	 *
+	 * @param string $section
+	 * @param string $namespace
+	 * @param unknown_type $key
+	 * @param Zend_Form_Element $element
+	 * @param Zend_Form $form
+	 * @param mixed $value post value submitted by user
+	 * @param Zend_Controller_Action $controller
+	 */
+	public function checkGConfigsElement($section, $namespace, $key, Zend_Form_Element $element, Zend_Form  $form, $value, Zend_Controller_Action $controller) {}
+	
 	
 }

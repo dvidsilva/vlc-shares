@@ -108,11 +108,11 @@ class X_Threads_Manager {
 			if ( !$this->isLogger() ) {
 				$thread->setLogger(new X_Threads_Logger_Null());
 			} else {
-				$thread->setLogger(new X_Threads_Logger_File("vlcShares.thread-{$threadId}.log", sys_get_temp_dir()));
+				$thread->setLogger(new X_Threads_Logger_File("vlcShares.thread-{$threadId}.log", X_Debug::getLogPath()));
 				// redirect standard debug too if enabled
 				if ( X_Debug::isEnabled() ) {
-					X_Debug::i("Forking debug log to {".sys_get_temp_dir()."/vlcShares.thread-{$threadId}.log");
-					X_Debug::init(sys_get_temp_dir()."/vlcShares.thread-{$threadId}.log", X_Debug::getLevel());
+					X_Debug::i("Forking debug log to {".X_Debug::getLogPath()."/vlcShares.thread-{$threadId}.log");
+					X_Debug::init(X_Debug::getLogPath()."/vlcShares.thread-{$threadId}.log", X_Debug::getLevel());
 				}
 			}
 		}

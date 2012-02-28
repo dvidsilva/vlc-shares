@@ -174,6 +174,13 @@ class X_VlcShares_Plugins_Broker /*extends X_VlcShares_Plugins_Abstract*/ {
 	}
 	//}}}
 	
+	//{{{ REDIRECT TO prepareConfigElement TODO remove before 0.5.5 stable
+	public function prepareGConfigsElement($section, $namespace, $key, Zend_Form_Element $element, Zend_Form  $form, Zend_Controller_Action $controller) {
+		return $this->prepareConfigElement($section, $namespace, $key, $element, $form, $controller);
+	}
+	//}}}
+		
+	
 	function __call($funcName, $funcParams) {
 		if ( method_exists('X_VlcShares_Plugins_Abstract', $funcName) && !in_array($funcName, $this->backlistedFunctions) ) {
 			$toBeCalled = array();

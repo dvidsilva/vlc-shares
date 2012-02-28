@@ -23,7 +23,7 @@ foreach ($v_manageLinks->getItems() as $manageLink) {
 	/* @var $manageLink X_Page_Item_ManageLink */
 	// only plugin with custom controller goes in topnav
 	if ( $manageLink->isUrl() || $manageLink->getLinkController() == 'config' ) {
-		$pluginConfigs[] = $manageLink;
+		//$pluginConfigs[] = $manageLink;
 	} else {
 		$pluginApplications[] = $manageLink;
 	}

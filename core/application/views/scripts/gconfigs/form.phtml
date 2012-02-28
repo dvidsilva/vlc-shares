@@ -1,0 +1,23 @@
+<!-- application/views/scripts/gconfigs/form.phtml -->
+<?php
+if ( $this->form instanceof Zend_Form ) {
+	$this->form->setAction($this->url(array(
+		'controller' => 'gconfigs',
+		'action' => 'save',
+		'filter' => $this->key ? "{$this->section}:{$this->key}" : $this->section, 
+	)));
+} 
+?>
+<div class="header">
+	<span class="title"><?php echo X_Env::_('configs_title'); ?></span>
+</div>
+<div class="content">
+	<h2 class="fieldset-header">
+		<?php if ( $this->key ) : ?>
+			<?php echo X_Env::_("p_".strtolower($this->key)."_conf_title"); ?>
+		<?php else: ?>
+			<?php echo X_Env::_("config_sections_{$this->section}"); ?>
+		<?php endif; ?>
+	</h2>
+	<?php echo $this->form; ?>
+</div>

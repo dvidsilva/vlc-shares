@@ -1,0 +1,29 @@
+<!-- application/views/scripts/gconfigs/navtree.phtml -->
+
+<div class="box">
+	<div class="header">
+		<span class="title"><?php echo X_Env::_('configs_navtree_title'); ?></span>
+	</div>
+	<div class="content">
+		<?php foreach ($this->navtree as $key => $value): ?>
+			<h2><?php echo X_Env::_("config_sections_{$key}"); ?></h2>
+			<?php if ( is_array($value) ): ?> 
+				<ul>
+					<?php foreach ($value as $iKey => $iValue) :?>
+						<li>
+							<?php if ( $this->selected != "{$iKey}" ) :?>
+								<a href="<?php echo $this->url(array(
+											'controller' 	=> 'gconfigs',
+											'action'		=> 'index',
+											'filter'		=> "{$iKey}"
+										), null, true); ?>"><?php echo $iValue ?></a>
+							<?php else: ?>
+								<div class="navtree-selected"><?php echo $iValue?></div>
+							<?php endif; ?>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
+		<?php endforeach; ?>
+	</div>
+</div>
