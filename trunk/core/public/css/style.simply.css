@@ -216,16 +216,18 @@ a[rel="external"]:before, a.external:before {
 .box, /* Backward compatibility */
 .block {
 	padding: 0.833em;
-	border: 1px solid white;
-	border-color: rgba(255, 255, 255, 0.75);
+	border: 1px solid #ccc;
+	/*border-color: rgba(255, 255, 255, 1);*/
 	background: rgba(255, 255, 255, 0.2);
 	-moz-border-radius: 0.8em;
 	-webkit-border-radius: 0.8em;
 	-webkit-background-clip: padding-box;
 	border-radius: 0.8em;
+	/*	
 	-moz-box-shadow: 0 0 4px rgba(50, 50, 50, 0.5);
 	-webkit-box-shadow: 0 0 4px rgba(50, 50, 50, 0.5);
 	box-shadow: 0 0 4px rgba(50, 50, 50, 0.5);
+	*/
 	margin-bottom: 2em;
 	margin-left: 1em;
 	position: relative;
@@ -251,7 +253,7 @@ a[rel="external"]:before, a.external:before {
 .box > .header > .title {
 	margin-left: 0.8em;
 	color: white;
-	font-size: 1.5em;
+	font-size: 1.2em;
 	font-weight: bold;
 	white-space: nowrap;
 }
@@ -821,6 +823,17 @@ img.installer-plugin-thumb {
 
 }
 
+.installer-plugin-extrainfo {
+	position: absolute;
+	bottom: -4px;
+	right: -4px;
+	font-size: 10px;
+	padding: 1px;
+	background-color: black;
+	color: white;
+	text-transform: uppercase;
+}
+
 .installer-plugin-container:hover .installer-plugin-title {
 	background-color: rgba(0, 0, 0, 0.6);
 
@@ -854,3 +867,35 @@ img.installer-plugin-thumb {
 
 }
 
+.inline-tabs-menu {
+	margin: 2em;
+	text-align: center;
+}
+
+.inline-tabs-menu li {
+	border: 1px solid #999;
+	background-color: #EAEAEA;
+	color: #666;
+	padding: 0.5em;
+	display: inline;
+	margin-right: 0.1em;
+	margin-bottom: 0.1em;
+}
+
+.inline-tabs-menu li.spacer {
+	border: 0;
+	background-color: inherit;
+	display: inline-block;
+	width: 25px;
+}
+
+.inline-tabs-menu li.selected {
+	background-color: #999;
+	color: #EAEAEA;
+	border: 1px solid #666;	
+}
+
+.inline-tabs-menu li a {
+	color: #333;
+	font-weight: bold;
+}

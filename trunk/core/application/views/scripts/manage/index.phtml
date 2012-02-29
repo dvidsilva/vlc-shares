@@ -131,9 +131,6 @@ $this->layout()->breadcrumb = $breadcrumb
 	<?php $mainSections->left->end();?>
 	<?php $mainSections->right->setId('statistics')->setSpan(2)->start(); ?>
 		<!-- RIGHT COLUMN -->
-		<?php $block = $this->guiElements()->block(); ?>
-		<?php $block->title->set(X_Env::_('manage_statistics')); ?>
-		<?php $block->start(); ?>
 			<?php foreach ($v_statistics->getItems() as $i => $statistic) : ?>
 				<?php /* @var $innerblock X_VlcShares_Elements_InnerBlock */ ?>
 				<?php $innerblock = $this->guiElements()->innerBlock(); ?>
@@ -161,6 +158,5 @@ $this->layout()->breadcrumb = $breadcrumb
 					<?php endif;?>
 				<?php echo $innerblock->end(); ?>
 			<?php endforeach; ?>			
-		<?php echo $block->end(); ?>
 	<?php $mainSections->right->end();?>
 <?php echo $mainSections; ?>

@@ -288,9 +288,9 @@ class InstallerController extends X_Controller_Action
 					
 					$img = '';
 					if ( $version['thumbnail'] ) {
-						$img = '<img class="installer-plugin-thumb" src="' . $this->_helper->viewRenderer->view->baseUrl("/images/loading.gif") . '" data-src="'. $version['thumbnail'] .'" />';
+						$img = '<img class="installer-plugin-thumb" src="' . $this->_helper->viewRenderer->view->baseUrl("/images/plugin-no-image.jpg") . '" data-src="'. $version['thumbnail'] .'" />';
 					} else {
-						$img = '<img class="installer-plugin-thumb" src="'. $this->_helper->viewRenderer->view->baseUrl("/images/no-images.png") .'" />';
+						$img = '<img class="installer-plugin-thumb" src="'. $this->_helper->viewRenderer->view->baseUrl("/images/plugin-no-image.jpg") .'"  />';
 					}
 					
 					$return[$version['download']] = $img . "<span class=\"installer-plugin-title\">$key</span>" . ($version['description'] != '' ? "<span class=\"installer-plugin-description\">{$version['description']}</span>" : '');

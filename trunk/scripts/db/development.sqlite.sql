@@ -16,7 +16,7 @@ UPDATE plugins SET enabled="0" WHERE key = "firstrunsetup";
 UPDATE plugins SET enabled="0" WHERE key = "widgetDevNews";
 
 -- Disable update-notifier for dev
-UPDATE plugins SET enabled="0" WHERE key = "updatenotifier";
+--UPDATE plugins SET enabled="0" WHERE key = "updatenotifier";
 
 -- Disable update-notifier for dev
 UPDATE plugins SET enabled="0" WHERE key = "widgetDevAlert";

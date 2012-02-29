@@ -233,7 +233,7 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	'X/VlcShares/Plugins/CoreStats.php',
 	'p_corestats_plglabel',
 	'p_corestats_plgdesc',
-	1,
+	0,
 	1
 );
 
@@ -281,7 +281,7 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	'X/VlcShares/Plugins/WidgetDevNews.php',
 	'p_widgetdevnews_plglabel',
 	'p_widgetdevnews_plgdesc',
-	1,
+	0,
 	1
 );
 
