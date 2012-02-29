@@ -33,31 +33,65 @@ $this->layout()->breadcrumb = $breadcrumb
 </div>
 <?php endif; ?>
 
+<?php echo $this->action('menu', 'plugin', null, array('filter' => $this->filter)); ?>
 
-<div class="unit columns on-3">
-	<div class="column span-2">
-		<div class="container">
-			<div class="box">
-				<div class="header">
-					<span class="title"><?php echo X_Env::_('plugin_index_uninstalllisttitle'); ?></span>
-				</div>
-				<div class="content">
-					<table id="plugins-table" class="table">
-						<tr class="header">
-							<th width="50%"><?php echo X_Env::_('plugin_index_uninstalllist_name'); ?></th>
-							<th width="25%"><?php echo X_Env::_('plugin_index_uninstalllist_key'); ?></th>
-							<th width="auto"><?php echo X_Env::_('plugin_index_uninstalllist_version'); ?></th>
-							<th width="100px"><?php echo X_Env::_('plugin_index_uninstalllist_option'); ?></th>
-						</tr>
-						<?php if ( count($this->plugins) ) : ?>
-							<?php foreach ($this->plugins as $i => $plugin): ?>
-							<?php /* @var $plugin Application_Model_Plugin */ ?>
-								<tr class="<?php echo $i % 2 ? 'alt' : ''; ?>">
-									<td><?php echo X_Env::_($plugin->getLabel()); ?></td>
-									<td><?php echo $plugin->getKey(); ?></td>
-									<td><?php echo $plugin->getVersion() != null ? $plugin->getVersion() : X_VlcShares::VERSION; ?></td>
-									<td>
-										<ul class="inline-menu">
+<div class="unit">
+	<div class="container">
+		<div class="box">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('plugin_table_title_'.$this->filter); ?></span>
+			</div>
+			<div class="content">
+				<table id="plugins-table" class="table">
+					<tr class="header">
+						<th width="50%"><?php echo X_Env::_('plugin_index_uninstalllist_name'); ?></th>
+						<th width="25%"><?php echo X_Env::_('plugin_index_uninstalllist_key'); ?></th>
+						<th width="50px"><?php echo X_Env::_('plugin_index_uninstalllist_status'); ?></th>
+						<th width="auto"><?php echo X_Env::_('plugin_index_uninstalllist_version'); ?></th>
+						<th width="100px"><?php echo X_Env::_('plugin_index_uninstalllist_option'); ?></th>
+					</tr>
+					<?php if ( count($this->plugins) ) : ?>
+						<?php foreach ($this->plugins as $i => $plugin): ?>
+						<?php /* @var $plugin Application_Model_Plugin */ ?>
+							<tr class="<?php echo $i % 2 ? 'alt' : ''; ?>">
+								<td><?php echo X_Env::_($plugin->getLabel()); ?></td>
+								<td><?php echo $plugin->getKey(); ?></td>
+								<td><?php echo $plugin->isEnabled() ? X_Env::_('plugin_status_enabled') : X_Env::_('plugin_status_disabled') ; ?></td>
+								<td><?php echo $plugin->getVersion() != null ? $plugin->getVersion() : '&tilde;' ?></td>
+								<td>
+									<ul class="inline-menu">
+										<?php if ($plugin->getType() != Application_Model_Plugin::SYSTEM): ?>
+											<li class="ui-state-default">
+												<?php if ( $plugin->isEnabled() ) : ?>
+													<a class="ui-icon ui-icon-bullet" title="<?php echo X_Env::_('plugin_action_disable')?>"
+														href="<?php echo $this->url(
+															array(
+																'controller' => 'plugin',
+																'action'	 => 'disable',
+																'key'		 => $plugin->getKey(),
+																'csrf'		 => $this->csrf,
+																'r'			 => $this->filter
+															), 'default', true
+														); ?>">
+														<?php echo X_Env::_('plugin_action_disable')?>
+													</a>
+												<?php else: ?>
+													<a class="ui-icon ui-icon-check" title="<?php echo X_Env::_('plugin_action_enable')?>"
+														href="<?php echo $this->url(
+															array(
+																'controller' => 'plugin',
+																'action'	 => 'enable',
+																'key'		 => $plugin->getKey(),
+																'csrf'		 => $this->csrf,
+																'r'			 => $this->filter
+															), 'default', true
+														); ?>">
+														<?php echo X_Env::_('plugin_action_enable')?>
+													</a>
+												<?php endif; ?>
+											</li>
+										<?php endif; ?>
+										<?php if ($plugin->getType() == Application_Model_Plugin::USER): ?>
 											<li class="ui-state-default">
 												<a class="ui-icon ui-icon-trash" title="<?php echo X_Env::_('plugin_action_uninstall')?>"
 													href="<?php echo $this->url(
@@ -70,76 +104,17 @@ $this->layout()->breadcrumb = $breadcrumb
 													<?php echo X_Env::_('plugin_action_uninstall')?>
 												</a>
 											</li>
-										</ul>
-									</td>
-								</tr>
-							<?php endforeach; ?>
-						<?php else: ?>
-							<tr>
-								<td colspan="4"><center><i><?php echo X_Env::_('plugin_index_uninstalllist_noplugin'); ?></i></center>
-							</tr>
-						<?php endif; ?>
-					</table>
-				</div>
-			</div>
-			<?php if ( is_array($this->installablePlugins) ) : ?>
-			<div class="box">
-				<div class="header">
-					<span class="title"><?php echo X_Env::_('plugin_index_installlisttitle'); ?></span>
-				</div>
-				<div class="content">
-					<table id="plugins-table" class="table">
-						<tr class="header">
-							<th><?php echo X_Env::_('plugin_index_installlist_key'); ?></th>
-							<th width="75%"><?php echo X_Env::_('plugin_index_installlist_description'); ?></th>
-							<th><?php echo X_Env::_('plugin_index_installlist_version'); ?></th>
-							<th width="100px"><?php echo X_Env::_('table_options'); ?></th>
-						</tr>
-						<?php $i = 0; foreach ($this->installablePlugins as $key => $pluginInfo): ?>
-							<tr class="<?php echo $i % 2 ? 'alt' : ''; ?>">
-								<td nowrap="nowrap">
-									<b><?php echo $key; ?></b>
-								</td>
-								<td>
-									<i><?php echo $pluginInfo['description'];?></i>
-								</td>
-								<td nowrap="nowrap"><?php echo $pluginInfo['version']; ?> (<?php echo ($pluginInfo['type'] == '' ? 'stable' : $pluginInfo['type']); ?>)</td>
-								<td nowrap="nowrap">
-									<ul class="inline-menu">
-										<li class="ui-state-default">
-											<a class="ui-icon ui-icon-plusthick" title="<?php echo X_Env::_('plugin_action_install')?>"
-												href="<?php echo $this->url(
-													array(
-														'controller' => 'plugin',
-														'action'	 => 'iconfirm',
-														'key'		 => $key
-													), 'default', true
-												); ?>">
-												<?php echo X_Env::_('plugin_action_install')?>
-											</a>
-										</li>
-										<?php echo X_Env::_('plugin_action_install')?>
+										<?php endif; ?>
 									</ul>
 								</td>
 							</tr>
-						<?php $i++; endforeach; ?>
-					</table>
-				</div>
-			</div>			
-			<?php endif; ?>
-		</div>
-	</div>
-	<div class="column">
-		<div class="container">
-			<div class="box">
-				<div class="header">
-					<span class="title"><?php echo X_Env::_('plugin_index_installformtitle'); ?></span>
-				</div>
-				<div class="content">
-					<p><?php echo X_Env::_('plugin_index_maindesc'); ?></p>
-					<h2 class="fieldset-header"><?php echo X_Env::_('plugin_index_installformtitle'); ?></h2>
-					<?php echo $this->form; ?>
-				</div>
+						<?php endforeach; ?>
+					<?php else: ?>
+						<tr>
+							<td colspan="4"><center><i><?php echo X_Env::_('plugin_index_uninstalllist_noplugin'); ?></i></center>
+						</tr>
+					<?php endif; ?>
+				</table>
 			</div>
 		</div>
 	</div>

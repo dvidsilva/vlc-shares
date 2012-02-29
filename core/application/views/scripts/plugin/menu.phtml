@@ -1,0 +1,22 @@
+<!-- application/views/scripts/plugin/menu.phtml -->
+
+<ul class="inline-tabs-menu">
+	<?php foreach ($this->items as $key => $item): ?>
+		<?php
+		$hasA = ($this->selected != $key);
+		$hasContent = !is_null($item);
+		$classes = ($this->selected == $key ? 'selected' : '' ) . (!$hasContent ? 'spacer' : '');
+		?>
+		<li class="<?php echo $classes; ?>">
+			<?php if ($hasContent) : ?>
+				<?php if ($hasA) : ?>
+					<a href="<?php echo $this->url($item['params'], null, true);?>">
+				<?php endif; ?>
+						<?php echo $item['label']; ?>
+				<?php if ($hasA) : ?>
+					</a>
+				<?php endif; ?>
+			<?php endif; ?>
+		</li>
+	<?php endforeach; ?>
+</ul>

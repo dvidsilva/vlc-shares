@@ -1,0 +1,17 @@
+
+<?php echo $this->action('menu', 'plugin', null, array('filter' => 'manual')); ?>
+
+<div class="unit">
+	<div class="container">
+		<div class="box" style="max-width: 960px; margin: 0 auto;">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('plugin_index_installformtitle'); ?></span>
+			</div>
+			<div class="content">
+				<p><?php echo X_Env::_('plugin_index_maindesc'); ?></p>
+				<h2 class="fieldset-header"><?php echo X_Env::_('plugin_index_installformtitle'); ?></h2>
+				<?php echo $this->form; ?>
+			</div>
+		</div>
+	</div>
+</div>

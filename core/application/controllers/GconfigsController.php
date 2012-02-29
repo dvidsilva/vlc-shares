@@ -35,6 +35,11 @@ class GconfigsController extends X_Controller_Action
     		if ( $config->getSection() == "plugins" || $config->getSection() == "helpers" ) {
     			// explode the key for 1 dot
     			list($baseKey,) = explode('.', $config->getKey());
+    			// check if plugin is enabled or it will be ignored
+    			if ( $config->getSection() == "plugins" && !X_VlcShares_Plugins::broker()->isRegistered($baseKey) ) {
+    				continue;
+    			}
+    			
     			$navTree[$config->getSection()]["{$config->getSection()}:{$baseKey}"] = X_Env::_("p_".strtolower($baseKey)."_conf_title");
     		} else {
     			//list($baseKey,) = explode('.', $config->getKey());
@@ -70,7 +75,11 @@ class GconfigsController extends X_Controller_Action
     	*/
     	
     	if ( $section && $key ) {
-    		$configs = Application_Model_ConfigsMapper::i()->fetchBySectionNamespace($section, $key);
+    		if ( $section == 'plugins' && !X_VlcShares_Plugins::broker()->isRegistered($key) ) {
+    			throw new Exception("Invalid plugin {{$key}}");
+    		} else {
+    			$configs = Application_Model_ConfigsMapper::i()->fetchBySectionNamespace($section, $key);
+    		}
     	} elseif ( $section ) {
     		$configs = Application_Model_ConfigsMapper::i()->fetchBySection($section);
     	} 

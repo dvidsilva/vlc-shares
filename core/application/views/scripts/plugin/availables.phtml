@@ -1,0 +1,74 @@
+<!-- application/views/scripts/plugin/index.phtml -->
+<?php 
+/*
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('megavideo_manage_add_new_entry'), "megavideo", "add")
+	//->addButton(X_Env::_('megavideo_bookmarklets_title'), "javascript:showModal('bookmarklets'); return false;" )
+	->addLinkRoute(X_Env::_('megavideo_manage_options'), "config", "index", array('key' => 'megavideo', 'r' => X_Env::encode('megavideo:index')));
+*/
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLabel(X_Env::_('plugin_title'));
+
+?>
+<?php $this->headScript()->appendFile($this->baseUrl("/js/plugin/availables.js")); ?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
+<?php $this->headScript()->captureEnd(); ?>
+<?php $this->headTitle()->prepend(X_Env::_('plugin_title')); ?>
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<?php echo $this->action('menu', 'plugin', null, array('filter' => 'availables')); ?>
+
+<div class="unit">
+	<div class="container">
+		<?php if ( is_array($this->installablePlugins) ) : ?>
+			<div class="box" style="width: 960px; margin: 0 auto;">
+				<div class="header">
+					<span class="title"><?php echo X_Env::_('plugin_table_title_availables'); ?></span>
+				</div>
+				<div class="content">
+					<div class="columns on-4">
+						<?php if ( count($this->installablePlugins) ): ?>
+							<?php foreach ($this->installablePlugins as $key => $pluginInfo): ?>
+								<div class="column">
+									<div class="installer-plugin-container">
+										<label for="<?php echo "input_".ucfirst($key); ?>">
+											<input type="checkbox" class="installtrigger" name="plugin" value="<?php echo $key; ?>" id="<?php echo "input_".ucfirst($key); ?>" />
+											<img class="installer-plugin-thumb" src="<?php echo $this->baseUrl('/images/plugin-no-image.jpg'); ?>"
+												<?php if ( isset($pluginInfo['thumbnail']) ): ?>
+													data-src="<?php echo $pluginInfo['thumbnail']; ?>"
+												<?php endif; ?>
+												/>
+											<span class="installer-plugin-title"><?php echo $key?></span>
+											<span class="installer-plugin-description"><?php echo $pluginInfo['description']; ?></span>
+											<span class="installer-plugin-extrainfo">
+												<?php echo $pluginInfo['version'] . ($pluginInfo['type'] != 'stable' ? $pluginInfo['type'] : '') ?>
+											</span>
+										</label>
+									</div>
+								</div>
+							<?php endforeach; ?>
+						<?php endif; ?>
+					</div>
+				</div>
+			</div>
+		<?php endif; ?>
+	</div>
+</div>
+
