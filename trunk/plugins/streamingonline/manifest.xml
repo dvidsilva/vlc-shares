@@ -3,7 +3,7 @@
 	<metadata>
 		<label>p_streamingonline_plglabel</label>
 		<description>p_streamingonline_plgdesc</description>
-		<version>0.1</version>
+		<version>0.2</version>
 		<status>stable</status>
 		<key>streamingonline</key>
 		<file>X/VlcShares/Plugins/StreamingOnline.php</file>

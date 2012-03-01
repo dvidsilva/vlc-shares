@@ -2,8 +2,8 @@
 
 class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract implements X_VlcShares_Plugins_ResolverInterface {
 	
-	const VERSION = '0.1';
-	const VERSION_CLEAN = '0.1';
+	const VERSION = '0.2';
+	const VERSION_CLEAN = '0.2';
 	
 	const TYPE_MOVIESLAST = 'LastMovies';
 	const TYPE_MOVIES = 'Movies';
@@ -18,12 +18,12 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 	const URL_MOVIES_INDEX_AZ = 'http://www.streaming-online.biz/film/';
 	
 	const URL_TVSHOWS_INDEX_NEW = 'http://www.streaming-online.biz/telefilm/?paged=%s';
-	const URL_TVSHOWS_INDEX_AZ = 'http://www.streaming-online.biz/telefilm/?cat=1';
+	const URL_TVSHOWS_INDEX_AZ = 'http://www.streaming-online.biz/category/serie-tv/';
 	
 	const URL_ANIME_INDEX_NEW = 'http://www.streaming-online.biz/anime/';
 	const URL_ANIME_INDEX_AZ = 'http://www.streaming-online.biz/anime/?cat=1';
 	
-	const URL_UPDATES_INDEX = 'http://www.streaming-online.biz/telefilm/';	
+	const URL_UPDATES_INDEX = 'http://www.streaming-online.biz/';	
 	
 	const PATTERN_UPDATES ='/<p align="center"><a href="http\:\/\/www\.streaming\-online\.biz\/(?P<category>[^\/]+?)\/\?p\=(?P<id>[^\"]+?)">(?<label>[^\<]+?)<\/a><\/p>/i';
 	
@@ -36,7 +36,7 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 	const PATTERN_MOVIESINCATEGORY_NEXTPAGE = '#<a href="http\:\/\/www\.streaming\-online\.biz\/[^\/]+?\/\?(m|cat)=[^\&]+?\&\#038\;paged\=[0-9]+"[^\>]*>(?P<label>[^\&\<]+)&raquo;[^\<]*?<\/a>[^\<]*?<\/p>#si';
 	//const PATTERN_MOVIESINCATEGORY_PREVPAGE = '#<p>[^\<]*<a href="http\:\/\/www\.streaming\-online\.biz\/film\/\?m=[^\"]+?"[^\>]*>&laquo; (?P<label>[^\&\<]+)</a>#sim';
 	
-	const URL_BASE = 'http://www.streaming-online.biz/%s/?p=%s';
+	const URL_BASE = 'http://www.streaming-online.biz/%s';
 	
 	protected $cachedLocation = array();
 	
@@ -290,12 +290,12 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 	private function _fetchTypes(X_Page_ItemList_PItem $items) {
 		
 		$types = array(
-			self::TYPE_MOVIESLAST 	=> X_Env::_('p_streamingonline_type_movieslast'),
-			self::TYPE_MOVIES 		=> X_Env::_('p_streamingonline_type_movies'),
-			self::TYPE_TVSHOWSLAST 	=> X_Env::_('p_streamingonline_type_tvshowslast'),
+			//self::TYPE_MOVIESLAST 	=> X_Env::_('p_streamingonline_type_movieslast'),
+			//self::TYPE_MOVIES 		=> X_Env::_('p_streamingonline_type_movies'),
+			//self::TYPE_TVSHOWSLAST 	=> X_Env::_('p_streamingonline_type_tvshowslast'),
 			self::TYPE_TVSHOWS 		=> X_Env::_('p_streamingonline_type_tvshows'),
-			self::TYPE_ANIMELAST	=> X_Env::_('p_streamingonline_type_animelast'),
-			self::TYPE_ANIME 		=> X_Env::_('p_streamingonline_type_anime'),
+			//self::TYPE_ANIMELAST	=> X_Env::_('p_streamingonline_type_animelast'),
+			//self::TYPE_ANIME 		=> X_Env::_('p_streamingonline_type_anime'),
 			self::TYPE_UPDATES 		=> X_Env::_('p_streamingonline_type_updates'),
 		);
 		
@@ -469,26 +469,34 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 	private function _fetchGroupTv(X_Page_ItemList_PItem $items, $resourceType, $pageN = 1) {
 	
 		$page = X_PageParser_Page::getPage(
-					sprintf(self::URL_TVSHOWS_INDEX_AZ, $pageN),
-					X_PageParser_Parser_Preg::factory(self::PATTERN_MOVIESINCATEGORY, X_PageParser_Parser_Preg::PREG_MATCH_ALL, PREG_SET_ORDER)
+					//sprintf(self::URL_TVSHOWS_INDEX_AZ, $pageN),
+					self::URL_TVSHOWS_INDEX_AZ,
+					X_PageParser_Parser_Preg::factory(
+							//self::PATTERN_MOVIESINCATEGORY,
+							'/<a href="http:\/\/www\.streaming-online\.biz\/(?P<id>[^\/]+)\/" rel="bookmark" title="(?P<label>.*?)">/',
+							X_PageParser_Parser_Preg::PREG_MATCH_ALL, PREG_SET_ORDER
+						)
 			);
 		$this->preparePageLoader($page);
 	
 		$parsed = $page->getParsed();
 	
+		/*
 		if ( $pageN > 1 ) {
 			// append "back" as first
 			$prevPage = $pageN-1;
 			$items->append(X_VlcShares_Plugins_Utils::getPreviousPage("$resourceType/{$prevPage}", $prevPage));
 		}
+		*/
 	
 		// $parsed format = array(array('image', 'category', 'id', 'label'),..)
 		foreach ($parsed as $pItem) {
 	
 			$label = trim($pItem['label']);
 			$subtype = $pageN;
-			$group = @$pItem['category'] ? "/{$pItem['category']}" : '';
-			$id = @$pItem['id'] ? "/{$pItem['id']}" : '';
+			//$group = @$pItem['category'] ? "/{$pItem['category']}" : '';
+			$group = 'telefilm';
+			$id = $pItem['id'];
 	
 	
 			X_Debug::i("Parsed items: ".var_export(array($id, $subtype, $group, $label), true));
@@ -496,20 +504,22 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 			$item = new X_Page_Item_PItem($this->getId()."-{$resourceType}-{$subtype}-{$group}-{$id}", $label );
 			$item->setIcon('/images/icons/folder_32.png')
 			->setType(X_Page_Item_PItem::TYPE_CONTAINER)
-			->setCustom(__CLASS__.':location', "$resourceType/$group")
-			->setDescription(APPLICATION_ENV == 'development' ? "$resourceType/{$subtype}{$group}{$id}" : null)
+			->setCustom(__CLASS__.':location', "$resourceType/{$subtype}/{$group}/{$id}")
+			->setDescription(APPLICATION_ENV == 'development' ? "$resourceType/{$subtype}/{$group}/{$id}" : null)
 			->setLink(array(
-					'l'	=>	X_Env::encode("$resourceType/{$subtype}{$group}{$id}")
+					'l'	=>	X_Env::encode("$resourceType/{$subtype}/{$group}/{$id}")
 					), 'default', false);
 	
 			$items->append($item);
 		}
 	
+		/*
 		if ( count($page->getParsed(X_PageParser_Parser_Preg::factory(self::PATTERN_MOVIESINCATEGORY_NEXTPAGE, X_PageParser_Parser_Preg::PREG_MATCH))) ) {
 			// append "next" as last
 			$nextPage = $pageN + 1;
 			$items->append(X_VlcShares_Plugins_Utils::getNextPage("$resourceType/{$nextPage}", $nextPage));
 		}
+		*/
 	
 	}	
 	
@@ -614,7 +624,9 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 	
 		$page = X_PageParser_Page::getPage(
 				self::URL_UPDATES_INDEX,
-				X_PageParser_Parser_Preg::factory(self::PATTERN_UPDATES, X_PageParser_Parser_Preg::PREG_MATCH_ALL, PREG_SET_ORDER)
+				X_PageParser_Parser_Preg::factory(
+						'/<p align="center"><a href="http:\/\/www\.streaming-online\.biz\/(?P<id>[^\/]+)\/">(?P<label>.+?)<\/a><\/p>/'
+						, X_PageParser_Parser_Preg::PREG_MATCH_ALL, PREG_SET_ORDER)
 		);
 		$this->preparePageLoader($page);
 		$parsed = $page->getParsed();
@@ -622,7 +634,8 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 		// $parsed format = array(array('image', 'category', 'id', 'label'),..)
 		foreach ($parsed as $pItem) {
 	
-			$group = $pItem['category'];
+			//$group = $pItem['category'];
+			$group = 'telefilm';
 			$label = trim($pItem['label']);
 			$id = $pItem['id'];
 	
@@ -647,7 +660,7 @@ class X_VlcShares_Plugins_StreamingOnline extends X_VlcShares_Plugins_Abstract i
 		X_Debug::i("Fetching videos for $resourceType, $pageN, $resourceGroup, $resourceId");
 		
 		// as first thing we have to recreate the resource url from resourceId
-		$url = sprintf(self::URL_BASE, $resourceGroup, $resourceId);
+		$url = sprintf(self::URL_BASE, $resourceId);
 		
 		$page = X_PageParser_Page::getPage($url, X_PageParser_Parser_StreamingOnlineVideos::instance()); 
 		$this->preparePageLoader($page);

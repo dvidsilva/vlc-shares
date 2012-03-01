@@ -8,7 +8,7 @@
 #     															#
 ########## StreamingOnline Plugin ####################################
 
-StreamingOnline v0.1
+StreamingOnline v0.2
 Created by Francesco Capozzo (ximarx)
 ximarx@gmail.com
 
@@ -22,6 +22,10 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.2 ***
+ - Removed old contents categories that are not availables anymore
+ - Link parsed improved (smart labeling)
 
 *** 0.1 ***
  - Initial version
