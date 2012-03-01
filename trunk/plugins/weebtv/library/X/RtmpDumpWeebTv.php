@@ -146,7 +146,8 @@ class X_RtmpDumpWeebTv {
 		*/
 		
 		//$calls[] = '-v -z -V 1>&2';
-		$calls[] = '-q';
+		// send to stdout
+		$calls[] = '-q -o -';
 		
 		return implode(' ', $calls);
 	}
@@ -271,9 +272,9 @@ class X_RtmpDumpWeebTv {
 	public function forceKill() {
 		
 		if ( !X_Env::isWindows() ) {
-			X_Env::execute("killall rtmpgw-weebtv", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_WAIT);
+			X_Env::execute("killall rtmpdump-weebtv", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_WAIT);
 		} else {
-			X_Env::execute("taskkill /IM rtmpgw-weebtv.exe /F", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_WAIT);
+			X_Env::execute("taskkill /IM rtmpdump-weebtv.exe /F", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_WAIT);
 		}
 		
 	}

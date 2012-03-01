@@ -46,8 +46,11 @@ foreach ($check as $label => $key) {
 
 echo print_r($results, true) . "\n";
 
-//$string = "./rtmpdump-weebtv --rtmp \"{$results['rtmp']}/{$results['playPath']}\" --swfUrl \"http://static2.weeb.tv/player.swf\" --weeb=\"{$results['ticket']}\" --live -q -o - | vlc -";
-$string = 'wget -O test.mp4 "http://localhost:8081/?r='.urlencode($results['rtmp'].'/'.$results['playPath'])."&s=".urlencode("http://static2.weeb.tv/player.swf")."&J=".urlencode($results['ticket'])."&v=1".'"';
+$string = "./rtmpdump-weebtv --rtmp \"{$results['rtmp']}/{$results['playPath']}\" --swfUrl \"http://static2.weeb.tv/player.swf\" --weeb=\"{$results['ticket']}\" --live -q -o - ";
+//$string = 'wget -O test.mp4 "http://localhost:8081/?r='.urlencode($results['rtmp'].'/'.$results['playPath'])."&s=".urlencode("http://static2.weeb.tv/player.swf")."&J=".urlencode($results['ticket'])."&v=1".'"';
+
+//vlc
+$string .= ' | vlc - --play-and-exit --sout="#std{access=http{mime=video/x-flv},mux=ffmpeg{mux=flv},dst=0.0.0.0:8081/stream}"';
 
 echo $string."\n";
 
