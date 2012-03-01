@@ -598,9 +598,9 @@
 		</version>
 	</plugin>
 	<plugin key="weebtv">
-		<version name="0.1" type="beta2" cMin="0.5.5" cMax="0.6">
+		<version name="0.1" type="beta3" cMin="0.5.5" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_weebtv_0.1beta2.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_weebtv_0.1beta3.zip</download>
 			<thumbnail>http://www.videofen.com/web/gallery/thumbs/d5d883e49ecaf90b9bc53a646d6a13c0_1195.jpg</thumbnail>
 			<changelog><![CDATA[
 			]]></changelog>
