@@ -139,7 +139,7 @@ class X_VlcShares_Plugins_WeebTv extends X_VlcShares_Plugins_Abstract implements
 		$return = new X_Page_ItemList_PItem();
 	
 	
-		$outputLink = "http://{%SERVER_NAME%}:{$this->getStreamingPort()}/";
+		$outputLink = "http://{%SERVER_NAME%}:{$this->getStreamingPort()}/stream";
 		$outputLink = str_replace(
 				array(
 						'{%SERVER_IP%}',
@@ -152,11 +152,13 @@ class X_VlcShares_Plugins_WeebTv extends X_VlcShares_Plugins_Abstract implements
 	
 		
 		// try to decode the $location
+		/*
 		try {
 			$outputLink .= $this->getLinkParams($location);
 		} catch (Exception $e) {
 			X_Debug::e("Unable to decode rtmp params");
 		}
+		*/
 		
 		$item = new X_Page_Item_PItem($this->getId(), X_Env::_('p_outputs_gotostream'));
 		$item->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
@@ -180,7 +182,7 @@ class X_VlcShares_Plugins_WeebTv extends X_VlcShares_Plugins_Abstract implements
 		// ignore if the streamer is not vlc
 		if ( !($engine instanceof X_Streamer_Engine_RtmpDumpWeebTv ) ) return;
 	
-		$outputLink = "http://{%SERVER_NAME%}:{$this->getStreamingPort()}/";
+		$outputLink = "http://{%SERVER_NAME%}:{$this->getStreamingPort()}/stream";
 		$outputLink = str_replace(
 				array(
 						'{%SERVER_IP%}',
@@ -193,6 +195,7 @@ class X_VlcShares_Plugins_WeebTv extends X_VlcShares_Plugins_Abstract implements
 		
 		
 		// try to get the location and provider
+		/*
 		$provider = $controller->getRequest()->getParam('p', false);
 		$location = $controller->getRequest()->getParam('l', false);
 		
@@ -205,6 +208,7 @@ class X_VlcShares_Plugins_WeebTv extends X_VlcShares_Plugins_Abstract implements
 				X_Debug::e("Unable to decode rtmp params");
 			}
 		}
+		*/
 		
 	
 		$item = new X_Page_Item_PItem($this->getId(), X_Env::_('p_profiles_backstream'));
@@ -492,7 +496,7 @@ class X_VlcShares_Plugins_WeebTv extends X_VlcShares_Plugins_Abstract implements
 			$ticket .= ";$username;$password";
 		}
 		
-		$hosterLocation = X_RtmpDumpWeebTv::buildHttpRequest(array(
+		$hosterLocation = X_RtmpDumpWeebTv::buildUri(array(
 				'rtmp' => $rtmpParams['rtmp'].'/'.$rtmpParams['playPath'],
 				'swfUrl' => rawurldecode($swfUrl),
 				'weeb' => $ticket,

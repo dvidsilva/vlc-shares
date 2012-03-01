@@ -73,35 +73,44 @@ class X_Streamer_Engine_RtmpDumpWeebTv extends X_Streamer_Engine implements X_St
 	*/
 	public function startEngine(X_Threads_Thread $thread) {
 		// assume all parameters are ready
-		$thread->log("Spawning RTMPDump (rtmpgw-weebtv)...");
+		$thread->log("Spawning RTMPDump (rtmpdump-weebtv | vlc)...");
 		$source = $this->getParam('source');
 		
 		// set the path
 		if ( X_Env::isWindows() ) {
-			X_RtmpDumpWeebTv::getInstance()->setPath(APPLICATION_PATH.'/../bin/rtmpdump-weebtv-win/rtmpgw-weebtv.exe');
+			X_RtmpDumpWeebTv::getInstance()->setPath(APPLICATION_PATH.'/../bin/rtmpdump-weebtv-win/rtmpdump-weebtv.exe');
 		} else {
-			X_RtmpDumpWeebTv::getInstance()->setPath(APPLICATION_PATH.'/../bin/rtmpdump-weebtv-linux/rtmpgw-weebtv');
+			X_RtmpDumpWeebTv::getInstance()->setPath(APPLICATION_PATH.'/../bin/rtmpdump-weebtv-linux/rtmpdump-weebtv');
 		}
 		
 		$weebPlugin = X_VlcShares_Plugins::broker()->getPlugins('weebtv');
-		if( $weebPlugin instanceof X_VlcShares_Plugins_WeebTv ) {
+		if( $weebPlugin instanceof X_VlcShares_Plugins_WeebTv && X_VlcShares_Plugins::helpers()->streamer()->isRegistered('vlc') ) {
 		
+			// try to get reference to vlc-streamer
+			/* @var $vlcStreamer X_Streamer_Engine_Vlc */
+			$vlcStreamer = X_VlcShares_Plugins::helpers()->streamer()->get('vlc');
+			
 			// get the channel id
-			//$source = substr($source, strlen('rtmpdump-weebtv://'));
+			$source = substr($source, strlen('rtmpdump-weebtv://'));
 			// make the plugin to parse params from server and build a rtmpdump-weebtv uri
-			//$source = $weebPlugin->getLinkParams($source);
+			$source = $weebPlugin->getLinkParams($source);
 			
 			// always live
-			$command = (string) X_RtmpDumpWeebTv::getInstance()->setLive(true)/*->parseUri($source)*/->setStreamPort($weebPlugin->getStreamingPort());
+			$command = (string) X_RtmpDumpWeebTv::getInstance()/*->setLive(true)*/->parseUri($source)/*->setStreamPort($weebPlugin->getStreamingPort())*/;
+			
+			$vlcStreamer->getVlcWrapper()->setPipe($command);
+			$vlcStreamer->setSource('-');
+			$vlcStreamer->setParam('profile', "#std{access=http{mime=video/x-flv},mux=ffmpeg{mux=flv},dst=0.0.0.0:{$weebPlugin->getStreamingPort()}/stream}");
+			
 			// redirect std error to null
 			// and force quite
 			//X_Env::execute("$command -q 2> /dev/null", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_WAIT);
-			X_Env::execute($command, X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_WAIT);
-			//$this->vlc->spawn();
+			//X_Env::execute($command, X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_WAIT);
+			$vlcStreamer->getVlcWrapper()->spawn();
 			$thread->log("RTMPDump execution finished");
 			
 		} else {
-			$thread->log("RTMPDump-weebtv cannot be started without weebtv plugin");
+			$thread->log("RTMPDump-weebtv cannot be started without weebtv plugin and vlc streamer");
 		}
 		
 	}

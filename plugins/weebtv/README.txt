@@ -8,7 +8,7 @@
 #     															#
 ########## WeebTv Plugin ########################################
 
-WeebTv v0.1 beta
+WeebTv v0.1 beta3
 Created by Francesco Capozzo (ximarx)
 ximarx@gmail.com
 
@@ -25,6 +25,13 @@ and windows (not tested). Patch applied to standard git checkout is available in
 /==========---
 | Changelog
 \==========---
+
+*** 0.1 beta3 ***
+ - Permissions for rtmp* executables automatically corrected in linux env (only vlc-shares 0.5.5alpha3+)
+ - Using vlc to stream the content using stdout source from piped rtmpdump (no more rtmpgw)
+
+*** 0.1 beta2 ***
+ - Fix a bug in "not dev" environment
 
 *** 0.1 beta ***
  - Initial version
