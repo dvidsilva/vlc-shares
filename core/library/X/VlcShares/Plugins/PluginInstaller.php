@@ -223,6 +223,38 @@ class X_VlcShares_Plugins_PluginInstaller extends X_VlcShares_Plugins_Abstract {
 		    		//throw $e;
 		    	}
 			}
+			
+			// process acl fragment
+			$aclHelper = X_VlcShares_Plugins::helpers()->acl();
+			
+			// new classes
+			$accounts = Application_Model_AuthAccountsMapper::i()->fetchAll();
+			foreach ($egg->getAclClasses() as $aclClass) {
+				/* @var $aclClass X_Egg_AclClass */
+				$res = $aclHelper->addClass($aclClass->getName(), $aclClass->getProperty(X_Egg_AclClass::P_DESCRIPTION, ''));
+				if ( !$res ) {
+					$this->_helper->flashMessenger(array('text' => X_Env::_('plugin_err_installerror_aclclass', $aclClass->getName()), 'type' => 'warning'));
+					continue;
+				}
+				$extends = $aclClass->getExtends();
+				if ( count($extends) ) {
+					foreach ($accounts as $account ) {
+						/* @var $account Application_Model_AuthAccount */
+						foreach($extends as $baseClass) {
+							if ( in_array($baseClass, $aclHelper->getPermissions($account->getUsername())) ) {
+								$aclHelper->grantPermission($account->getUsername(), $aclClass->getName());
+							}
+						}
+					}
+				}
+			}
+			
+			//new resources
+			foreach ($egg->getAclResources() as $resource ) {
+				/* @var $resource X_Egg_AclResource */
+				$aclHelper->addResource($resource->getKey(), $resource->getClass(), $egg->getKey(), false);
+			} 
+			
 			$egg->cleanTmp();
 			unlink($source);
 			return true;

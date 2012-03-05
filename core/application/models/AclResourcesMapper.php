@@ -66,5 +66,17 @@ class Application_Model_AclResourcesMapper extends Application_Model_AbstractMap
 		$select = $this->getDbTable()->select()->from($this->getDbTable()->info(Zend_Db_Table_Abstract::NAME), 'COUNT(key) as num');
 		return $this->getDbTable()->fetchRow($select)->num;
 	}
+	
+	public function fetchByClassNotGenerated($class, $notGenerator) {
+		$resultSet = $this->getDbTable ()->fetchAll (array('class = ?' => $class, 'generator <> ?' => $notGenerator));
+		$entries = array ();
+		foreach ( $resultSet as $row ) {
+			$mappedClass = $this->getMappedClass();
+			$entry = new $mappedClass();
+			$this->_populate($row, $entry);
+			$entries [] = $entry;
+		}
+		return $entries;
+	}
 }
 

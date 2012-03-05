@@ -153,11 +153,17 @@ class InstallerController extends X_Controller_Action
     	try {
     		// enable auth plugin after authentication
     		if ( $form->getValue('auth', '0') == '1' ) {
+    			/*
 		    	$plugin = new Application_Model_Plugin();
 		    	Application_Model_PluginsMapper::i()->fetchByClass('X_VlcShares_Plugins_Auth', $plugin);
 		    	//Application_Model_PluginsMapper::i()->delete($plugin);
 				$plugin->setEnabled(true);
 				Application_Model_PluginsMapper::i()->save($plugin);
+				*/
+    			$config = new Application_Model_Config();
+    			Application_Model_ConfigsMapper::i()->fetchByKey('auth.login.enabled', $config);
+    			$config->setValue('1');
+    			Application_Model_ConfigsMapper::i()->save($config);
     		}
     	} catch (Exception $e) {
 		    $this->_helper->flashMessenger(X_Env::_('installer_err_db').": {$e->getMessage()}");

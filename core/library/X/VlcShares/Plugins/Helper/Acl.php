@@ -77,6 +77,7 @@ class X_VlcShares_Plugins_Helper_Acl extends X_VlcShares_Plugins_Helper_Abstract
 			try {
 				Application_Model_AclPermissionsMapper::i()->save($permission);
 				X_Debug::i("Permission granted for {username: {$username}, class: {$class}}");
+				$this->resetCached();
 				return true;
 			} catch (Exception $e) {
 				X_Debug::e("Error granting permission: {$e->getMessage()}");
@@ -106,6 +107,7 @@ class X_VlcShares_Plugins_Helper_Acl extends X_VlcShares_Plugins_Helper_Abstract
 			try {
 				Application_Model_AclPermissionsMapper::i()->delete($permission);
 				X_Debug::i("Permission revoked for {username: {$username}, class: {$class}}");
+				$this->resetCached();
 				return true;
 			} catch (Exception $e) {
 				X_Debug::e("Error revoking permission: {$e->getMessage()}");
@@ -134,6 +136,7 @@ class X_VlcShares_Plugins_Helper_Acl extends X_VlcShares_Plugins_Helper_Abstract
 			try {
 				Application_Model_AclClassesMapper::i()->save($class);
 				X_Debug::i("Permission class added {{$className}}");
+				$this->resetCached();
 				return true;
 			} catch (Exception $e) {
 				X_Debug::e("Error adding class: {$e->getMessage()}");
@@ -201,6 +204,7 @@ class X_VlcShares_Plugins_Helper_Acl extends X_VlcShares_Plugins_Helper_Abstract
 			try {
 				Application_Model_AclResourcesMapper::i()->save($resource);
 				X_Debug::i("Resource setted {{$resourceKey}}");
+				$this->resetCached();
 				return true;
 			} catch (Exception $e) {
 				X_Debug::e("Error setting resource: {$e->getMessage()}");
@@ -219,6 +223,7 @@ class X_VlcShares_Plugins_Helper_Acl extends X_VlcShares_Plugins_Helper_Abstract
 			try {
 				Application_Model_AclResourcesMapper::i()->delete($resource);
 				X_Debug::i("Resource removed {{$key}}");
+				$this->resetCached();
 				return true;
 			} catch (Exception $e) {
 				X_Debug::e("Error removing resource: {$e->getMessage()}");
@@ -230,7 +235,11 @@ class X_VlcShares_Plugins_Helper_Acl extends X_VlcShares_Plugins_Helper_Abstract
 		}
 	}
 	
-	
+	/**
+	 * Get the list of classes for the username
+	 * @param string $username
+	 * @return array[string]
+	 */
 	public function getPermissions($username) {
 		// check cache first
 		if ( isset($this->permissionsCache[$username])) {
@@ -273,5 +282,14 @@ class X_VlcShares_Plugins_Helper_Acl extends X_VlcShares_Plugins_Helper_Abstract
 		return  $this->classesCache;
 	}
 	
+	/**
+	 * Reset all cached results
+	 */
+	public function resetCached() {
+		$this->checkCache = array();
+		$this->permissionsCache = array();
+		$this->classesCache = array();
+		$this->resourcesCache = array();
+	}	
 }
 

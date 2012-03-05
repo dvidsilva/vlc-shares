@@ -11,7 +11,7 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'auth.login.enabled','0','0','plugins',3,'p_auth_conf_loginenabled_label','p_auth_conf_loginenabled_desc','');
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'auth.acl.enabled','0','0','plugins',3,'p_auth_conf_aclenabled_label','p_auth_conf_aclenabled_desc','');
+	'auth.acl.enabled','1','1','plugins',3,'p_auth_conf_aclenabled_label','p_auth_conf_aclenabled_desc','');
 
 
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (

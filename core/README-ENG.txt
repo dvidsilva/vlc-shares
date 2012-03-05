@@ -8,7 +8,7 @@
 #     															#
 #################################################################
 
-VLC-SHARES v0.5.5 alpha 2 - 21/02/2012
+VLC-SHARES v0.5.5 beta - 05/03/2012
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -24,6 +24,31 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.5.5 beta (05/03/2012) ***
+ - Auth plugin is always enabled now. Login can be enabled during installation or from configs page (as configuration)
+ - ACL features added
+ - Basic rules for core resources
+ - ACL helper added: allow basic acl management
+ - New ACL fragment in plugin manifest. More info in docs/manifest_plugin.xml
+ - New file attributes in files section in plugin manifest:
+ 	* file can be replaced if explicitally required
+ 	* file permissions can be specificed (for linux env)
+ 	* failed file copy can be ignored if specified
+ 	* ... more info in docs/manifest_plugin.xml
+ - vlc-shares configuration page merged with plugins configuration
+ - new api for form element management
+ - core plugins management features moved inside plugin installer controller
+ - new repository plugin installation gui (thumbs support)
+ - new optional plugin installation gui during installation (thumbs support)
+ - guis for acl/permissions management
+ - security implemented in HttpPost thread starter 
+ - getManageIndexLinks for lazy plugins deprecated
+ - Webkit renderer is not default gui anymore for webkit devices because it requires lots of bug fixes. It can still manually selected
+ - Vlc 2.0 supported
+ - Default vlc version setted to 2.0
+ - Vlc log can be enabled in configurations
+ 
 
 *** 0.5.5 alpha 2 (21/02/2012) ***
  - Outputs and Profiles plugins merged
