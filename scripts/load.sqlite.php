@@ -121,6 +121,15 @@ try {
             echo 'Data Loaded.';
             echo PHP_EOL;
         }
+        
+        $dataSql = file_get_contents(dirname(__FILE__) . '/db/acl.sqlite.sql');
+        // use the connection directly to load sql in batches
+        $dbAdapter->getConnection()->exec($dataSql);
+        if ('testing' != APPLICATION_ENV) {
+        	echo 'ACL Loaded.';
+        	echo PHP_EOL;
+        }
+        
     }
 
 	if ( $withBuffer ) {

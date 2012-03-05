@@ -118,6 +118,17 @@ INSERT INTO plg_devices
 	("id", "label", "pattern", "exact", "idProfile", "guiClass", "extra", "priority") VALUES 
 	('8', 'Webkit Browser', '/AppleWebKit/', '0', '6', 'X_VlcShares_Plugins_WebkitRenderer', 'a:1:{s:12:"alt-profiles";a:1:{i:0;s:1:"7";}}', '1');
 
-	
+
+-- ACL
+
+INSERT INTO plg_acl_classes
+	("name", "description") VALUES
+	('ADMIN', 'ADMIN access is required to use a resource');
+INSERT INTO plg_acl_classes
+	("name", "description") VALUES
+	('BROWSE', 'BROWSE access is required to use a resource');
+INSERT INTO plg_acl_classes
+	("name", "description") VALUES
+	('ANONYMOUS', 'ANONYMOUS access is required to use a resource');
 	
 	
