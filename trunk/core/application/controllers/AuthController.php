@@ -63,7 +63,10 @@ class AuthController extends X_Controller_Action
 	}
 	
 	function forbiddenAction() {
-		throw new Exception("403: Forbidden");
+		//throw new Exception("403: Forbidden");
+		$this->getResponse()->setHttpResponseCode(403);
+		$this->_helper->viewRenderer->setNoRender();
+		$this->_helper->layout->disableLayout();
 	}
 	
 	function loginAction() {

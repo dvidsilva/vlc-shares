@@ -638,6 +638,27 @@ class PluginController extends X_Controller_Action
 	    	@unlink(dirname($manifest)."/uninstall.sql");
 		}
 		
+		// process acl fragment
+		$aclHelper = X_VlcShares_Plugins::helpers()->acl();
+		
+		// added classes
+		foreach ($egg->getAclClasses() as $aclClass) {
+			/* @var $aclClass X_Egg_AclClass */
+			$resources = Application_Model_AclResourcesMapper::i()->fetchByClassNotGenerated($aclClass->getName(), $egg->getKey());
+			$restore = $aclClass->getOnDelete();
+			foreach ($resources as $resource) {
+				/* @var $resource Application_Model_AclResource */
+				$resource->setClass($restore);
+				try {
+					Application_Model_AclResourcesMapper::i()->save($resource);
+				} catch (Exception $e) {
+					X_Debug::e("Can't restore class {{$restore}} for resource {{$resource->getKey()}}: {$e->getMessage()}");
+				}
+			}
+			$aclHelper->removeClass($aclClass->getName());
+		}
+		// acl resources are automatically removed by foreign key with generator
+				
 		@unlink($manifest);
 		@rmdir(dirname($manifest));
 		

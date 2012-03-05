@@ -3,7 +3,7 @@
 
 $menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
 $this->layout()->subNavigator =	$menu
-	->addLinkRoute(X_Env::_('p_auth_acl_new_class'), "acl", "add", array('type' => 'class'))
+	//->addLinkRoute(X_Env::_('p_auth_acl_new_class'), "acl", "add", array('type' => 'class'))
 	->addLinkRoute(X_Env::_('p_auth_acl_new_resource'), "acl", "add", array('type' => 'resource'))
 	;
 	

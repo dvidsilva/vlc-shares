@@ -104,4 +104,14 @@
 		<install>install.sql</install>
 		<uninstall>install.sql</uninstall>
 	</database>
+	<acl>
+		<classes>
+			<class extends="ADMIN" onDelete="ADMIN" description="Short description">CUSTOM_ADMIN</class>
+			<class extends="BROWSE|ADMIN">CUSTOM_BROWSE</class>
+			<class>NEW_CLASS</class>
+		</classes>		
+		<resources>
+			<resource class="CUSTOM_ADMIN">default/sample/index</resource>
+		</resources>
+	</acl>
 </vs-manifest>

@@ -3,13 +3,13 @@
 	<metadata>
 		<label>p_youporn_plglabel</label>
 		<description>p_youporn_plgdesc</description>
-		<version>0.1</version>
+		<version>0.2</version>
 		<status>stable</status>
 		<key>youporn</key>
 		<file>X/VlcShares/Plugins/YouPorn.php</file>
 		<class>X_VlcShares_Plugins_YouPorn</class>
 		<compatibility>
-			<from>0.5.4</from>
+			<from>0.5.5</from>
 			<to>0.6</to>
 		</compatibility>
 	</metadata>
@@ -54,4 +54,12 @@
 		<install>install.sql</install>
 		<uninstall>uninstall.sql</uninstall>
 	</database>
+	<acl>
+		<classes>
+			<class extends="ADMIN" onDelete="ADMIN" description="Can browse YouPorn">YOUPORN</class>
+		</classes>		
+		<resources>
+			<resource class="YOUPORN">default/browse/share/youporn</resource>
+		</resources>
+	</acl>
 </vs-manifest>

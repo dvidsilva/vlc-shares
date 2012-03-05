@@ -50,9 +50,9 @@ class X_VlcShares_Plugins_Auth extends X_VlcShares_Plugins_Abstract {
 		$providerName = $controller->getRequest()->getParam('p', false);
 		
 		// check permission class
-		if ( $controllerName == 'browse' && $controllerName == 'share' ) {
+		if ( $controllerName == 'browse' && $actionName == 'share' ) {
 			// check provider too only if controller == browse
-			$resourceKey = "$moduleName/$controllerName/$actionName" . $providerName !== false ? "/$providerName" : '';
+			$resourceKey = "$moduleName/$controllerName/$actionName" . ($providerName !== false ? "/$providerName" : '');
 		} else {
 			$resourceKey = "$moduleName/$controllerName/$actionName";
 		}

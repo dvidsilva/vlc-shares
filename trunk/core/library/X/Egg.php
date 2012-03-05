@@ -31,6 +31,9 @@ class X_Egg {
 	private $installSql = null;
 	private $uninstallSql = null;
 	
+	private $acl_classes = array();
+	private $acl_resources = array();
+	
 	private function __construct() {}
 	
 	
@@ -95,9 +98,62 @@ class X_Egg {
 			$this->uninstallSql = @$dom->queryXPath('/vs-manifest/database/uninstall')->current()->nodeValue;
 		} catch (Exception $e) { $this->uninstallSql = null; } // if there is no TO, it isn't a problem
 		
+		// new fragment of manifest about acl
+		$aclClassesXPath = $dom->queryXPath('/vs-manifest/acl/classes/class');
+		
+		while ( $aclClassesXPath->valid() ) {
+			$node = $aclClassesXPath->current();
+			
+			$properties = array();
+			for ( $i = 0; $i < $node->attributes->length; $i++ ) {
+				$properties[$node->attributes->item($i)->nodeName] = $node->attributes->item($i)->nodeValue;
+			}
+				
+			$classname = $node->nodeValue;
+				
+			$this->acl_classes[] = new X_Egg_AclClass($classname, $properties);
+			
+			$aclClassesXPath->next();
+		}
+
+		// new fragment of manifest about acl
+		$aclResourcesXPath = $dom->queryXPath('/vs-manifest/acl/resources/resource');
+		
+		while ( $aclResourcesXPath->valid() ) {
+			$node = $aclResourcesXPath->current();
+				
+			$properties = array();
+			for ( $i = 0; $i < $node->attributes->length; $i++ ) {
+				$properties[$node->attributes->item($i)->nodeName] = $node->attributes->item($i)->nodeValue;
+			}
+		
+			$key = $node->nodeValue;
+		
+			$this->acl_resources[] = new X_Egg_AclResource($key, $properties);
+				
+			$aclResourcesXPath->next();
+		}
+		
 		
 	}
 	
+	/**
+	 * @return array[X_Egg_AclClass]
+	 */
+	public function getAclClasses() {
+		return $this->acl_classes;
+	}
+
+	/**
+	 * @return array[X_Egg_AclResource]
+	 */
+	public function getAclResources() {
+		return $this->acl_resources;
+	}
+	
+	/**
+	 * @return array[X_Egg_File]
+	 */
 	public function getFiles() {
 		return $this->files;
 	}

@@ -98,25 +98,25 @@ INSERT INTO "videos" VALUES(NULL,'mms://verytangy-673-404284.wm.llnwd.net/veryta
 
 INSERT INTO plg_devices 
 	("id", "label", "pattern", "exact", "idProfile", "guiClass", "extra", "priority") VALUES 
-	('1', 'Asus Transformer', '/Android.*?Transformer [A-Z]{2}101/i', '0', '8', 'X_VlcShares_Plugins_WebkitRenderer', 'a:1:{s:12:"alt-profiles";a:4:{i:0;s:1:"3";i:1;s:1:"4";i:2;s:1:"6";i:3;s:1:"7";}}', '3');
+	('1', 'Asus Transformer', '/Android.*?Transformer [A-Z]{2}101/i', '0', '8', 'X_VlcShares_Plugins_MobileRenderer', 'a:1:{s:12:"alt-profiles";a:4:{i:0;s:1:"3";i:1;s:1:"4";i:2;s:1:"6";i:3;s:1:"7";}}', '3');
 INSERT INTO plg_devices
 	("id", "label", "pattern", "exact", "idProfile", "guiClass", "extra", "priority") VALUES 
 	('2', 'WiiMC', '/WiiMC/i', '0', '1', 'X_VlcShares_Plugins_WiimcPlxRenderer', 'a:0:{}', '4');
 INSERT INTO plg_devices 
 	("id", "label", "pattern", "exact", "idProfile", "guiClass", "extra", "priority") VALUES 
-	('4', 'Generic Android', '/Android/i', '0', '5', 'X_VlcShares_Plugins_WebkitRenderer', 'a:1:{s:12:"alt-profiles";a:4:{i:0;s:1:"3";i:1;s:1:"4";i:2;s:1:"6";i:3;s:1:"7";}}', '2');
+	('4', 'Generic Android', '/Android/i', '0', '5', 'X_VlcShares_Plugins_MobileRenderer', 'a:1:{s:12:"alt-profiles";a:4:{i:0;s:1:"3";i:1;s:1:"4";i:2;s:1:"6";i:3;s:1:"7";}}', '2');
 INSERT INTO plg_devices
 	("id", "label", "pattern", "exact", "idProfile", "guiClass", "extra", "priority") VALUES
-	('5', 'HTC Wildfire (Buzz)', '/Android.*?HTC Wildfire/i', '0', '5', 'X_VlcShares_Plugins_WebkitRenderer', 'a:1:{s:12:"alt-profiles";a:5:{i:0;s:1:"3";i:1;s:1:"4";i:2;s:1:"5";i:3;s:1:"6";i:4;s:1:"7";}}', '5');
+	('5', 'HTC Wildfire (Buzz)', '/Android.*?HTC Wildfire/i', '0', '5', 'X_VlcShares_Plugins_MobileRenderer', 'a:1:{s:12:"alt-profiles";a:5:{i:0;s:1:"3";i:1;s:1:"4";i:2;s:1:"5";i:3;s:1:"6";i:4;s:1:"7";}}', '5');
 INSERT INTO plg_devices
 	("id", "label", "pattern", "exact", "idProfile", "guiClass", "extra", "priority") VALUES
-	('6', 'Google Chrome Web Browser', '/Mozilla\/.*?AppleWebKit\/.*?(Chrome|Chromium)\/.*?Safari/i', '0', '7', 'X_VlcShares_Plugins_WebkitRenderer', 'a:1:{s:12:"alt-profiles";a:2:{i:0;s:1:"6";i:1;s:1:"7";}}', '6');
+	('6', 'Google Chrome Web Browser', '/Mozilla\/.*?AppleWebKit\/.*?(Chrome|Chromium)\/.*?Safari/i', '0', '7', 'X_VlcShares_Plugins_MobileRenderer', 'a:1:{s:12:"alt-profiles";a:2:{i:0;s:1:"6";i:1;s:1:"7";}}', '6');
 INSERT INTO plg_devices 
 	("id", "label", "pattern", "exact", "idProfile", "guiClass", "extra", "priority") VALUES 
 	('7', 'Generic Web Browser', '/Mozilla/i', '0', '6', 'X_VlcShares_Plugins_MobileRenderer', 'a:1:{s:12:"alt-profiles";a:1:{i:0;s:1:"7";}}', '0');
 INSERT INTO plg_devices 
 	("id", "label", "pattern", "exact", "idProfile", "guiClass", "extra", "priority") VALUES 
-	('8', 'Webkit Browser', '/AppleWebKit/', '0', '6', 'X_VlcShares_Plugins_WebkitRenderer', 'a:1:{s:12:"alt-profiles";a:1:{i:0;s:1:"7";}}', '1');
+	('8', 'Webkit Browser', '/AppleWebKit/', '0', '6', 'X_VlcShares_Plugins_MobileRenderer', 'a:1:{s:12:"alt-profiles";a:1:{i:0;s:1:"7";}}', '1');
 
 
 -- ACL
