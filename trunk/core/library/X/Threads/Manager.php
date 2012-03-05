@@ -49,7 +49,9 @@ class X_Threads_Manager {
 	 * @param X_Threads_Thread_Info $thread
 	 */
 	protected function resume(X_Threads_Thread_Info $thread) {
-		$this->getStarter()->spawn($thread->getId());
+		if ( !$this->getStarter()->spawn($thread->getId()) ) {
+			throw new Exception("Thread not started {{$thread->getId()}");
+		}
 	}
 	
 	/**

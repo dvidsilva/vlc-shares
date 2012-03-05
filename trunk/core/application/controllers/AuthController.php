@@ -62,6 +62,10 @@ class AuthController extends X_Controller_Action
 		
 	}
 	
+	function forbiddenAction() {
+		throw new Exception("403: Forbidden");
+	}
+	
 	function loginAction() {
 				
 		// provide alternative auth method
@@ -280,6 +284,12 @@ class AuthController extends X_Controller_Action
 			
 			try {
 				Application_Model_AuthAccountsMapper::i()->save($account);
+				
+				// if is a new account, grant browse permission to the new account
+				if ( !$id ) {
+					X_VlcShares_Plugins::helpers()->acl()->grantPermission($account->getUsername(), Application_Model_AclClass::CLASS_BROWSE);
+				}
+				
 				$this->_helper->flashMessenger(array('type' => 'success', 'text' => X_Env::_('p_auth_accountstored')));
 				$this->_helper->redirector('accounts', 'auth');
 			} catch (Exception $e) {

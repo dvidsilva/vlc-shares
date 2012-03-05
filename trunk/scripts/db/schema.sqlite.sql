@@ -103,3 +103,24 @@ CREATE TABLE plg_devices (
 	priority INTEGER NOT NULL DEFAULT 0
 );
 
+CREATE TABLE plg_acl_resources (
+	`key` VARCHAR(60) NOT NULL PRIMARY KEY,
+	`class` VARCHAR(60) NOT NULL,
+	`generator` VARCHAR(255) DEFAULT "",
+	FOREIGN KEY(`class`) REFERENCES plg_acl_classes(`name`) ON DELETE CASCADE,
+	FOREIGN KEY(`generator`) REFERENCES plugins(`key`) ON DELETE CASCADE	
+);
+
+CREATE TABLE plg_acl_classes (
+	name VARCHAR(60) NOT NULL PRIMARY KEY,
+	description VARCHAR(255) DEFAULT ""
+);
+
+CREATE TABLE plg_acl_permissions (
+	username VARCHAR(255) NOT NULL,
+	class VARCHAR(60) NOT NULL,
+	PRIMARY KEY(username, class),
+	FOREIGN KEY(username) REFERENCES plg_auth_accounts(username) ON DELETE CASCADE,
+	FOREIGN KEY(class) REFERENCES plg_acl_classes(name) ON DELETE CASCADE
+);
+

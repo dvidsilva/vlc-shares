@@ -24,6 +24,7 @@ class X_VlcShares_Plugins_Helper_Broker {
 		$sopcast = new X_VlcShares_Plugins_Helper_SopCast($options->get('sopcast', new Zend_Config(array())));
 		//$vlc = new X_VlcShares_Plugins_Helper_Vlc($options->get('vlc', new Zend_Config(array())));
 		$streamer = new X_VlcShares_Plugins_Helper_Streamer($options->get('streamer', new Zend_Config(array())));
+		$acl = X_VlcShares_Plugins_Helper_Acl::instance($options->get('acl', new Zend_Config(array())));
 		
 		$this
 			//->registerHelper('vlc', $vlc, true)
@@ -35,7 +36,8 @@ class X_VlcShares_Plugins_Helper_Broker {
 			->registerHelper('hoster', $hoster, true)
 			->registerHelper('rtmpdump', $rtmpdump, true)
 			->registerHelper('streamer', $streamer, true)
-			->registerHelper('sopcast', $sopcast, true);
+			->registerHelper('sopcast', $sopcast, true)
+			->registerHelper('acl', $acl, true);
 	}
 	
 	/**
@@ -88,6 +90,25 @@ class X_VlcShares_Plugins_Helper_Broker {
 	 * @return X_VlcShares_Plugins_Helper_Streamer
 	 */
 	public function streamer() { return $this->helper(__FUNCTION__); }
+
+	/**
+	 * @return X_VlcShares_Plugins_Helper_Acl
+	 */
+	public function acl() { return $this->helper(__FUNCTION__); }
+	
+	
+	/**
+	 * Proxy function call to 
+	 * self::helper()
+	 * @param string $method helper name
+	 * @param array $argv ignored
+	 * @return X_VlcShares_Plugins_Helper_Abstract
+	 * @throws Exception if helper name not found
+	 */
+	public function __call($method, $argv) {
+		return $this->helper($method);
+	}
+	
 	
 	/**
 	 * Register a new helper in the list
@@ -111,9 +132,20 @@ class X_VlcShares_Plugins_Helper_Broker {
 	}
 	
 	/**
+	 * Check if helper is registered
+	 * @param string $helperName helper name
+	 * @return boolean
+	 */
+	public function isRegistered($helperName) {
+		return (isset($this->_helpers[$helperName]));
+	}
+	
+	/**
+	 * Get an helper by name
 	 * 
 	 * @param string $helperName
 	 * @return X_VlcShares_Plugins_Helper_Interface
+	 * @throws Exception if helper name not found
 	 */
 	public function helper($helperName) {
 		if ( array_key_exists($helperName, $this->_helpers) ) {

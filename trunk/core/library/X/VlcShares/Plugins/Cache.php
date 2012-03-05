@@ -312,6 +312,28 @@ class X_VlcShares_Plugins_Cache extends X_VlcShares_Plugins_Abstract {
 		Application_Model_CacheMapper::i()->save($cacheEntry);
 		
 	}
+	
+	/**
+	 * Force a cache storing even if plugin is disabled.
+	 * Forced items are stored under the manual:forced: namespace
+	 * @param string $key content key for retrieval
+	 * @param string $content
+	 * @param int $validity number of minutes entry will be valid
+	 * @return string
+	 */
+	public static function forcedStoreItem($key, $content, $validity) {
+		$key = "manual:forced:$key";
+		
+		$cacheEntry = new Application_Model_Cache();
+		
+		Application_Model_CacheMapper::i()->fetchByUri($key, $cacheEntry);
+		$cacheEntry->setUri($key)
+		->setContent($content)
+		->setCreated(time())
+		->setValidity(time() + ($validity * 60));
+			
+		Application_Model_CacheMapper::i()->save($cacheEntry);
+	}
 
 	/**
 	 * Retrieve an item from the cache using $key
@@ -330,6 +352,28 @@ class X_VlcShares_Plugins_Cache extends X_VlcShares_Plugins_Abstract {
 		}
 		
 		return $cacheEntry->getContent();
-		
 	}
+
+	/**
+	 * Retrieve a forced item even if plugin is disabled
+	 * Forced items are stored under the manual:forced: namespace
+	 * 
+	 * @param string $key
+	 * @return string
+	 * @throws Exception if no valid item with $key found 
+	 */
+	public static function forcedRetrieveItem($key) {
+		$key = "manual:forced:$key";
+		
+		$cacheEntry = new Application_Model_Cache();
+		Application_Model_CacheMapper::i()->fetchByUri($key, $cacheEntry);
+		
+		if ( !$cacheEntry->isValid(time()) ) {
+			throw new Exception("Invalid cache key");
+		}
+		
+		return $cacheEntry->getContent();
+	}
+	
+	
 }

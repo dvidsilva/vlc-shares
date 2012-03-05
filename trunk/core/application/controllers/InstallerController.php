@@ -126,6 +126,10 @@ class InstallerController extends X_Controller_Action
 	    			;
 	    		Application_Model_AuthAccountsMapper::i()->save($account);
     			
+	    		// adding permissions
+	    		X_VlcShares_Plugins::helpers()->acl()->grantPermission($username, Application_Model_AclClass::CLASS_ADMIN);
+	    		X_VlcShares_Plugins::helpers()->acl()->grantPermission($username, Application_Model_AclClass::CLASS_BROWSE);
+	    		
 	    		$this->_helper->flashMessenger(array('type' => 'success', 'text' => X_Env::_('installer_newaccount_done')));
 	    		
     		} catch (Exception $e) {
@@ -247,7 +251,7 @@ class InstallerController extends X_Controller_Action
 	    	$this->_helper->flashMessenger(X_Env::_('installer_op_completed'));
 	    	
 	    	// all done, redirect to config page
-	    	$this->_helper->redirector('index', 'configs');
+	    	$this->_helper->redirector('index', 'gconfigs', null, array('filter' => 'vlc'));
 	    	
     	} catch ( Exception $e) {
     		$this->_helper->flashMessenger(X_Env::_('installer_err_db').": {$e->getMessage()}");

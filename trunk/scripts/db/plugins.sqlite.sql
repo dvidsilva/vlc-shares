@@ -4,9 +4,15 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	'X/VlcShares/Plugins/Auth.php',
 	'p_auth_plglabel',
 	'p_auth_plgdesc',
-	0,
+	1,
 	1
 );
+
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'auth.login.enabled','0','0','plugins',3,'p_auth_conf_loginenabled_label','p_auth_conf_loginenabled_desc','');
+INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+	'auth.acl.enabled','0','0','plugins',3,'p_auth_conf_aclenabled_label','p_auth_conf_aclenabled_desc','');
+
 
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
 	'plugininstaller',
@@ -419,7 +425,7 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	'X/VlcShares/Plugins/UpnpRenderer.php',
 	'p_upnp_plglabel',
 	'p_upnp_plgdesc',
-	1,
+	0,
 	1
 );
 

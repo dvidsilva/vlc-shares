@@ -60,7 +60,11 @@ abstract class X_Threads_Controller_Action extends Zend_Controller_Action {
 	
 	
 	private function triggerError($message, $code) {
-		return $this->_helper->json(array(
+
+		$this->_helper->viewRenderer->setNoRender(true);
+		$this->_helper->layout->disableLayout();
+		
+		echo $this->_helper->json(array(
 			'success' 	=> false,
 			'message' 	=> $message,
 			'code'		=> $code
