@@ -40,9 +40,6 @@ class IndexController extends X_Controller_Action
 		X_VlcShares_Plugins::broker()->gen_afterPageBuild($pageItems, $this);
     	
     }
-	public function pcAction() {
-		
-	}
 
 }
 

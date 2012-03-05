@@ -1,4 +1,23 @@
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/acl/index', 'ADMIN', 'auth');
 
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/acl/add', 'ADMIN', 'auth');
+	
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/acl/change', 'ADMIN', 'auth');
+
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/acl/remove', 'ADMIN', 'auth');
+
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/acl/save', 'ADMIN', 'auth');
+	
 INSERT INTO plg_acl_resources
 	("key", "class", "generator") VALUES
 	('default/gconfigs/index', 'ADMIN', 'auth');
@@ -140,13 +159,13 @@ INSERT INTO plg_acl_resources
 	("key", "class", "generator") VALUES
 	('default/onlinelibrary/delete', 'BROWSE', 'onlinelibrary');
 
-INSERT INTO plg_acl_resources
-	("key", "class", "generator") VALUES
-	('default/upnp/manifest', 'ADMIN', 'upnprenderer');
+--INSERT INTO plg_acl_resources
+--	("key", "class", "generator") VALUES
+--	('default/upnp/manifest', 'ADMIN', 'upnprenderer');
 
-INSERT INTO plg_acl_resources
-	("key", "class", "generator") VALUES
-	('default/upnp/index', 'ADMIN', 'upnprenderer');
+--INSERT INTO plg_acl_resources
+--	("key", "class", "generator") VALUES
+--	('default/upnp/index', 'ADMIN', 'upnprenderer');
 
 INSERT INTO plg_acl_resources
 	("key", "class", "generator") VALUES
@@ -156,29 +175,29 @@ INSERT INTO plg_acl_resources
 	("key", "class", "generator") VALUES
 	('default/upnp/stop', 'ADMIN', 'upnprenderer');
 
-INSERT INTO plg_acl_resources
-	("key", "class", "generator") VALUES
-	('default/upnp/control', 'ADMIN', 'upnprenderer');
+--INSERT INTO plg_acl_resources
+--	("key", "class", "generator") VALUES
+--	('default/upnp/control', 'ADMIN', 'upnprenderer');
 
-INSERT INTO plg_acl_resources
-	("key", "class", "generator") VALUES
-	('default/upnp/event', 'ADMIN', 'upnprenderer');
+--INSERT INTO plg_acl_resources
+--	("key", "class", "generator") VALUES
+--	('default/upnp/event', 'ADMIN', 'upnprenderer');
 
-INSERT INTO plg_acl_resources
-	("key", "class", "generator") VALUES
-	('default/auth/index', 'ANONYMOUS', 'auth');
+--INSERT INTO plg_acl_resources
+--	("key", "class", "generator") VALUES
+--	('default/auth/index', 'ANONYMOUS', 'auth');
 
-INSERT INTO plg_acl_resources
-	("key", "class", "generator") VALUES
-	('default/auth/forbidden', 'ANONYMOUS', 'auth');
+--INSERT INTO plg_acl_resources
+--	("key", "class", "generator") VALUES
+--	('default/auth/forbidden', 'ANONYMOUS', 'auth');
 
-INSERT INTO plg_acl_resources
-	("key", "class", "generator") VALUES
-	('default/auth/login', 'ADMIN', 'auth');
+--INSERT INTO plg_acl_resources
+--	("key", "class", "generator") VALUES
+--	('default/auth/login', 'ANONYMOUS', 'auth');
 
-INSERT INTO plg_acl_resources
-	("key", "class", "generator") VALUES
-	('default/auth/logout', 'ANONYMOUS', 'auth');
+--INSERT INTO plg_acl_resources
+--	("key", "class", "generator") VALUES
+--	('default/auth/logout', 'ANONYMOUS', 'auth');
 
 INSERT INTO plg_acl_resources
 	("key", "class", "generator") VALUES
@@ -276,21 +295,17 @@ INSERT INTO plg_acl_resources
 	("key", "class", "generator") VALUES
 	('default/cache/clearold', 'ADMIN', 'cache');
 
-INSERT INTO plg_acl_resources
-	("key", "class", "generator") VALUES
-	('default/index/index', 'ANONYMOUS', 'auth');
+--INSERT INTO plg_acl_resources
+--	("key", "class", "generator") VALUES
+--	('default/index/index', 'ANONYMOUS', 'auth');
 
 INSERT INTO plg_acl_resources
 	("key", "class", "generator") VALUES
 	('default/index/collections', 'BROWSE', 'auth');
 
-INSERT INTO plg_acl_resources
-	("key", "class", "generator") VALUES
-	('default/index/pc', 'BROWSE', 'auth');
-
-INSERT INTO plg_acl_resources
-	("key", "class", "generator") VALUES
-	('default/threads/start', 'ANONYMOUS', 'auth');
+--INSERT INTO plg_acl_resources
+--	("key", "class", "generator") VALUES
+--	('default/threads/start', 'ANONYMOUS', 'auth');
 
 INSERT INTO plg_acl_resources
 	("key", "class", "generator") VALUES
@@ -312,9 +327,9 @@ INSERT INTO plg_acl_resources
 	("key", "class", "generator") VALUES
 	('default/browse/stream', 'BROWSE', 'auth');
 
-INSERT INTO plg_acl_resources
-	("key", "class", "generator") VALUES
-	('default/error/error', 'ANONYMOUS', 'auth');
+--INSERT INTO plg_acl_resources
+--	("key", "class", "generator") VALUES
+--	('default/error/error', 'ANONYMOUS', 'auth');
 
 INSERT INTO plg_acl_resources
 	("key", "class", "generator") VALUES

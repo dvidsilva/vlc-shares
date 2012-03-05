@@ -157,6 +157,8 @@ class X_VlcShares_Plugins_Auth extends X_VlcShares_Plugins_Abstract {
 	 */
 	public function getIndexManageLinks(Zend_Controller_Action $controller) {
 
+		$list = new X_Page_ItemList_ManageLink();
+		
 		$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_auth_mlink'));
 		$link->setTitle(X_Env::_('p_auth_managetitle'))
 			->setIcon('/images/auth/logo.png')
@@ -164,7 +166,21 @@ class X_VlcShares_Plugins_Auth extends X_VlcShares_Plugins_Abstract {
 					'controller'	=>	'auth',
 					'action'		=>	'accounts',
 			), 'default', true);
-		return new X_Page_ItemList_ManageLink(array($link));
+		$list->append($link);
+		
+		if ( $this->config('acl.enabled', false) ) {
+			$link = new X_Page_Item_ManageLink($this->getId(), X_Env::_('p_auth_mlink_resources'));
+			$link->setTitle(X_Env::_('p_auth_managetitle_resources'))
+			->setIcon('/images/auth/permissions.png')
+			->setLink(array(
+					'controller'	=>	'acl',
+					'action'		=>	'index',
+			), 'default', true);
+			$list->append($link);
+		}
+		
+		
+		return $list;
 	}
 	
 	

@@ -123,12 +123,12 @@ INSERT INTO plg_devices
 
 INSERT INTO plg_acl_classes
 	("name", "description") VALUES
-	('ADMIN', 'ADMIN access is required to use a resource');
+	('ADMIN', 'p_auth_class_admin');
 INSERT INTO plg_acl_classes
 	("name", "description") VALUES
-	('BROWSE', 'BROWSE access is required to use a resource');
+	('BROWSE', 'p_auth_class_browse');
 INSERT INTO plg_acl_classes
 	("name", "description") VALUES
-	('ANONYMOUS', 'ANONYMOUS access is required to use a resource');
+	('ANONYMOUS', 'p_auth_class_anonymous');
 	
 	
