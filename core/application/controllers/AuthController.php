@@ -199,8 +199,27 @@ class AuthController extends X_Controller_Action
 		$form = new Application_Form_AuthAccount();
 		$form->setAction($this->_helper->url('save', 'auth'));
 
+		
+		$_permissions = X_VlcShares_Plugins::helpers()->acl()->getClasses();
+		$permissions = array();
+		$permissionsDefault = array();
+		foreach ($_permissions as $perm) {
+			/* @var $perm Application_Model_AclClass */
+			$description = X_Env::_($perm->getDescription());
+			$permissions[$perm->getName()] = "{$perm->getName()} - <i>{$description}</i>";
+			if ( $perm->getName() == Application_Model_AclClass::CLASS_BROWSE ) {
+				$permissionsDefault[] = $perm->getName();
+			}
+		}
+		
+		$form->permissions->setMultiOptions($permissions);
+
 		$form->setDefault('enabled', 1)
-			->setDefault('altallowed', 1);
+			->setDefault('altallowed', 1)
+			->setDefault('permissions', $permissionsDefault)
+		;
+			
+		
 		
 		
 		$this->view->form = $form;
@@ -224,11 +243,28 @@ class AuthController extends X_Controller_Action
 		$form->setAction($this->_helper->url('save', 'auth'));
 		$form->username->setAttrib('disabled', true);
 		
+		
+		$_permissions = X_VlcShares_Plugins::helpers()->acl()->getClasses();
+		$permissions = array();
+		$permissionsDefault = array();
+		foreach ($_permissions as $perm) {
+			/* @var $perm Application_Model_AclClass */
+			$description = X_Env::_($perm->getDescription());
+			$permissions[$perm->getName()] = "{$perm->getName()} - <i>{$description}</i>";
+			if ( in_array($perm->getName(), X_VlcShares_Plugins::helpers()->acl()->getPermissions($account->getUsername())) ) {
+				$permissionsDefault[] = $perm->getName();
+			}
+		}
+		
+		$form->permissions->setMultiOptions($permissions);
+		
+		
 		$form->setDefault('username', $account->getUsername())
 			->setDefault('id', $account->getId())
 			->setDefault('password', $account->getPassword())
 			->setDefault('enabled', $account->isEnabled() ? 1 : 0)
 			->setDefault('altallowed', $account->isAltAllowed() ? 1 : 0)
+			->setDefault('permissions', $permissionsDefault)
 		;
 		
 		$this->view->form = $form;
@@ -250,6 +286,21 @@ class AuthController extends X_Controller_Action
 			$form->username->setRequired(false);
 			$form->username->setAttrib('disabled', true);
 		}
+
+		$_permissions = X_VlcShares_Plugins::helpers()->acl()->getClasses();
+		$permissions = array();
+		$permissionsDefault = array();
+		foreach ($_permissions as $perm) {
+			/* @var $perm Application_Model_AclClass */
+			$description = X_Env::_($perm->getDescription());
+			$permissions[$perm->getName()] = "{$perm->getName()} - <i>{$description}</i>";
+			//if ( in_array($perm->getName(), X_VlcShares_Plugins::helpers()->acl()->getPermissions($account->getUsername())) ) {
+				//$permissionsDefault[] = $perm->getName();
+			//}
+		}
+		
+		$form->permissions->setMultiOptions($permissions);
+		
 		
 		if ( $form->isValid($this->getRequest()->getPost())) {
 			
@@ -286,9 +337,33 @@ class AuthController extends X_Controller_Action
 				Application_Model_AuthAccountsMapper::i()->save($account);
 				
 				// if is a new account, grant browse permission to the new account
+				/*
 				if ( !$id ) {
 					X_VlcShares_Plugins::helpers()->acl()->grantPermission($account->getUsername(), Application_Model_AclClass::CLASS_BROWSE);
 				}
+				*/
+				$acl = X_VlcShares_Plugins::helpers()->acl();
+				$prevPermissions = array();
+				if ( $id ) {
+					$prevPermissions = $acl->getPermissions($account->getUsername());
+				}
+				
+				$newPermissions = $form->getValue('permissions');
+				
+				// first remove all old permissions that are not available anymore
+				foreach ($prevPermissions as $pPerm) {
+					if ( !in_array($pPerm, $newPermissions) ) {
+						$acl->revokePermission($account->getUsername(), $pPerm);
+					}
+				}
+				
+				// add new granted not in old permissions
+				foreach ($newPermissions as $nPerm) {
+					if ( !in_array($nPerm, $prevPermissions) ) {
+						$acl->grantPermission($account->getUsername(), $nPerm);
+					}
+				}
+				
 				
 				$this->_helper->flashMessenger(array('type' => 'success', 'text' => X_Env::_('p_auth_accountstored')));
 				$this->_helper->redirector('accounts', 'auth');

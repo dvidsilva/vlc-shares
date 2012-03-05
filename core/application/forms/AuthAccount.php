@@ -45,6 +45,13 @@ class Application_Form_AuthAccount extends X_Form
         	)
         ));
         
+        $this->addElement('multiCheckbox', 'permissions', array(
+        	'label'		=> X_Env::_('p_auth_form_account_permissions_label'),
+        	'description'	=> X_Env::_('p_auth_form_account_permissions_desc'),
+        	'required'	=> true,
+        	'escape' => false,        		
+        ));
+        
         
         // Add the submit button
         $this->addElement('submit', 'submit', array(

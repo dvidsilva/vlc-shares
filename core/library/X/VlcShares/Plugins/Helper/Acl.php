@@ -262,6 +262,10 @@ class X_VlcShares_Plugins_Helper_Acl extends X_VlcShares_Plugins_Helper_Abstract
 		return $resourceDescriptor;
 	}
 	
+	/**
+	 * Get all availables classes registered
+	 * @return array[Application_Model_AclClass]
+	 */
 	public function getClasses() {
 		if ( !count($this->classesCache) ) {
 			$this->classesCache = Application_Model_AclClassesMapper::i()->fetchAll();

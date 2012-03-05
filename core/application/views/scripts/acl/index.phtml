@@ -1,0 +1,95 @@
+<!-- application/views/scripts/acl/index.phtml -->
+<?php 
+
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('p_auth_acl_new_class'), "acl", "add", array('type' => 'class'))
+	->addLinkRoute(X_Env::_('p_auth_acl_new_resource'), "acl", "add", array('type' => 'resource'))
+	;
+	
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLabel(X_Env::_('p_auth_acl_title'));
+
+?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/auth/acl.css')); ?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::APPEND); ?>
+	var csrf = "<?php echo $this->csrf; ?>";
+<?php $this->headScript()->captureEnd(); ?>
+<?php $this->headScript()->appendFile($this->baseUrl("/js/auth/acl.js")); ?>
+
+<?php $this->headTitle()->prepend(X_Env::_('p_auth_acl_title')); ?>
+
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<div class="box">
+	<p><?php echo X_Env::_('p_auth_acl_howtouse'); ?></p>
+</div>
+
+<div class="unit">
+	<div class="container">
+		<div class="box">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('p_auth_acl_title'); ?></span>
+			</div>
+			<div class="content">
+				<div align="center" style="margin-bottom: 0.5em;">
+					<label for="permission-table-filter-generator">
+						<?php echo X_Env::_("p_auth_acl_filter_label"); ?>
+						<select name="permission-table-filter-generator" id="permission-table-filter-generator">
+							<option value=""><?php echo X_Env::_('p_auth_acl_filter_showall')?></option>
+							<option value="auth"><?php echo X_Env::_('p_auth_acl_filter_showcore')?></option>
+							<optgroup label="<?php echo X_Env::_('p_auth_acl_filter_showplugins')?>" id="permission-table-filter-pluginsgroup">
+							</optgroup>
+						</select>
+					</label>
+				</div>
+				<table class="table" id="permissions-table">
+					<tr class="header">
+						<th><?php echo X_Env::_('p_auth_header_acl_resource'); ?></th>
+						<th><?php echo X_Env::_('p_auth_header_acl_class'); ?></th>
+						<th><?php echo X_Env::_('p_auth_header_acl_generator'); ?></th>
+						<th><?php echo X_Env::_('table_options'); ?></th>
+					</tr>
+					<?php foreach ( $this->resources as $i => $model): ?>
+						<?php /* @var $model Application_Model_AclResource */?>
+						<tr class="<?php echo $i % 2 ? 'alt' : ''?> filterable-generator" data-generator="<?php echo $model->getGenerator()?>" id="resourceId-<?php echo X_Env::encode($model->getKey()); ?>">
+							<td><b><?php echo substr($model->getKey(), strlen('default/')); ?></b></td>
+							<td><?php echo $this->formSelect(X_Env::encode($model->getKey()), $model->getClass(), array('class' => 'permission-select'), $this->classes); ?></td>
+							<td><i><?php echo $model->getGenerator() != 'auth' ? $model->getGenerator() : 'CORE'; ?></i></td>
+							<td>
+								<ul class="inline-menu">
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-trash"
+										title="<?php echo X_Env::_('remove')?>"
+										href="<?php echo $this->url(array(
+											'controller' => 'acl',
+											'action' => 'remove',
+											'key' => X_Env::encode($model->getKey()),
+											'csrf' => $this->csrf
+										), 'default', true); ?>">R</a>
+									</li>
+								</ul>								
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

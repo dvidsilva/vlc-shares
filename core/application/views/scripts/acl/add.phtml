@@ -1,0 +1,48 @@
+<!-- application/views/scripts/outputs/edit.phtml -->
+<?php 
+
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('back'), "acl", "index");
+	;
+	
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLinkRoute(X_Env::_('p_auth_acl_title'), 'acl', 'index')
+	->addLabel(X_Env::_('p_auth_acl_new_'.$this->type));
+
+?>
+<?php //$this->headLink()->appendStylesheet($this->baseUrl('/css/outputs/style.css')); ?>
+<?php //$this->headScript()->appendFile($this->baseUrl("/js/profiles/index.js")); ?>
+<?php $this->headTitle()->prepend(X_Env::_('p_auth_acl_new_'.$this->type)); ?>
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<div class="unit">
+	<div class="container vertical-center horizontal-center" style="max-width: 960px;">
+		<div class="box" style="max-width: 90%">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('p_auth_acl_new_'.$this->type); ?></span>
+			</div>
+			<div class="content">
+				<div class="container">
+					<?php echo $this->form; ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

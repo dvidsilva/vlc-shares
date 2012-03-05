@@ -1,0 +1,4 @@
+
+.wait-change ~ select {
+	display: none;
+}

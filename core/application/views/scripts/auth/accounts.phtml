@@ -44,6 +44,7 @@ $this->layout()->breadcrumb = $breadcrumb
 					<tr class="header">
 						<th><?php echo X_Env::_('p_auth_header_username'); ?></th>
 						<th><?php echo X_Env::_('p_auth_header_enabled'); ?></th>
+						<th><?php echo X_Env::_('p_auth_header_permissions'); ?></th>
 						<th><?php echo X_Env::_('p_auth_header_altallowed'); ?></th>
 						<th><?php echo X_Env::_('p_auth_header_alturl'); ?></th>
 						<th><?php echo X_Env::_('table_options'); ?></th>
@@ -53,6 +54,7 @@ $this->layout()->breadcrumb = $breadcrumb
 						<tr class="<?php echo $i % 2 ? 'alt' : ''?>" id="accountId-<?php echo $model->getId(); ?>">
 							<td><b><?php echo $model->getUsername() ?></b></td>
 							<td><i><?php echo $model->isEnabled() ? X_Env::_('enabled') : X_Env::_('disabled'); ?></i></td>
+							<td><i><?php echo implode(', ', X_VlcShares_Plugins::helpers()->acl()->getPermissions($model->getUsername())); ?></i></td>
 							<td><i><?php echo $model->isAltAllowed() ? X_Env::_('enabled') : X_Env::_('disabled'); ?></i></td>
 							<td>
 								<?php if ( $model->isAltAllowed() ) : ?>
