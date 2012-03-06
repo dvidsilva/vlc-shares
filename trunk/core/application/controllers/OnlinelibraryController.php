@@ -92,6 +92,10 @@ class OnlinelibraryController extends X_Controller_Action
 		
 		$rtmp = $this->getRequest()->getParam('rtmp', false);
 		
+		$category = $this->getRequest()->getParam('category', false);
+		if ( $category ) $category = X_Env::decode($category);
+		
+		
 		try {
 			$_hosters = X_VlcShares_Plugins::helpers()->hoster()->getHosters();
 			if ( $rtmp === false ) {
@@ -104,6 +108,9 @@ class OnlinelibraryController extends X_Controller_Action
 				$form->idVideo->setValue($rtmp);
 			}
 			$form->hoster->setMultiOptions($hosters);
+			if ( $category ) {
+				$form->setDefault('category', $category);
+			}
 		} catch (Exception $e) {}
 		
 		$isAjax = $request->getParam('isAjax', false);
