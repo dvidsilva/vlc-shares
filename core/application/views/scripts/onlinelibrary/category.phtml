@@ -9,6 +9,9 @@ $this->layout()->subNavigator =	$menu
 	//->addButton(X_Env::_('megavideo_bookmarklets_title'), "javascript:showModal('bookmarklets'); return false;" )
 	->addLinkRoute(X_Env::_('megavideo_manage_options'), "config", "index", array('key' => 'megavideo', 'r' => X_Env::encode('megavideo:index')));
 */
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('p_onlinelibrary_manage_add_new_entry'), "onlinelibrary", "add", array('category' => X_Env::encode($this->category)));
+
 $breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
 /* @var $breadcrumb X_VlcShares_Elements_Menu */
 $this->layout()->breadcrumb = $breadcrumb
