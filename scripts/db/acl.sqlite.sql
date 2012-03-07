@@ -42,10 +42,18 @@ INSERT INTO plg_acl_resources
 	("key", "class", "generator") VALUES
 	('default/bookmarklets/index', 'BROWSE', 'bookmarklets');
 
+--INSERT INTO plg_acl_resources
+--	("key", "class", "generator") VALUES
+--	('default/bookmarklets/script', 'BROWSE', 'bookmarklets');
+
 INSERT INTO plg_acl_resources
 	("key", "class", "generator") VALUES
-	('default/bookmarklets/script', 'BROWSE', 'bookmarklets');
+	('default/bookmarklets/resolver', 'BROWSE', 'bookmarklets');
 
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/bookmarklets/frame', 'BROWSE', 'bookmarklets');
+	
 INSERT INTO plg_acl_resources
 	("key", "class", "generator") VALUES
 	('default/bookmarklets/add', 'BROWSE', 'bookmarklets');

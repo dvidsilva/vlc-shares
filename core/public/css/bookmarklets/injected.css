@@ -1,0 +1,30 @@
+#vlcs_baseframe {
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	z-index: 1000;
+	overflow: hidden;
+	border: 0 !important;
+}
+
+a.vlcs_captured {
+	outline: 1px solid green;
+	color: white;
+	background: green;
+}
+
+a.vlcs_captured:hover {
+	outline: 1px solid #c00;
+	color: white;
+	background: #c00;
+}
+
+a.vlcs_captured:after {
+    content: url("../../images/bookmarklets/plus.png");
+    position: absolute;
+    /*background: white;*/
+    padding: 1px;
+    margin-top: -6px;
+	margin-left: -3px;
+    color: white;
+}
