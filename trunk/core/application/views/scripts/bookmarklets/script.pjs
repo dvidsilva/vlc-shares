@@ -1,334 +1,113 @@
 
 
 /**
- * Bookmarklets
+ * Register listener in the main window
  */
 
-// PHP references
-var hosters = {
-	<?php foreach ($this->hosters as $id => $pattern ) : ?>
-		'<?php echo $id; ?>': '<?php echo str_replace(array('?P<', '\\'), array('?<', '\\\\'), trim($pattern, '/')); ?>',
-	<?php endforeach; ?>
-		'fake': '123213213213213abcefrjg'
-};
+//{{{ PHP references
 
-var addUrl = '<?php echo $this->addSingleAction; ?>';
-var addAllUrl = '<?php echo $this->addAllAction; ?>';
-var checkUrl = '<?php echo $this->checkAction; ?>';
-var cssUrl = '<?php echo $this->cssUrl."?".time(); ?>';
-var tokenUrl = '<?php echo $this->tokenUrl; ?>';
+var vlcs_url_xfc = '<?php echo $this->xfcUrl; ?>';
+var vlcs_url_frame = '<?php echo $this->frameUrl; ?>';
+var vlcs_url_css = '<?php echo $this->cssUrl; ?>';
 
+//}}}
 
-var _lng_p_bookmarklets_addonevideofrompage_title = '<?php echo addslashes(X_Env::_('p_bookmarklets_addonevideofrompage_title')); ?>';
-var _lng_p_bookmarklets_addonevideofrompage_text = '<?php echo addslashes(X_Env::_('p_bookmarklets_addonevideofrompage_text')); ?>';
-var _lng_p_bookmarklets_addallvideofrompage_title = '<?php echo addslashes(X_Env::_('p_bookmarklets_addallvideofrompage_title')); ?>';
-var _lng_p_bookmarklets_addallvideofrompage_text = '<?php echo addslashes(X_Env::_('p_bookmarklets_addallvideofrompage_text')); ?>';
-var _lng_p_bookmarklets_addallvideofrompage_tableheader_hoster = '<?php echo addslashes(X_Env::_('p_bookmarklets_addallvideofrompage_tableheader_hoster')); ?>';
-var _lng_p_bookmarklets_addallvideofrompage_tableheader_id = '<?php echo addslashes(X_Env::_('p_bookmarklets_addallvideofrompage_tableheader_id')); ?>';
-var _lng_p_bookmarklets_addallvideofrompage_tableheader_label = '<?php echo addslashes(X_Env::_('p_bookmarklets_addallvideofrompage_tableheader_label')); ?>';
-var _lng_p_bookmarklets_but_abort = '<?php echo addslashes(X_Env::_('p_bookmarklets_but_abort')); ?>';
-var _lng_p_bookmarklets_but_confirm = '<?php echo addslashes(X_Env::_('p_bookmarklets_but_confirm')); ?>';
-var _lng_p_bookmarklets_but_close = '<?php echo addslashes(X_Env::_('p_bookmarklets_but_close')); ?>';
-var _lng_p_bookmarklets_label_category = '<?php echo addslashes( X_Env::_('p_bookmarklets_label_category')); ?>';
-var _lng_p_bookmarklets_label_check = '<?php echo addslashes(X_Env::_('p_bookmarklets_label_check')); ?>';
-// END PHP references
-
-function vlcs_bkml_showAddOne(hoster, videoId) {
+function vlcs_bkml_bootstrap($) {
+	// $ -> jquery
 	
-	var title = _lng_p_bookmarklets_addonevideofrompage_title;
-	var text = _lng_p_bookmarklets_addonevideofrompage_text.replace('%1$s', hoster).replace('%2$s', videoId);
-	
-	//vlcs_bkml_setOverlay(true);
-	
-	$dialog = jQuery(
-			'<div class="vlcs_bkml_wrapper">'+
-				'<a href="javascript:vlcs_bkml_reset();" id="vlcs_bkml_closebutton">'+
-					_lng_p_bookmarklets_but_close+
-				'</a>'+
-				'<div class="vlcs_bkml_inner vlcs_bkml_scrollable">'+
-					'<form id="vlcs_bkml_addallform" action="' + addAllUrl + '" method="POST" target="vlcs_bkml_addallform_results">'+
-						'<h1>'+title+'</h1>'+
-						'<p>'+text+'</p><br/>'+
-						'<div class="vlcs_bkml_fieldrow">'+
-							'<label>'+_lng_p_bookmarklets_label_category+'</label>'+
-							'<input type="text" id="vlcs_bkml_category" name="category" value="Default" />'+
-						'</div>'+
-						'<center>'+
-						'<br/>'+
-						'<button onClick="javascript:vlcs_bkml_reset(); return false;">'+_lng_p_bookmarklets_but_abort+'</button>'+
-							' '+
-							'<input type="submit" onclick="javascript:vlcs_bkml_prepareAddAllResults();" value="'+_lng_p_bookmarklets_but_confirm+'" />'+
-							'<input type="hidden" name="links[0][enabled]" value="on" />'+
-							'<input type="hidden" name="links[0][hoster]" value="'+hoster+'" />'+
-							'<input type="hidden" name="links[0][id]" value="'+videoId+'" />'+
-							'<input type="hidden" name="links[0][title]" value="" />'+
-							'<input type="hidden" name="redirect" value="'+location.toString()+'" />'+
-							'<input type="hidden" name="check" value="on" />'+
-						'</center>'+
-					'</form>'+
-					'<iframe name="vlcs_bkml_addallform_results" id="vlcs_bkml_addallform_results" style="display:none;"></iframe>'+
-				'</div>'+
-			'</div>');
-	jQuery('body').append($dialog);
-	
-}
+	function qualifyURL(url){
+	    var img = document.createElement('img');
+	    img.src = url; // set string url
+	    url = img.src; // get qualified url
+	    img.src = null; // no server request
+	    return url;
+	}	
 
-function vlcs_bkml_showAddAll(links) {
-	
-	var title = _lng_p_bookmarklets_addallvideofrompage_title;
-	var text = _lng_p_bookmarklets_addallvideofrompage_text;
-	
-	//vlcs_bkml_setOverlay(true);
-	
-	$dialog = jQuery(
-			'<div class="vlcs_bkml_wrapper" id="vlcs_bkml_addallcontainer">'+
-				'<a href="javascript:vlcs_bkml_reset();" id="vlcs_bkml_closebutton">'+
-					_lng_p_bookmarklets_but_close+
-				'</a>'+
-				'<div class="vlcs_bkml_inner vlcs_bkml_scrollable">'+
-					'<form id="vlcs_bkml_addallform" action="' + addAllUrl + '" method="POST" target="vlcs_bkml_addallform_results">'+
-						'<h1>'+title+'</h1>'+
-						'<p>'+text+'</p>'+
-						'<div class="vlcs_bkml_fieldrow">'+
-							'<label>'+_lng_p_bookmarklets_label_category+'</label>'+
-							'<input type="text" name="category" value="Default" />'+
-						'</div>'+
-						'<div class="vlcs_bkml_fieldrow">'+
-							'<label>'+_lng_p_bookmarklets_label_check+'</label>'+
-							'<input type="checkbox" name="check" />'+
-						'</div>'+
-						'<div class="vlcs_bkml_scrollable">'+
-							'<table class="vlcs_bkml_fields" width="100%">'+
-								'<tr>'+
-									'<th width="1%">&nbsp;</th>'+
-									'<th width="15%">'+_lng_p_bookmarklets_addallvideofrompage_tableheader_hoster+'</th>'+
-									'<th width="15%">'+_lng_p_bookmarklets_addallvideofrompage_tableheader_id+'</th>'+
-									'<th style="width: auto;">'+_lng_p_bookmarklets_addallvideofrompage_tableheader_label+'</th>'+
-								'</tr>'+
-							'</table>'+
-						'</div>'+
-						'<br/>'+
-						'<center>'+
-							'<button onClick="javascript:vlcs_bkml_reset(); return false;">'+_lng_p_bookmarklets_but_abort+'</button>'+
-							' '+
-							'<input type="submit" onclick="javascript:vlcs_bkml_prepareAddAllResults();" value="'+_lng_p_bookmarklets_but_confirm+'" />'+
-							'<input type="hidden" name="redirect" value="'+location.toString()+'" />'+
-						'</center>'+
-					'</form>'+
-					'<iframe name="vlcs_bkml_addallform_results" id="vlcs_bkml_addallform_results" style="display:none;"></iframe>'+
-				'</div>'+
-			'</div>');
-	
-	for ( var i = 0; i < links.length; i++) {
-		$dialog.find('.vlcs_bkml_fields').append(jQuery(
-			'<tr>'+
-				'<td><input type="checkbox" checked="checked" name="links['+i+'][enabled]" /></td>'+
-				'<td>'+links[i].hoster+'<input type="hidden" name="links['+i+'][hoster]" value="'+links[i].hoster+'" /></td>'+
-				'<td>'+links[i].id+'<input type="hidden" name="links['+i+'][id]" value="'+links[i].id+'" /></td>'+
-				'<td><input type="text" style="width: 99%;" name="links['+i+'][title]" value="'+jQuery(links[i].link).text().trim()+'" /></td>'+
-			'</tr>'
-		));
-	}
-	
-	jQuery('body').append($dialog);
-	
-}
-
-
-function vlcs_bkml_prepareAddAllResults(response) {
-	jQuery('#vlcs_bkml_addallform').fadeOut();
-	jQuery('#vlcs_bkml_addallform_results').fadeIn();
-	//setTimeout("vlcs_bkml_reset()", 5000);			
-}
-
-function vlcs_bkml_setOverlay(view) {
-	if ( view && jQuery('#vlcs_bkml_overlay').size() == 0 ) {
-		$overlay = jQuery('<div id="vlcs_bkml_overlay"></div>');
-		jQuery('body').append($overlay);
-	} else if (!view) {
-		jQuery('#vlcs_bkml_overlay').remove();
-	}
-}
-
-function vlcs_bkml_reset() {
-	var vlcs_bkml_validlinks = new Array();
-	// reset everything
-	jQuery('#vlcs_bkml_overlay').remove();
-	jQuery('.vlcs_bkml_wrapper').remove();
-	vlcs_bkml_removeProgress();
-	if ( vlcs_bkml_updateTimer ) {
-		try {
-			clearInterval(vlcs_bkml_updateTimer);
-		} catch (e) {}
-	}
-	jQuery(document).unbind('_vlcshares_start');
-}
-
-function vlcs_bkml_removeProgress() {
-	jQuery('#vlcs_bkml_percent_wrapper').fadeOut('slow', function () {
-		jQuery('#vlcs_bkml_percent_wrapper').remove();
-		vlcs_bkml_progress = false;
-	})
-}
-
-vlcs_bkml_updateTimer = false;
-function vlcs_bkml_showNotify(view) {
-	if ( view && jQuery('#vlcs_bkml_percent_wrapper') ) {
-		$percent = jQuery(
-				'<div id="vlcs_bkml_percent_wrapper">'+
-					'<div id="vlcs_bkml_percent_value">'+ 0 +'%</div>'+
-					'<div id="vlcs_bkml_percent_bar" style="width: '+ 0+'%"></div>'+
-				'</div>');
-		jQuery('body').append($percent);
-		vlcs_bkml_updateTimer = setInterval("vlcs_bkml_updateProgress()", 100, 100);
-	} else if ( !view ) {
-		try {
-			clearInterval(vlcs_bkml_updateTimer);
-			vlcs_bkml_updateTimer = false;
-			vlcs_bkml_updateProgress();
-		} catch (e) {}
-		setTimeout('vlcs_bkml_removeProgress()', 1500);
-	}
-}
-
-var vlcs_bkml_progress = false;
-var vlcs_bkml_progress_value = false;
-var vlcs_bkml_progress_bar = false;
-function vlcs_bkml_updateProgress() {
-	if ( !vlcs_bkml_progress_value ) {
-		vlcs_bkml_progress_value = jQuery('#vlcs_bkml_percent_value'); 
-	}
-	if ( !vlcs_bkml_progress_bar ) {
-		vlcs_bkml_progress_bar = jQuery('#vlcs_bkml_percent_bar'); 
-	}
-	vlcs_bkml_progress_value.text( vlcs_bkml_progress + '%');
-	vlcs_bkml_progress_bar.css({'width': ''+vlcs_bkml_progress+'%'});
-}
-function vlcs_bkml_setProgress(percent) {
-	if ( percent > 100 ) {
-		percent = 100;
-	}
-	if ( percent < 0 ) {
-		percent = 0;
-	}
-	vlcs_bkml_progress = percent;
-}
-
-
-function vlcs_bkml_bootstrap() {
-
-	vlcs_bkml_reset();
-	
-	$style = jQuery('<link href="'+ cssUrl + '" media="all" rel="stylesheet" type="text/css" />');
-	jQuery('head').append($style);
-	
-	vlcs_bkml_setOverlay(true);
-	
-	var currentUrl = location.toString();
-	
-	// first thing: check the current url
-	for (var id in hosters) {
-		var pattern = hosters[id];
+	function captureHandler(e) {
 		
-		var regex = new XRegExp(pattern);
-		var result = currentUrl.match(regex); 
-		if ( result ) {
-			
-			var videoId = null;
-			for (var part in result) {
-				if (part.substr(0, "ID".length) == "ID" ) {
-					if ( typeof(result[part]) != "undefined" ) {
-						videoId = result[part];
-						break;
-					}
-				}
-			}
-			
-			if ( videoId == null ) {
-				alert("I can't find the videoId");
-				return;
-			} 
-			
-			vlcs_bkml_showAddOne(id, videoId);
-			
-			break;
-		}
+		e.preventDefault();
+		e.stopImmediatePropagation();
+		
+		$().xfc('sendTo', e.data.contentWindow, 'addLink', {
+			href : qualifyURL($(this).attr('href')),
+			label : $(this).text()
+		});
 	}
 	
-	// we are in an unknown page
-	// start scanning
+	// append css
+	var $style = $('<link href="'+ vlcs_url_css + '" media="all" rel="stylesheet" type="text/css" />');
+	$('head').append($style);
 	
-	vlcs_bkml_showNotify(true);
-	
-	var links = new Array();
-	var pool = jQuery('a:parent');
-	var poolSize = pool.size();
-	var found = false;
-	var selection_enabled = (window.getSelection && window.getSelection().containsNode && window.getSelection().toString() != "" ? true : false);
-	
-	jQuery.each(pool, function (i, a) {
-		vlcs_bkml_setProgress(Math.round((i/poolSize)*100));
+	var $iframe = $('<iframe></iframe>');
+	$iframe.attr('id', 'vlcs_baseframe');
+	$iframe.attr('src', vlcs_url_frame );
+	$iframe.appendTo($('body'));
 
-		if ( selection_enabled ) {
-			// check if A is in selection
-			if ( !window.getSelection().containsNode(a, true) ) {
-				return;
-			}
-		}
+	// setup xfc
+	$().xfc({
+		logger: function (msg){ if (window.console) console.log(msg); },
+		funcs : {
+			// temp functions
+			resizeFrame : function (args, origin, source) {
+				var height = args.height ? args.height : "100px";
+				var width = args.width ? args.width : "100px";
+
+				$iframe.animate({'height': height, 'width': width });
+				
+				// send page to r_pageinfo
+				$().xfc('sendTo', source, 'r_resizeFrame', {
+					result: true
+				});
+			},
 		
-		for (var id in hosters) {
-			try {
-				var pattern = hosters[id];
-				var regex = new XRegExp(pattern);
-				var result = jQuery(a).attr('href').match(regex); 
-				if ( result ) {
-					var videoId = null;
-					for (var part in result) {
-						if (part.substr(0, "ID".length) == "ID" ) {
-							if ( typeof(result[part]) != "undefined" ) {
-								videoId = result[part];
-								break;
-							}
-						}
-					}
-					if ( videoId == null ) {
-						alert("I can't find the videoId");
-						return;
-					} 
-					//vlcs_bkml_appendOne(a, id, videoId);
-					//found = true;
-					links.push({'link': a, 'hoster': id, 'id': videoId});
-				}
-			} catch (e) { /* invalid a link */}
+			closeFrame : function (args, origin, source) {
+				$iframe.fadeOut(function () {
+					$iframe.remove();
+				});
+				$().xfc('unlisten');
+				$(document).unbind('_xfc_ready');
+				$(document).unbind('_vlcshares_start');
+			},
+			
+			startCapture : function (args, origin, source) {
+				$('a')
+					// start capturing
+					.on('click', {contentWindow : source }, captureHandler)
+					// highlight A tags
+					.addClass('vlcs_captured');
+			},
+			
+			stopCapture : function (args, origin, source) {
+				$('a')
+					// stop capturing
+					.off('click', captureHandler)
+					// remove custom styles
+					.removeClass('vlcs_captured');
+			}
 		}
 	});
 	
-	vlcs_bkml_setProgress(100);
-	
-	vlcs_bkml_showNotify(false);
-	
-	//console.log("end loop");
+}
 
-	if ( links.length > 0 ) {
-		vlcs_bkml_showAddAll(links);
-	} else {
-		vlcs_bkml_setOverlay(false);
-	}
-	
-	
-	// finished, unbind this event so we can repeat it safetly
-	jQuery(document).unbind('_vlcshares_start');
-	
+
+function vlcs_xfc_bootstrap() {
+	jQuery(document).bind('_xfc_ready', function() {
+		vlcs_bkml_bootstrap(jQuery);
+	});
+	// load xfc plugin
+	var s = document.createElement('script');s.setAttribute('src', vlcs_url_xfc);
+	s.setAttribute('type', 'text/javascript');
+	document.getElementsByTagName('head')[0].appendChild(s);
 }
 
 function vlcs_bkml_jQuery_init() {
 	//console.log("checking for jquery");
-	if ( window.jQuery && window.jQuery.fn.jquery == '1.4.2' ) {
+	if ( window.jQuery && window.jQuery.fn.jquery == '1.7.1' ) {
 		jQuery(document).ready(function () {
 			//console.log("ready executed");
 			jQuery.noConflict();
 			jQuery(document).bind('_vlcshares_start', function() {
-				vlcs_bkml_bootstrap();
+				vlcs_xfc_bootstrap();
 			});
 			jQuery(document).trigger('_vlcshares_start');
 		});
@@ -339,13 +118,13 @@ function vlcs_bkml_jQuery_init() {
 
 
 //include jquery if not loaded yet
-if(!(window.jQuery && window.jQuery.fn.jquery == '1.4.2')) {
-	var s = document.createElement('script');s.setAttribute('src', 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');s.setAttribute('type', 'text/javascript');document.getElementsByTagName('head')[0].appendChild(s);
+if(!(window.jQuery && window.jQuery.fn.jquery == '1.7.1')) {
+	var s = document.createElement('script');s.setAttribute('src', 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');s.setAttribute('type', 'text/javascript');document.getElementsByTagName('head')[0].appendChild(s);
 	setTimeout('vlcs_bkml_jQuery_init()', 500);
 } else {
 	jQuery.noConflict();
 	jQuery(document).bind('_vlcshares_start', function() {
-		vlcs_bkml_bootstrap();
+		vlcs_xfc_bootstrap();
 	})
 	jQuery(document).trigger('_vlcshares_start');
 }

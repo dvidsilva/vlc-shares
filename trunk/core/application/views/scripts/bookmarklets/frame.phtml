@@ -1,0 +1,468 @@
+<html>
+<head>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl('/js/xregexp-min.js')?>"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl('/js/jquery.xfc.js')?>"></script>
+	<script type="text/javascript">
+		var LinksManager = {
+			api : {
+				resolver : "<?php echo $this->url(array('controller' => 'bookmarklets', 'action' => 'resolver', 'csrf' => $this->csrf)); ?>",
+				adder : "<?php echo $this->url(array('controller' => 'bookmarklets', 'action' => 'add2', 'csrf' => $this->csrf)); ?>",
+			},
+			hosters : {
+				<?php foreach ($this->hosters as $id => $pattern ) : ?>
+					'<?php echo $id; ?>': '<?php echo str_replace(array('?P<', '\\'), array('?<', '\\\\'), trim($pattern, '/')); ?>',
+				<?php endforeach; ?>
+					'fake': '123213213213213abcefrjg'
+			},
+			mapped : [],
+			count : function () {
+				return LinksManager.mapped.length;
+			},
+			reset : function () {
+				LinksManager.mapped = [];
+			},
+			check : function (href) {
+				for (var id in LinksManager.hosters) {
+					try {
+						var pattern = LinksManager.hosters[id];
+						var regex = new XRegExp(pattern);
+						var result = href.match(regex);
+						if ( result ) {
+							//console.log("Valid link: "+href);
+							return true;
+						}
+					} catch (e) {}
+				}
+				//console.log("Invalid link: "+href);
+				return false;
+			},
+			push : function (label, href) {
+				LinksManager.mapped.push({
+					'label': label,
+					'href': href,
+					'resolver': {
+						'pending': false,
+						'resolved': false,
+						'valid': false,
+						'label': '',
+						'description': '',
+						'thumbnail': '',
+						'extra': {},
+						'errorMessage': ''
+					},
+				});
+				this.resolver.renew();
+			},
+			submit : function (datas) {
+				$('#loader').show();
+				$.post(LinksManager.api.adder, datas, function (data) {
+					$('#loader').hide();
+					if ( data.api ) {
+						LinksManager.api = data.api;
+					}
+					$(document).trigger('_links_submitted', [data]);
+				}, 'json');				
+			},
+			resolver : {
+				lock : false,
+				incoerent : false,
+				renew : function () {
+					if ( !LinksManager.resolver.lock ) {
+						LinksManager.resolver.lock = setTimeout("LinksManager.resolver.resolve(false)", 5000);
+					} else {
+						LinksManager.resolver.incoerent = true;
+					}
+				},
+				stop : function () {
+					$('#loader').hide();
+					if ( LinksManager.resolver.lock ) {
+						clearTimeout(LinksManager.resolver.lock);
+						LinksManager.resolver.lock = false;
+					}
+				},
+				resolve : function (last) {
+					$('#loader').show();
+					var queue = [];
+					var length = LinksManager.mapped.length;
+					LinksManager.resolver.incoerent = false;
+					for ( var i = 0; i < length; i++) {
+						var link = LinksManager.mapped[i];
+						if ( !link.resolver.pending && !link.resolver.resolved ) {
+							link.resolver.pending = true;
+							queue.push({'index': i, 'href': link.href});
+						}
+					}
+					$.post(LinksManager.api.resolver, {'links': queue}, function (data) {
+						if ( data.success && data.links ) {
+							for ( var i = 0; i < data.links.length; i++) {
+								var link = data.links[i];
+								try {
+									LinksManager.mapped[link.index].resolver.resolved = true;
+									LinksManager.mapped[link.index].resolver.pending = false;
+									LinksManager.mapped[link.index].resolver.valid = link.valid;
+									LinksManager.mapped[link.index].resolver.label = link.label;
+									LinksManager.mapped[link.index].resolver.description = link.description;
+									LinksManager.mapped[link.index].resolver.thumbnail = link.thumbnail;
+									LinksManager.mapped[link.index].resolver.extra = link.extra;
+									LinksManager.mapped[link.index].resolver.errorMessage = link.errorMessage;
+								} catch (e) {
+									console.log(e);
+								}
+							}
+						}
+						if ( data.api ) {
+							LinksManager.api = data.api;
+						}
+						LinksManager.resolver.stop();
+						if ( !last ) {
+							if ( LinksManager.resolver.incoerent ) {
+								LinksManager.resolver.renew();
+							}
+						} else {
+							$(document).trigger('_last_resolved');
+						}
+					}, 'json');
+				}
+			}
+		};
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			
+			function showSection(name) {
+				$('section').not('#'+name).fadeOut();
+				$('#'+name).fadeIn();
+			}
+
+			// setup xfc
+			$().xfc({
+				logger: function (msg){ if (window.console) console.log(msg); },
+				funcs : {
+					// temp functions
+					addLink : function (args, origin, source) {
+						if ( LinksManager.check(args.href) ) {
+							LinksManager.push(args.label, args.href);
+							$('#linkCount').text(LinksManager.count());
+							$('#lastHref').val(args.href);
+							$('#lastLabel').val(args.label);
+						} else {
+							$('#linkCount').text(LinksManager.count());
+							$('#lastHref').val("<?php echo X_Env::_("p_bookmarklets_new_invalidlink"); ?>");
+							$('#lastLabel').val(args.label);
+						} 
+					}
+				}
+			});
+
+			$('#startCapture').click(function (e) {
+				e.preventDefault();
+				showSection('capture');
+				$().xfc('sendToParent', 'resizeFrame', {
+					height: '280px',
+					width: '300px'
+				});
+				$().xfc('sendToParent', 'startCapture', {});
+			});
+
+			$('#stopCapture').click(function (e) {
+				e.preventDefault();
+				$(document).bind('_last_resolved', function () {
+					$(document).unbind('_last_resolved');
+					$().xfc('sendToParent', 'stopCapture', {});
+					$().xfc('sendToParent', 'resizeFrame', {
+						height: '500px',
+						width: '500px'
+					});
+
+					//$('#reportText').text(JSON.stringify(LinksManager.mapped, null, "\t"));
+
+					$('#reportLinks').empty();
+					
+					for ( var i = 0; i < LinksManager.count(); i++ ) {
+
+						var link = LinksManager.mapped[i];
+						var $container = $('<li></li>');
+						var $label = $('<label></label>');
+						var $input = $('<input type="checkbox" class="addlink" checked="checked" />');
+						var $resolver = $('<div class="resolver-info"></div>');
+						var $useInfo = $('<label><input type="checkbox" class="use-info" /> <?php echo X_Env::_("p_bookmarklets_new_usethoseinfo"); ?></label>');
+						var $title = $('<span class="title"></span>');
+						var $description = $('<span class="description"></span>');
+						var $thumbnail = $('<img class="thumbnail" />');
+						var $error = $('<div class="error"></div>');
+
+						// prepare label
+						$label.attr('for', 'link-'+i);
+						$input.attr('name', 'link-'+i);
+						$input.attr('id', 'link-'+i);
+						$input.attr('link-index', i);
+						$label.append($input);
+						$label.append('<input type="text" class="basetitle" value="'+link.label+'" />' + link.href);
+						
+						if ( !link.resolver.valid ) {
+							$container.addClass('invalid');
+							$input.attr('checked', null);
+							$error.text(link.resolver.errorMessage);
+							$label.append($error);
+						} else {
+							$title.text(link.resolver.label);
+							$description.text(link.resolver.description);
+							$resolver.append($useInfo);
+							if ( link.resolver.thumbnail ) {
+								$thumbnail.attr('src', link.resolver.thumbnail);
+								$resolver.append($thumbnail);
+							}
+							$resolver.append($title);
+							$resolver.append($description);
+							$label.append($resolver);	
+						}
+
+						$container.append($label);
+						$('#reportLinks').append($container);
+					}
+					
+					
+					showSection('report');
+				});
+				LinksManager.resolver.stop();
+				LinksManager.resolver.resolve(true);
+			});
+
+			$('#shutdown').click(function (e) {
+				e.preventDefault();
+				$().xfc('unlisten');
+				$().xfc('sendToParent', 'closeFrame');
+			});
+
+			$('#submit').click(function (e){
+				e.preventDefault();
+
+				var category = $('#reportNewCategory').val();
+				if ( category.trim() == '' ) {
+					category = $('#reportCategory').val();
+				}
+
+				var links = [];
+				
+				$('#reportLinks > li > label').each(function (i, item) {
+					var $item = $(item);
+					if ( $item.find('.addlink:checked').length == 0 ) return; // ignore this
+					var linkId = $item.find('.addlink:checked').attr('link-index');
+					var refLink = LinksManager.mapped[linkId];
+					if ( !linkId ) return; // wtf?
+					var title = '';
+					var description = '';
+					var thumbnail = '';
+					if ( $item.find('.use-info:checked').length > 0 ) {
+						// use resolved infos
+						title = $item.find('.resolver-info .title').text();
+						description = $item.find('.resolver-info .description').text();
+						thumbnail = $item.find('.resolver-info .thumbnail').attr('src');
+					}
+
+					if ( title == '') {
+						title = $item.find('.basetitle').val();
+					}
+					if ( title == '' ) return; // still no title, ignore this shit
+
+					links.push({
+						'title' : title,
+						'description' : description,
+						'thumbnail' : thumbnail,
+						'href' : refLink.href
+					});
+				});
+
+				$(document).bind('_links_submitted', function (e, data) {
+					$(document).unbind('_links_submitted');
+					if ( !data.success ) {
+						alert("Failure");
+					}
+					LinksManager.reset();
+					$().xfc('sendToParent', 'resizeFrame', {
+						height: '220px',
+						width: '300px'
+					});					
+					showSection('main');
+				});
+				
+				LinksManager.submit({
+					'category' : category,
+					'links' : links,
+				});
+				
+			}); 
+			
+			$('#loader').hide();
+			
+			$().xfc('sendToParent', 'resizeFrame', {
+				height: '220px',
+				width: '300px'
+			});					
+			showSection('main');
+		}); 
+	</script>
+	<style type="text/css">
+		body {
+			margin: 0;
+		}
+		.hidden {
+			display: none;
+		}
+		section {
+			margin: 20px 0 0 20px;
+			padding: 25px 10px 10px 10px;
+			background-color: white;
+			box-shadow: 0px 0px 30px black;
+			outline: 3px solid #333;
+		}
+		#loader {
+			position: fixed;
+			top: 22px;
+			right: 2px;
+		}
+		#shutdown {
+			position: fixed;
+			top: -5px;
+			left: 0px;
+		}
+		#reportLinks {
+			overflow: auto;
+			height: 302px;
+			padding-top: 3px;
+			padding-right: 3px;
+		}
+		#reportLinks li {
+			position: relative;
+			margin-bottom: 3px;
+			padding: 3px;
+			background: #EFEFEF;
+			outline: 1px solid #333;
+			border: 2px solid #FEFEFE;		
+		}
+		#reportLinks li.invalid {
+			background-color: lightgray;
+		}
+		#reportLinks div.error, #reportLinks div.resolver-info {
+			background-color: lightGoldenrodYellow;
+			position: absolute;
+			top: 15px;
+			left: 30px;
+			right: 0px;
+			padding: 5px;
+			opacity: 0;
+			z-index: 100;
+			outline: 1px solid #666;
+			border: 2px solid white;		
+		}
+		#reportLinks div.resolver-info label {
+			margin-bottom: 5px;
+			display: block;
+		}
+		#reportLinks label:hover div.error, #reportLinks label:hover div.resolver-info {
+			opacity: 1;
+		}
+		#reportLinks div.resolver-info img.thumbnail {
+			float: left;
+			width: 100px;
+			outline: 1px solid black;
+			border: 2px solid white;
+		}
+		#reportLinks div.resolver-info img.thumbnail ~ span {
+			margin-left: 110px;	
+		}
+		#reportLinks div.resolver-info span, #reportLinks div.resolver-info label {
+			display: block;
+		}
+		#reportLinks .basetitle {
+			width: 80%;	
+		}
+		#reportLinks div.resolver-info span.title:before {
+			content: "<?php echo X_Env::_("p_bookmarklets_new_title"); ?>: ";
+			font-weight: bold;	 
+		}
+		#reportLinks div.resolver-info span.description:before {
+			content: "<?php echo X_Env::_("p_bookmarklets_new_desc"); ?>: ";
+			font-weight: bold;	 
+		}
+		a.fullrow-button img {
+			height: 48px;
+			vertical-align: middle;
+		}
+		a.fullrow-button {
+			display: block;
+			outline: 1px solid #999;
+			border: 2px solid #FEFEFE;
+			margin: 4px;
+			background: #EFEFEF;
+			padding: 3px;
+			text-decoration: none;
+			font-size: 20px;
+			color: #333;
+			font-weight: bold;
+			text-shadow: 1px 1px 1px white;		
+		}
+		.info-section {
+			display: block;
+			outline: 1px solid #999;
+			border: 2px solid #FEFEFE;
+			margin: 4px;
+			background: #EFEFEF;
+			padding: 3px;
+			text-decoration: none;
+			color: #333;
+			font-weight: bold;
+		}
+		a.fullrow-button:hover {
+			outline-color: black;
+			background-color: #CCC;
+		}		
+		</style>
+</head>
+<body>
+	<img id="loader" src="<?php echo $this->baseUrl('/images/ajax-loader.gif'); ?>" />
+	<a id="shutdown" href="#"><img src="<?php echo $this->baseUrl('/images/bookmarklets/close.png'); ?>" /></a>
+	<section id="main" class="hidden">
+		<a id="startCapture" href="#" class="fullrow-button">
+			<img src="<?php echo $this->baseUrl('/images/bookmarklets/capture.png');?>" />
+			<?php echo X_Env::_("p_bookmarklets_new_capturelinks"); ?>
+		</a>
+		<a id="addPage" href="#" class="fullrow-button">
+			<img src="<?php echo $this->baseUrl('/images/bookmarklets/addpage.png');?>" />
+			<?php echo X_Env::_("p_bookmarklets_new_addinbookmarks"); ?>
+		</a>
+	</section>
+	<section id="capture" class="hidden">
+		<a id="stopCapture" href="#" class="fullrow-button">
+			<img src="<?php echo $this->baseUrl('/images/bookmarklets/completed.png');?>" />
+			<?php echo X_Env::_("p_bookmarklets_new_capturecompleted"); ?>
+		</a>
+		<div class="info-section">
+			<span id="linkCount">0</span> <?php echo X_Env::_("p_bookmarklets_new_linkscaptured"); ?>
+		</div>
+		<div class="info-section">
+			<div><?php echo X_Env::_("p_bookmarklets_new_lastlabel"); ?>: <input id="lastLabel" value="" /></div>
+			<div><?php echo X_Env::_("p_bookmarklets_new_lasthref"); ?>: <input id="lastHref"  value="" /></div>
+		</div>
+	</section>
+	<section id="report" class="hidden">
+		<a id="submit" href="#" class="fullrow-button">
+			<img src="<?php echo $this->baseUrl('/images/bookmarklets/submit.png');?>" />
+			<?php echo X_Env::_("p_bookmarklets_new_savelinks"); ?>
+		</a>
+		<div>
+			<b><?php echo X_Env::_("p_bookmarklets_new_category"); ?>: </b>
+			<select id="reportCategory">
+				<?php foreach ($this->categories as $category): ?>
+				<option value="<?php echo ($category['category'])?>"><?php echo $category['category'] ?></option>
+				<?php endforeach; ?>
+			</select>
+			<i><?php echo X_Env::_("p_bookmarklets_new_or"); ?></i>
+			<input type="text" id="reportNewCategory" />
+		</div>
+		<ol id="reportLinks">
+		</ol>
+	</section>
+</body>
+</html>
