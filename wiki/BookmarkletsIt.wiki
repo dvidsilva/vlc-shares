@@ -7,10 +7,29 @@ Questa guida mostra come trarre il massimo profitto dall'utilizzo della Bookmark
 
 <wiki:toc max_depth="6" />
 
+= Cosa è la Bookmarklet =
+
+La bookmarklet è un piccolo componente di VLCShares da aggiungere alla barra dei preferiti del browser che ti consente di aggiungere rapidamente nuovi elementi all'interno della Online Library e nuove pagine nei Bookmark di VLCShares
+
 = Preparazione del Browser =
+
+Per poter iniziare ad utilizzare la bookmarklet è sufficiente andare nella pagina di gestione della Online Library di VLCShares e trascinare il pulsante _Aggiungi a VLCShares_ nella barra dei preferiti del browser. Niente di piu semplice.
 
 = Utilizzo =
 
+La bookmarklet può essere utilizzata semplicemente cliccando sul pulsante dei preferiti appena aggiunto mentre ci si trova all'interno di una qualsiasi pagina web. Attraverso l'elemento che apparirà in alto a destra della pagina sarà possibile interagire con la bookmarklet aggiungendo nuovi link alla online library o nuove pagine fra i bookmarks di vlc-shares.
+
 == Aggiungere nuovi link ==
+
+Per aggiungere nuovi link, basterà selezionare l'opzione _Cattura link_. A questo punto tutti i collegamenti presenti nella pagina originale verranno evidenziati con un contorno verde e una piccola icona rappresentante una croce per l'aggiunta.
+
+
+Sarà possible catturare nuovi link semplicemente cliccando sui collegamenti evidenziati. All'interno del frame della bookmarklet verranno evidenziate informazioni riguardanti i link appena aggiunti (se validi o meno, l'etichetta e l'indirizzo del collegamento catturato). Ovviamente, solo i collegamenti a pagine di hoster di cui è stato installato un plugin in vlc-shares saranno ritenuti validi (Esempio: youtube, sopcast, megavideo, videozer, ...)
+
+Una volta terminata la cattura di tutti i link d'interesse, basterà cliccare sul pulsante "Termina cattura" per poter visualizzare una schermata di riepilogo dei link catturati e confermare i dettagli dei link da utilizzare e la categoria in cui inserirli.
+
+Posizionando il cursore su ogni link, verrà visualizzato un elemento di informazioni ottenute contattando direttamente l'hoster. Sarà possibile indicare di utilizzare quelle informazioni anzicchè quelle ottenute dalla pagina in cui il link era contenuti. I link non validi (perchè collegati a risorse eliminate o non piu disponibili) verranno evidenziati e automaticamente scartati dall'inclusione
+
+Una volta confermati tutti i dati, basterà cliccare sul pulsante _Salva link_ per aggiungere i link alla online library
 
 == Aggiungere nuovi bookmark ==
