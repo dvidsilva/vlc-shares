@@ -68,6 +68,8 @@ class BookmarkletsController extends X_Controller_Action
     	));
     	$csrf->initCsrfToken();
     	
+    	$this->view->bookmarks_enabled = X_VlcShares_Plugins::broker()->isRegistered('bookmarks');
+    	$this->view->onlinelibrary_enabled = X_VlcShares_Plugins::broker()->isRegistered('onlinelibrary');
     	$this->view->categories = Application_Model_VideosMapper::i()->fetchCategories(); 
     	$this->view->csrf = $csrf->getHash();
     	$this->view->hosters = X_VlcShares_Plugins::helpers()->hoster()->getHosters();
@@ -89,6 +91,7 @@ class BookmarkletsController extends X_Controller_Action
     		'api' => array( 
     			'resolver' => $this->_helper->url->url(array('controller' => 'bookmarklets', 'action' => 'resolver', 'csrf' => $hash)),
     			'adder' => $this->_helper->url->url(array('controller' => 'bookmarklets', 'action' => 'add', 'csrf' => $hash)),
+    			'bookmark' => $this->_helper->url->url(array('controller' => 'bookmarklets', 'action' => 'bookmark', 'csrf' => $hash)),
     		),
     		'links' => array()
     	);
@@ -147,6 +150,7 @@ class BookmarkletsController extends X_Controller_Action
     			'api' => array(
     					'resolver' => $this->_helper->url->url(array('controller' => 'bookmarklets', 'action' => 'resolver', 'csrf' => $hash)),
     					'adder' => $this->_helper->url->url(array('controller' => 'bookmarklets', 'action' => 'add', 'csrf' => $hash)),
+    					'bookmark' => $this->_helper->url->url(array('controller' => 'bookmarklets', 'action' => 'bookmark', 'csrf' => $hash)),
     			),
     			'links' => array()
     	);
@@ -225,6 +229,74 @@ class BookmarkletsController extends X_Controller_Action
    		$this->_helper->json($return, true, false);
     		
     }
+    
+    
+    public function bookmarkAction() {
+    	 
+    	$csrf = new Zend_Form_Element_Hash('csrf', array(
+    			'salt' => __CLASS__
+    	));
+    
+    	$validCheck = $csrf->isValid($this->getRequest()->getParam('csrf', false));
+    
+    	$csrf->initCsrfToken();
+    	$hash = $csrf->getHash();
+    	$return = array(
+    			'success' => true,
+    			'api' => array(
+    					'resolver' => $this->_helper->url->url(array('controller' => 'bookmarklets', 'action' => 'resolver', 'csrf' => $hash)),
+    					'adder' => $this->_helper->url->url(array('controller' => 'bookmarklets', 'action' => 'add', 'csrf' => $hash)),
+    					'bookmark' => $this->_helper->url->url(array('controller' => 'bookmarklets', 'action' => 'bookmark', 'csrf' => $hash)),
+    			),
+    	);
+    
+    	if ( $validCheck ) {
+    
+    		$url = $this->getRequest()->getParam("url", false);
+    		$title = strip_tags($this->getRequest()->getParam("title", false));
+    		$description = strip_tags($this->getRequest()->getParam("description", false));
+    		$thumbnail = $this->getRequest()->getParam("thumbnail", false);
+    		$ua = $this->getRequest()->getParam("ua", false);
+    		$cookies = $this->getRequest()->getParam("cookies", false);
+    
+    		if ( $url && $title ) {
+   
+    			$model = new Application_Model_Bookmark();
+    			$model->setUrl($url);
+    			$model->setTitle($title);
+   				 
+   				if ( $thumbnail ) {
+   					$model->setThumbnail($thumbnail);
+   				}
+   				if ( $description ) {
+   					$model->setDescription($description);
+   				}
+   				if ( $ua ) {
+   					$model->setUa($ua);
+   				}
+   				if ( $cookies ) {
+   					$model->setCookies($cookies);
+   				}
+   					
+   				try {
+   					Application_Model_BookmarksMapper::i()->save($model);
+   				} catch (Exception $e ) {
+	    			X_Debug::e("DB Error: {$e->getMessage()}");
+	    			$return['success'] = false;
+   				}
+    		} else {
+    			X_Debug::e("Missing data");
+    			$return['success'] = false;
+    		}
+    
+    	} else {
+    		X_Debug::e("Invalid CSRF");
+    		$return['success'] = false;
+    	}
+    
+    	$this->_helper->json($return, true, false);
+    
+    }    
     
 }
 

@@ -1,29 +1,21 @@
-<!-- application/views/scripts/onlinelibrary/index.phtml -->
-<?php $this->headScript()->appendFile($this->baseUrl("/js/onlinelibrary/script.js")); ?>
-<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/onlinelibrary/style.css')); ?>
+<!-- application/views/scripts/bookmarks/index.phtml -->
+<?php $this->headScript()->appendFile($this->baseUrl("/js/bookmarks/script.js")); ?>
+<?php //$this->headLink()->appendStylesheet($this->baseUrl('/css/onlinelibrary/style.css')); ?>
 <?php 
 $menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
 $this->layout()->subNavigator =	$menu
-	->addLinkRoute(X_Env::_('p_onlinelibrary_manage_add_new_entry'), "onlinelibrary", "add");
-if ( $this->rtmpEnabled ) {
-$this->layout()->subNavigator	
-	->addLinkRoute(X_Env::_('p_onlinelibrary_manage_add_new_rtmp'), "onlinelibrary", "addrtmp");
-}
+	->addLinkRoute(X_Env::_('p_bookmarks_actionaddpage'), "bookmarks", "add");
 	
 $breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
 /* @var $breadcrumb X_VlcShares_Elements_Menu */
 $this->layout()->breadcrumb = $breadcrumb
 	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
-	->addLabel(X_Env::_('p_onlinelibrary_manage_title'));
+	->addLabel(X_Env::_('p_bookmarks_manage_title'));
 	
 	
-$this->headTitle()->prepend(X_Env::_('p_onlinelibrary_manage_title'));
+$this->headTitle()->prepend(X_Env::_('p_bookmarks_manage_title'));
 
 ?>
-<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::PREPEND); ?>
-	var str_p_onlinelibrary_manage_newcategoryname = "<?php echo X_Env::_('p_onlinelibrary_manage_newcategoryname') ?>";
-<?php $this->headScript()->captureEnd(); ?>
-
 
 <?php if ( count($this->messages) ) :?>
 <div class="span-24 last" id="manage-messages">
@@ -45,45 +37,37 @@ $this->headTitle()->prepend(X_Env::_('p_onlinelibrary_manage_title'));
 		<div class="container">
 			<div class="box">
 				<div class="header">
-					<span class="title"><?php echo X_Env::_('p_onlinelibrary_manage_title')?></span>
+					<span class="title"><?php echo X_Env::_('p_bookmarks_manage_title')?></span>
 				</div>
 				<div class="content">
-					<table class="table" id="onlinelibrary-categories">
+					<table class="table" id="bookmarks-pages">
 						<tr class="header">
-							<th><?php echo X_Env::_('p_onlinelibrary_categoriestable_header_label')?></th>
-							<th width="100px"><?php echo X_Env::_('p_onlinelibrary_categoriestable_header_num')?></th>
+							<th><?php echo X_Env::_('p_bookmarks_header_title')?></th>
+							<th><?php echo X_Env::_('p_bookmarks_header_url')?></th>
 							<th width="100px"><?php echo X_Env::_('table_options')?></th>
 						</tr>
-						<?php if ( count($this->categories) ): ?>
-							<?php foreach ($this->categories as $i => $category): ?>
+						<?php if ( count($this->bookmarks) ): ?>
+							<?php foreach ($this->bookmarks as $i => $bookmark): ?>
+							<?php /* @var $bookmark Application_Model_Bookmark */ ?>
 								<tr class="<?php echo $i % 2 ? 'alt' : ''; ?>">
+									<td><?php echo $bookmark->getTitle() ?></td>
 									<td>
-										<a href="<?php echo $this->url(array(
-												'controller' => 'onlinelibrary',
-												'action'	=> 'category',
-												'id'	=> X_Env::encode($category['category'])
-											), 'default', true); ?>">
-											<?php echo $category['category']; ?>
-										</a>
+										<input type="text" disabled="disabled" value="<?php echo $bookmark->getUrl();?>" style="width: 100%" />
 									</td>
-									<td><?php echo $category['links'];?></td>
 									<td>
 										<ul class="inline-menu">
 											<li class="ui-state-default">
 												<a class="ui-icon ui-icon-pencil onlinelibrary-category-rename" href="<?php echo $this->url(array(
-													'controller' => 'onlinelibrary',
-													'action' => 'rename',
-													'id' => X_Env::encode($category['category']),
-													'name' => ''
+													'controller' => 'bookmarks',
+													'action' => 'edit',
+													'id' => $bookmark->getId(),
 												), 'default', true); ?>">R</a>
 											</li>
 											<li class="ui-state-default">
 												<a class="ui-icon ui-icon-trash" href="<?php echo $this->url(array(
-													'controller' => 'onlinelibrary',
+													'controller' => 'bookmarks',
 													'action' => 'delete',
-													'type' => 'category',
-													'id' => X_Env::encode($category['category']),
-													'name' => ''
+													'id' => $bookmark->getId(),
 												), 'default', true); ?>">E</a>
 											</li>
 										</ul>
@@ -94,7 +78,7 @@ $this->headTitle()->prepend(X_Env::_('p_onlinelibrary_manage_title'));
 							<tr>
 								<td colspan="3">
 									<center>
-										<i><?php echo X_Env::_('p_onlinelibrary_nocategories'); ?></i>
+										<i><?php echo X_Env::_('p_bookmarks_nobookmarks'); ?></i>
 									</center>
 								</td>
 							</tr>
@@ -107,7 +91,7 @@ $this->headTitle()->prepend(X_Env::_('p_onlinelibrary_manage_title'));
 									<li>
 										<?php if ( $i != $this->page ) : ?>
 											<a href="<?php echo $this->url(array(
-												'controller' => 'onlinelibrary',
+												'controller' => 'bookmarks',
 												'action'	=> 'index',
 												'page'	=> ($i == 1 ? null : $i)
 											),'default', true)?>"><?php echo $i; ?></a>
@@ -135,20 +119,6 @@ $this->headTitle()->prepend(X_Env::_('p_onlinelibrary_manage_title'));
 						</div>
 					</div>
 				<?php endif; ?>
-				<div class="box" id="onlinelibrary-hosters">
-					<div class="header">
-						<span class="title"><?php echo X_Env::_('p_onlinelibrary_manage_supportedhoster')?></span>
-					</div>
-					<div class="content">
-						<?php foreach ($this->hosters as $hosterId => $pattern ): ?>
-							<img title="<?php echo ucfirst($hosterId) . " - Pattern: ". htmlentities($pattern) ?>" 
-								src="<?php echo $this->baseUrl("/images/icons/hosters/$hosterId.png")?>"
-								alt="<?php echo $hosterId?>"
-								width="32px"
-								height="32px" style="margin: 0.5em;" />
-						<?php endforeach; ?>
-					</div>
-				</div>
 			</div>
 		</div>
 </div>

@@ -1,5 +1,25 @@
 INSERT INTO plg_acl_resources
 	("key", "class", "generator") VALUES
+	('default/browse/share/fileSystem', 'BROWSE', 'fileSystem');
+
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/browse/share/onlinelibrary', 'BROWSE', 'onlinelibrary');
+
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/browse/share/bookmarks', 'BROWSE', 'bookmarks');
+
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/browse/share/rtmpdump', 'BROWSE', 'rtmpdump');
+
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/browse/share/sopcast', 'BROWSE', 'sopcast');
+	
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
 	('default/acl/index', 'ADMIN', 'auth');
 
 INSERT INTO plg_acl_resources
@@ -58,6 +78,26 @@ INSERT INTO plg_acl_resources
 	("key", "class", "generator") VALUES
 	('default/bookmarklets/add', 'BROWSE', 'bookmarklets');
 
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/bookmarklets/bookmark', 'BROWSE', 'bookmarklets');
+
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/bookmarks/index', 'BROWSE', 'bookmarks');
+
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/bookmarks/add', 'BROWSE', 'bookmarks');
+
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/bookmarks/edit', 'BROWSE', 'bookmarks');
+
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/bookmarks/delete', 'BROWSE', 'bookmarks');
+	
 INSERT INTO plg_acl_resources
 	("key", "class", "generator") VALUES
 	('default/backupper/index', 'ADMIN', 'backupper');

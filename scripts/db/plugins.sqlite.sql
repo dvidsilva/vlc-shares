@@ -34,7 +34,6 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	1
 );
 
-
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
 	'onlinelibrary',
 	'X_VlcShares_Plugins_OnlineLibrary', 
@@ -44,6 +43,17 @@ INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`,
 	1,
 	1
 );
+
+INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
+	'bookmarks',
+	'X_VlcShares_Plugins_Bookmarks', 
+	'X/VlcShares/Plugins/Bookmarks.php',
+	'p_bookmarks_plglabel',
+	'p_bookmarks_plgdesc',
+	1,
+	1
+);
+
 
 INSERT INTO plugins ( `key`, `class`, `file`, `label`, `description`, `enabled`, `type` ) VALUES (
 	'rtmpdump',
