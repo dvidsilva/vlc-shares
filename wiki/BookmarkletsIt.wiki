@@ -1,0 +1,16 @@
+#summary Guida all'utilizzo della Bookmarklet
+#labels Phase-Support,Featured
+
+= Premesse =
+
+Questa guida mostra come trarre il massimo profitto dall'utilizzo della Bookmarklet di VLCShares per aggiungere nuovi link alla Online Library e nuove pagine nella Bookmark
+
+<wiki:toc max_depth="6" />
+
+= Preparazione del Browser =
+
+= Utilizzo =
+
+== Aggiungere nuovi link ==
+
+== Aggiungere nuovi bookmark ==
