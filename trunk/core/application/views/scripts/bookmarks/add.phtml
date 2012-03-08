@@ -1,0 +1,35 @@
+<!-- application/views/scripts/onlinelibrary/add.phtml -->
+<?php //$this->headScript()->appendFile($this->baseUrl("/js/bookmarks/script.js")); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/onlinelibrary/style.css')); ?>
+<?php 
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLinkRoute(X_Env::_('p_bookmarks_manage_title'), 'bookmarks', 'index');
+	
+if ( $this->bookmark && $this->bookmark instanceof Application_Model_Bookmark ) {
+	$this->layout()->breadcrumb->addLabel(X_Env::_('p_bookmarks_manage_title_edit', $this->bookmark->getTitle()));
+} else {
+	$this->layout()->breadcrumb->addLabel(X_Env::_('p_bookmarks_manage_title_add_edit'));
+}
+	
+	
+$this->headTitle()->prepend(X_Env::_('p_bookmarks_manage_title_add_edit'));
+$this->headTitle()->prepend(X_Env::_('p_bookmarks_manage_title'));
+?>
+
+<div class="unit">
+	<div class="box">
+		<div class="header">
+			<span class="title"><?php echo X_Env::_('p_bookmarks_manage_title_add_edit'); ?></span>
+		</div>
+		<div class="content">
+			<?php
+			echo $this->form;
+			?>
+		</div>
+	</div>
+</div>
+

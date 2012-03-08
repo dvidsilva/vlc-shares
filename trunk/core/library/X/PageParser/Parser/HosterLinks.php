@@ -57,6 +57,7 @@ class X_PageParser_Parser_HosterLinks extends X_PageParser_Parser {
 		$parsed = array();
 		$parsedClean = array();
 		// first find all <a> tags
+		//@file_put_contents(sys_get_temp_dir()."/last-http-request.html", $string);
 		$parsed = $this->subparser->parse($string);
 		//X_Debug::i("Atoms found: ".count($parsed));
 		foreach ( $parsed as $found ) {
@@ -67,7 +68,14 @@ class X_PageParser_Parser_HosterLinks extends X_PageParser_Parser {
 					'url' => $found['href'],
 					'label' => strip_tags($found['label'])
 				);
-			} catch (Exception $e) {/* invalid href, ignored *//*X_Debug::i("No hoster for link: {$found['href']}");*/ }
+				//X_Debug::i("Valid link: {$found['href']}");
+			} catch (Exception $e) {
+				/* invalid href, ignored */
+				/*
+				if ( X_Env::startWith($found['href'], 'http://') )
+					X_Debug::i("No hoster for link: {$found['href']}");
+				*/ 
+			}
 		}
 		return $parsedClean;
 	}

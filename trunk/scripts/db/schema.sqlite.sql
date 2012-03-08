@@ -151,3 +151,13 @@ FOR EACH ROW BEGIN
     DELETE from plg_acl_permissions WHERE `class` = OLD.`name`;
 END;
 
+CREATE TABLE plg_bookmarks (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    url TEXT NOT NULL,
+	cookies TEXT DEFAULT '',
+	`type` VARCHAR(20) DEFAULT 'text',
+    ua VARCHAR(255) NULL DEFAULT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NULL DEFAULT NULL,
+    thumbnail VARCHAR(255) NULL DEFAULT NULL
+);

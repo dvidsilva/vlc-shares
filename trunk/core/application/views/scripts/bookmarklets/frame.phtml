@@ -7,7 +7,8 @@
 		var LinksManager = {
 			api : {
 				resolver : "<?php echo $this->url(array('controller' => 'bookmarklets', 'action' => 'resolver', 'csrf' => $this->csrf)); ?>",
-				adder : "<?php echo $this->url(array('controller' => 'bookmarklets', 'action' => 'add2', 'csrf' => $this->csrf)); ?>",
+				adder : "<?php echo $this->url(array('controller' => 'bookmarklets', 'action' => 'add', 'csrf' => $this->csrf)); ?>",
+				bookmark : "<?php echo $this->url(array('controller' => 'bookmarklets', 'action' => 'bookmark', 'csrf' => $this->csrf)); ?>"
 			},
 			hosters : {
 				<?php foreach ($this->hosters as $id => $pattern ) : ?>
@@ -53,6 +54,16 @@
 					},
 				});
 				this.resolver.renew();
+			},
+			bookmark : function (datas) {
+				$('#loader').show();
+				$.post(LinksManager.api.bookmark, datas, function (data) {
+					$('#loader').hide();
+					if ( data.api ) {
+						LinksManager.api = data.api;
+					}
+					$(document).trigger('_page_submitted', [data]);
+				}, 'json');				
 			},
 			submit : function (datas) {
 				$('#loader').show();
@@ -151,6 +162,33 @@
 							$('#lastHref').val("<?php echo X_Env::_("p_bookmarklets_new_invalidlink"); ?>");
 							$('#lastLabel').val(args.label);
 						} 
+					},
+					r_getPageInfos : function (args, origin, source) {
+						$('#loader').hide();
+						if ( args.page ) {
+							console.log(args.page);
+							// send page info for inclusion
+							// prepare recap
+							$('#pageUrl').val(args.page.url);
+							$('#pageTitle').val(args.page.title);
+							$('#pageDescription').val(args.page.description);
+							if ( args.page.thumbnail ) { 
+								$('#pageThumbnail').attr('src', args.page.thumbnail);
+								$('#pageThumbnail').parent().show();
+							} else {
+								$('#pageThumbnail').attr('src', null);
+								$('#pageThumbnail').parent().hide();
+							}
+							$('#pageCookies').val(args.page.cookies);
+							$('#pageUa').val(args.page.userAgent);
+
+							$().xfc('sendToParent', 'resizeFrame', {
+								height: '400px',
+								width: '500px'
+							});
+							
+							showSection('pageRecap');
+						}
 					}
 				}
 			});
@@ -164,6 +202,13 @@
 				});
 				$().xfc('sendToParent', 'startCapture', {});
 			});
+
+			$('#addPage').click(function (e) {
+				e.preventDefault();
+				$('#loader').show();
+				$().xfc('sendToParent', 'getPageInfos', {});
+			});
+			
 
 			$('#stopCapture').click(function (e) {
 				e.preventDefault();
@@ -235,6 +280,36 @@
 				$().xfc('sendToParent', 'closeFrame');
 			});
 
+			$('#bookmark').click(function (e) {
+				e.preventDefault();
+
+				var page = {
+					'url' : $('#pageUrl').val(),
+					'title' : $('#pageTitle').val(),
+					'description' : $('#pageDescription').val(),
+					'thumbnail' : $('#pageThumbnail').attr('src'),
+					'cookies' : $('#pageCookies').val(),
+					'ua' : $('#pageUa').val()
+				};
+
+				$(document).bind('_page_submitted', function (e, data) {
+					$(document).unbind('_page_submitted');
+					if ( !data.success ) {
+						alert("Failure");
+					}
+					LinksManager.reset();
+					$().xfc('sendToParent', 'resizeFrame', {
+						height: '220px',
+						width: '300px'
+					});					
+					showSection('main');
+				});
+				
+				LinksManager.bookmark(page);
+				
+				
+			});
+			
 			$('#submit').click(function (e){
 				e.preventDefault();
 
@@ -417,21 +492,37 @@
 		a.fullrow-button:hover {
 			outline-color: black;
 			background-color: #CCC;
-		}		
-		</style>
+		}
+		#pageRecap input {
+			width: 80%;
+		}
+		#pageRecap .info-section div {
+			text-align: right;	
+		}
+		#pageRecap .info-section img {
+			width: 20%;
+			margin-right: 60%;
+			vertical-align: top;
+			vertical-align: text-top;
+		}
+	</style>
 </head>
 <body>
 	<img id="loader" src="<?php echo $this->baseUrl('/images/ajax-loader.gif'); ?>" />
 	<a id="shutdown" href="#"><img src="<?php echo $this->baseUrl('/images/bookmarklets/close.png'); ?>" /></a>
 	<section id="main" class="hidden">
-		<a id="startCapture" href="#" class="fullrow-button">
-			<img src="<?php echo $this->baseUrl('/images/bookmarklets/capture.png');?>" />
-			<?php echo X_Env::_("p_bookmarklets_new_capturelinks"); ?>
-		</a>
-		<a id="addPage" href="#" class="fullrow-button">
-			<img src="<?php echo $this->baseUrl('/images/bookmarklets/addpage.png');?>" />
-			<?php echo X_Env::_("p_bookmarklets_new_addinbookmarks"); ?>
-		</a>
+		<?php if ( $this->onlinelibrary_enabled ) : ?>
+			<a id="startCapture" href="#" class="fullrow-button">
+				<img src="<?php echo $this->baseUrl('/images/bookmarklets/capture.png');?>" />
+				<?php echo X_Env::_("p_bookmarklets_new_capturelinks"); ?>
+			</a>
+		<?php endif; ?>
+		<?php if ( $this->bookmarks_enabled ) : ?>
+			<a id="addPage" href="#" class="fullrow-button">
+				<img src="<?php echo $this->baseUrl('/images/bookmarklets/addpage.png');?>" />
+				<?php echo X_Env::_("p_bookmarklets_new_addinbookmarks"); ?>
+			</a>
+		<?php endif; ?>
 	</section>
 	<section id="capture" class="hidden">
 		<a id="stopCapture" href="#" class="fullrow-button">
@@ -463,6 +554,20 @@
 		</div>
 		<ol id="reportLinks">
 		</ol>
+	</section>
+	<section id="pageRecap" class="hidden">
+		<a id="bookmark" href="#" class="fullrow-button">
+			<img src="<?php echo $this->baseUrl('/images/bookmarklets/addpage.png');?>" />
+			<?php echo X_Env::_("p_bookmarklets_new_savepage"); ?>
+		</a>
+		<div class="info-section">
+			<div><?php echo X_Env::_("p_bookmarklets_new_pageurl"); ?>: <input id="pageUrl" value="" /></div>
+			<div><?php echo X_Env::_("p_bookmarklets_new_pagetitle"); ?>: <input id="pageTitle" value="" /></div>
+			<div><?php echo X_Env::_("p_bookmarklets_new_pagedescription"); ?>: <input id="pageDescription" value="" /></div>
+			<div><?php echo X_Env::_("p_bookmarklets_new_pagethumbnail"); ?>: <img src="" id="pageThumbnail" /></div>
+			<div><?php echo X_Env::_("p_bookmarklets_new_pageua"); ?>: <input id="pageUa" value="" /></div>
+			<div><?php echo X_Env::_("p_bookmarklets_new_pagecookie"); ?>: <input id="pageCookies" value="" /></div>
+		</div>
 	</section>
 </body>
 </html>

@@ -21,6 +21,7 @@ class X_PageParser_Loader_Http implements X_PageParser_Loader {
 			$this->last_request_uri = $uri;
 			X_Debug::i("Fetching: $uri");
 			$this->getHttpClient()->setUri($uri)->request();
+			//X_Debug::i("Request: \n".$this->getHttpClient()->getLastRequest());
 		}
 		return $this->getHttpClient()->getLastResponse()->getBody();
 	}

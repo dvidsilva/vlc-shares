@@ -83,7 +83,38 @@ function vlcs_bkml_bootstrap($) {
 					.off('click', captureHandler)
 					// remove custom styles
 					.removeClass('vlcs_captured');
+			},
+			
+			getPageInfos : function (args, origin, source) {
+				var page = {
+					url : '',
+					cookies : null,
+					userAgent : null,
+					title : null,
+					description : null,
+					thumbnail : null
+				}
+				// get info from page and insert into page object
+				page.url = $(location).prop('href');
+				page.cookies = $(document).prop('cookie');
+				page.userAgent = $(navigator).prop('userAgent');
+				page.title = $(document).prop('title');
+				page.description = $('meta[name="description"], meta[name="Description"]').attr('content');
+				var url = false;
+				url = $('link[rel="image_src"]').attr('href');
+				if ( !url ) {
+					url = $('meta[property="og:image"]').attr('content');
+				}
+				if ( url ) {
+					page.thumbnail = qualifyURL(url);
+				}
+				
+				// send page to r_pageinfo
+				$().xfc('sendTo', source, 'r_getPageInfos', {
+					page : page
+				});
 			}
+			
 		}
 	});
 	
