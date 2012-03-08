@@ -22,6 +22,9 @@
       * Wiimc
          * [WiimcConfigurationEn English]
          * [WiimcConfigurationIt Italiano]
+   * How to use the Bookmarklet
+      *  [BookmarkletsEn English]
+      *  [BookmarkletsIt Italiano]
    * [PluginsList Plugins]
       *  [PluginsList#Plugin_Installer Plugin Installer]
       *  [PluginsList#Plugins_List Available plugins list]
