@@ -97,4 +97,4 @@ Per poter installare i plugin aggiuntivi, è necessario che VLCShares abbia perm
    # Verificate che la casella "Sola lettura" non sia selezionata
    # Cliccate Ok per terminare
 
-== Mod_Rewrite Problems ==
+== `Mod_Rewrite` Problems ==
