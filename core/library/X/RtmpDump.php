@@ -109,6 +109,7 @@ class X_RtmpDump {
 			$calls[] = '> /dev/null 2>&1';
 		}
 		*/
+		$calls[] = '-q'; // forced quite to avoid log
 		return implode(' ', $calls);
 	}
 	
