@@ -867,6 +867,11 @@ img.installer-plugin-thumb {
 
 }
 
+#waitpls {
+	text-align: center;
+	margin-bottom: 1em;
+}
+
 .inline-tabs-menu {
 	margin: 2em;
 	text-align: center;

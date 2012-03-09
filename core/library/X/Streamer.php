@@ -73,21 +73,19 @@ class X_Streamer {
 		// then wake up the thread
 		X_Threads_Manager::instance()->appendJob($engine->getRunnableClass(), $params, self::THREAD_ID);
 		
+		// sleep 1 second, then check for 10 times and watch if something is working
+		sleep(1);
+		
 		$i = 10;
 		$threadInfo = X_Threads_Manager::instance()->getThreadInfo(self::THREAD_ID);
 		while ( $threadInfo->getState() != X_Threads_Thread_Info::RUNNING && $i > 0 ) { 
-			// check the thread is alive, sooooon after the append job
-			//$threadInfo = X_Threads_Manager::instance()->getThreadInfo(self::THREAD_ID);
-			if ( $threadInfo->getState() == X_Threads_Thread_Info::STOPPED ) {
-				// this is a very special case: i appended the job just between
-				// the last waiting tick and the stop of the thread,
-				// so the thread manager tought he can simple append the message,
-				// but for real the thread go in stop state (so it haven't read the
-				// read the message)
-				// to avoid this, i just append a renew message, so the thread
-				// move from stop -> run stream job -> stop (if any)
-				X_Threads_Manager::instance()->renew($threadInfo);
-			}
+			// this is a very special case: i appended the job just between
+			// the last waiting tick and the stop of the thread,
+			// so the thread manager tought he can simple append the message,
+			// but for real the thread go in stop state (so it haven't read the
+			// read the message)
+			// to avoid this, i just append a renew message, so the thread
+			// move from stop -> run stream job -> stop (if any)
 			sleep(1);
 			$threadInfo = X_Threads_Manager::instance()->getThreadInfo(self::THREAD_ID);
 			$i--;

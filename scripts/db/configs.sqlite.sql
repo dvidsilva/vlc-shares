@@ -229,16 +229,16 @@ INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, descrip
 	''
 );
 
-INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
-	'streamer.enabled', 
-	'1',
-	'1',
-	'helpers',
-	3,
-	'config_helpers_streamer_enabled_label',
-	'config_helpers_streamer_enabled_desc',
-	'advanced'
-);
+--INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
+--	'streamer.enabled', 
+--	'1',
+--	'1',
+--	'helpers',
+--	3,
+--	'config_helpers_streamer_enabled_label',
+--	'config_helpers_streamer_enabled_desc',
+--	'advanced'
+--);
 
 INSERT INTO configs ( `key`, `value`, `default`, `section`, type, label, description, class ) VALUES (
 	'ffmpeg.enabled', 

@@ -48,6 +48,13 @@ class Application_Form_Installer extends X_Form
                 array('validator' => 'StringLength', 'options' => array(5, 32))
                 )
         ));
+
+        $this->addElement('text', 'threads', array(
+       		'label'      	=> X_Env::_('config_general_threads_forker_label'),
+       		'description'   => X_Env::_('config_general_threads_forker_desc'),
+       		'required'   	=> true,
+       		'class'			=> 'hidden'
+        ));
         
         $this->addElement('multiCheckbox', 'plugins', array(
         	'required' => false,
@@ -58,7 +65,6 @@ class Application_Form_Installer extends X_Form
         		'PluginsMultiCheckBox'
         	)
         ));
-        
         
         // Add the submit button
         $this->addElement('submit', 'submit', array(

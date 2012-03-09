@@ -7,6 +7,12 @@ $this->layout()->breadcrumb = $breadcrumb
 	->addLabel(X_Env::_('installer_title'));
 ?>
 <?php //$this->headLink()->appendStylesheet($this->baseUrl('/css/installer/style.css')); ?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::APPEND); ?>
+	var threads_check_url = "<?php echo $this->threadsCheck; ?>";
+	var threads_check_params = [<?php echo implode(', ', $this->threadsUrls)?>];
+	var rewrite_check_url = "<?php echo $this->threadsPing; ?>";
+	var threads_check_error = "<?php echo X_Env::_('installer_threads_errorcheck'); ?>";
+<?php $this->headScript()->captureEnd(); ?>
 <?php $this->headScript()->appendFile($this->baseUrl("/js/installer/index.js")); ?>
 <?php $this->headTitle()->prepend(X_Env::_('installer_title')); ?>
 
