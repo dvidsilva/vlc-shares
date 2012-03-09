@@ -44,6 +44,7 @@ class InstallerController extends X_Controller_Action
     		$form->lang->setMultiOptions($languages);
     		$form->setDefault('lang', $lang !== false ? "$lang.ini" : 'en_GB.ini');
     		$form->setDefault('auth', 0);
+    		$form->setDefault('threads', X_Env::completeUrl($this->_helper->url('start', 'threads')));
     	} catch (Exception $e) {
     		// WTF?
     	}
@@ -65,9 +66,26 @@ class InstallerController extends X_Controller_Action
     		unset($ns->data);
     	}
     	
+    	$threadsChecks = $this->_helper->url('check', 'threads');
+    	$threadsPing = $this->_helper->url('ping', 'threads');
+    	$basePing = $this->_helper->url('', 'threads');
+    	$httpPort = $_SERVER['SERVER_PORT'];
+    	$httpPort = ( $httpPort != '80' && $httpPort != '' ) ? ":$httpPort" : '';
+    	$threadsUrls = array(
+    			// VALUES ARE QUOTED!!!!
+    				"'http://localhost{$httpPort}{$basePing}'",
+    				"'http://127.0.0.1{$httpPort}{$basePing}'",
+    				"'http://127.0.1.1{$httpPort}{$basePing}'",
+    				// funny tries
+    				"'http://192.168.1.1{$httpPort}{$basePing}'",
+    			);
+    	
     	$this->view->messages = array_merge($this->_helper->flashMessenger->getMessages(), $this->_helper->flashMessenger->getCurrentMessages()) ;
     	$this->_helper->flashMessenger->clearCurrentMessages();
     	$this->view->languages = $languages;
+    	$this->view->threadsCheck = $threadsChecks;
+    	$this->view->threadsPing = $threadsPing;
+    	$this->view->threadsUrls = $threadsUrls;
     	$this->view->form = $form;
     	
     }
@@ -165,6 +183,16 @@ class InstallerController extends X_Controller_Action
     			$config->setValue('1');
     			Application_Model_ConfigsMapper::i()->save($config);
     		}
+    		
+    		// check forker url
+    		$forkerUrl = $form->getValue('threads', false);
+    		if ( $forkerUrl ) {
+    			$config = new Application_Model_Config();
+    			Application_Model_ConfigsMapper::i()->fetchByKey('threads.forker', $config);
+    			$config->setValue($forkerUrl);
+    			Application_Model_ConfigsMapper::i()->save($config);
+    		}
+    		
     	} catch (Exception $e) {
 		    $this->_helper->flashMessenger(X_Env::_('installer_err_db').": {$e->getMessage()}");
 		    $this->_helper->redirector('index');

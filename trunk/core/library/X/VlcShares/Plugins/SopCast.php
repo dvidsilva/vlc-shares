@@ -433,7 +433,7 @@ class X_VlcShares_Plugins_SopCast extends X_VlcShares_Plugins_Abstract implement
 	public function preGetControlItems(X_Streamer_Engine $engine, Zend_Controller_Action $controller) {
 	
 		// ignore if the streamer is not vlc
-		if ( !($engine instanceof X_Streamer_Engine_RtmpDump ) ) return;
+		if ( !($engine instanceof X_Streamer_Engine_SopCast ) ) return;
 
 		$outputLink = "http://{%SERVER_NAME%}:8902/tv.asf";
 		$outputLink = str_replace(

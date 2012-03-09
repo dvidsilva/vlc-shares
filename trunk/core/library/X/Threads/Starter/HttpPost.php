@@ -17,7 +17,7 @@ class X_Threads_Starter_HttpPost extends X_Threads_Starter {
 	function spawn($threadId) {
 		
 		$http = new Zend_Http_Client($this->url, array(
-			'timeout' => 1,
+			'timeout' => 3,
 			'keepalive' => false
 		));
 
