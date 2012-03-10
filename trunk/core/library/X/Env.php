@@ -295,6 +295,23 @@ class X_Env {
 		}
 		return implode("\n", $stringArray);
 	}
+	
+	/**
+	 * Split a string in lines and reduce each line length to a (max size - #length of end) (adding end)
+	 * @param string $string
+	 * @param int $lineMaxLength
+	 * @param string $end
+	 */
+	static public function reduceLinesMaxLength($string, $lineMaxLength = 50, $end = '') {
+		// break string in lines
+		$array = explode("\n", $string);
+		for ( $i = 0; $i < count($array); $i++) {
+			if ( strlen($array[$i]) > $lineMaxLength ) {
+				$array[$i] = substr($array[$i], 0, $lineMaxLength - strlen($end)) . $end;
+			}
+		}
+		return implode("\n", $array);
+	}
 }
 
 class StringsWriter {

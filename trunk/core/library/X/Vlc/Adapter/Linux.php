@@ -45,9 +45,11 @@ class X_Vlc_Adapter_Linux extends X_Vlc_Adapter {
 				$logFile = sys_get_temp_dir().'/vlcShares.vlc-log.txt';
 				//$args .= " --verbose=\"2\"";
 				$args .= " --file-logging --logfile=\"$logFile\"";
+			} else {
+				$args .= " --quiet";
 			}
 			
-			$args .= " | pidof vlc > \"{$this->pidFile}\" && rm \"{$this->pidFile}\"";
+			$args .= " | pidof $vlcPath > \"{$this->pidFile}\" && rm \"{$this->pidFile}\"";
 			// trying with normal background mode
 			X_Env::execute("$vlcPath $args", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_WAIT);
 			
@@ -76,7 +78,8 @@ class X_Vlc_Adapter_Linux extends X_Vlc_Adapter {
 	 */
 	public function forceKill($pid = null) {
 		if ( is_null($pid) ) {
-			if ( $this->isRunning() ) {
+			$pid = file_get_contents($this->pidFile);
+			if ( $this->isRunning() && $pid ) {
 				X_Env::execute("kill `cat {$this->pidFile}`", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_WAIT);
 			} else {
 				// uccido anche le sessioni nn registrate
@@ -91,7 +94,8 @@ class X_Vlc_Adapter_Linux extends X_Vlc_Adapter {
 	 * 
 	 */
 	public function forceKillAll() {
-		X_Env::execute("killall vlc", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_WAIT);
+		$path = '"'.trim($this->_options->get('path', 'vlc'),'"').'"';
+		X_Env::execute("killall $path", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_WAIT);
 	}
 
 	/**

@@ -1,0 +1,75 @@
+<!-- application/views/scripts/tmanager/index.phtml -->
+<?php 
+
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+$this->layout()->subNavigator =	$menu
+	->addLinkRoute(X_Env::_('threads_clear_queue'), "tmanager", "clear", array('id' => $this->thread->getId(), 'csrf' => $this->csrf))
+	;
+	
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLinkRoute(X_Env::_('threads_title'), 'tmanager', 'index')
+	->addLabel(X_Env::_('threads_thread', $this->thread->getId()));
+
+?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/tmanager/style.css')); ?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::APPEND); ?>
+	var csrf = "<?php echo $this->csrf; ?>";
+<?php $this->headScript()->captureEnd(); ?>
+<?php //$this->headScript()->appendFile($this->baseUrl("/js/tmanager/index.js")); ?>
+
+<?php $this->headTitle()->prepend(X_Env::_('threads_thread', $this->thread->getId())); ?>
+
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<div class="unit">
+	<div class="container">
+		<div class="box">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('threads_tasks_queue_title'); ?></span>
+			</div>
+			<div class="content">
+				<table class="table" id="threads-table">
+					<tr class="header">
+						<th>#</th>
+						<th><?php echo X_Env::_('threads_header_type'); ?></th>
+						<th colspan="2"><?php echo X_Env::_('threads_header_sign'); ?></th>
+					</tr>
+					<?php foreach ( $this->queue as $i => $model): ?>
+						<?php /* @var $model X_Threads_Message */?>
+						<tr class="<?php echo $i % 2 ? 'alt' : ''?>">
+							<td align="center"><b><?php echo $i + 1; ?></b></td>
+							<td><?php echo $model->getType() ?></td>
+							<?php if ( $model->getType() == X_Threads_Message::TYPE_COMMAND ): ?>
+								<?php /* @var $model X_Threads_Message_Command */ ?>
+								<td><?php echo $model->getRunnableClass(); ?></td>
+								<td style="overflow: auto; max-width: 60%">
+									<pre style="font-size: small;"><?php echo X_Env::reduceLinesMaxLength(var_export($model->getParams(), true), 70, ' [...]'); ?></pre>
+								</td>
+							<?php else: ?>
+								<td <?php echo $model->getType() != X_Threads_Message::TYPE_COMMAND ? 'colspan="2"' : ''; ?>>
+									<i><?php echo $model; ?></i>
+								</td>
+							<?php endif; ?>
+						</tr>
+					<?php endforeach; ?>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

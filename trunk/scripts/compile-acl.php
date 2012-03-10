@@ -16,6 +16,8 @@ require_once 'pclzip.php';
 $getopt = new Zend_Console_Getopt(array(
 		'class|c-s' 	=> 'Set permission class required by resources',
 		'store|s-s'		=> 'Store to file',
+		'append|a-s'	=> 'Append to file (-l required)',
+		'limit|l-s'		=> 'Limit check to a single class only',
 		'help|h'     	=> 'Help -- usage message',
 ));
 try {
@@ -29,6 +31,8 @@ try {
 // Initialize values based on presence or absence of CLI options
 $defClass		= $getopt->getOption('c');
 $file			= $getopt->getOption('s');
+$append			= $getopt->getOption('a');
+$limit			= $getopt->getOption('l');
 
 
 // If help requested, report usage message
@@ -61,6 +65,8 @@ foreach ( $dir as $entry ) {
 	$match = array();
 	if ( !preg_match('/^(?P<controller>[A-Z][a-zA-Z]+?)Controller.php$/', $filename, $match) ) continue;
 	
+	if ( $limit && $limit != $match['controller'] ) continue;
+	
 	require_once $entry->getRealPath();
 	
 	$controller = $match['controller'];
@@ -92,8 +98,10 @@ foreach ( $dir as $entry ) {
 
 //echo $buffer . "\n";
 
-if ( $file ) {
+if ( $file  && !$limit ) {
 	file_put_contents(dirname(__FILE__).'/'.$file, $buffer);
+} elseif ( $limit && $append ) {
+	file_put_contents(dirname(__FILE__).'/'.$append, $buffer, FILE_APPEND);
 } else {
 	echo $buffer . "\n";	
 }

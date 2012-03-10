@@ -8,7 +8,7 @@
 #     															#
 #################################################################
 
-VLC-SHARES v0.5.5 beta - 05/03/2012
+VLC-SHARES v0.5.5 beta2 - 10/03/2012
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -24,6 +24,21 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.5.5 beta2 (10/03/2012) ***
+ - Automatic category selection when adding a new link from inside a category
+ - New bookmarklets:
+    * allow to capture manually all kind of links
+    * allow to bookmark page
+    * crazy-page proof
+ - New plugin bookmarks:
+    * allow to bookmarks page and get them parsed on the fly for new video links from vlc-shares.
+    * Bookmarks added through the new bookmarklet can store authentication cookies for page that requires user login.
+     (Google Chrome extension "cookie.txt export MOD" can be used to catch HttpOnly cookies. Downloadable from project site)
+ - New Threads Manager GUI:
+    * allow to get threads informations and to stop/clear/start them if there are pending jobs
+ - Fixed few bugs to transcoding mode startup
+ - Fixed a bug in SopCast plugin displaying "back to stream" link even if sopcast is not the selected streamer engine
 
 *** 0.5.5 beta (05/03/2012) ***
  - Auth plugin is always enabled now. Login can be enabled during installation or from configs page (as configuration)

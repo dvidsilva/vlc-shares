@@ -152,7 +152,8 @@
 				funcs : {
 					// temp functions
 					addLink : function (args, origin, source) {
-						if ( LinksManager.check(args.href) ) {
+						// links checker disabled
+						if ( true || LinksManager.check(args.href) ) {
 							LinksManager.push(args.label, args.href);
 							$('#linkCount').text(LinksManager.count());
 							$('#lastHref').val(args.href);
