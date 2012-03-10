@@ -1,0 +1,138 @@
+<!-- application/views/scripts/tmanager/index.phtml -->
+<?php 
+
+$menu = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_CONTEXTUAL));
+/*
+$this->layout()->subNavigator =	$menu
+	//->addLinkRoute(X_Env::_('p_auth_acl_new_class'), "acl", "add", array('type' => 'class'))
+	->addLinkRoute(X_Env::_('p_auth_acl_new_resource'), "acl", "add", array('type' => 'resource'))
+	;
+	*/
+	
+$breadcrumb = $this->guiElements()->menu()->setDecorator(X_VlcShares_Skins_Manager::i()->getDecorator(X_VlcShares_Skins_Manager::MENU_BREADCRUMB));
+/* @var $breadcrumb X_VlcShares_Elements_Menu */
+$this->layout()->breadcrumb = $breadcrumb
+	->addLinkRoute(X_Env::_('Dashboard'), 'manage', 'index')
+	->addLabel(X_Env::_('threads_title'));
+
+?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl('/css/tmanager/style.css')); ?>
+<?php $this->headScript()->captureStart(Zend_View_Helper_Placeholder_Container_Abstract::APPEND); ?>
+	var csrf = "<?php echo $this->csrf; ?>";
+<?php $this->headScript()->captureEnd(); ?>
+<?php //$this->headScript()->appendFile($this->baseUrl("/js/tmanager/index.js")); ?>
+
+<?php $this->headTitle()->prepend(X_Env::_('threads_title')); ?>
+
+
+<?php if ( count($this->messages) ) :?>
+<div class="span-24 last" id="manage-messages">
+	<ul>
+		<?php foreach ($this->messages as $i => $message ): ?>
+			<?php if ( !is_array($message) ) $message = array('text' => $message, 'type' => 'warning'); ?>
+			<li class="<?php echo @$message['type']?>">
+				<img src="<?php echo @$this->baseUrl("/images/msg_{$message['type']}.png");?>" alt="<?php echo @$message['type']; ?>" />
+				<?php echo $message['text']?>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<div class="box">
+	<p><?php echo X_Env::_('threads_howtouse'); ?></p>
+</div>
+
+<div class="unit">
+	<div class="container">
+		<div class="box">
+			<div class="header">
+				<span class="title"><?php echo X_Env::_('threads_title'); ?></span>
+			</div>
+			<div class="content">
+				<table class="table" id="threads-table">
+					<tr class="header">
+						<th><?php echo X_Env::_('threads_header_id'); ?></th>
+						<th><?php echo X_Env::_('threads_header_state'); ?></th>
+						<th><?php echo X_Env::_('threads_header_lastspawn'); ?></th>
+						<th><?php echo X_Env::_('threads_header_tasks'); ?></th>
+						<th><?php echo X_Env::_('threads_header_infos'); ?></th>
+						<th><?php echo X_Env::_('table_options'); ?></th>
+					</tr>
+					<?php foreach ( $this->threads as $i => $model): ?>
+						<?php /* @var $model X_Threads_Thread_Info */?>
+						<?php $tInfo = $model->getInfo(); ?>
+						<tr class="<?php echo $i % 2 ? 'alt' : ''?> filterable-generator" data-id="<?php echo $model->getId(); ?>">
+							<td><b><?php echo $model->getId(); ?></b></td>
+							<td><?php echo strtoupper($model->getState()); ?></td>
+							<td align="center"><i><?php echo isset($tInfo['spawned']) ? date("d/m/Y H:i", $tInfo['spawned']) : X_Env::_('threads_never'); ?></i></td>
+							<td>
+								<?php 
+								$count = count(X_Threads_Manager::instance()->getMessenger()->showQueue($model));
+								if ( $count ) :	?>
+									<a href="<?php echo $this->url(array(
+											'controller' => 'tmanager',
+											'action'	=> 'tasks',
+											'id'	=> $model->getId(),
+											'csrf' => $this->csrf
+										), null, true);?>">
+										<?php echo $count; ?>
+									</a>
+								<?php else : ?>
+									<?php echo $count; ?> 
+								<?php endif; ?>
+							</td>
+							<td style="overflow: auto; max-width: 60%">
+								<pre style="font-size: small;"><?php echo X_Env::reduceLinesMaxLength(var_export($model->getInfo(), true), 70, ' [...]'); ?></pre>
+							</td>
+							<td>
+								<ul class="inline-menu">
+									<?php if ($count && $model->getState() == X_Threads_Thread_Info::STOPPED) : ?>
+										<li class="ui-state-default">
+											<a class="ui-icon ui-icon-play"
+											title="<?php echo X_Env::_('resume')?>"
+											href="<?php echo $this->url(array(
+												'controller' => 'tmanager',
+												'action' => 'resume',
+												'key' => $model->getId(),
+												'csrf' => $this->csrf
+											), 'default', true); ?>">
+												Resume
+											</a>
+										</li>
+									<?php endif; ?>
+									<?php if ($model->getState() != X_Threads_Thread_Info::STOPPED) : ?>
+										<li class="ui-state-default">
+											<a class="ui-icon ui-icon-stop"
+											title="<?php echo X_Env::_('stop')?>"
+											href="<?php echo $this->url(array(
+												'controller' => 'tmanager',
+												'action' => 'stop',
+												'id' => $model->getId(),
+												'csrf' => $this->csrf
+											), 'default', true); ?>">
+												Stop
+											</a>
+										</li>
+									<?php endif; ?>
+									<li class="ui-state-default">
+										<a class="ui-icon ui-icon-trash"
+										title="<?php echo X_Env::_('remove')?>"
+										href="<?php echo $this->url(array(
+											'controller' => 'tmanager',
+											'action' => 'remove',
+											'id' => $model->getId(),
+											'csrf' => $this->csrf
+										), 'default', true); ?>">
+											R
+										</a>
+									</li>
+								</ul>								
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

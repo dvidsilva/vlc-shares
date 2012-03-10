@@ -119,6 +119,8 @@ class X_Streamer {
 				$engine->doStop($infos);
 			}
 			
+		} else {
+			X_Debug::e("Invalid streamer");
 		}
 		
 		X_Threads_Manager::instance()->halt($thread);

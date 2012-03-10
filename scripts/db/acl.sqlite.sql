@@ -474,3 +474,27 @@ INSERT INTO plg_acl_resources
 INSERT INTO plg_acl_resources
 	("key", "class", "generator") VALUES
 	('default/devices/test', 'ADMIN', 'devices');
+
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/tmanager/index', 'ADMIN', 'auth');
+
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/tmanager/tasks', 'ADMIN', 'auth');
+
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/tmanager/start', 'ADMIN', 'auth');
+
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/tmanager/stop', 'ADMIN', 'auth');
+
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/tmanager/remove', 'ADMIN', 'auth');
+
+INSERT INTO plg_acl_resources
+	("key", "class", "generator") VALUES
+	('default/tmanager/clear', 'ADMIN', 'auth');

@@ -54,7 +54,6 @@ class X_Threads_Manager {
 		}
 	}
 	
-	/*
 	public function wakeup(X_Threads_Thread_Info $thread) {
 		try {
 			$this->resume($thread);
@@ -62,7 +61,6 @@ class X_Threads_Manager {
 			X_Debug::e("Wake up failed");
 		}
 	}
-	*/
 	
 	/**
 	 * Append a stop message as last message in the queue

@@ -50,7 +50,6 @@ $this->layout()->breadcrumb = $breadcrumb
 						<?php /* @var $profile Application_Model_Profile */?>
 						<tr class="<?php echo $i % 2 ? 'alt' : ''?>" id="profileId-<?php echo $profile->getId(); ?>">
 							<td><b><?php echo $profile->getLabel() ?></b></td>
-							<!-- <td style="word-break: break-all;"><?php echo chunk_split($profile->getArg(), 15, '<wbr/>'); ?></td>-->
 							<td style="overflow: auto; max-width: 60%"><pre style="font-size: small;"><?php echo X_Env::codeFormat($profile->getArg()); ?></pre></td>
 							<td><?php echo $profile->getLink() ?></td>
 							<td>

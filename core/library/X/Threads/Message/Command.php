@@ -12,7 +12,7 @@ class X_Threads_Message_Command extends X_Threads_Message {
 	}
 	
 	function __toString() {
-		return "COMMAND: {$this->getRunnableClass()}, ".print_r($this->getParams(), true);
+		return "COMMAND: {$this->getRunnableClass()}";
 	}
 	
 	/**

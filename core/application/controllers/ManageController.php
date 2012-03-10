@@ -129,6 +129,15 @@ class ManageController extends X_Controller_Action
     			'action'		=> 'index'
     		), 'default', true);
     	$manageLinks->append($item);
+    	$item = new X_Page_Item_ManageLink('core-manage-threads', X_Env::_('manage_goto_threadstitle'));
+    	$item
+    	->setTitle(X_Env::_('manage_goto_threads'))
+    	->setIcon('/images/manage/threads.png')
+    	->setLink(array(
+    			'controller'	=> 'tmanager',
+    			'action'		=> 'index'
+    	), 'default', true);
+    	$manageLinks->append($item);
     	$manageLinks->merge(X_VlcShares_Plugins::broker()->getIndexManageLinks($this));
     	
     	// fetch links from plugins

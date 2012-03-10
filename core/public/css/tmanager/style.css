@@ -1,0 +1,54 @@
+@CHARSET "UTF-8";
+
+.highlight {
+	background-color: #900 !important;
+}
+
+.highlight * {
+	color: white;
+}
+
+#threads-table tr:not(.header) td pre {
+	max-height: 2.3em;
+	overflow: hidden;
+	margin-bottom: 0px;
+	-webkit-transition: max-height .5s linear;
+    -moz-transition: max-height .5s linear;
+    transition: max-height .5s linear;
+}
+
+#threads-table tr:not(.header) td:hover pre {
+	max-height: 50em;
+	oveflow: auto;
+
+	-webkit-transition: max-height .5s linear;
+    -moz-transition: max-height .5s linear;
+    transition: max-height .5s linear;
+
+	-webkit-transition-delay: 1s;
+	-moz-transition-delay: 1s;
+	transition-delay: 1s;
+}
+
+#threads-table tr:not(.header) td {
+	position: relative;
+}
+
+#threads-table tr:not(.header) td:hover pre:after {
+	content: "Hold to unfold";
+	position: absolute;
+	z-index: 100;
+	top: 0;
+	right: 0px;
+	/*font-size: 1em;*/
+	padding: 0.5em 0.5em 0.5em 0.7em;
+	background-color: rgba(0,0,0, 0.3);
+	border-left: 2px solid rgba(255, 255, 255, 0.4);
+	border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+	font-weight: bold;
+	color: rgba(255, 255, 255, 0.6);
+
+	-moz-border-radius: 0 0 0 5px;
+	-webkit-border-radius: 0 0 0 5px;
+	border-radius: 0 0 0 5px;
+}

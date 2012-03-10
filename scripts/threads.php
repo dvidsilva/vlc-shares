@@ -21,7 +21,7 @@ $getopt = new Zend_Console_Getopt(array(
     'stop|s-s' 		=> 'Send a STOP message to a thread',
     'stopall|k'    	=> 'Send a STOP message to all threads',
 	'info|i-s'		=> 'Show last update info about a thread',
-	'try|t-s'		=> 'Try to execute a Runnable instance',
+	'try|t-s'		=> 'Try to execute a Runnable instance, require -i',
 	'clear|c'		=> 'Clear old message queues',
 	'reset|r'		=> 'Reset all threads status',
     'help|h'     	=> 'Help -- usage message',
@@ -100,6 +100,17 @@ if ( $stopall ) {
 }
 
 
+if ( $try && $info ) {
+
+	if ( class_exists($try, true) ) {
+		$ref = new ReflectionClass($try);
+		if ( $ref->implementsInterface('X_Threads_Runnable') ) {
+			X_Threads_Manager::instance()->appendJob($try, array(), $info);
+		}
+	}
+}
+
+
 if ( $info ) {
 	$thread = X_Threads_Manager::instance()->getMonitor()->getThread($info);
 	echo sprintf("Thread ID: %s\n\tState: %s\n\tInfo: %s", $thread->getId(), $thread->getState(), print_r($thread->getInfo(), true)).PHP_EOL;
@@ -121,20 +132,6 @@ if ( $list ) {
 		echo sprintf("Thread ID: %s\n\tState: %s\n\tInfo: %s", $thread->getId(), $thread->getState(), print_r($thread->getInfo(), true)).PHP_EOL;
 	}
 	echo "----------------------".PHP_EOL;
-}
-
-if ( $try ) {
-	
-	$thread = new X_Threads_Thread('test-runnable', X_Threads_Manager::instance());
-	if ( class_exists($try, true) ) {
-		$ref = new ReflectionClass($try);
-		if ( $ref->implementsInterface('X_Threads_Runnable') ) {
-			$runnable = new $try();
-			$runnable->run(array(
-				'url' => "http://127.0.0.1:80/vlc-shares/xml/upnp/MediaServerServiceDesc.xml"
-			), $thread);
-		}
-	}
 }
 
 if ( $clear ) {
