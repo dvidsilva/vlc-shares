@@ -27,9 +27,9 @@ class X_Vlc_Adapter_Windows extends X_Vlc_Adapter {
 				$logFile = sys_get_temp_dir().'/vlcShares.vlc-log.txt';
 				//$args .= " --verbose=\"2\"";
 				$args .= " --file-logging --logfile=\"$logFile\"";
-			} else {
+			}/* else {
 				$args .= " --quite";
-			}
+			}*/
 			
 			// append pidfile (lock only)
 			$args .= " > \"{$this->pidFile}\" && del \"{$this->pidFile}\"";
