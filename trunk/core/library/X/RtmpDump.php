@@ -221,7 +221,7 @@ class X_RtmpDump {
 		if ( !X_Env::isWindows() ) {
 			X_Env::execute("kill -9 `ps aux | grep {$this->path} | grep -v grep | awk '{print $2}'`", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_WAIT);
 		} else {
-			X_Env::execute("taskkill /IM rtmpgw.exe /F", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_WAIT);
+			X_Env::execute("taskkill /IM rtmpdump.exe /F", X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_WAIT);
 		}
 		
 	}

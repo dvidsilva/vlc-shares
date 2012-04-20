@@ -73,12 +73,33 @@ class X_Streamer_Engine_RtmpDump extends X_Streamer_Engine implements X_Streamer
 	*/
 	public function startEngine(X_Threads_Thread $thread) {
 		// assume all parameters are ready
-		$thread->log("Spawning RTMPDump (rtmpgw)...");
+		$thread->log("Spawning RTMPDump (rtmpdump | vlc)...");
 		$source = $this->getParam('source');
-		$command = (string) X_RtmpDump::getInstance()->parseUri($source)->setStreamPort(X_VlcShares_Plugins::helpers()->rtmpdump()->getStreamPort());
-		X_Env::execute($command, X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_WAIT);
-		//$this->vlc->spawn();
-		$thread->log("RTMPDump execution finished");
+		
+		if ( X_VlcShares_Plugins::helpers()->streamer()->isRegistered('vlc') ) {
+
+			$command = (string) X_RtmpDump::getInstance()->parseUri($source)
+			/*->setStreamPort(X_VlcShares_Plugins::helpers()->rtmpdump()->getStreamPort())*/
+			;
+			
+			$streamPort = X_VlcShares_Plugins::helpers()->rtmpdump()->getStreamPort();
+			
+			// try to get reference to vlc-streamer
+			/* @var $vlcStreamer X_Streamer_Engine_Vlc */
+			$vlcStreamer = X_VlcShares_Plugins::helpers()->streamer()->get('vlc');
+			
+			$vlcStreamer->getVlcWrapper()->setPipe($command);
+			$vlcStreamer->setSource('-');
+			$vlcStreamer->setParam('profile', "#std{access=http{mime=video/x-flv},mux=ffmpeg{mux=flv},dst=0.0.0.0:{$streamPort}/}");
+		
+			//X_Env::execute($command, X_Env::EXECUTE_OUT_NONE, X_Env::EXECUTE_PS_WAIT);
+			$vlcStreamer->getVlcWrapper()->spawn();
+			//$this->vlc->spawn();
+			$thread->log("RTMPDump execution finished");
+			
+		} else {
+			$thread->log("RTMPDump cannot be started without vlc streamer");
+		}
 		
 	}
 
