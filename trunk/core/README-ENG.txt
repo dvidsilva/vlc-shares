@@ -8,7 +8,7 @@
 #     															#
 #################################################################
 
-VLC-SHARES v0.5.5 beta2 - 10/03/2012
+VLC-SHARES v0.5.5 beta3 - 23/06/2012
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -24,6 +24,10 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.5.5 beta3 (23/06/2012) ***
+ - Fix for vlc 2.0
+ - Rtmpdump bootstrap changed (need test)
 
 *** 0.5.5 beta2 (10/03/2012) ***
  - Automatic category selection when adding a new link from inside a category
