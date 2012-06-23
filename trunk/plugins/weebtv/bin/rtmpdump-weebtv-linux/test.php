@@ -1,5 +1,7 @@
 <?php
 
+/*
+
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
     realpath('/usr/share/php/libzend-framework-php/'),
@@ -45,16 +47,26 @@ foreach ($check as $label => $key) {
 }
 
 echo print_r($results, true) . "\n";
-
-$string = "./rtmpdump-weebtv --rtmp \"{$results['rtmp']}/{$results['playPath']}\" --swfUrl \"http://static2.weeb.tv/player.swf\" --weeb=\"{$results['ticket']}\" --live -q -o - ";
+*/
+//$string = "./rtmpdump-weebtv --rtmp \"{$results['rtmp']}/{$results['playPath']}\" --swfUrl \"http://static2.weeb.tv/player.swf\" --weeb=\"{$results['ticket']}\" --live -q -o - ";
 //$string = 'wget -O test.mp4 "http://localhost:8081/?r='.urlencode($results['rtmp'].'/'.$results['playPath'])."&s=".urlencode("http://static2.weeb.tv/player.swf")."&J=".urlencode($results['ticket'])."&v=1".'"';
 
 //vlc
-$string .= ' | vlc - --play-and-exit --sout="#std{access=http{mime=video/x-flv},mux=ffmpeg{mux=flv},dst=0.0.0.0:8081/stream}"';
+$string = "./rtmpdump-weebtv ";
+//$string .= "--rtmp \"rtmp://fcds503.atl.llnw.net:1935/owned/\" ";
+$string .= "--rtmp \"rtmp://own3deulivefs.fplive.net/own3deulive-live\" ";
+$string .= "--pageUrl \"http://www.own3d.tv/live/370\" ";
+$string .= "--swfVfy \"http://static.ec.own3d.tv/player/Own3dPlayerV2_91.swf\" ";
+$string .= "--swfUrl \"http://static.ec.own3d.tv/player/Own3dPlayerV2_91.swf\" ";
+$string .= "--playpath \"own3d.shushei_370\" ";
+$string .= "--live ";
+$string .= "--quiet ";
+$string .= ' | vlc - -q';
+
 
 echo $string."\n";
 
-echo "Sleeping 5 seconds...";
+//echo "Sleeping 5 seconds...\n";
 
 sleep(5);
 
