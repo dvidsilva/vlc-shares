@@ -197,8 +197,14 @@ class X_VlcShares_Plugins_Youtube extends X_VlcShares_Plugins_Abstract implement
 					X_Debug::i("CC-XML to SRT Url: ".X_Env::completeUrl($urlHelper->url($sub, 'default', true)));
 				}
 			}
+         
+      @list(, , , $videoId) = explode('/', $location);
+      $link2 = new X_Page_Item_PItem('core-directwatch', "Watch throught WIIMC");
+			$link2->setIcon('/images/icons/play.png')
+				->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
+        ->setLink("http://www.youtube.com/watch?v={$videoId}");
 				
-			return new X_Page_ItemList_PItem(array($link));
+			return new X_Page_ItemList_PItem(array($link, $link2));
 		} else {
 			// if there is no link, i have to remove start-vlc button
 			// and replace it with a Warning button
