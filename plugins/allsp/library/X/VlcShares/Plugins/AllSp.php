@@ -14,21 +14,22 @@ class X_VlcShares_Plugins_AllSp extends X_VlcShares_Plugins_Abstract implements 
 	const VERSION_CLEAN = '0.2.1';
 
 	private $seasons = array(
-		1 => "http://allsp.com/e.php?season=1",
-		2 => "http://allsp.com/e.php?season=2",
-		3 => "http://allsp.com/e.php?season=3",
-		4 => "http://allsp.com/e.php?season=4",
-		5 => "http://allsp.com/e.php?season=5",
-		6 => "http://allsp.com/e.php?season=6",
-		7 => "http://allsp.com/e.php?season=7",
-		8 => "http://allsp.com/e.php?season=8",
-		9 => "http://allsp.com/e.php?season=9",
-		10 => "http://allsp.com/e.php?season=10",
-		11 => "http://allsp.com/e.php?season=11",
-		12 => "http://allsp.com/e.php?season=12",
-		13 => "http://allsp.com/e.php?season=13",
-		14 => "http://allsp.com/e.php?season=14",
-		15 => "http://allsp.com/e.php?season=15",
+		1 => "http://allsp.ch/e.php?season=1",
+		2 => "http://allsp.ch/e.php?season=2",
+		3 => "http://allsp.ch/e.php?season=3",
+		4 => "http://allsp.ch/e.php?season=4",
+		5 => "http://allsp.ch/e.php?season=5",
+		6 => "http://allsp.ch/e.php?season=6",
+		7 => "http://allsp.ch/e.php?season=7",
+		8 => "http://allsp.ch/e.php?season=8",
+		9 => "http://allsp.ch/e.php?season=9",
+		10 => "http://allsp.ch/e.php?season=10",
+		11 => "http://allsp.ch/e.php?season=11",
+		12 => "http://allsp.ch/e.php?season=12",
+		13 => "http://allsp.ch/e.php?season=13",
+		14 => "http://allsp.ch/e.php?season=14",
+		15 => "http://allsp.ch/e.php?season=15",
+    16 => "http://allsp.ch/e.php?season=16",
 	);
 	
 	
