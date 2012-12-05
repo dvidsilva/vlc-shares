@@ -228,7 +228,7 @@ class X_VlcShares_Plugins_AllSp extends X_VlcShares_Plugins_Abstract implements 
 		// prevent no-location-given error
 		if ( $location === null ) return false;
 		
-		$pageVideo = "http://allsp.com/xml.php?id=$location";
+		$pageVideo = "http://allsp.ch/xml.php?id=$location";
 		
 		$htmlString = $this->_loadPage($pageVideo);
 		

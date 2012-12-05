@@ -8,7 +8,7 @@
 #     															#
 ########## AllSp.com Plugin #####################################
 
-AllSp.com v0.2
+AllSp.com v0.2.2
 Created by Francesco Capozzo (Ximarx)
 ximarx@gmail.com
 
@@ -22,6 +22,10 @@ For more infos, browse the project site at http://code.google.com/p/vlc-shares/
 /==========---
 | Changelog
 \==========---
+
+*** 0.2.2 ***
+ - .com -> .ch
+ - season 16 added
 
 *** 0.2 ***
  - Moved to Extra
