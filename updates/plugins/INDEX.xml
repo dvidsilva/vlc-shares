@@ -53,15 +53,16 @@
 		</version>
 	</plugin>
 	<plugin key="allsp">
-		<version name="0.2.1" type="stable" cMin="0.5.3" cMax="0.6">
+		<version name="0.2.2" type="stable" cMin="0.5.3" cMax="0.6">
 			<update />
-			<download>http://vlc-shares.googlecode.com/files/plugin_allsp_0.2.1.zip</download>
+			<download>http://vlc-shares.googlecode.com/files/plugin_allsp_0.2.2.zip</download>
 	      <thumbnail>http://oggitv.net/wp-content/uploads/2011/10/images36-288x100.jpg</thumbnail>
 			<changelog><![CDATA[
-			*** 0.2.1 ***
-			 - Added season 15
+      *** 0.2.2 ***
+       - .com -> .ch
+       - season 16 added
 			]]></changelog>
-			<description><![CDATA[Watch South Park videos from AllSp.com]]></description>
+			<description><![CDATA[Watch South Park videos from AllSp.ch]]></description>
 		</version>
 	</plugin>
 	<plugin key="animedb">
