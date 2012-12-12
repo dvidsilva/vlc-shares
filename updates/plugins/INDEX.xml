@@ -22,7 +22,7 @@
 		<version name="0.2.1" type="stable" cMin="0.5.4" cMax="0.6">
 			<update />
 			<download>http://vlc-shares.googlecode.com/files/plugin_youtube_0.2.1.zip</download>
-	      <thumbnail>http://geeko.lesoir.be/wp-content/thumbs/288/100/http://geeko.lesoir.be/wp-content/uploads/2012/01/youtubeaffiche.jpg</thumbnail>
+	      <thumbnail>https://lh4.ggpht.com/qfVffxi66yLyt_LYylckIPeCDHxEGt0rMOTmgvLLmjkYklHfJoMUpFswWEUYtCKIWIc=w200</thumbnail>
 			<changelog><![CDATA[
 			*** 0.2.1 ***
 			 - Http stream links back
