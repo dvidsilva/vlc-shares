@@ -7,6 +7,13 @@ class X_VlcShares_Plugins_Helper_Hoster_Own3dLive implements X_VlcShares_Plugins
 	
 	const SOURCE_URL = 'http://www.own3d.tv/livecfg/%s?autoPlay=true';
 	
+	const PLAYER_URL = 'http://static.ec.own3d.tv/player/Own3dPlayerV2_91.swf';
+	
+	private $cdns = array(
+			'${cdn1}' => 'rtmp://fml.2010.edgecastcdn.net:1935/202010',
+			'${cdn2}' => 'rtmp://owned.fc.llnwd.net/owned',
+		);
+	
 	private $params = array(
 		'quality' => '2',
 		'base' => '${cdn2}'
@@ -62,7 +69,8 @@ class X_VlcShares_Plugins_Helper_Hoster_Own3dLive implements X_VlcShares_Plugins
 	 */
 	function getPlayable($url, $isId = true) {
 		$infos = $this->getPlayableInfos($url, $isId);
-		return $infos['url'];
+		//return $infos['url'];
+		return $infos['streams']['o_0_HD'];
 	}
 	
 	/**
@@ -98,61 +106,84 @@ class X_VlcShares_Plugins_Helper_Hoster_Own3dLive implements X_VlcShares_Plugins
 		$thumbnail = trim((string) $dom->player[0]->thumb[0]);
 		$title = trim((string) $dom->channels[0]->channel[0]['name']);
 		$description = trim((string) $dom->channels[0]->channel[0]['description']);
+		$pageUrl = trim((string) $dom->channels[0]->channel[0]['ownerLink']);
 		
 		$item = null;
 		
-		foreach ($dom->channels[0]->channel[0]->clip[0]->item as $f_item) {
-			if ( $f_item['base'] == $this->params['base'] ) {
-				$item = $f_item;
-				break;
-			}
-		}
-		
-		if ( is_null($item) ) {
-			X_Debug::e("This live channel has no {$this->params['base']} link");
-			throw new Exception("This live channel has no {$this->params['base']} link", self::E_ID_NOTFOUND);
-		}
-		
-		$stream = null;
-		foreach ( $item->stream as $f_stream ) {
-			if ( $f_stream['quality'] != $this->params['quality'] && !is_null($stream)  ) {
-				// always set the first stream type
-				continue;
-			}
+		$streams = array();
 
-			$playpath = (string) $f_stream['name'];
-			$app = '';
-			if ( strpos($playpath, '?' ) !== false ) {
-				$app = substr($playpath, strpos($playpath, '?' ) + 1 );
-			}
+		$other_i = 0;
+		
+		foreach ($dom->channels[0]->channel[0]->clip[0]->item as $item) {
 			
-			$stream = X_RtmpDump::buildUri(array(
-				'rtmp' => "rtmp://owned.fc.llnwd.net:1935/owned?$app/$playpath",
-				'live' => true
-			));
+			// check base and convert cdn url
+			$cdnType = X_Env::startWith((string) $item['base'], '${cdn') ? substr((string) $item['base'], 5, 1) : "o_".$other_i++;
 			
-			if ( $f_stream['quality'] == $this->params['quality'] ) {
-				break;
+			foreach ($item->stream as $stream) {
+				$label = (string) $stream['label'];
+				$name = (string) $stream['name'];
+				// remove the part before the ? if any
+				if (strpos($name, '?') !== false) {
+					$name = substr($name, strpos($name, '?') + 1);
+				}
+				
+				$url = $this->getEngineUrl((string) $item['base'], $name, $pageUrl);
+				
+				$sKey = "{$cdnType}_{$label}";
+				
+				$streams[$sKey] = $url;
+				
 			}
 		}
 		
-		if ( is_null($stream) ) {
-			X_Debug::e("No valid rtmp stream found");
-			throw new Exception("No valid rtmp stream found", self::E_ID_NOTFOUND);
-		}
-		
-		
+		X_Debug::i(print_r($streams, true));
+
 		return array(
 			'title' => $title,
 			'description' => $description,
 			'thumbnail' => $thumbnail,
-			'url' => $stream,
+			'streams' => $streams,
 			'length' => 0
 		);
 	}
 	
-	function getHosterUrl($playableId) {
+	public function getHosterUrl($playableId) {
 		return "http://www.own3d.tv/live/$playableId";
+	}
+	
+	private function convertCDNUrl($cdn) {
+		if ( array_key_exists($cdn, $this->cdns ) ) {
+			return $this->cdns[$cdn];
+		} else {
+			return $cdn;
+		}
+			
+	}
+	
+	private function getEngineUrl($cdn, $playpath, $pageUrl) {
+		
+		$params = array();
+		
+		switch ($cdn) {
+			case '${cdn1}':
+			case '${cdn2}':
+				$cdn = $this->convertCDNUrl($cdn);
+				$url = "{$cdn}?{$playpath}";
+				break;
+				
+			default:
+				$url = $cdn;
+				break;
+		}
+		
+		$params['rtmp'] = $url;
+		$params['playpath'] = $playpath;
+		$params['live'] = true;
+		$params['swfVfy'] = true;
+		$params['swfUrl'] = self::PLAYER_URL;
+		$params['pageUrl'] = $pageUrl;
+		
+		return X_RtmpDump::buildUri($params);
 	}
 	
 	
