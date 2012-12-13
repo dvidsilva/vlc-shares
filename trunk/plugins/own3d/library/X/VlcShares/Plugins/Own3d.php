@@ -34,13 +34,34 @@ class X_VlcShares_Plugins_Own3d extends X_VlcShares_Plugins_Abstract implements 
 			
 			$this->setPriority('getShareItems');
 			$this->setPriority('preGetModeItems');
-			$this->setPriority('preRegisterVlcArgs');
+			//$this->setPriority('preRegisterVlcArgs');
+			$this->setPriority('preGetStreamItems');
+			$this->setPriority('preGetControlItems');
 			$this->setPriority('getIndexManageLinks');
 		}
 		$this->setPriority('gen_beforeInit');
 		$this->setPriority('getIndexMessages');
+		
+		// check for __bootstrap loading
+		if ( X_VlcShares_Plugins::helpers() && X_VlcShares_Plugins::helpers()->streamer() ) {
+			// manually call trigger because when loading plugin in dev env
+			// extra plugins are loaded after trigger has been call
+			$this->gen_afterPluginsInitialized(X_VlcShares_Plugins::broker());
+		} else {
+			$this->setPriority('gen_afterPluginsInitialized');
+		}		
 	}
 
+	
+	/**
+	 * Register the RtmpDumpWeebTv streamer engine
+	 * @param X_VlcShares_Plugins_Broker $broker
+	 */
+	public function gen_afterPluginsInitialized(X_VlcShares_Plugins_Broker $broker) {
+		$this->helpers()->streamer()->register(new X_Streamer_Engine_RtmpDumpOwn3d());
+	}
+	
+	
 	/**
 	 * Inizialize translator for this plugin
 	 * @param Zend_Controller_Action $controller
@@ -177,6 +198,107 @@ class X_VlcShares_Plugins_Own3d extends X_VlcShares_Plugins_Abstract implements 
 	
 	
 	/**
+	 * Add the go to stream link (only if engine is rtmpdump-weebtv)
+	 *
+	 * @param X_Streamer_Engine $engine selected streamer engine
+	 * @param string $uri
+	 * @param string $provider id of the plugin that should handle request
+	 * @param string $location to stream
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return X_Page_ItemList_PItem
+	 */
+	public function preGetStreamItems(X_Streamer_Engine $engine, $uri, $provider, $location, Zend_Controller_Action $controller) {
+	
+		// ignore the call if streamer is not rtmpdump
+		if ( !($engine instanceof X_Streamer_Engine_RtmpDumpOwn3d ) ) return;
+	
+		X_Debug::i('Plugin triggered');
+	
+		$return = new X_Page_ItemList_PItem();
+	
+	
+		$outputLink = "http://{%SERVER_NAME%}:{$this->getStreamingPort()}";
+		$outputLink = str_replace(
+				array(
+						'{%SERVER_IP%}',
+						'{%SERVER_NAME%}'
+				),array(
+						$_SERVER['SERVER_ADDR'],
+						strstr($_SERVER['HTTP_HOST'], ':') ? strstr($_SERVER['HTTP_HOST'], ':') : $_SERVER['HTTP_HOST']
+				), $outputLink
+		);
+	
+		
+		// try to decode the $location
+		/*
+		try {
+			$outputLink .= $this->getLinkParams($location);
+		} catch (Exception $e) {
+			X_Debug::e("Unable to decode rtmp params");
+		}
+		*/
+		
+		$item = new X_Page_Item_PItem($this->getId(), X_Env::_('p_outputs_gotostream'));
+		$item->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
+		->setIcon('/images/icons/play.png')
+		->setLink($outputLink);
+		$return->append($item);
+	
+		return $return;
+	
+	}
+	
+	/**
+	 * Add the button BackToStream in controls page
+	 *
+	 * @param X_Streamer_Engine $engine
+	 * @param Zend_Controller_Action $controller the controller who handle the request
+	 * @return array
+	 */
+	public function preGetControlItems(X_Streamer_Engine $engine, Zend_Controller_Action $controller) {
+	
+		// ignore if the streamer is not vlc
+		if ( !($engine instanceof X_Streamer_Engine_RtmpDumpOwn3d ) ) return;
+	
+		$outputLink = "http://{%SERVER_NAME%}:{$this->getStreamingPort()}";
+		$outputLink = str_replace(
+				array(
+						'{%SERVER_IP%}',
+						'{%SERVER_NAME%}'
+				),array(
+						$_SERVER['SERVER_ADDR'],
+						strstr($_SERVER['HTTP_HOST'], ':') ? strstr($_SERVER['HTTP_HOST'], ':') : $_SERVER['HTTP_HOST']
+				), $outputLink
+		);
+		
+		
+		// try to get the location and provider
+		/*
+		$provider = $controller->getRequest()->getParam('p', false);
+		$location = $controller->getRequest()->getParam('l', false);
+		
+		if ( $provider == $this->getId() && $location ) {
+			$location = X_Env::decode($location);
+			// try to decode the $location
+			try {
+				$outputLink .= $this->getLinkParams($location);
+			} catch (Exception $e) {
+				X_Debug::e("Unable to decode rtmp params");
+			}
+		}
+		*/
+		
+	
+		$item = new X_Page_Item_PItem($this->getId(), X_Env::_('p_profiles_backstream'));
+		$item->setType(X_Page_Item_PItem::TYPE_PLAYABLE)
+		->setIcon('/images/icons/play.png')
+		->setLink($outputLink);
+		return new X_Page_ItemList_PItem(array($item));
+	
+	}	
+	
+	
+	/**
 	 * Add the link for -manage-streamingonline-
 	 * @param Zend_Controller_Action $this
 	 * @return X_Page_ItemList_ManageLink
@@ -292,7 +414,11 @@ class X_VlcShares_Plugins_Own3d extends X_VlcShares_Plugins_Abstract implements 
 		
 		return $list;
 	
-	}	
+	}
+
+	public function getStreamingPort() {
+		return $this->config("streaming.port", '8081');
+	}
 	
 	/**
 	 * Disable cache plugin is registered and enabled

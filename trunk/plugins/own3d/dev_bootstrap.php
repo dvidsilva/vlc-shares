@@ -48,6 +48,8 @@ $neededDirectories = array(
 $neededLinks = array(
 	$basePath.'/public/images/icons/hosters/own3dlive.png' => APPLICATION_PATH.'/../public/images/icons/hosters/own3dlive.png',
 	$basePath.'/public/images/own3d/' => APPLICATION_PATH.'/../public/images/own3d', // crea un link della cartella delle immagini
+	$basePath.'/bin/rtmpdump-own3d-linux/' => APPLICATION_PATH.'/../bin/rtmpdump-own3d-linux', // crea un link della cartella dei bin
+	$basePath.'/bin/rtmpdump-own3d-win/' => APPLICATION_PATH.'/../bin/rtmpdump-own3d-win', // crea un link della cartella dei bin
 	$basePath.'/languages/X_VlcShares_Plugins_Own3d.en_GB.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_Own3d.en_GB.ini', // link al file di traduzione
 	$basePath.'/languages/X_VlcShares_Plugins_Own3d.it_IT.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_Own3d.it_IT.ini', // link al file di traduzione
 );
@@ -66,7 +68,9 @@ $neededLinks = array(
  */
 $includeFiles = array(
 	//$basePath.'/application/controllers/MycontrollerController.php' // <--- THIS IS AN EAMPLE FOR CONTROLLER INCLUSION
-	$basePath.'/library/X/PageParser/Parser/Own3dLive.php' // <--- THIS IS AN EAMPLE FOR CONTROLLER INCLUSION
+	$basePath.'/library/X/PageParser/Parser/Own3dLive.php', // <--- THIS IS AN EAMPLE FOR CONTROLLER INCLUSION
+	$basePath.'/library/X/Streamer/Engine/RtmpDumpOwn3d.php',
+	$basePath.'/library/X/RtmpDumpOwn3d.php'
 );
 
 /**
