@@ -183,7 +183,7 @@ class X_VlcShares_Plugins_Helper_Hoster_Own3dLive implements X_VlcShares_Plugins
 		$params['swfUrl'] = self::PLAYER_URL;
 		$params['pageUrl'] = $pageUrl;
 		
-		return X_RtmpDump::buildUri($params);
+		return X_RtmpDumpOwn3d::buildUri($params);
 	}
 	
 	

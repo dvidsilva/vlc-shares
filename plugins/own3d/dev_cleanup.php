@@ -26,4 +26,6 @@ $neededLinks = array(
 	$basePath.'/public/images/own3d/' => APPLICATION_PATH.'/../public/images/own3d', // crea un link della cartella delle immagini
 	$basePath.'/languages/X_VlcShares_Plugins_Own3d.en_GB.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_Own3d.en_GB.ini', // link al file di traduzione
 	$basePath.'/languages/X_VlcShares_Plugins_Own3d.it_IT.ini' => APPLICATION_PATH.'/../languages/X_VlcShares_Plugins_Own3d.it_IT.ini', // link al file di traduzione
+	$basePath.'/bin/rtmpdump-own3d-linux/' => APPLICATION_PATH.'/../bin/rtmpdump-own3d-linux', // crea un link della cartella dei bin
+	$basePath.'/bin/rtmpdump-own3d-win/' => APPLICATION_PATH.'/../bin/rtmpdump-own3d-win', // crea un link della cartella dei bin
 );
