@@ -2,7 +2,8 @@
 
 class X_PageParser_Parser_Own3dLive extends X_PageParser_Parser {
 
-	const PATTERN = '#<a href="/live/(?P<ID>[0-9]+)" class="font-size_14 font-farbe_1" title="(?P<LABEL>[^\"]+?)" >#';
+	//const PATTERN = '#<a href="/live/(?P<ID>[0-9]+)" class="font-size_14 font-farbe_1" title="(?P<LABEL>[^\"]+?)" >#';
+	const PATTERN = '#<a rel="(?P<ID>[0-9]+)" class="small_tn_title small_tn_title_live" href="([^\"]+?)" >(?P<LABEL>[^<]+?)</a>#';
 
 	/**
 	 * (non-PHPdoc)
